@@ -13,6 +13,13 @@
 		784BD0A028EDA23900CA86F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 784BD09E28EDA23900CA86F0 /* Main.storyboard */; };
 		784BD0A228EDA23A00CA86F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 784BD0A128EDA23A00CA86F0 /* Assets.xcassets */; };
 		784BD0A528EDA23A00CA86F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */; };
+		784BD0AD28EDA35500CA86F0 /* JHViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD0AC28EDA35500CA86F0 /* JHViewController.swift */; };
+		784BD0B028EDA3C400CA86F0 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0AF28EDA3C400CA86F0 /* Moya */; };
+		784BD0B328EDA3D500CA86F0 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B228EDA3D500CA86F0 /* RxCocoa */; };
+		784BD0B528EDA3D500CA86F0 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B428EDA3D500CA86F0 /* RxRelay */; };
+		784BD0B828EDA3F600CA86F0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B728EDA3F600CA86F0 /* Kingfisher */; };
+		784BD0BB28EDA42300CA86F0 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BA28EDA42300CA86F0 /* PanModal */; };
+		784BD0BE28EDA44800CA86F0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BD28EDA44800CA86F0 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +31,7 @@
 		784BD0A128EDA23A00CA86F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		784BD0A428EDA23A00CA86F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		784BD0A628EDA23A00CA86F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		784BD0AC28EDA35500CA86F0 /* JHViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JHViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +39,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				784BD0B828EDA3F600CA86F0 /* Kingfisher in Frameworks */,
+				784BD0B528EDA3D500CA86F0 /* RxRelay in Frameworks */,
+				784BD0B328EDA3D500CA86F0 /* RxCocoa in Frameworks */,
+				784BD0BE28EDA44800CA86F0 /* SnapKit in Frameworks */,
+				784BD0B028EDA3C400CA86F0 /* Moya in Frameworks */,
+				784BD0BB28EDA42300CA86F0 /* PanModal in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +77,7 @@
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
 				784BD0A628EDA23A00CA86F0 /* Info.plist */,
+				784BD0AC28EDA35500CA86F0 /* JHViewController.swift */,
 			);
 			path = Careeix;
 			sourceTree = "<group>";
@@ -83,6 +98,14 @@
 			dependencies = (
 			);
 			name = Careeix;
+			packageProductDependencies = (
+				784BD0AF28EDA3C400CA86F0 /* Moya */,
+				784BD0B228EDA3D500CA86F0 /* RxCocoa */,
+				784BD0B428EDA3D500CA86F0 /* RxRelay */,
+				784BD0B728EDA3F600CA86F0 /* Kingfisher */,
+				784BD0BA28EDA42300CA86F0 /* PanModal */,
+				784BD0BD28EDA44800CA86F0 /* SnapKit */,
+			);
 			productName = Careeix;
 			productReference = 784BD09528EDA23900CA86F0 /* Careeix.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +134,13 @@
 				Base,
 			);
 			mainGroup = 784BD08C28EDA23900CA86F0;
+			packageReferences = (
+				784BD0AE28EDA3C400CA86F0 /* XCRemoteSwiftPackageReference "Moya" */,
+				784BD0B128EDA3D500CA86F0 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				784BD0B628EDA3F600CA86F0 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				784BD0B928EDA42300CA86F0 /* XCRemoteSwiftPackageReference "PanModal" */,
+				784BD0BC28EDA44800CA86F0 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 784BD09628EDA23900CA86F0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -140,6 +170,7 @@
 			files = (
 				784BD09D28EDA23900CA86F0 /* ViewController.swift in Sources */,
 				784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */,
+				784BD0AD28EDA35500CA86F0 /* JHViewController.swift in Sources */,
 				784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,6 +387,82 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		784BD0AE28EDA3C400CA86F0 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		784BD0B128EDA3D500CA86F0 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+		784BD0B628EDA3F600CA86F0 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 7.4.0;
+			};
+		};
+		784BD0B928EDA42300CA86F0 /* XCRemoteSwiftPackageReference "PanModal" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/slackhq/PanModal";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
+		784BD0BC28EDA44800CA86F0 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 5.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		784BD0AF28EDA3C400CA86F0 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 784BD0AE28EDA3C400CA86F0 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		784BD0B228EDA3D500CA86F0 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 784BD0B128EDA3D500CA86F0 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		784BD0B428EDA3D500CA86F0 /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 784BD0B128EDA3D500CA86F0 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		784BD0B728EDA3F600CA86F0 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 784BD0B628EDA3F600CA86F0 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		784BD0BA28EDA42300CA86F0 /* PanModal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 784BD0B928EDA42300CA86F0 /* XCRemoteSwiftPackageReference "PanModal" */;
+			productName = PanModal;
+		};
+		784BD0BD28EDA44800CA86F0 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 784BD0BC28EDA44800CA86F0 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 784BD08D28EDA23900CA86F0 /* Project object */;
 }
