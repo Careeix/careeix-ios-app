@@ -20,6 +20,8 @@
 		784BD0B828EDA3F600CA86F0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B728EDA3F600CA86F0 /* Kingfisher */; };
 		784BD0BB28EDA42300CA86F0 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BA28EDA42300CA86F0 /* PanModal */; };
 		784BD0BE28EDA44800CA86F0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BD28EDA44800CA86F0 /* SnapKit */; };
+		78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2228EEDBA000DBBF5C /* NetworkService.swift */; };
+		78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		784BD0A428EDA23A00CA86F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		784BD0A628EDA23A00CA86F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		784BD0AC28EDA35500CA86F0 /* JHViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JHViewController.swift; sourceTree = "<group>"; };
+		78E94A2228EEDBA000DBBF5C /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +74,7 @@
 		784BD09728EDA23900CA86F0 /* Careeix */ = {
 			isa = PBXGroup;
 			children = (
+				78E94A2028EED73600DBBF5C /* Networking */,
 				784BD09828EDA23900CA86F0 /* AppDelegate.swift */,
 				784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */,
 				784BD09C28EDA23900CA86F0 /* ViewController.swift */,
@@ -78,8 +83,17 @@
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
 				784BD0A628EDA23A00CA86F0 /* Info.plist */,
 				784BD0AC28EDA35500CA86F0 /* JHViewController.swift */,
+				78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */,
 			);
 			path = Careeix;
+			sourceTree = "<group>";
+		};
+		78E94A2028EED73600DBBF5C /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				78E94A2228EEDBA000DBBF5C /* NetworkService.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,10 +182,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
 				784BD09D28EDA23900CA86F0 /* ViewController.swift in Sources */,
 				784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */,
 				784BD0AD28EDA35500CA86F0 /* JHViewController.swift in Sources */,
 				784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */,
+				78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
