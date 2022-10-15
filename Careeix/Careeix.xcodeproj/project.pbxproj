@@ -20,6 +20,14 @@
 		784BD0BE28EDA44800CA86F0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BD28EDA44800CA86F0 /* SnapKit */; };
 		78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17B528FA77F100331A22 /* OnboardViewModel.swift */; };
 		78DC17B828FA8C2600331A22 /* OnboardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17B728FA8C2600331A22 /* OnboardCell.swift */; };
+		78DC17BD28FA93BD00331A22 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 78DC17BC28FA93BD00331A22 /* RxGesture */; };
+		78DC17BF28FA943E00331A22 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17BE28FA943E00331A22 /* SignUpViewController.swift */; };
+		78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17C428FA9D9D00331A22 /* BaseTextField.swift */; };
+		78DC17C728FA9E1C00331A22 /* BaseInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17C628FA9E1C00331A22 /* BaseInputView.swift */; };
+		78DC17C928FA9F4300331A22 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17C828FA9F4300331A22 /* UIColor+.swift */; };
+		78DC17CB28FAA46A00331A22 /* RadioInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17CA28FAA46A00331A22 /* RadioInputView.swift */; };
+		78DC17CD28FAA4DB00331A22 /* MultiInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17CC28FAA4DA00331A22 /* MultiInputView.swift */; };
+		78DC17CF28FAA58500331A22 /* CompleteButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17CE28FAA58500331A22 /* CompleteButtonView.swift */; };
 		78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2228EEDBA000DBBF5C /* NetworkService.swift */; };
 		78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */; };
 		78E94A2F28EF0D7800DBBF5C /* TabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */; };
@@ -36,6 +44,13 @@
 		784BD0AC28EDA35500CA86F0 /* OnboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewController.swift; sourceTree = "<group>"; };
 		78DC17B528FA77F100331A22 /* OnboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewModel.swift; sourceTree = "<group>"; };
 		78DC17B728FA8C2600331A22 /* OnboardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardCell.swift; sourceTree = "<group>"; };
+		78DC17BE28FA943E00331A22 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		78DC17C428FA9D9D00331A22 /* BaseTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTextField.swift; sourceTree = "<group>"; };
+		78DC17C628FA9E1C00331A22 /* BaseInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseInputView.swift; sourceTree = "<group>"; };
+		78DC17C828FA9F4300331A22 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		78DC17CA28FAA46A00331A22 /* RadioInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioInputView.swift; sourceTree = "<group>"; };
+		78DC17CC28FAA4DA00331A22 /* MultiInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiInputView.swift; sourceTree = "<group>"; };
+		78DC17CE28FAA58500331A22 /* CompleteButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteButtonView.swift; sourceTree = "<group>"; };
 		78E94A2228EEDBA000DBBF5C /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarController.swift; sourceTree = "<group>"; };
@@ -48,6 +63,7 @@
 			files = (
 				784BD0B828EDA3F600CA86F0 /* Kingfisher in Frameworks */,
 				784BD0B528EDA3D500CA86F0 /* RxRelay in Frameworks */,
+				78DC17BD28FA93BD00331A22 /* RxGesture in Frameworks */,
 				784BD0B328EDA3D500CA86F0 /* RxCocoa in Frameworks */,
 				784BD0BE28EDA44800CA86F0 /* SnapKit in Frameworks */,
 				78E94A3228EF102C00DBBF5C /* Pretendard in Frameworks */,
@@ -85,6 +101,7 @@
 				784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */,
 				78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */,
 				78DC17B428FA75D300331A22 /* Onboard */,
+				78DC17BA28FA937400331A22 /* SignUp */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
 				784BD0A628EDA23A00CA86F0 /* Info.plist */,
@@ -97,9 +114,35 @@
 			children = (
 				784BD0AC28EDA35500CA86F0 /* OnboardViewController.swift */,
 				78DC17B528FA77F100331A22 /* OnboardViewModel.swift */,
-				78DC17B728FA8C2600331A22 /* OnboardCell.swift */,
+				78DC17C328FA9D2700331A22 /* Cells */,
 			);
 			path = Onboard;
+			sourceTree = "<group>";
+		};
+		78DC17BA28FA937400331A22 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				78DC17BE28FA943E00331A22 /* SignUpViewController.swift */,
+				78DC17C228FA9D1800331A22 /* Views */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		78DC17C228FA9D1800331A22 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				78DC17CA28FAA46A00331A22 /* RadioInputView.swift */,
+				78DC17CC28FAA4DA00331A22 /* MultiInputView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		78DC17C328FA9D2700331A22 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				78DC17B728FA8C2600331A22 /* OnboardCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		78E94A2928EF069E00DBBF5C /* SDK */ = {
@@ -114,6 +157,7 @@
 		78E94A2B28EF06F500DBBF5C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				78DC17C828FA9F4300331A22 /* UIColor+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -129,6 +173,9 @@
 		78E94A2D28EF0D4900DBBF5C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				78DC17C428FA9D9D00331A22 /* BaseTextField.swift */,
+				78DC17C628FA9E1C00331A22 /* BaseInputView.swift */,
+				78DC17CE28FAA58500331A22 /* CompleteButtonView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -157,6 +204,7 @@
 				784BD0BA28EDA42300CA86F0 /* PanModal */,
 				784BD0BD28EDA44800CA86F0 /* SnapKit */,
 				78E94A3128EF102C00DBBF5C /* Pretendard */,
+				78DC17BC28FA93BD00331A22 /* RxGesture */,
 			);
 			productName = Careeix;
 			productReference = 784BD09528EDA23900CA86F0 /* Careeix.app */;
@@ -193,6 +241,7 @@
 				784BD0B928EDA42300CA86F0 /* XCRemoteSwiftPackageReference "PanModal" */,
 				784BD0BC28EDA44800CA86F0 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				78E94A3028EF102C00DBBF5C /* XCRemoteSwiftPackageReference "Pretendard" */,
+				78DC17BB28FA93BD00331A22 /* XCRemoteSwiftPackageReference "RxGesture" */,
 			);
 			productRefGroup = 784BD09628EDA23900CA86F0 /* Products */;
 			projectDirPath = "";
@@ -221,12 +270,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
+				78DC17CD28FAA4DB00331A22 /* MultiInputView.swift in Sources */,
 				78DC17B828FA8C2600331A22 /* OnboardCell.swift in Sources */,
+				78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */,
+				78DC17CB28FAA46A00331A22 /* RadioInputView.swift in Sources */,
 				78E94A2F28EF0D7800DBBF5C /* TabbarController.swift in Sources */,
+				78DC17CF28FAA58500331A22 /* CompleteButtonView.swift in Sources */,
 				784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */,
+				78DC17C928FA9F4300331A22 /* UIColor+.swift in Sources */,
 				784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */,
 				784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */,
+				78DC17BF28FA943E00331A22 /* SignUpViewController.swift in Sources */,
 				78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */,
+				78DC17C728FA9E1C00331A22 /* BaseInputView.swift in Sources */,
 				78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -475,6 +531,14 @@
 				minimumVersion = 5.6.0;
 			};
 		};
+		78DC17BB28FA93BD00331A22 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		78E94A3028EF102C00DBBF5C /* XCRemoteSwiftPackageReference "Pretendard" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jaemyeong/Pretendard";
@@ -515,6 +579,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 784BD0BC28EDA44800CA86F0 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		78DC17BC28FA93BD00331A22 /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78DC17BB28FA93BD00331A22 /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
 		};
 		78E94A3128EF102C00DBBF5C /* Pretendard */ = {
 			isa = XCSwiftPackageProductDependency;

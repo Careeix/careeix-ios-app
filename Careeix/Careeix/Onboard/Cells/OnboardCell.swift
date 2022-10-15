@@ -18,6 +18,7 @@ struct OnboardCellViewModel {
         imageNameDriver = Observable.just(imageName).asDriver(onErrorJustReturn: "")
     }
 }
+
 class OnboardCell: UICollectionViewCell {
     var disposeBag = DisposeBag()
     
@@ -32,7 +33,6 @@ class OnboardCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-//        backgroundColor = .red
         setUI()
     }
     

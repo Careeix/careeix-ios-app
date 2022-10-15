@@ -10,7 +10,7 @@ import RxRelay
 import RxSwift
 import RxCocoa
 import SnapKit
-
+import RxGesture
 class OnboardViewController: UIViewController {
     var disposeBag = DisposeBag()
     var viewModel = OnboardViewModel()
@@ -56,6 +56,20 @@ class OnboardViewController: UIViewController {
         viewModel.currentPageDriver
             .drive(pageControl.rx.currentPage)
             .disposed(by: disposeBag)
+        
+        kakaoLoginButtonImageView.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { owner, _ in
+                print("카카오 로그인!")
+            }.disposed(by: disposeBag)
+        
+        appleLoginButtonImageView.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { owner, _ in
+                print("애플 로그인!")
+            }.disposed(by: disposeBag)
     }
     
     // MARK: - UIComponents
