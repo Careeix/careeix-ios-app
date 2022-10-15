@@ -11,13 +11,15 @@
 		784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */; };
 		784BD0A228EDA23A00CA86F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 784BD0A128EDA23A00CA86F0 /* Assets.xcassets */; };
 		784BD0A528EDA23A00CA86F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */; };
-		784BD0AD28EDA35500CA86F0 /* JHViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD0AC28EDA35500CA86F0 /* JHViewController.swift */; };
+		784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD0AC28EDA35500CA86F0 /* OnboardViewController.swift */; };
 		784BD0B028EDA3C400CA86F0 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0AF28EDA3C400CA86F0 /* Moya */; };
 		784BD0B328EDA3D500CA86F0 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B228EDA3D500CA86F0 /* RxCocoa */; };
 		784BD0B528EDA3D500CA86F0 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B428EDA3D500CA86F0 /* RxRelay */; };
 		784BD0B828EDA3F600CA86F0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B728EDA3F600CA86F0 /* Kingfisher */; };
 		784BD0BB28EDA42300CA86F0 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BA28EDA42300CA86F0 /* PanModal */; };
 		784BD0BE28EDA44800CA86F0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BD28EDA44800CA86F0 /* SnapKit */; };
+		78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17B528FA77F100331A22 /* OnboardViewModel.swift */; };
+		78DC17B828FA8C2600331A22 /* OnboardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17B728FA8C2600331A22 /* OnboardCell.swift */; };
 		78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2228EEDBA000DBBF5C /* NetworkService.swift */; };
 		78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */; };
 		78E94A2F28EF0D7800DBBF5C /* TabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */; };
@@ -31,7 +33,9 @@
 		784BD0A128EDA23A00CA86F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		784BD0A428EDA23A00CA86F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		784BD0A628EDA23A00CA86F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		784BD0AC28EDA35500CA86F0 /* JHViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JHViewController.swift; sourceTree = "<group>"; };
+		784BD0AC28EDA35500CA86F0 /* OnboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewController.swift; sourceTree = "<group>"; };
+		78DC17B528FA77F100331A22 /* OnboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewModel.swift; sourceTree = "<group>"; };
+		78DC17B728FA8C2600331A22 /* OnboardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardCell.swift; sourceTree = "<group>"; };
 		78E94A2228EEDBA000DBBF5C /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarController.swift; sourceTree = "<group>"; };
@@ -80,12 +84,22 @@
 				784BD09828EDA23900CA86F0 /* AppDelegate.swift */,
 				784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */,
 				78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */,
+				78DC17B428FA75D300331A22 /* Onboard */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
 				784BD0A628EDA23A00CA86F0 /* Info.plist */,
-				784BD0AC28EDA35500CA86F0 /* JHViewController.swift */,
 			);
 			path = Careeix;
+			sourceTree = "<group>";
+		};
+		78DC17B428FA75D300331A22 /* Onboard */ = {
+			isa = PBXGroup;
+			children = (
+				784BD0AC28EDA35500CA86F0 /* OnboardViewController.swift */,
+				78DC17B528FA77F100331A22 /* OnboardViewModel.swift */,
+				78DC17B728FA8C2600331A22 /* OnboardCell.swift */,
+			);
+			path = Onboard;
 			sourceTree = "<group>";
 		};
 		78E94A2928EF069E00DBBF5C /* SDK */ = {
@@ -207,10 +221,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
+				78DC17B828FA8C2600331A22 /* OnboardCell.swift in Sources */,
 				78E94A2F28EF0D7800DBBF5C /* TabbarController.swift in Sources */,
 				784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */,
-				784BD0AD28EDA35500CA86F0 /* JHViewController.swift in Sources */,
+				784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */,
 				784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */,
+				78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */,
 				78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
