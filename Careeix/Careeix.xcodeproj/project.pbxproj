@@ -20,6 +20,8 @@
 		784BD0BE28EDA44800CA86F0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BD28EDA44800CA86F0 /* SnapKit */; };
 		78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2228EEDBA000DBBF5C /* NetworkService.swift */; };
 		78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */; };
+		78E94A2F28EF0D7800DBBF5C /* TabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */; };
+		78E94A3228EF102C00DBBF5C /* Pretendard in Frameworks */ = {isa = PBXBuildFile; productRef = 78E94A3128EF102C00DBBF5C /* Pretendard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,7 @@
 		784BD0AC28EDA35500CA86F0 /* JHViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JHViewController.swift; sourceTree = "<group>"; };
 		78E94A2228EEDBA000DBBF5C /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
+		78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +46,7 @@
 				784BD0B528EDA3D500CA86F0 /* RxRelay in Frameworks */,
 				784BD0B328EDA3D500CA86F0 /* RxCocoa in Frameworks */,
 				784BD0BE28EDA44800CA86F0 /* SnapKit in Frameworks */,
+				78E94A3228EF102C00DBBF5C /* Pretendard in Frameworks */,
 				784BD0B028EDA3C400CA86F0 /* Moya in Frameworks */,
 				784BD0BB28EDA42300CA86F0 /* PanModal in Frameworks */,
 			);
@@ -71,9 +75,11 @@
 		784BD09728EDA23900CA86F0 /* Careeix */ = {
 			isa = PBXGroup;
 			children = (
+				78E94A2C28EF0D4100DBBF5C /* Commons */,
 				78E94A2928EF069E00DBBF5C /* SDK */,
 				784BD09828EDA23900CA86F0 /* AppDelegate.swift */,
 				784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */,
+				78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
 				784BD0A628EDA23A00CA86F0 /* Info.plist */,
@@ -96,6 +102,21 @@
 			children = (
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		78E94A2C28EF0D4100DBBF5C /* Commons */ = {
+			isa = PBXGroup;
+			children = (
+				78E94A2D28EF0D4900DBBF5C /* Views */,
+			);
+			path = Commons;
+			sourceTree = "<group>";
+		};
+		78E94A2D28EF0D4900DBBF5C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -121,6 +142,7 @@
 				784BD0B728EDA3F600CA86F0 /* Kingfisher */,
 				784BD0BA28EDA42300CA86F0 /* PanModal */,
 				784BD0BD28EDA44800CA86F0 /* SnapKit */,
+				78E94A3128EF102C00DBBF5C /* Pretendard */,
 			);
 			productName = Careeix;
 			productReference = 784BD09528EDA23900CA86F0 /* Careeix.app */;
@@ -156,6 +178,7 @@
 				784BD0B628EDA3F600CA86F0 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				784BD0B928EDA42300CA86F0 /* XCRemoteSwiftPackageReference "PanModal" */,
 				784BD0BC28EDA44800CA86F0 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				78E94A3028EF102C00DBBF5C /* XCRemoteSwiftPackageReference "Pretendard" */,
 			);
 			productRefGroup = 784BD09628EDA23900CA86F0 /* Products */;
 			projectDirPath = "";
@@ -184,6 +207,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
+				78E94A2F28EF0D7800DBBF5C /* TabbarController.swift in Sources */,
 				784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */,
 				784BD0AD28EDA35500CA86F0 /* JHViewController.swift in Sources */,
 				784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */,
@@ -435,6 +459,14 @@
 				minimumVersion = 5.6.0;
 			};
 		};
+		78E94A3028EF102C00DBBF5C /* XCRemoteSwiftPackageReference "Pretendard" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jaemyeong/Pretendard";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.2.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -467,6 +499,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 784BD0BC28EDA44800CA86F0 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		78E94A3128EF102C00DBBF5C /* Pretendard */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78E94A3028EF102C00DBBF5C /* XCRemoteSwiftPackageReference "Pretendard" */;
+			productName = Pretendard;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
