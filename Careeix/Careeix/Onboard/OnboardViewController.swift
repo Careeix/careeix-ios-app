@@ -40,9 +40,7 @@ class OnboardViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.onboardImageNamesDriver
-            .do { self.pageControl.numberOfPages = $0.count
-                self.pageControl.currentPage = 0
-            }
+            .do { self.pageControl.numberOfPages = $0.count }
             .drive(onboardCollectionView.rx.items) { collectionView, row, data in
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OnboardCell.self.description(), for: IndexPath(row: row, section: 0)) as? OnboardCell else { return UICollectionViewCell() }
                 cell.bind(to: .init(imageName: data))
@@ -54,11 +52,10 @@ class OnboardViewController: UIViewController {
             .map { ($1.targetContentOffset.pointee.x, $0.view.frame.width) }
             .bind(to: viewModel.endDraggingRelay)
             .disposed(by: disposeBag)
-        
+
         viewModel.currentPageDriver
-            .drive {
-                print($0, "Bbb")
-            }
+            .drive(pageControl.rx.currentPage)
+            .disposed(by: disposeBag)
     }
     
     // MARK: - UIComponents
@@ -104,7 +101,7 @@ extension OnboardViewController {
         }
         
         pageControl.snp.makeConstraints {
-            $0.bottom.equalTo(kakaoLoginButtonImageView).offset(-58)
+            $0.bottom.equalTo(kakaoLoginButtonImageView.snp.top).offset(-58)
             $0.centerX.equalToSuperview()
         }
         

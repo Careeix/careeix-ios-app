@@ -15,7 +15,7 @@ struct OnboardViewModel {
     typealias contentOffsetX = CGFloat
     typealias screenWidth = CGFloat
     // MARK: - Input
-    let endDraggingRelay = PublishRelay<(contentOffsetX, screenWidth)>()
+    let endDraggingRelay = BehaviorRelay<(contentOffsetX, screenWidth)>(value: (0, 1))
     
     // MARK: - Output
     let logoImageNameDriver: Driver<String>
@@ -34,12 +34,8 @@ struct OnboardViewModel {
         onboardImageNamesDriver = Observable.just(["onboard_0", "onboard_1", "onboard_2"]).asDriver(onErrorJustReturn: [])
         
         currentPageDriver = endDraggingRelay
-            .map { Int( $0 / $1)}
+            .map { Int($0 / $1) }
             .asDriver(onErrorJustReturn: 0)
-        
-//        endDraggingRelay
-//            .subscribe { a, b in
-//                print(a, b,"bbb")
-//            }
+
     }
 }
