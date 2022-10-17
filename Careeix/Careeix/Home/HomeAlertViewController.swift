@@ -70,6 +70,11 @@ class HomeAlertViewController: UIViewController {
     func setup() {
         view.addSubview(containerView)
         
+        containerView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.equalToSuperview().multipliedBy(0.8)
+        }
+        
         [titleText, descriptionText, modalImage, confirmButton]
             .forEach { containerView.addSubview($0) }
         
@@ -83,15 +88,16 @@ class HomeAlertViewController: UIViewController {
         }
         
         modalImage.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.top.equalTo(descriptionText.snp.bottom)
-            $0.width.equalTo(343)
-            $0.height.equalTo(425)
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(descriptionText.snp.bottom).offset(25.16)
+            $0.width.equalTo(266)
+            $0.height.equalTo(225)
         }
         
         confirmButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(modalImage.snp.bottom).offset(17)
+            $0.bottom.equalToSuperview().inset(26)
         }
     }
 }

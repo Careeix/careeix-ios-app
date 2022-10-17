@@ -35,7 +35,7 @@ class HomeViewController: UIViewController {
     }
     
     func showModalView() {
-        guard let modalView = self.storyboard?.instantiateViewController(withIdentifier: HomeAlertViewController.identifier) as? HomeAlertViewController else { return }
+        let modalView = HomeAlertViewController()
         modalView.modalPresentationStyle = .overCurrentContext
         self.present(modalView, animated: true)
     }

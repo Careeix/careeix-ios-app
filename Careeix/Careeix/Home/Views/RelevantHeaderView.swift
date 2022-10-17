@@ -34,6 +34,7 @@ class RelevantHeaderView: UICollectionReusableView {
         addSubview(header)
         
         header.snp.makeConstraints {
+            $0.leading.equalToSuperview()
             $0.bottom.equalToSuperview().inset(13)
         }
     }

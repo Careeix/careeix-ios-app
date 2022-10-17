@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.backgroundColor = .systemBackground
         UserDefaultManager.shared.jwtToken = "a"
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
-        ? UINavigationController(rootViewController: OnboardViewController())
+        ? UINavigationController(rootViewController: SignUpViewController())
         : TabBarController()
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateWindow),
