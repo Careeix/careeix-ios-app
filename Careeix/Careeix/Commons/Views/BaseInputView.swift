@@ -11,10 +11,10 @@ class BaseInputView: UIView {
     let titleLabel = UILabel()
     var textField: BaseTextField = BaseTextField()
     
-    init(title: String, placeholder: String) {
+    init(viewModel: BaseInputViewModel) {
         super.init(frame: .zero)
-        titleLabel.text = title
-        textField.placeholder = placeholder
+        titleLabel.text = viewModel.title
+        textField.placeholder = viewModel.placeholder
         setUI()
     }
     

@@ -28,6 +28,9 @@
 		78DC17CB28FAA46A00331A22 /* RadioInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17CA28FAA46A00331A22 /* RadioInputView.swift */; };
 		78DC17CD28FAA4DB00331A22 /* MultiInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17CC28FAA4DA00331A22 /* MultiInputView.swift */; };
 		78DC17CF28FAA58500331A22 /* CompleteButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17CE28FAA58500331A22 /* CompleteButtonView.swift */; };
+		78DC17D128FBE7E800331A22 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17D028FBE7E800331A22 /* SignUpViewModel.swift */; };
+		78DC17D428FBEA0000331A22 /* RadioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17D328FBEA0000331A22 /* RadioCell.swift */; };
+		78DC17D628FBEEA400331A22 /* MultiInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17D528FBEEA400331A22 /* MultiInputCell.swift */; };
 		78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2228EEDBA000DBBF5C /* NetworkService.swift */; };
 		78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */; };
 		78E94A2F28EF0D7800DBBF5C /* TabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */; };
@@ -51,6 +54,9 @@
 		78DC17CA28FAA46A00331A22 /* RadioInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioInputView.swift; sourceTree = "<group>"; };
 		78DC17CC28FAA4DA00331A22 /* MultiInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiInputView.swift; sourceTree = "<group>"; };
 		78DC17CE28FAA58500331A22 /* CompleteButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteButtonView.swift; sourceTree = "<group>"; };
+		78DC17D028FBE7E800331A22 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		78DC17D328FBEA0000331A22 /* RadioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioCell.swift; sourceTree = "<group>"; };
+		78DC17D528FBEEA400331A22 /* MultiInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiInputCell.swift; sourceTree = "<group>"; };
 		78E94A2228EEDBA000DBBF5C /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarController.swift; sourceTree = "<group>"; };
@@ -123,7 +129,9 @@
 			isa = PBXGroup;
 			children = (
 				78DC17BE28FA943E00331A22 /* SignUpViewController.swift */,
+				78DC17D028FBE7E800331A22 /* SignUpViewModel.swift */,
 				78DC17C228FA9D1800331A22 /* Views */,
+				78DC17D228FBE9E200331A22 /* Cells */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -141,6 +149,15 @@
 			isa = PBXGroup;
 			children = (
 				78DC17B728FA8C2600331A22 /* OnboardCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		78DC17D228FBE9E200331A22 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				78DC17D328FBEA0000331A22 /* RadioCell.swift */,
+				78DC17D528FBEEA400331A22 /* MultiInputCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -271,6 +288,9 @@
 			files = (
 				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
 				78DC17CD28FAA4DB00331A22 /* MultiInputView.swift in Sources */,
+				78DC17D128FBE7E800331A22 /* SignUpViewModel.swift in Sources */,
+				78DC17D428FBEA0000331A22 /* RadioCell.swift in Sources */,
+				78DC17D628FBEEA400331A22 /* MultiInputCell.swift in Sources */,
 				78DC17B828FA8C2600331A22 /* OnboardCell.swift in Sources */,
 				78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */,
 				78DC17CB28FAA46A00331A22 /* RadioInputView.swift in Sources */,

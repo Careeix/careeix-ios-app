@@ -8,10 +8,10 @@
 import UIKit
 
 class CompleteButtonView: UIView {
-    init(content: String, backgroundColor: UIColor = .appColor(.signature)) {
+    init(viewModel: CompleteButtonViewModel) {
         super.init(frame: .zero)
-        self.backgroundColor = backgroundColor
-        contentLabel.text = content
+        self.backgroundColor = .appColor(viewModel.backgroundColor)
+        contentLabel.text = viewModel.content
         setUI()
     }
 

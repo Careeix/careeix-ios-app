@@ -7,9 +7,25 @@
 
 import UIKit
 import SnapKit
-
+import RxSwift
+import RxCocoa
 
 class SignUpViewController: UIViewController {
+    let disposeBag = DisposeBag()
+    let viewModel = SignUpViewModel(nickNameInputViewModel: .init(title: "닉네임",
+                                                                  placeholder: "10자 이내로 한글, 영문, 숫자를 입력해주세요."),
+                                    jobInputViewModel: .init(title: "직무",
+                                                             placeholder: "직무를 입력해주세요.(Ex. 서버 개발자)"),
+                                    annualInputViewModel: .init(title: "연차",
+                                                                contents: ["입문(1년 미만)",
+                                                                           "주니어(1~4년차)",
+                                                                           "미들(5~8년차)",
+                                                                           "시니어(9년차~)"]),
+                                    detailJobInputViewModel: .init(title: "상세 직무",
+                                                                   placeholders: Array(repeating: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)", count: 3)),
+                                    completeButtonViewModel: .init(content: "회원가입", backgroundColor: .signatureDark)
+    )
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +34,7 @@ class SignUpViewController: UIViewController {
     
     // MARK: - UIComponents
     let scrollView = UIScrollView()
+    let contentView = UIView()
     let titleLabel: UILabel = {
         let l = UILabel()
         l.text = "추가 정보를 입력해주세요"
@@ -34,11 +51,16 @@ class SignUpViewController: UIViewController {
         l.textColor = .appColor(.error)
         return l
     }()
-    let nickNameInputView = BaseInputView(title: "닉네임", placeholder: "10자 이내로 한글, 영문, 숫자를 입력해주세요.")
-    let jobInputView = BaseInputView(title: "직무", placeholder: "직무를 입력해주세요.(Ex. 서버 개발자)")
-    let annualInputView = RadioInputView()
-    let detailJobTagInputView = MultiInputView()
-    let completeButtonView = CompleteButtonView(content: "회원가입", backgroundColor: .appColor(.signatureDark))
+    lazy var nickNameInputView = BaseInputView(viewModel: viewModel.nickNameInputViewModel)
+    lazy var jobInputView = BaseInputView(viewModel: viewModel.jobInputViewModel)
+    lazy var annualInputView = RadioInputView(viewModel: viewModel.annualInputViewModel)
+    lazy var tempView: UIView = {
+       let v = UIView()
+        v.backgroundColor = .orange
+        return v
+    }()
+//    lazy var detailJobTagInputView = MultiInputView(viewModel: viewModel.detailJobInputViewModel)
+    lazy var completeButtonView = CompleteButtonView(viewModel: viewModel.completeButtonViewModel)
 }
 
 extension SignUpViewController {
@@ -49,11 +71,16 @@ extension SignUpViewController {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
+        scrollView.addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalToSuperview()
+        }
         
-        [titleLabel, descriptionLabel, nickNameInputView, nicknameCheckLabel, jobInputView, annualInputView, detailJobTagInputView, completeButtonView].forEach { scrollView.addSubview($0) }
+        [titleLabel, descriptionLabel, nickNameInputView, nicknameCheckLabel, jobInputView, annualInputView, tempView].forEach { contentView.addSubview($0) }
         
         titleLabel.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(14)
+            $0.top.equalToSuperview().inset(14)
             $0.leading.equalToSuperview().inset(24)
         }
         
@@ -80,18 +107,24 @@ extension SignUpViewController {
         annualInputView.snp.makeConstraints {
             $0.top.equalTo(jobInputView.snp.bottom).offset(50)
             $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.lessThanOrEqualTo(1000)
+//            $0.bottom.equalToSuperview()
         }
+        tempView.snp.makeConstraints {
+            $0.top.equalTo(annualInputView.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(500)
+        }
+//        detailJobTagInputView.snp.makeConstraints {
+//            $0.top.equalTo(annualInputView.snp.bottom).offset(50)
+//            $0.leading.trailing.equalToSuperview().inset(16)
+//            $0.bottom.equalToSuperview()
+//        }
         
-        detailJobTagInputView.snp.makeConstraints {
-            $0.top.equalTo(annualInputView.snp.bottom).offset(50)
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalToSuperview()
-        }
-        
-        completeButtonView.snp.makeConstraints {
-            $0.bottom.equalTo(view.safeAreaLayoutGuide)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(56)
-        }
+//        completeButtonView.snp.makeConstraints {
+//            $0.bottom.equalTo(view.safeAreaLayoutGuide)
+//            $0.leading.trailing.equalToSuperview()
+//            $0.height.equalTo(56)
+//        }
     }
 }
