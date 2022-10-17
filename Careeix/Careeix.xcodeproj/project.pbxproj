@@ -11,17 +11,38 @@
 		784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */; };
 		784BD0A228EDA23A00CA86F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 784BD0A128EDA23A00CA86F0 /* Assets.xcassets */; };
 		784BD0A528EDA23A00CA86F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */; };
-		784BD0AD28EDA35500CA86F0 /* JHViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD0AC28EDA35500CA86F0 /* JHViewController.swift */; };
+		784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD0AC28EDA35500CA86F0 /* OnboardViewController.swift */; };
 		784BD0B028EDA3C400CA86F0 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0AF28EDA3C400CA86F0 /* Moya */; };
 		784BD0B328EDA3D500CA86F0 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B228EDA3D500CA86F0 /* RxCocoa */; };
 		784BD0B528EDA3D500CA86F0 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B428EDA3D500CA86F0 /* RxRelay */; };
 		784BD0B828EDA3F600CA86F0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B728EDA3F600CA86F0 /* Kingfisher */; };
 		784BD0BB28EDA42300CA86F0 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BA28EDA42300CA86F0 /* PanModal */; };
 		784BD0BE28EDA44800CA86F0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BD28EDA44800CA86F0 /* SnapKit */; };
+		78D52E4F28FCFCF2001F5747 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = 78D52E4E28FCFCF2001F5747 /* RxKeyboard */; };
+		78D52E5128FD14FF001F5747 /* SignUpModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D52E5028FD14FF001F5747 /* SignUpModel.swift */; };
+		78D52E5328FD3142001F5747 /* SocialLoginSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D52E5228FD3142001F5747 /* SocialLoginSDK.swift */; };
+		78D52E7228FD3D91001F5747 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 78D52E7128FD3D91001F5747 /* KakaoSDKAuth */; };
+		78D52E7428FD3D91001F5747 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 78D52E7328FD3D91001F5747 /* KakaoSDKCommon */; };
+		78D52E7628FD3D91001F5747 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 78D52E7528FD3D91001F5747 /* KakaoSDKUser */; };
+		78D52E7928FD3DAD001F5747 /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 78D52E7828FD3DAD001F5747 /* RxKakaoSDKAuth */; };
+		78D52E7B28FD3DAD001F5747 /* RxKakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 78D52E7A28FD3DAD001F5747 /* RxKakaoSDKCommon */; };
+		78D52E7D28FD3DAD001F5747 /* RxKakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 78D52E7C28FD3DAD001F5747 /* RxKakaoSDKUser */; };
+		78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17B528FA77F100331A22 /* OnboardViewModel.swift */; };
+		78DC17B828FA8C2600331A22 /* OnboardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17B728FA8C2600331A22 /* OnboardCell.swift */; };
+		78DC17BD28FA93BD00331A22 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 78DC17BC28FA93BD00331A22 /* RxGesture */; };
+		78DC17BF28FA943E00331A22 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17BE28FA943E00331A22 /* SignUpViewController.swift */; };
+		78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17C428FA9D9D00331A22 /* BaseTextField.swift */; };
+		78DC17C728FA9E1C00331A22 /* SimpleInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17C628FA9E1C00331A22 /* SimpleInputView.swift */; };
+		78DC17C928FA9F4300331A22 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17C828FA9F4300331A22 /* UIColor+.swift */; };
+		78DC17CB28FAA46A00331A22 /* RadioInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17CA28FAA46A00331A22 /* RadioInputView.swift */; };
+		78DC17CD28FAA4DB00331A22 /* MultiInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17CC28FAA4DA00331A22 /* MultiInputView.swift */; };
+		78DC17CF28FAA58500331A22 /* CompleteButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17CE28FAA58500331A22 /* CompleteButtonView.swift */; };
+		78DC17D128FBE7E800331A22 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17D028FBE7E800331A22 /* SignUpViewModel.swift */; };
+		78DC17D428FBEA0000331A22 /* RadioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17D328FBEA0000331A22 /* RadioCell.swift */; };
+		78DC17D628FBEEA400331A22 /* MultiInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17D528FBEEA400331A22 /* MultiInputCell.swift */; };
 		78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2228EEDBA000DBBF5C /* NetworkService.swift */; };
 		78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */; };
-		78E94A2F28EF0D7800DBBF5C /* TabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */; };
-		78E94A3228EF102C00DBBF5C /* Pretendard in Frameworks */ = {isa = PBXBuildFile; productRef = 78E94A3128EF102C00DBBF5C /* Pretendard */; };
+		78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2E28EF0D7800DBBF5C /* TabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,10 +52,24 @@
 		784BD0A128EDA23A00CA86F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		784BD0A428EDA23A00CA86F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		784BD0A628EDA23A00CA86F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		784BD0AC28EDA35500CA86F0 /* JHViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JHViewController.swift; sourceTree = "<group>"; };
+		784BD0AC28EDA35500CA86F0 /* OnboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewController.swift; sourceTree = "<group>"; };
+		78D52E5028FD14FF001F5747 /* SignUpModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpModel.swift; sourceTree = "<group>"; };
+		78D52E5228FD3142001F5747 /* SocialLoginSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginSDK.swift; sourceTree = "<group>"; };
+		78DC17B528FA77F100331A22 /* OnboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewModel.swift; sourceTree = "<group>"; };
+		78DC17B728FA8C2600331A22 /* OnboardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardCell.swift; sourceTree = "<group>"; };
+		78DC17BE28FA943E00331A22 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		78DC17C428FA9D9D00331A22 /* BaseTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTextField.swift; sourceTree = "<group>"; };
+		78DC17C628FA9E1C00331A22 /* SimpleInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleInputView.swift; sourceTree = "<group>"; };
+		78DC17C828FA9F4300331A22 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		78DC17CA28FAA46A00331A22 /* RadioInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioInputView.swift; sourceTree = "<group>"; };
+		78DC17CC28FAA4DA00331A22 /* MultiInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiInputView.swift; sourceTree = "<group>"; };
+		78DC17CE28FAA58500331A22 /* CompleteButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteButtonView.swift; sourceTree = "<group>"; };
+		78DC17D028FBE7E800331A22 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		78DC17D328FBEA0000331A22 /* RadioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioCell.swift; sourceTree = "<group>"; };
+		78DC17D528FBEEA400331A22 /* MultiInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiInputCell.swift; sourceTree = "<group>"; };
 		78E94A2228EEDBA000DBBF5C /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
-		78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarController.swift; sourceTree = "<group>"; };
+		78E94A2E28EF0D7800DBBF5C /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,12 +78,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				784BD0B828EDA3F600CA86F0 /* Kingfisher in Frameworks */,
+				78D52E7428FD3D91001F5747 /* KakaoSDKCommon in Frameworks */,
+				78D52E4F28FCFCF2001F5747 /* RxKeyboard in Frameworks */,
+				78D52E7D28FD3DAD001F5747 /* RxKakaoSDKUser in Frameworks */,
 				784BD0B528EDA3D500CA86F0 /* RxRelay in Frameworks */,
+				78DC17BD28FA93BD00331A22 /* RxGesture in Frameworks */,
 				784BD0B328EDA3D500CA86F0 /* RxCocoa in Frameworks */,
+				78D52E7928FD3DAD001F5747 /* RxKakaoSDKAuth in Frameworks */,
 				784BD0BE28EDA44800CA86F0 /* SnapKit in Frameworks */,
-				78E94A3228EF102C00DBBF5C /* Pretendard in Frameworks */,
+				78D52E7628FD3D91001F5747 /* KakaoSDKUser in Frameworks */,
+				78D52E7B28FD3DAD001F5747 /* RxKakaoSDKCommon in Frameworks */,
 				784BD0B028EDA3C400CA86F0 /* Moya in Frameworks */,
 				784BD0BB28EDA42300CA86F0 /* PanModal in Frameworks */,
+				78D52E7228FD3D91001F5747 /* KakaoSDKAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,13 +121,62 @@
 				78E94A2928EF069E00DBBF5C /* SDK */,
 				784BD09828EDA23900CA86F0 /* AppDelegate.swift */,
 				784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */,
-				78E94A2E28EF0D7800DBBF5C /* TabbarController.swift */,
+				78E94A2E28EF0D7800DBBF5C /* TabBarController.swift */,
+				78DC17B428FA75D300331A22 /* Onboard */,
+				78DC17BA28FA937400331A22 /* SignUp */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
 				784BD0A628EDA23A00CA86F0 /* Info.plist */,
-				784BD0AC28EDA35500CA86F0 /* JHViewController.swift */,
 			);
 			path = Careeix;
+			sourceTree = "<group>";
+		};
+		78DC17B428FA75D300331A22 /* Onboard */ = {
+			isa = PBXGroup;
+			children = (
+				784BD0AC28EDA35500CA86F0 /* OnboardViewController.swift */,
+				78DC17B528FA77F100331A22 /* OnboardViewModel.swift */,
+				78DC17C328FA9D2700331A22 /* Cells */,
+			);
+			path = Onboard;
+			sourceTree = "<group>";
+		};
+		78DC17BA28FA937400331A22 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				78DC17BE28FA943E00331A22 /* SignUpViewController.swift */,
+				78DC17D028FBE7E800331A22 /* SignUpViewModel.swift */,
+				78D52E5028FD14FF001F5747 /* SignUpModel.swift */,
+				78DC17C228FA9D1800331A22 /* Views */,
+				78DC17D228FBE9E200331A22 /* Cells */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		78DC17C228FA9D1800331A22 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				78DC17CA28FAA46A00331A22 /* RadioInputView.swift */,
+				78DC17CC28FAA4DA00331A22 /* MultiInputView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		78DC17C328FA9D2700331A22 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				78DC17B728FA8C2600331A22 /* OnboardCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		78DC17D228FBE9E200331A22 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				78DC17D328FBEA0000331A22 /* RadioCell.swift */,
+				78DC17D528FBEEA400331A22 /* MultiInputCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		78E94A2928EF069E00DBBF5C /* SDK */ = {
@@ -93,6 +184,7 @@
 			children = (
 				78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */,
 				78E94A2228EEDBA000DBBF5C /* NetworkService.swift */,
+				78D52E5228FD3142001F5747 /* SocialLoginSDK.swift */,
 			);
 			path = SDK;
 			sourceTree = "<group>";
@@ -100,6 +192,7 @@
 		78E94A2B28EF06F500DBBF5C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				78DC17C828FA9F4300331A22 /* UIColor+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -115,6 +208,9 @@
 		78E94A2D28EF0D4900DBBF5C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				78DC17C428FA9D9D00331A22 /* BaseTextField.swift */,
+				78DC17C628FA9E1C00331A22 /* SimpleInputView.swift */,
+				78DC17CE28FAA58500331A22 /* CompleteButtonView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -142,7 +238,14 @@
 				784BD0B728EDA3F600CA86F0 /* Kingfisher */,
 				784BD0BA28EDA42300CA86F0 /* PanModal */,
 				784BD0BD28EDA44800CA86F0 /* SnapKit */,
-				78E94A3128EF102C00DBBF5C /* Pretendard */,
+				78DC17BC28FA93BD00331A22 /* RxGesture */,
+				78D52E4E28FCFCF2001F5747 /* RxKeyboard */,
+				78D52E7128FD3D91001F5747 /* KakaoSDKAuth */,
+				78D52E7328FD3D91001F5747 /* KakaoSDKCommon */,
+				78D52E7528FD3D91001F5747 /* KakaoSDKUser */,
+				78D52E7828FD3DAD001F5747 /* RxKakaoSDKAuth */,
+				78D52E7A28FD3DAD001F5747 /* RxKakaoSDKCommon */,
+				78D52E7C28FD3DAD001F5747 /* RxKakaoSDKUser */,
 			);
 			productName = Careeix;
 			productReference = 784BD09528EDA23900CA86F0 /* Careeix.app */;
@@ -178,7 +281,10 @@
 				784BD0B628EDA3F600CA86F0 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				784BD0B928EDA42300CA86F0 /* XCRemoteSwiftPackageReference "PanModal" */,
 				784BD0BC28EDA44800CA86F0 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				78E94A3028EF102C00DBBF5C /* XCRemoteSwiftPackageReference "Pretendard" */,
+				78DC17BB28FA93BD00331A22 /* XCRemoteSwiftPackageReference "RxGesture" */,
+				78D52E4D28FCFCF2001F5747 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
+				78D52E7028FD3D91001F5747 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				78D52E7728FD3DAD001F5747 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 			);
 			productRefGroup = 784BD09628EDA23900CA86F0 /* Products */;
 			projectDirPath = "";
@@ -207,10 +313,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
-				78E94A2F28EF0D7800DBBF5C /* TabbarController.swift in Sources */,
+				78D52E5328FD3142001F5747 /* SocialLoginSDK.swift in Sources */,
+				78DC17CD28FAA4DB00331A22 /* MultiInputView.swift in Sources */,
+				78DC17D128FBE7E800331A22 /* SignUpViewModel.swift in Sources */,
+				78DC17D428FBEA0000331A22 /* RadioCell.swift in Sources */,
+				78DC17D628FBEEA400331A22 /* MultiInputCell.swift in Sources */,
+				78DC17B828FA8C2600331A22 /* OnboardCell.swift in Sources */,
+				78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */,
+				78DC17CB28FAA46A00331A22 /* RadioInputView.swift in Sources */,
+				78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */,
+				78DC17CF28FAA58500331A22 /* CompleteButtonView.swift in Sources */,
 				784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */,
-				784BD0AD28EDA35500CA86F0 /* JHViewController.swift in Sources */,
+				78DC17C928FA9F4300331A22 /* UIColor+.swift in Sources */,
+				78D52E5128FD14FF001F5747 /* SignUpModel.swift in Sources */,
+				784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */,
 				784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */,
+				78DC17BF28FA943E00331A22 /* SignUpViewController.swift in Sources */,
+				78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */,
+				78DC17C728FA9E1C00331A22 /* SimpleInputView.swift in Sources */,
 				78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -459,12 +579,36 @@
 				minimumVersion = 5.6.0;
 			};
 		};
-		78E94A3028EF102C00DBBF5C /* XCRemoteSwiftPackageReference "Pretendard" */ = {
+		78D52E4D28FCFCF2001F5747 /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jaemyeong/Pretendard";
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.2.2;
+				minimumVersion = 2.0.0;
+			};
+		};
+		78D52E7028FD3D91001F5747 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		78D52E7728FD3DAD001F5747 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk-rx";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		78DC17BB28FA93BD00331A22 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 4.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -500,10 +644,45 @@
 			package = 784BD0BC28EDA44800CA86F0 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
-		78E94A3128EF102C00DBBF5C /* Pretendard */ = {
+		78D52E4E28FCFCF2001F5747 /* RxKeyboard */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 78E94A3028EF102C00DBBF5C /* XCRemoteSwiftPackageReference "Pretendard" */;
-			productName = Pretendard;
+			package = 78D52E4D28FCFCF2001F5747 /* XCRemoteSwiftPackageReference "RxKeyboard" */;
+			productName = RxKeyboard;
+		};
+		78D52E7128FD3D91001F5747 /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78D52E7028FD3D91001F5747 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		78D52E7328FD3D91001F5747 /* KakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78D52E7028FD3D91001F5747 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		78D52E7528FD3D91001F5747 /* KakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78D52E7028FD3D91001F5747 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKUser;
+		};
+		78D52E7828FD3DAD001F5747 /* RxKakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78D52E7728FD3DAD001F5747 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKAuth;
+		};
+		78D52E7A28FD3DAD001F5747 /* RxKakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78D52E7728FD3DAD001F5747 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKCommon;
+		};
+		78D52E7C28FD3DAD001F5747 /* RxKakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78D52E7728FD3DAD001F5747 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKUser;
+		};
+		78DC17BC28FA93BD00331A22 /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 78DC17BB28FA93BD00331A22 /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
