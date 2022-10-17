@@ -33,7 +33,6 @@
 		78DC17BF28FA943E00331A22 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17BE28FA943E00331A22 /* SignUpViewController.swift */; };
 		78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17C428FA9D9D00331A22 /* BaseTextField.swift */; };
 		78DC17C728FA9E1C00331A22 /* SimpleInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17C628FA9E1C00331A22 /* SimpleInputView.swift */; };
-		78DC17C928FA9F4300331A22 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17C828FA9F4300331A22 /* UIColor+.swift */; };
 		78DC17CB28FAA46A00331A22 /* RadioInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17CA28FAA46A00331A22 /* RadioInputView.swift */; };
 		78DC17CD28FAA4DB00331A22 /* MultiInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17CC28FAA4DA00331A22 /* MultiInputView.swift */; };
 		78DC17CF28FAA58500331A22 /* CompleteButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17CE28FAA58500331A22 /* CompleteButtonView.swift */; };
@@ -43,6 +42,15 @@
 		78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2228EEDBA000DBBF5C /* NetworkService.swift */; };
 		78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */; };
 		78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2E28EF0D7800DBBF5C /* TabBarController.swift */; };
+		7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501628FD8FB400A72D65 /* UIColor+.swift */; };
+		7AFE502228FD90C600A72D65 /* RelevantHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501928FD90C600A72D65 /* RelevantHeaderView.swift */; };
+		7AFE502328FD90C600A72D65 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501A28FD90C600A72D65 /* HomeViewModel.swift */; };
+		7AFE502428FD90C600A72D65 /* HomeAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501B28FD90C600A72D65 /* HomeAlertViewController.swift */; };
+		7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501C28FD90C600A72D65 /* HomeViewController.swift */; };
+		7AFE502628FD90C600A72D65 /* HomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501D28FD90C600A72D65 /* HomeModel.swift */; };
+		7AFE502728FD90C600A72D65 /* RelevantCareerProfilesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501E28FD90C600A72D65 /* RelevantCareerProfilesCell.swift */; };
+		7AFE502828FD90C600A72D65 /* MinimalCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501F28FD90C600A72D65 /* MinimalCareerProfileCell.swift */; };
+		7AFE502928FD90C600A72D65 /* CompositionalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE502128FD90C600A72D65 /* CompositionalLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,7 +68,6 @@
 		78DC17BE28FA943E00331A22 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		78DC17C428FA9D9D00331A22 /* BaseTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTextField.swift; sourceTree = "<group>"; };
 		78DC17C628FA9E1C00331A22 /* SimpleInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleInputView.swift; sourceTree = "<group>"; };
-		78DC17C828FA9F4300331A22 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		78DC17CA28FAA46A00331A22 /* RadioInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioInputView.swift; sourceTree = "<group>"; };
 		78DC17CC28FAA4DA00331A22 /* MultiInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiInputView.swift; sourceTree = "<group>"; };
 		78DC17CE28FAA58500331A22 /* CompleteButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteButtonView.swift; sourceTree = "<group>"; };
@@ -70,6 +77,15 @@
 		78E94A2228EEDBA000DBBF5C /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		78E94A2E28EF0D7800DBBF5C /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		7AFE501628FD8FB400A72D65 /* UIColor+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		7AFE501928FD90C600A72D65 /* RelevantHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelevantHeaderView.swift; sourceTree = "<group>"; };
+		7AFE501A28FD90C600A72D65 /* HomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		7AFE501B28FD90C600A72D65 /* HomeAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeAlertViewController.swift; sourceTree = "<group>"; };
+		7AFE501C28FD90C600A72D65 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		7AFE501D28FD90C600A72D65 /* HomeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeModel.swift; sourceTree = "<group>"; };
+		7AFE501E28FD90C600A72D65 /* RelevantCareerProfilesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelevantCareerProfilesCell.swift; sourceTree = "<group>"; };
+		7AFE501F28FD90C600A72D65 /* MinimalCareerProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinimalCareerProfileCell.swift; sourceTree = "<group>"; };
+		7AFE502128FD90C600A72D65 /* CompositionalLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompositionalLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +117,6 @@
 			isa = PBXGroup;
 			children = (
 				784BD09728EDA23900CA86F0 /* Careeix */,
-				78E94A2B28EF06F500DBBF5C /* Extensions */,
 				784BD09628EDA23900CA86F0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -124,6 +139,8 @@
 				78E94A2E28EF0D7800DBBF5C /* TabBarController.swift */,
 				78DC17B428FA75D300331A22 /* Onboard */,
 				78DC17BA28FA937400331A22 /* SignUp */,
+				7AFE501828FD90C600A72D65 /* Home */,
+				7AFE501528FD8FB400A72D65 /* Extensions */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
 				784BD0A628EDA23A00CA86F0 /* Info.plist */,
@@ -189,17 +206,10 @@
 			path = SDK;
 			sourceTree = "<group>";
 		};
-		78E94A2B28EF06F500DBBF5C /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				78DC17C828FA9F4300331A22 /* UIColor+.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		78E94A2C28EF0D4100DBBF5C /* Commons */ = {
 			isa = PBXGroup;
 			children = (
+				7AFE502128FD90C600A72D65 /* CompositionalLayout.swift */,
 				78E94A2D28EF0D4900DBBF5C /* Views */,
 			);
 			path = Commons;
@@ -211,6 +221,45 @@
 				78DC17C428FA9D9D00331A22 /* BaseTextField.swift */,
 				78DC17C628FA9E1C00331A22 /* SimpleInputView.swift */,
 				78DC17CE28FAA58500331A22 /* CompleteButtonView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7AFE501528FD8FB400A72D65 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7AFE501628FD8FB400A72D65 /* UIColor+.swift */,
+			);
+			name = Extensions;
+			path = Careeix/Extensions;
+			sourceTree = SOURCE_ROOT;
+		};
+		7AFE501828FD90C600A72D65 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				7AFE501B28FD90C600A72D65 /* HomeAlertViewController.swift */,
+				7AFE501C28FD90C600A72D65 /* HomeViewController.swift */,
+				7AFE501A28FD90C600A72D65 /* HomeViewModel.swift */,
+				7AFE501D28FD90C600A72D65 /* HomeModel.swift */,
+				7AFE502A28FD911100A72D65 /* Cells */,
+				7AFE502C28FD915600A72D65 /* Views */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		7AFE502A28FD911100A72D65 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7AFE501E28FD90C600A72D65 /* RelevantCareerProfilesCell.swift */,
+				7AFE501F28FD90C600A72D65 /* MinimalCareerProfileCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		7AFE502C28FD915600A72D65 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7AFE501928FD90C600A72D65 /* RelevantHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -313,24 +362,32 @@
 			buildActionMask = 2147483647;
 			files = (
 				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
+				7AFE502328FD90C600A72D65 /* HomeViewModel.swift in Sources */,
+				7AFE502728FD90C600A72D65 /* RelevantCareerProfilesCell.swift in Sources */,
 				78D52E5328FD3142001F5747 /* SocialLoginSDK.swift in Sources */,
 				78DC17CD28FAA4DB00331A22 /* MultiInputView.swift in Sources */,
 				78DC17D128FBE7E800331A22 /* SignUpViewModel.swift in Sources */,
 				78DC17D428FBEA0000331A22 /* RadioCell.swift in Sources */,
+				7AFE502928FD90C600A72D65 /* CompositionalLayout.swift in Sources */,
 				78DC17D628FBEEA400331A22 /* MultiInputCell.swift in Sources */,
+				7AFE502828FD90C600A72D65 /* MinimalCareerProfileCell.swift in Sources */,
 				78DC17B828FA8C2600331A22 /* OnboardCell.swift in Sources */,
 				78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */,
 				78DC17CB28FAA46A00331A22 /* RadioInputView.swift in Sources */,
+				7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */,
+				7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */,
 				78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */,
+				7AFE502428FD90C600A72D65 /* HomeAlertViewController.swift in Sources */,
 				78DC17CF28FAA58500331A22 /* CompleteButtonView.swift in Sources */,
 				784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */,
-				78DC17C928FA9F4300331A22 /* UIColor+.swift in Sources */,
 				78D52E5128FD14FF001F5747 /* SignUpModel.swift in Sources */,
 				784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */,
 				784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */,
+				7AFE502228FD90C600A72D65 /* RelevantHeaderView.swift in Sources */,
 				78DC17BF28FA943E00331A22 /* SignUpViewController.swift in Sources */,
 				78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */,
 				78DC17C728FA9E1C00331A22 /* SimpleInputView.swift in Sources */,
+				7AFE502628FD90C600A72D65 /* HomeModel.swift in Sources */,
 				78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

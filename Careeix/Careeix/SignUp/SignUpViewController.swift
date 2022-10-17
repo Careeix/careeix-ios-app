@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import RxKeyboard
 import RxGesture
-import Pretendard
+
 class SignUpViewController: UIViewController {
     // MARK: Properties
     let disposeBag = DisposeBag()
