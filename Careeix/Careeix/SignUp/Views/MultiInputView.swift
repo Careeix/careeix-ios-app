@@ -9,11 +9,48 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxRelay
+
+struct MultiInputViewModel {
+    var multiInputCellViewModels: [MultiInputCellViewModel]
+    
+    // MARK: - Output
+    let titleDriver:Driver<String>
+    var inputValuesObservable: Observable<[String]>
+    var placeholdersDriver: Driver<[String]>
+    
+    init(title: String, placeholders: [String]) {
+        self.titleDriver =  Observable.just(title).asDriver(onErrorJustReturn: "")
+        self.placeholdersDriver = Observable.just(placeholders).asDriver(onErrorJustReturn: [])
+        self.multiInputCellViewModels = placeholders.map { .init(placeholder: $0) }
+        self.inputValuesObservable = Observable
+            .combineLatest(self.multiInputCellViewModels.map { $0.inputStringRelay })
+    }
+}
+
 class MultiInputView: UIView {
     let disposeBag = DisposeBag()
+    
+    // MARK: - Binding
+    func bind(to viewModel: MultiInputViewModel) {
+        viewModel.titleDriver
+            .drive(titleLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.placeholdersDriver
+            .drive(tableView.rx.items) { tv, row, data in
+                guard let cell = tv.dequeueReusableCell(withIdentifier: MultiInputCell.self.description(),for: IndexPath(row: row, section: 0)) as? MultiInputCell else { return UITableViewCell() }
+                cell.textField.placeholder = data
+                cell.viewModel = viewModel.multiInputCellViewModels[row]
+                return cell
+            }.disposed(by: disposeBag)
+        
+//        tableView.rx.delegat
+    }
+    
+    // MARK: - Initializer
     init(viewModel: MultiInputViewModel) {
-        titleLabel.text = viewModel.title
         super.init(frame: .zero)
+        bind(to: viewModel)
         setUI()
     }
     
@@ -29,10 +66,10 @@ class MultiInputView: UIView {
         tv.isScrollEnabled = false
         tv.backgroundColor = .orange
         tv.rowHeight = UITableView.automaticDimension
-        tv.estimatedRowHeight = 100
+        tv.estimatedRowHeight = 53.0
+//        tv.inset
         return tv
     }()
-    
 }
 
 extension MultiInputView {
@@ -47,7 +84,7 @@ extension MultiInputView {
         tableView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.greaterThanOrEqualTo(150)
+            $0.height.equalTo(tableView.contentSize.height)
         }
     }
 }

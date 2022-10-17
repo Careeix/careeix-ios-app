@@ -8,37 +8,37 @@
 import UIKit
 
 class RadioCell: UITableViewCell {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        configure()
         setUI()
-//        layoutIfNeeded()
-        print("Asd")
     }
 
+    func configure() {
+        selectionStyle = .none
+        
+        selectedMark.isHidden = true
+        selectedMark.backgroundColor = .appColor(.signatureDark)
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    let textField = BaseTextField()
-    
+    let label = UILabel()
+    let selectedMark = UIView()
     func setUI() {
-        contentView.addSubview(textField)
+        [label, selectedMark].forEach { contentView.addSubview($0) }
         
-        textField.snp.makeConstraints {
+        label.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.height.equalTo(48)
+            $0.height.equalTo(48).priority(.high)
+        }
+        
+        selectedMark.snp.makeConstraints {
+            $0.width.height.equalTo(24)
+            $0.right.equalToSuperview().inset(14)
+            $0.centerY.equalToSuperview()
         }
     }
 }

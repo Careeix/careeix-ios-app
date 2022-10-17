@@ -6,11 +6,12 @@
 //
 
 import UIKit
-
 class BaseTextField: UITextField {
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        layer.cornerRadius = 5
+        
+        layer.cornerRadius = 10
         layer.borderWidth = 1
         layer.borderColor = UIColor.lightGray.cgColor
     }

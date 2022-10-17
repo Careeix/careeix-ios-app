@@ -7,6 +7,16 @@
 
 import UIKit
 
+struct CompleteButtonViewModel {
+    let content: String
+    let backgroundColor: AssetsColor
+    
+    init(content: String, backgroundColor: AssetsColor) {
+        self.content = content
+        self.backgroundColor = backgroundColor
+    }
+}
+
 class CompleteButtonView: UIView {
     init(viewModel: CompleteButtonViewModel) {
         super.init(frame: .zero)
