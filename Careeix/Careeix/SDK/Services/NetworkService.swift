@@ -7,12 +7,14 @@
 
 import Foundation
 import Moya
+import CareeixKey
 
 enum CustomTask {
     case requestPlain
     case requestJSONEncodable(Encodable)
     case requestParameters(encoding: ParameterEncoding)
 }
+
 struct APIResponse<T: Decodable>: Decodable {
     let code: Int?
     let data: T?
@@ -23,7 +25,7 @@ struct ServiceAPI: TargetType {
     var path: String
     var method: Moya.Method
     var parameters: [String: Any]
-    var baseURL: URL { return URL(string: "https://reqres.in")! }
+    var baseURL: URL { return URL(string: CareeixKey.urlString)! }
     var task: Moya.Task
     var headers: [String : String]?
     
