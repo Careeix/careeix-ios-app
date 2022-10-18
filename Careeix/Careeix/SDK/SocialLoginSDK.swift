@@ -41,7 +41,7 @@ class SocialLoginSDK {
         }
     }
     
-    public static func socialLogin(type: SocialLoginType) -> Single<LoginAPI.Response> {
+    public static func socialLogin(type: SocialLoginType) -> Bool {
         switch type {
         case .kakao:
             return socialLoginService.kakaoLogin()

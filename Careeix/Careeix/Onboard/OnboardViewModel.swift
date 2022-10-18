@@ -40,7 +40,7 @@ struct OnboardViewModel {
     
     func didTapKakaoLoginButton() {
         print("Asd")
-        SocialLoginSDK.socialLogin(type: .kakao)
+        let a = SocialLoginSDK.socialLogin(type: .kakao)
         
         // 유저 회원가입 여부확인
         // 유저 회원가입 화면 이동 or 홈화면 이동

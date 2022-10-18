@@ -19,7 +19,7 @@ import CareeixKey
 protocol KakaoLoginService {
     func setKakaoUrl(with url: URL) -> Bool
     func initKakaoSDK()
-    func kakaoLogin() -> Single<LoginAPI.Response>
+    func kakaoLogin() -> Bool
     func kakaoLogout() -> Bool
     func readKakaoUserInfo()
 }
@@ -44,23 +44,35 @@ extension SocialLoginService: KakaoLoginService {
         KakaoSDK.initSDK(appKey: CareeixKey.SdkKey.kakao)
     }
     
-    func kakaoLogin() -> Single<LoginAPI.Response> {
-        return Single<LoginAPI.Response>.create { single in
+    func kakaoLogin() -> Bool {
             if (UserApi.isKakaoTalkLoginAvailable()) {
-                UserApi.shared.rx.loginWithKakaoTalk()
-                    .subscribe  { oauthToken in
-                        _ = oauthToken
-                        // TODO: - 서버 통신
-                        return single(.success(.init(isSuccess: true)))
-                    } onError: { error in
-                        return single(.failure(error))
-                    }.disposed(by: DisposeBag())
+                print("error")
+                UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
+                    print("get oauthToken: ", oauthToken)
+                }
+//                    .subscribe  { oauthToken in
+//                        _ = oauthToken
+//                        // TODO: - 서버 통신
+//                        
+//                        
+//                    } onError: { error in
+//                        print(error)
+//                    }.disposed(by: DisposeBag())
+                return true
             } else {
-                // TODO: - Error를 옵저버블로 ?
-                return single(.failure(SocialLoginError.kakaoTalkNotFound)) as! Disposable
+                UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+                        if let error = error {
+                            print(error)
+                        }
+                        else {
+                            print("loginWithKakaoAccount() success.")
+                            _ = oauthToken
+                            
+                        }
+                    }
+                return false
             }
-            return Disposables.create()
-        }
+        
     }
     
     func kakaoLogout() -> Bool {
