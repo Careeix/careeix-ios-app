@@ -19,7 +19,7 @@ class RadioCell: UITableViewCell {
         selectionStyle = .none
         
         selectedMark.isHidden = true
-        selectedMark.backgroundColor = .appColor(.signatureDark)
+        selectedMark.backgroundColor = .appColor(.main)
     }
     
     required init?(coder: NSCoder) {
