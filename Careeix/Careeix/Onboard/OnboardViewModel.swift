@@ -39,7 +39,7 @@ struct OnboardViewModel {
     }
     
     func didTapKakaoLoginButton() {
-        
+        print("Asd")
         SocialLoginSDK.socialLogin(type: .kakao)
         
         // 유저 회원가입 여부확인
