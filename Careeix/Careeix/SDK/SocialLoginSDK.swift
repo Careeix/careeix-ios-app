@@ -15,6 +15,11 @@ struct LoginAPI {
         let isSuccess: Bool
     }
 }
+
+struct KakaoUser {
+    
+}
+
 class SocialLoginSDK {
     private let disposeBag = DisposeBag()
     private static let socialLoginService = SocialLoginService()
@@ -23,7 +28,6 @@ class SocialLoginSDK {
         case kakao
 //        case apple
     }
-
     
     public static func setUrl(with url: URL) -> Bool {
         socialLoginService.setKakaoUrl(with: url)
@@ -44,7 +48,7 @@ class SocialLoginSDK {
         }
     }
     
-    public static func socialLogout(type: SocialLoginType) {
+    public static func socialLogout(type: SocialLoginType) -> Bool {
         switch type {
         case .kakao:
             return socialLoginService.kakaoLogout()

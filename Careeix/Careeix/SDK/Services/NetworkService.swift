@@ -30,6 +30,7 @@ struct ServiceAPI: TargetType {
     var headers: [String : String]?
     
 }
+
 class API<T: Decodable> {
     
     let api: ServiceAPI
@@ -86,8 +87,8 @@ class API<T: Decodable> {
     
 }
 public enum NetworkError: Error {
-    case objectMapping // 일반 데이터 파싱에서 오류가 나는 경우
-    case httpStatus(Int) // statusCode가 200...299 밖에 나오는 경우
+    case objectMapping // 데이터 파싱 오류
+    case httpStatus(Int) // statusCode 200...299 이 아님
 }
 
 

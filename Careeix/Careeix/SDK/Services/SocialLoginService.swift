@@ -20,7 +20,7 @@ protocol KakaoLoginService {
     func setKakaoUrl(with url: URL) -> Bool
     func initKakaoSDK()
     func kakaoLogin() -> Single<LoginAPI.Response>
-    func kakaoLogout()
+    func kakaoLogout() -> Bool
     func readKakaoUserInfo()
 }
 
@@ -41,7 +41,7 @@ extension SocialLoginService: KakaoLoginService {
     }
     
     func initKakaoSDK() {
-        KakaoSDK.initSDK(appKey: "8b4d1b1dd2629909afbd1e266ec9a7de")
+        KakaoSDK.initSDK(appKey: CareeixKey.SdkKey.kakao)
     }
     
     func kakaoLogin() -> Single<LoginAPI.Response> {
@@ -63,7 +63,7 @@ extension SocialLoginService: KakaoLoginService {
         }
     }
     
-    func kakaoLogout() {
+    func kakaoLogout() -> Bool {
         UserApi.shared.rx.logout()
             .subscribe(onCompleted:{
                 print("logout() success.")
@@ -71,15 +71,15 @@ extension SocialLoginService: KakaoLoginService {
                 print(error)
             })
             .disposed(by: disposeBag)
+        return true
     }
     
     func readKakaoUserInfo() {
         UserApi.shared.rx.me()
             .subscribe (onSuccess:{ user in
                 print("me() success.")
-                
-                //do something
                 _ = user
+                print(user)
             }, onFailure: {error in
                 print(error)
             })
