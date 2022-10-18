@@ -7,43 +7,54 @@
 
 import Foundation
 
-import KakaoSDKCommon
-import RxKakaoSDKCommon
-import KakaoSDKAuth
-import RxKakaoSDKAuth
-import KakaoSDKUser
-import RxKakaoSDKUser
 import RxSwift
+
 // TODO: 애플로그인 구현
+struct LoginAPI {
+    struct Response {
+        let isSuccess: Bool
+    }
+}
 class SocialLoginSDK {
     private let disposeBag = DisposeBag()
+    private static let socialLoginService = SocialLoginService()
     
-    enum LoginType {
+    enum SocialLoginType {
         case kakao
-        case apple
+//        case apple
+    }
+
+    
+    public static func setUrl(with url: URL) -> Bool {
+        socialLoginService.setKakaoUrl(with: url)
     }
     
-    public static func setUrl(with url: URL) {
-        if (AuthApi.isKakaoTalkLoginUrl(url)) {
-            _ = AuthController.handleOpenUrl(url: url)
-        }
-    }
-    
-    public static func initSDK(type: LoginType) {
+    public static func initSDK(type: SocialLoginType) {
         switch type {
         case .kakao:
             // TODO: Key 프로젝트에 따로 넣기
-            KakaoSDK.initSDK(appKey: "8b4d1b1dd2629909afbd1e266ec9a7de")
-            
-        case .apple: break
+            socialLoginService.initKakaoSDK()
         }
     }
     
-    public static func socialLogin(type: LoginType) {
+    public static func socialLogin(type: SocialLoginType) -> Single<LoginAPI.Response> {
         switch type {
-        case .kakao: break
-        case .apple: break
+        case .kakao:
+            return socialLoginService.kakaoLogin()
         }
     }
     
+    public static func socialLogout(type: SocialLoginType) {
+        switch type {
+        case .kakao:
+            return socialLoginService.kakaoLogout()
+        }
+    }
+    
+    public static func readUserInfo(type: SocialLoginType) {
+        switch type {
+        case .kakao:
+            return socialLoginService.readKakaoUserInfo()
+        }
+    }
 }
