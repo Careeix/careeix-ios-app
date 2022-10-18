@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         SocialLoginSDK.initSDK(type: .kakao)
         window = UIWindow(windowScene: windowScene)
-        window?.backgroundColor = .systemBackground
+        window?.backgroundColor = .white
         UserDefaultManager.shared.jwtToken = ""
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
         ? UINavigationController(rootViewController: OnboardViewController())

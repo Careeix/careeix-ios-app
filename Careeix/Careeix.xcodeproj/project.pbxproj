@@ -83,6 +83,7 @@
 		78D52EA228FE5C3E001F5747 /* SocialLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginService.swift; sourceTree = "<group>"; };
 		78D52EA428FE636D001F5747 /* Careeix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Careeix.entitlements; sourceTree = "<group>"; };
 		78D52EA928FE6DA4001F5747 /* CareeixKey.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CareeixKey.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		78D52EAE28FEAF7C001F5747 /* CareeixDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CareeixDebug.entitlements; sourceTree = "<group>"; };
 		78DC17B528FA77F100331A22 /* OnboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewModel.swift; sourceTree = "<group>"; };
 		78DC17B728FA8C2600331A22 /* OnboardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardCell.swift; sourceTree = "<group>"; };
 		78DC17BE28FA943E00331A22 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -154,6 +155,7 @@
 		784BD09728EDA23900CA86F0 /* Careeix */ = {
 			isa = PBXGroup;
 			children = (
+				78D52EAE28FEAF7C001F5747 /* CareeixDebug.entitlements */,
 				78D52EA428FE636D001F5747 /* Careeix.entitlements */,
 				78E94A2C28EF0D4100DBBF5C /* Commons */,
 				78E94A2928EF069E00DBBF5C /* SDK */,
@@ -567,10 +569,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Careeix/Careeix.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Careeix/CareeixDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W9K8S57VSZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Careeix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
