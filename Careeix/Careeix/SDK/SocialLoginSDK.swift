@@ -29,7 +29,7 @@ class SocialLoginSDK {
 //        case apple
     }
     
-    public static func setUrl(with url: URL) -> Bool {
+    public static func setUrl(with url: URL) {
         socialLoginService.setKakaoUrl(with: url)
     }
     

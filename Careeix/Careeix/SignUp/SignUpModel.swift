@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 struct SignUpRequest {
     let nickName: String
     let job: String

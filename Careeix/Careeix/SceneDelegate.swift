@@ -22,9 +22,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         SocialLoginSDK.initSDK(type: .kakao)
         window = UIWindow(windowScene: windowScene)
         window?.backgroundColor = .systemBackground
-        UserDefaultManager.shared.jwtToken = "a"
+        UserDefaultManager.shared.jwtToken = ""
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
-        ? UINavigationController(rootViewController: SignUpViewController())
+        ? UINavigationController(rootViewController: OnboardViewController())
         : TabBarController()
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateWindow),

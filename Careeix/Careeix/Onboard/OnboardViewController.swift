@@ -59,10 +59,9 @@ class OnboardViewController: UIViewController {
         
         kakaoLoginButtonImageView.rx.tapGesture()
             .when(.recognized)
-            .withUnretained(self)
-            .bind { owner, _ in
-                print("카카오 로그인!")
-            }.disposed(by: disposeBag)
+            .map { _ in () }
+            .bind { viewModel.didTapKakaoLoginButton() }
+            .disposed(by: disposeBag)
         
         appleLoginButtonImageView.rx.tapGesture()
             .when(.recognized)

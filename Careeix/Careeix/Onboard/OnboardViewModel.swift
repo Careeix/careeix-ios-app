@@ -36,6 +36,17 @@ struct OnboardViewModel {
         currentPageDriver = endDraggingRelay
             .map { Int($0 / $1) }
             .asDriver(onErrorJustReturn: 0)
-
+    }
+    
+    func didTapKakaoLoginButton() {
+        
+        SocialLoginSDK.socialLogin(type: .kakao)
+        
+        // 유저 회원가입 여부확인
+        // 유저 회원가입 화면 이동 or 홈화면 이동
+    }
+    
+    func readUser() {
+        
     }
 }
