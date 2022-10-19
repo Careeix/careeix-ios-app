@@ -30,7 +30,7 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     
     let logoImage: UIImageView = {
         let image = UIImageView()
-        image.contentMode = .scaleAspectFit
+        image.contentMode = .scaleToFill
         image.layer.cornerRadius = 75 / 2
         image.clipsToBounds = true
         image.backgroundColor = .systemBlue
@@ -40,22 +40,22 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     
     let nickName: UILabel = {
         let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.textColor = .appColor(.white)
+        label.font = .pretendardFont(size: 20, style: .bold)
         return label
     }()
     
     let careerName: UILabel = {
         let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.textColor = .appColor(.white)
+        label.font = .pretendardFont(size: 18, style: .bold)
         return label
     }()
     
     let careerGrade: UILabel = {
         let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.textColor = .appColor(.white)
+        label.font = .pretendardFont(size: 14, style: .light)
         return label
     }()
 
