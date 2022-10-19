@@ -30,6 +30,7 @@ class SignUpViewModel {
     // MARK: - Output
     let completeButtonEnableDriver: Driver<Void>
     let completeButtonDisableDriver: Driver<Void>
+    
     // MARK: - Initializer
     init(nickNameInputViewModel: SimpleInputViewModel, jobInputViewModel: SimpleInputViewModel, annualInputViewModel: RadioInputViewModel, detailJobsInputViewModel: MultiInputViewModel, completeButtonViewModel: CompleteButtonViewModel) {
         
@@ -56,7 +57,7 @@ class SignUpViewModel {
         
         let buttonStateDriver = combinedInputValuesObservable
             .map { nickName, job, annualIndex, detailJobs in
-                nickName != "" && job != "" && detailJobs.filter { $0 == "" }.count != detailJobs.count
+                nickName != "" && job != "" && detailJobs.count != 0
             }.asDriver(onErrorJustReturn: false)
         
         completeButtonEnableDriver = buttonStateDriver.filter { $0 }.map { _ in () }

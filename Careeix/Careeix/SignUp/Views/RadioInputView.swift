@@ -37,8 +37,7 @@ class RadioInputView: UIView {
         viewModel.contentsDriver
             .drive(tableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: RadioCell.self.description(),for: IndexPath(row: row, section: 0)) as? RadioCell else { return UITableViewCell() }
-                
-                cell.label.text = data
+                cell.contentLabel.text = data
                 return cell
             }.disposed(by: disposeBag)
         
@@ -51,13 +50,15 @@ class RadioInputView: UIView {
             .scan(IndexPath(row: -1, section: 0)){
                 if let cell = self.tableView.cellForRow(at: $0) as? RadioCell {
                     cell.selectedMark.isHidden = true
+                    cell.selectedMarkBorder.layer.borderColor = UIColor.appColor(.gray100).cgColor
                 }
                 return $1
-            }.asDriver(onErrorJustReturn: IndexPath())
-            .compactMap { self.tableView.cellForRow(at: $0) as? RadioCell }
+            }.compactMap { self.tableView.cellForRow(at: $0) as? RadioCell }
             .asDriver(onErrorJustReturn: RadioCell())
-            .drive { $0.selectedMark.isHidden = false }
-            .disposed(by: disposeBag)
+            .drive {
+                $0.selectedMark.isHidden = false
+                $0.selectedMarkBorder.layer.borderColor = UIColor.appColor(.main).cgColor
+            }.disposed(by: disposeBag)
     }
     
     // MARK: - Initializer
@@ -75,16 +76,19 @@ class RadioInputView: UIView {
     // MARK: - UIComponents
     let titleLabel: UILabel = {
         let l = UILabel()
+        l.font = .pretendardFont(size: 16, style: .semiBold)
+        l.textColor = .appColor(.gray900)
         return l
     }()
     let tableView: UITableView = {
         let tv = UITableView()
         tv.register(RadioCell.self, forCellReuseIdentifier: RadioCell.self.description())
         tv.isScrollEnabled = false
+        tv.separatorInset.left = 0
         tv.rowHeight = UITableView.automaticDimension
         tv.estimatedRowHeight = 48.0
         tv.layer.borderWidth = 1
-        tv.layer.borderColor = UIColor.lightGray.cgColor
+        tv.layer.borderColor = UIColor.appColor(.gray100).cgColor
         tv.layer.cornerRadius = 10
         return tv
     }()
@@ -100,7 +104,7 @@ extension RadioInputView {
         }
         
         tableView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(7)
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(tableView.contentSize.height)
         }
