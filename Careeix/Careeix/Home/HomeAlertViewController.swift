@@ -69,7 +69,7 @@ class HomeAlertViewController: UIViewController {
     
     func setup() {
         view.addSubview(containerView)
-        
+
         containerView.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.width.equalToSuperview().multipliedBy(0.8)

@@ -19,7 +19,7 @@ import CareeixKey
 protocol KakaoLoginService {
     func setKakaoUrl(with url: URL) -> Bool
     func initKakaoSDK()
-    func kakaoLogin() -> Bool
+    func kakaoLogin()
     func kakaoLogout() -> Bool
     func readKakaoUserInfo()
 }
@@ -32,47 +32,34 @@ final class SocialLoginService {
     }
 }
 
-extension SocialLoginService: KakaoLoginService {
-
+extension SocialLoginService {
+    
     func setKakaoUrl(with url: URL) -> Bool {
         AuthApi.isKakaoTalkLoginUrl(url)
-       ? AuthController.handleOpenUrl(url: url)
-       : false
+        ? AuthController.handleOpenUrl(url: url)
+        : false
     }
     
     func initKakaoSDK() {
         KakaoSDK.initSDK(appKey: CareeixKey.SdkKey.kakao)
     }
     
-    func kakaoLogin() -> Bool {
-            if (UserApi.isKakaoTalkLoginAvailable()) {
-                print("error")
-                UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
-                    print("get oauthToken: ", oauthToken)
-                }
-//                    .subscribe  { oauthToken in
-//                        _ = oauthToken
-//                        // TODO: - 서버 통신
-//                        
-//                        
-//                    } onError: { error in
-//                        print(error)
-//                    }.disposed(by: DisposeBag())
-                return true
-            } else {
-                UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
-                        if let error = error {
-                            print(error)
-                        }
-                        else {
-                            print("loginWithKakaoAccount() success.")
-                            _ = oauthToken
-                            
-                        }
-                    }
-                return false
-            }
-        
+    func readAccessToken() -> Observable<String> {
+        return UserApi.shared.rx.loginWithKakaoAccount()
+            .map { $0.accessToken }
+    }
+    
+    func callLoginApi(token: String) -> Single<LoginAPI.Response> {
+        return Single.create { single in
+            single(.success(.init(jwt: "asd")))
+            return Disposables.create()
+        }
+    }
+    
+    func kakaoLogin() -> Observable<Bool> {
+        return readAccessToken()
+            .flatMap { self.callLoginApi(token: $0) }
+            .map { return $0.jwt == "" }
     }
     
     func kakaoLogout() -> Bool {
