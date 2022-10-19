@@ -25,7 +25,7 @@ class RelevantHeaderView: UICollectionReusableView {
     let header: UILabel = {
         let label = UILabel()
         label.text = "내 직무와 관련된 커리어 프로필"
-        label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.font = .pretendardFont(size: 18, style: .bold)
         label.textColor = .label
         return label
     }()
