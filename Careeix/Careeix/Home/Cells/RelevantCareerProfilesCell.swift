@@ -29,37 +29,37 @@ class RelevantCareerProfilesCell: UICollectionViewCell {
     
     let careerName: UILabel = {
         let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 15, weight: .bold)
+        label.textColor = .appColor(.white)
+        label.font = .pretendardFont(size: 15, style: .semiBold)
         label.numberOfLines = 0
         return label
     }()
     
     let careerGrade: UILabel = {
         let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 11, weight: .regular)
+        label.textColor = .appColor(.gray30) //임시 컬러값
+        label.font = .pretendardFont(size: 11, style: .regular)
         return label
     }()
     
     let firstDetailCareerName: UILabel = {
         let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 10, weight: .regular)
+        label.textColor = .appColor(.gray700)
+        label.font = .pretendardFont(size: 10, style: .regular)
         return label
     }()
 
     let secondDetailCareerName: UILabel = {
         let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 10, weight: .regular)
+        label.textColor = .appColor(.gray700)
+        label.font = .pretendardFont(size: 10, style: .regular)
         return label
     }()
 
     let thirdDetailCareerName: UILabel = {
         let label = UILabel()
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 10, weight: .regular)
+        label.textColor = .appColor(.gray700)
+        label.font = .pretendardFont(size: 10, style: .regular)
         return label
     }()
     
