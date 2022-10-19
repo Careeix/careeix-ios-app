@@ -600,7 +600,7 @@
 				CODE_SIGN_ENTITLEMENTS = Careeix/Careeix.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W9K8S57VSZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Careeix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

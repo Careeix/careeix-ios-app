@@ -35,8 +35,11 @@ class SignUpViewController: UIViewController {
     func bind() {
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
-            .drive { [weak self] keyboardVisibleHeight in
-                self?.contentView.snp.updateConstraints {
+            .drive(with: self) { owner, keyboardVisibleHeight in
+                owner.contentView.snp.updateConstraints {
+                    $0.bottom.equalToSuperview().inset(keyboardVisibleHeight)
+                }
+                owner.completeButtonView.snp.updateConstraints {
                     $0.bottom.equalToSuperview().inset(keyboardVisibleHeight)
                 }
             }
@@ -48,13 +51,25 @@ class SignUpViewController: UIViewController {
             .bind(to: viewModel.createUserTrigger)
             .disposed(by: disposeBag)
         
+        viewModel.completeButtonDisableDriver
+            .drive(with: self) { owner, _ in
+                owner.completeButtonView.backgroundColor = .appColor(.gray30)
+                owner.completeButtonView.isUserInteractionEnabled = false
+            }.disposed(by: disposeBag)
+        
+        viewModel.completeButtonEnableDriver
+            .drive(with: self) { owner, _ in
+                owner.completeButtonView.backgroundColor = .appColor(.main)
+                owner.completeButtonView.isUserInteractionEnabled = true
+            }.disposed(by: disposeBag)
     }
-    
+
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
         setUI()
+        view.backgroundColor = .white
     }
     
     // MARK: - UIComponents
@@ -73,6 +88,7 @@ class SignUpViewController: UIViewController {
     let nicknameCheckLabel: UILabel = {
         let l = UILabel()
         l.text = "*중복된 닉네임입니다."
+        l.isHidden = true
         l.textColor = .appColor(.error)
         return l
     }()
@@ -80,23 +96,33 @@ class SignUpViewController: UIViewController {
     lazy var jobInputView = SimpleInputView(viewModel: viewModel.jobInputViewModel)
     lazy var annualInputView = RadioInputView(viewModel: viewModel.annualInputViewModel)
     lazy var detailJobTagInputView = MultiInputView(viewModel: viewModel.detailJobsInputViewModel)
-    lazy var completeButtonView = CompleteButtonView(viewModel: viewModel.completeButtonViewModel)
+    lazy var completeButtonView: CompleteButtonView = {
+        let v = CompleteButtonView(viewModel: viewModel.completeButtonViewModel)
+        v.backgroundColor = .appColor(.gray30)
+        return v
+    }()
+  
 }
 
 extension SignUpViewController {
     func setUI() {
         view.addSubview(scrollView)
+        
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
+
+        
         scrollView.addSubview(contentView)
+        
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.width.equalToSuperview()
+            $0.width.equalTo(UIScreen.main.bounds.width)
+            
         }
         
-        [titleLabel, descriptionLabel, nickNameInputView, nicknameCheckLabel, jobInputView, annualInputView, detailJobTagInputView, completeButtonView].forEach { contentView.addSubview($0) }
+        [titleLabel, descriptionLabel, nickNameInputView, nicknameCheckLabel, jobInputView, annualInputView, detailJobTagInputView].forEach { contentView.addSubview($0) }
         
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(14)
@@ -131,10 +157,12 @@ extension SignUpViewController {
         detailJobTagInputView.snp.makeConstraints {
             $0.top.equalTo(annualInputView.snp.bottom).offset(50)
             $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview()
         }
         
+        view.addSubview(completeButtonView)
+        
         completeButtonView.snp.makeConstraints {
-            $0.top.equalTo(detailJobTagInputView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(56)
             $0.bottom.equalToSuperview()
