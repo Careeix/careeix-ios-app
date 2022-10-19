@@ -24,16 +24,12 @@ struct OnboardViewModel {
     let appleLoginButtonImageNameDriver: Driver<String>
     let onboardImageNamesDriver: Driver<[String]>
     let currentPageDriver: Driver<Int>
-    
     let showHomeViewDriver: Driver<Void>
     let showSignUpViewDriver: Driver<Void>
     init() {
         logoImageNameDriver = Observable.just("logo").asDriver(onErrorJustReturn: "")
-        
         kakaoLoginButtonImageNameDriver = Observable.just("kakaoLogin").asDriver(onErrorJustReturn: "")
-        
         appleLoginButtonImageNameDriver = Observable.just("appleLogin").asDriver(onErrorJustReturn: "")
-        
         onboardImageNamesDriver = Observable.just(["onboard_0", "onboard_1", "onboard_2"]).asDriver(onErrorJustReturn: [])
         
         currentPageDriver = endDraggingRelay
@@ -41,7 +37,7 @@ struct OnboardViewModel {
             .asDriver(onErrorJustReturn: 0)
         
         let needMoreInfoDriver = kakaoLoginTrigger
-            .flatMap { SocialLoginSDK.socialLogin(type: .kakao) }
+            .flatMap { SocialLoginSDK.socialLogin(type: .kakao).asDriver(onErrorJustReturn: true) }
             .asDriver(onErrorJustReturn: true)
         
         showHomeViewDriver = needMoreInfoDriver

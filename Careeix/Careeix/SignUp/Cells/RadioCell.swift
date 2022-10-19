@@ -18,27 +18,51 @@ class RadioCell: UITableViewCell {
     func configure() {
         selectionStyle = .none
         
-        selectedMark.isHidden = true
-        selectedMark.backgroundColor = .appColor(.main)
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    let label = UILabel()
-    let selectedMark = UIView()
+    let contentLabel: UILabel = {
+        let l = UILabel()
+        l.font = .pretendardFont(size: 13, style: .regular)
+        l.textColor = .appColor(.gray900)
+        return l
+    }()
+    let selectedMark: UIView = {
+        let v = UIView()
+        v.isHidden = true
+        v.backgroundColor = .appColor(.main)
+        v.layer.cornerRadius = 8.5
+        return v
+    }()
+    let selectedMarkBorder: UIView = {
+        let v = UIView()
+        v.backgroundColor = .appColor(.white)
+        v.layer.cornerRadius = 12
+        v.layer.borderWidth = 1
+        v.layer.borderColor = UIColor.appColor(.gray100).cgColor
+        return v
+    }()
     func setUI() {
-        [label, selectedMark].forEach { contentView.addSubview($0) }
+        [contentLabel, selectedMarkBorder, selectedMark, ].forEach { contentView.addSubview($0) }
         
-        label.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        contentLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(15)
+            $0.top.trailing.bottom.equalToSuperview()
             $0.height.equalTo(48).priority(.high)
         }
         
         selectedMark.snp.makeConstraints {
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(17)
             $0.right.equalToSuperview().inset(14)
             $0.centerY.equalToSuperview()
+        }
+        
+        selectedMarkBorder.snp.makeConstraints {
+            $0.center.equalTo(selectedMark)
+            $0.width.height.equalTo(24)
         }
     }
 }

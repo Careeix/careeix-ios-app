@@ -51,7 +51,7 @@ extension SocialLoginService {
     
     func callLoginApi(token: String) -> Single<LoginAPI.Response> {
         return Single.create { single in
-            single(.success(.init(jwt: "asd")))
+            single(.success(.init(jwt: "")))
             return Disposables.create()
         }
     }

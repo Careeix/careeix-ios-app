@@ -9,7 +9,7 @@ import Foundation
 import RxCocoa
 import RxSwift
 import RxRelay
-struct SignUpViewModel {
+class SignUpViewModel {
     // MARK: Types
     typealias nickName = String
     typealias job = String
@@ -26,6 +26,10 @@ struct SignUpViewModel {
     // MARK: - Input
     let combinedInputValuesObservable: Observable<(nickName, job, annualIndex, detailJobs)>
     let createUserTrigger =  PublishRelay<Void>()
+    
+    // MARK: - Output
+    let completeButtonEnableDriver: Driver<Void>
+    let completeButtonDisableDriver: Driver<Void>
     
     // MARK: - Initializer
     init(nickNameInputViewModel: SimpleInputViewModel, jobInputViewModel: SimpleInputViewModel, annualInputViewModel: RadioInputViewModel, detailJobsInputViewModel: MultiInputViewModel, completeButtonViewModel: CompleteButtonViewModel) {
@@ -49,9 +53,16 @@ struct SignUpViewModel {
             .withLatestFrom(combinedInputValuesObservable) { $1 }
             .subscribe {
                 print("post: ", $0)
-            }
-    }
+            } // 실제 api 연결 시 map 사용
+        
+        let buttonStateDriver = combinedInputValuesObservable
+            .map { nickName, job, annualIndex, detailJobs in
+                nickName != "" && job != "" && detailJobs.count != 0
+            }.asDriver(onErrorJustReturn: false)
+        
+        completeButtonEnableDriver = buttonStateDriver.filter { $0 }.map { _ in () }
+        completeButtonDisableDriver = buttonStateDriver.filter { !$0 }.map { _ in () }
 
-    
+    }
 
 }

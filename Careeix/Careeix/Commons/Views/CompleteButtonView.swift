@@ -36,7 +36,8 @@ class CompleteButtonView: UIView {
     // MARK: UIComponents
     let contentLabel: UILabel = {
         let l = UILabel()
-        l.textColor = .white
+        l.textColor = .appColor(.white)
+        l.font = .pretendardFont(size: 16, style: .medium)
         return l
     }()
     

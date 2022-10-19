@@ -26,7 +26,7 @@ struct SimpleInputViewModel {
 class SimpleInputView: UIView {
     // MARK: Properties
     var disposeBag = DisposeBag()
-
+    
     // MARK: - Binding
     func bind(to viewModel: SimpleInputViewModel) {
         viewModel.titleStringDriver
@@ -36,6 +36,7 @@ class SimpleInputView: UIView {
         viewModel.placeholderStringDriver
             .drive(textField.rx.placeholder)
             .disposed(by: disposeBag)
+        
         textField.rx.text.orEmpty
             .bind(to: viewModel.inputStringRelay)
             .disposed(by: disposeBag)
@@ -57,7 +58,12 @@ class SimpleInputView: UIView {
     }
     
     // MARK: UIComponents
-    let titleLabel = UILabel()
+    let titleLabel: UILabel = {
+        let l = UILabel()
+        l.font = .pretendardFont(size: 16, style: .semiBold)
+        l.textColor = .appColor(.gray900)
+        return l
+    }()
     var textField: BaseTextField = BaseTextField()
     
     

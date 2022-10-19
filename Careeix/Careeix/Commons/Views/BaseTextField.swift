@@ -10,14 +10,19 @@ class BaseTextField: UITextField {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        layer.cornerRadius = 10
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.lightGray.cgColor
+        configure()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure() {
+        layer.cornerRadius = 10
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.appColor(.gray100).cgColor
+        setLeftPaddingPoints(14)
+        font = .pretendardFont(size: 13, style: .regular)
     }
 }
 

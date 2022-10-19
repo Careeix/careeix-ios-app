@@ -60,7 +60,7 @@ class OnboardViewController: UIViewController {
         kakaoLoginButtonImageView.rx.tapGesture()
             .when(.recognized)
             .map { _ in () }
-            .bind(to: viewModel.kakaoLoginTrigger)
+            .bind (to: viewModel.kakaoLoginTrigger)
             .disposed(by: disposeBag)
         
         appleLoginButtonImageView.rx.tapGesture()
@@ -82,8 +82,7 @@ class OnboardViewController: UIViewController {
             .drive (with: self) { owner, _ in
                 let vc = SignUpViewController()
                 self.navigationController?.pushViewController(vc, animated: true)
-            }
-            .disposed(by: disposeBag)
+            }.disposed(by: disposeBag)
 
     }
     
