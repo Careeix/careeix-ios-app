@@ -9,13 +9,14 @@ import Foundation
 import RxSwift
 import RxCocoa
 import RxRelay
-
+import RxKakaoSDKAuth
 struct OnboardViewModel {
-    
     typealias contentOffsetX = CGFloat
     typealias screenWidth = CGFloat
+    
     // MARK: - Input
     let endDraggingRelay = BehaviorRelay<(contentOffsetX, screenWidth)>(value: (0, 1))
+    let kakaoLoginTrigger = PublishRelay<Void>()
     
     // MARK: - Output
     let logoImageNameDriver: Driver<String>
@@ -24,6 +25,8 @@ struct OnboardViewModel {
     let onboardImageNamesDriver: Driver<[String]>
     let currentPageDriver: Driver<Int>
     
+    let showHomeViewDriver: Driver<Void>
+    let showSignUpViewDriver: Driver<Void>
     init() {
         logoImageNameDriver = Observable.just("logo").asDriver(onErrorJustReturn: "")
         
@@ -36,6 +39,17 @@ struct OnboardViewModel {
         currentPageDriver = endDraggingRelay
             .map { Int($0 / $1) }
             .asDriver(onErrorJustReturn: 0)
-
+        
+        let needMoreInfoDriver = kakaoLoginTrigger
+            .flatMap { SocialLoginSDK.socialLogin(type: .kakao) }
+            .asDriver(onErrorJustReturn: true)
+        
+        showHomeViewDriver = needMoreInfoDriver
+            .filter { !$0 }
+            .map { _ in () }
+        
+        showSignUpViewDriver = needMoreInfoDriver
+            .filter { $0 }
+            .map { _ in () }
     }
 }

@@ -9,7 +9,6 @@ import Foundation
 import RxCocoa
 import RxSwift
 import RxRelay
-
 struct SignUpViewModel {
     // MARK: Types
     typealias nickName = String
@@ -30,11 +29,13 @@ struct SignUpViewModel {
     
     // MARK: - Initializer
     init(nickNameInputViewModel: SimpleInputViewModel, jobInputViewModel: SimpleInputViewModel, annualInputViewModel: RadioInputViewModel, detailJobsInputViewModel: MultiInputViewModel, completeButtonViewModel: CompleteButtonViewModel) {
+        
         self.nickNameInputViewModel = nickNameInputViewModel
         self.jobInputViewModel = jobInputViewModel
         self.annualInputViewModel = annualInputViewModel
         self.detailJobsInputViewModel = detailJobsInputViewModel
         self.completeButtonViewModel = completeButtonViewModel
+        
         combinedInputValuesObservable =  Observable.combineLatest(
             nickNameInputViewModel.inputStringRelay,
             jobInputViewModel.inputStringRelay,
@@ -50,4 +51,7 @@ struct SignUpViewModel {
                 print("post: ", $0)
             }
     }
+
+    
+
 }

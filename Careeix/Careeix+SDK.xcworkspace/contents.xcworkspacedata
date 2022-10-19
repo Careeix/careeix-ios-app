@@ -4,7 +4,4 @@
    <FileRef
       location = "group:Careeix.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:../../careeix-ios-key/CareeixKey/CareeixKey.xcodeproj">
-   </FileRef>
 </Workspace>

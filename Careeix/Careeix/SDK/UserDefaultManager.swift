@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import CareeixKey
+
 class UserDefaultManager {
     static let shared = UserDefaultManager()
 
     private init() { }
 
-    @UserDefault(key: "jwtToken", defaultValue: "")
+    @UserDefault(key: CareeixKey.UserDefaultKey.jwtToken, defaultValue: "")
     public var jwtToken: String
 }
 

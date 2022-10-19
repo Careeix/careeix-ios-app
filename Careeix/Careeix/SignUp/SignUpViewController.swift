@@ -28,7 +28,7 @@ class SignUpViewController: UIViewController {
         detailJobsInputViewModel: .init(title: "상세 직무",
                                         placeholders: Array(repeating: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)",
                                                             count: 3)),
-        completeButtonViewModel: .init(content: "회원가입", backgroundColor: .signatureDark)
+        completeButtonViewModel: .init(content: "회원가입", backgroundColor: .main)
     )
     
     // MARK: - Binding

@@ -7,12 +7,14 @@
 
 import Foundation
 import Moya
+import CareeixKey
 
 enum CustomTask {
     case requestPlain
     case requestJSONEncodable(Encodable)
     case requestParameters(encoding: ParameterEncoding)
 }
+
 struct APIResponse<T: Decodable>: Decodable {
     let code: Int?
     let data: T?
@@ -23,11 +25,12 @@ struct ServiceAPI: TargetType {
     var path: String
     var method: Moya.Method
     var parameters: [String: Any]
-    var baseURL: URL { return URL(string: "https://reqres.in")! }
+    var baseURL: URL { return URL(string: CareeixKey.urlString)! }
     var task: Moya.Task
     var headers: [String : String]?
     
 }
+
 class API<T: Decodable> {
     
     let api: ServiceAPI
@@ -84,8 +87,8 @@ class API<T: Decodable> {
     
 }
 public enum NetworkError: Error {
-    case objectMapping // 일반 데이터 파싱에서 오류가 나는 경우
-    case httpStatus(Int) // statusCode가 200...299 밖에 나오는 경우
+    case objectMapping // 데이터 파싱 오류
+    case httpStatus(Int) // statusCode 200...299 이 아님
 }
 
 
