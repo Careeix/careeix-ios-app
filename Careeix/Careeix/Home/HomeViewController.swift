@@ -31,16 +31,28 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupCollectionView()
         configurationDatasource()
+        createNavigationBarItem()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        showModalView()
+    }
+    
+    func createNavigationBarItem() {
+        let logoImageView = UIImage(named: "logo")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: logoImageView, style: .plain, target: self, action: #selector(moveToHome))
+    }
+    
+    @objc func moveToHome() {
         showModalView()
     }
     
     func showModalView() {
-        let modalView = HomeAlertViewController()
+        let modalView: UIViewController = HomeAlertViewController()
         modalView.modalPresentationStyle = .overCurrentContext
         self.present(modalView, animated: true)
     }
-    
-    private var viewModel = HomeViewModel()
     
     private let homeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
@@ -96,9 +108,9 @@ class HomeViewController: UIViewController {
     func changeDatasource() {
         var snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>()
         snapshot.appendSections([.minimalCareerProfile])
-        snapshot.appendItems(viewModel.minimalCareerProfile.map { .minimalCareerProfile($0) })
+        snapshot.appendItems(CareerModel.minimalCareerProfile.map { .minimalCareerProfile($0) })
         snapshot.appendSections([.RelevantCareerProfiles])
-        snapshot.appendItems(viewModel.releventCareerProfiles.map { .RelevantCareerProfiles($0) })
+        snapshot.appendItems(RelevantCareerModel.releventCareerProfiles.map { .RelevantCareerProfiles($0) })
         datasource.apply(snapshot)
     }
 }
