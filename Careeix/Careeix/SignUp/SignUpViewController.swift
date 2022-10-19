@@ -46,6 +46,9 @@ class SignUpViewController: UIViewController {
                         :keyboardVisibleHeight + 26
                     )
                 }
+                UIView.animate(withDuration: 0.4) {
+                    owner.view.layoutIfNeeded()
+                }
             }
             .disposed(by: disposeBag)
         
@@ -74,6 +77,7 @@ class SignUpViewController: UIViewController {
         bind()
         setUI()
         view.backgroundColor = .white
+        nickNameInputView.textField.becomeFirstResponder()
     }
     
     // MARK: - UIComponents

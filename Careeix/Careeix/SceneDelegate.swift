@@ -22,9 +22,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         SocialLoginSDK.initSDK(type: .kakao)
         window = UIWindow(windowScene: windowScene)
         window?.backgroundColor = .white
-        UserDefaultManager.shared.jwtToken = ""
+        UserDefaultManager.shared.jwtToken = "데브키님 탭바 화면 보시려면 이것만 채워져 있으면 됩니다"
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
-        ? UINavigationController(rootViewController: SignUpViewController())
+        ? UINavigationController(rootViewController: OnboardViewController())
         : TabBarController()
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateWindow),

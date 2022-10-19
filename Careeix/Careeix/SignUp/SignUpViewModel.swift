@@ -53,7 +53,7 @@ class SignUpViewModel {
             .withLatestFrom(combinedInputValuesObservable) { $1 }
             .subscribe {
                 print("post: ", $0)
-            }
+            } // 실제 api 연결 시 map 사용
         
         let buttonStateDriver = combinedInputValuesObservable
             .map { nickName, job, annualIndex, detailJobs in
