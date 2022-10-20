@@ -37,7 +37,7 @@ class RelevantCareerProfilesCell: UICollectionViewCell {
     
     let careerGrade: UILabel = {
         let label = UILabel()
-        label.textColor = .appColor(.gray30) //임시 컬러값
+        label.textColor = .appColor(.gray10)
         label.font = .pretendardFont(size: 11, style: .regular)
         return label
     }()
