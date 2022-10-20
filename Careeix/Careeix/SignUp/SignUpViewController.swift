@@ -27,6 +27,7 @@ class SignUpViewController: UIViewController, EventDelegate {
                                                "미들(5~8년차)",
                                                "시니어(9년차~)"]),
         detailJobsInputViewModel: .init(title: "상세 직무",
+                                        description: "상세 직무 개수는 1~3개까지 입력 가능합니다.",
                                         placeholders: Array(repeating: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)",
                                                             count: 3)),
         completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable)
@@ -92,7 +93,7 @@ class SignUpViewController: UIViewController, EventDelegate {
             .bind { owner, _ in
                 owner.scrollView.setContentOffset(.init(x: 0, y: owner.detailJobTagInputView.frame.minY), animated: true)
             }.disposed(by: disposeBag)
-                       
+        
     }
     
     // MARK: - Life Cycle
@@ -107,11 +108,11 @@ class SignUpViewController: UIViewController, EventDelegate {
         
         let backButtonSpacer = UIBarButtonItem()
         backButtonSpacer.width = -28
-
+        
         let backButton = UIBarButtonItem(image: UIImage(named: "back")?.withRenderingMode(.alwaysOriginal),
-                                                      style: .plain,
-                                                      target: self,
-                                                      action: #selector(didTapBackButton))
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(didTapBackButton))
         navigationItem.setLeftBarButtonItems([backButtonSpacer, backButton], animated: false)
         navigationController?.navigationBar.barTintColor = .appColor(.white)
     }

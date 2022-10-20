@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+struct AddProjectViewModel {
+    let titleSimpleInputViewModel: SimpleInputViewModel
+    let periodInputViewModel: PeriodInputViewModel
+    let divisionInputViewModel: SimpleInputViewModel
+    let introduceInputViewModel: ManyInputViewModel
+}

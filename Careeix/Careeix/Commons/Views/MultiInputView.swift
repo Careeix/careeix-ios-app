@@ -15,16 +15,21 @@ struct MultiInputViewModel {
     
     // MARK: - Output
     let titleDriver:Driver<String>
-    var inputValuesObservable: Observable<[String]>
-    var placeholdersDriver: Driver<[String]>
+    let descriptionDriver: Driver<String>
+    let inputValuesObservable: Observable<[String]>
+    let placeholdersDriver: Driver<[String]>
     
-    init(title: String, placeholders: [String]) {
-        self.titleDriver =  Observable.just(title).asDriver(onErrorJustReturn: "")
-        self.placeholdersDriver = Observable.just(placeholders).asDriver(onErrorJustReturn: [])
-        self.multiInputCellViewModels = placeholders.map { .init(placeholder: $0) }
-        self.inputValuesObservable = Observable
+    init(title: String, description: String, placeholders: [String]) {
+        titleDriver = .just(title)
+        descriptionDriver = .just(description)
+        placeholdersDriver = .just(placeholders)
+        
+        multiInputCellViewModels = placeholders.map { .init(placeholder: $0) }
+        inputValuesObservable = Observable
             .combineLatest(self.multiInputCellViewModels.map { $0.inputStringRelay })
             .map { $0.filter { $0 != "" } }
+        
+        
     }
 }
 
@@ -44,8 +49,6 @@ class MultiInputView: UIView {
                 cell.viewModel = viewModel.multiInputCellViewModels[row]
                 return cell
             }.disposed(by: disposeBag)
-        
-//        tableView.rx.delegat
     }
     
     // MARK: - Initializer

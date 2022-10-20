@@ -27,11 +27,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         UserDefaultManager.shared.jwtToken = ""
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
         ? UINavigationController(rootViewController: AddProjectViewController(
-            viewModel: .init(titleSimpleInputViewModel: .init(title: "제목", placeholder: "프로젝트 제목을 입력해주세요."),
-                             periodInputViewModel: .init(title: "기간"),
-                             divisionInputViewModel: .init(title: "구분", placeholder: "Ex. 개인활동/팀활동/(소속이름)"),
-                             introduceInputViewModel: .init(title: "소개", placeholder: "진행한 일을 2줄 이내로 소개해주세요.")))
-        )
+            viewModel: .init(
+                titleSimpleInputViewModel: .init(title: "제목",
+                                                 placeholder: "프로젝트 제목을 입력해주세요."),
+                periodInputViewModel: .init(title: "기간",
+                                            description: "프로젝트 기간을 입력해주세요."),
+                divisionInputViewModel: .init(title: "구분",
+                                              placeholder: "Ex. 개인활동/팀활동/(소속이름)"),
+                introduceInputViewModel: .init(title: "소개",
+                                               placeholder: "진행한 일을 2줄 이내로 소개해주세요.")
+            )
+        ))
         : TabBarController()
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateWindow),
