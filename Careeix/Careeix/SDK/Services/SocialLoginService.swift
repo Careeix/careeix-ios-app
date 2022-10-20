@@ -47,41 +47,28 @@ extension SocialLoginService {
     func readAccessToken() -> Observable<String> {
         return UserApi.shared.rx.loginWithKakaoAccount()
             .map { $0.accessToken }
+            .catch { _ in .just("") }
     }
     
     func callLoginApi(token: String) -> Single<LoginAPI.Response> {
         return Single.create { single in
-            single(.success(.init(jwt: "")))
+            single(.success(.init(jwt: nil)))
             return Disposables.create()
         }
     }
     
     func kakaoLogin() -> Observable<Bool> {
         return readAccessToken()
+            .filter { $0 != "" }
             .flatMap { self.callLoginApi(token: $0) }
-            .map { return $0.jwt == "" }
+            .do { UserDefaultManager.shared.jwtToken = $0.jwt ?? "" }
+            .map { $0.jwt == nil }
     }
     
-    func kakaoLogout() -> Bool {
-        UserApi.shared.rx.logout()
-            .subscribe(onCompleted:{
-                print("logout() success.")
-            }, onError: {error in
-                print(error)
-            })
-            .disposed(by: disposeBag)
-        return true
-    }
-    
-    func readKakaoUserInfo() {
-        UserApi.shared.rx.me()
-            .subscribe (onSuccess:{ user in
-                print("me() success.")
-                _ = user
-                print(user)
-            }, onFailure: {error in
-                print(error)
-            })
-            .disposed(by: disposeBag)
+    func kakaoLogout() -> Observable<Bool> {
+        UserApi.shared.logout { error in
+            print(error ?? "error is nil")
+        }
+        return .just(true)
     }
 }

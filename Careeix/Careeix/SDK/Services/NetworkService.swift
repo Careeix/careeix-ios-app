@@ -35,6 +35,7 @@ class API<T: Decodable> {
     
     let api: ServiceAPI
     private let provider = MoyaProvider<MultiTarget>()
+    
     init(
         path: String,
         method: Moya.Method,

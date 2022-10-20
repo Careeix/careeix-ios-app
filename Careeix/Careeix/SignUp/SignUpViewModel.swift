@@ -62,7 +62,10 @@ class SignUpViewModel {
         
         completeButtonEnableDriver = buttonStateDriver.filter { $0 }.map { _ in () }
         completeButtonDisableDriver = buttonStateDriver.filter { !$0 }.map { _ in () }
-
+        
+        
+//        var filters = ["도ㅗ안", "자규ㅜㅁ"]
+        
     }
 
 }

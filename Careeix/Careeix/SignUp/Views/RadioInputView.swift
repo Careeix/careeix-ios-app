@@ -10,6 +10,10 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
+protocol EventDelegate: AnyObject {
+    func didTapRadioInputView()
+}
+
 struct RadioInputViewModel {
     // MARK: - Input
     var selectedIndexRelay = PublishRelay<IndexPath>()
@@ -27,6 +31,7 @@ struct RadioInputViewModel {
 class RadioInputView: UIView {
     // MARK: - Properties
     var disposeBag = DisposeBag()
+    weak var delegate: EventDelegate?
     
     // MARK: - Binding
     func bind(to viewModel: RadioInputViewModel) {
@@ -56,6 +61,7 @@ class RadioInputView: UIView {
             }.compactMap { self.tableView.cellForRow(at: $0) as? RadioCell }
             .asDriver(onErrorJustReturn: RadioCell())
             .drive {
+                self.delegate?.didTapRadioInputView()
                 $0.selectedMark.isHidden = false
                 $0.selectedMarkBorder.layer.borderColor = UIColor.appColor(.main).cgColor
             }.disposed(by: disposeBag)

@@ -14,6 +14,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         if let url = URLContexts.first?.url {
             SocialLoginSDK.setUrl(with: url)
+            ? print("url 세팅 성공")
+            : print("url 세팅 실패")
         }
     }
     
@@ -22,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         SocialLoginSDK.initSDK(type: .kakao)
         window = UIWindow(windowScene: windowScene)
         window?.backgroundColor = .white
-        UserDefaultManager.shared.jwtToken = "데브키님 탭바 화면 보시려면 이것만 채워져 있으면 됩니다"
+        UserDefaultManager.shared.jwtToken = ""
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
         ? UINavigationController(rootViewController: OnboardViewController())
         : TabBarController()

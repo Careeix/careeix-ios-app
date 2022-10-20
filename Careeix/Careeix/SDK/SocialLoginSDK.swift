@@ -12,7 +12,7 @@ import RxSwift
 // TODO: 애플로그인 구현
 struct LoginAPI {
     struct Response {
-        let jwt: String
+        let jwt: String?
     }
 }
 
@@ -29,8 +29,8 @@ class SocialLoginSDK {
 //        case apple
     }
     
-    public static func setUrl(with url: URL) {
-        socialLoginService.setKakaoUrl(with: url)
+    public static func setUrl(with url: URL) -> Bool {
+        socialLoginService.setKakaoUrl( with: url)
     }
     
     public static func initSDK(type: SocialLoginType) {
@@ -48,17 +48,10 @@ class SocialLoginSDK {
         }
     }
     
-    public static func socialLogout(type: SocialLoginType) -> Bool {
+    public static func socialLogout(type: SocialLoginType) -> Observable<Bool> {
         switch type {
         case .kakao:
             return socialLoginService.kakaoLogout()
-        }
-    }
-    
-    public static func readUserInfo(type: SocialLoginType) {
-        switch type {
-        case .kakao:
-            return socialLoginService.readKakaoUserInfo()
         }
     }
 }

@@ -12,9 +12,10 @@ import RxCocoa
 import RxKeyboard
 import RxGesture
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, EventDelegate {
     // MARK: Properties
     let disposeBag = DisposeBag()
+    
     let viewModel = SignUpViewModel(
         nickNameInputViewModel: .init(title: "닉네임",
                                       placeholder: "10자 이내로 한글, 영문, 숫자를 입력해주세요."),
@@ -69,19 +70,70 @@ class SignUpViewController: UIViewController {
                 owner.completeButtonView.backgroundColor = .appColor(.main)
                 owner.completeButtonView.isUserInteractionEnabled = true
             }.disposed(by: disposeBag)
+        
+        nickNameInputView.textField.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { owner, _ in
+                print(owner.nickNameInputView.frame.midY)
+                owner.scrollView.setContentOffset(.init(x: 0, y: owner.titleLabel.frame.minY), animated: true)
+            }.disposed(by: disposeBag)
+        
+        jobInputView.textField.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { owner, _ in
+                owner.scrollView.setContentOffset(.init(x: 0, y: owner.nickNameInputView.frame.minY), animated: true)
+            }.disposed(by: disposeBag)
+        
+        detailJobTagInputView.tableView.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { owner, _ in
+                owner.scrollView.setContentOffset(.init(x: 0, y: owner.detailJobTagInputView.frame.minY), animated: true)
+            }.disposed(by: disposeBag)
+                       
     }
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
         setUI()
+        bind()
+        
+        annualInputView.delegate = self
+        
         view.backgroundColor = .white
+        
+        let backButtonSpacer = UIBarButtonItem()
+        backButtonSpacer.width = -28
+
+        let backButton = UIBarButtonItem(image: UIImage(named: "back")?.withRenderingMode(.alwaysOriginal),
+                                                      style: .plain,
+                                                      target: self,
+                                                      action: #selector(didTapBackButton))
+        navigationItem.setLeftBarButtonItems([backButtonSpacer, backButton], animated: false)
+        navigationController?.navigationBar.barTintColor = .appColor(.white)
+    }
+    override func viewDidAppear(_ animated: Bool) {
         nickNameInputView.textField.becomeFirstResponder()
     }
     
+    @objc
+    func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func didTapRadioInputView() {
+        scrollView.setContentOffset(.init(x: 0, y: annualInputView.frame.minY), animated: true)
+    }
+    
     // MARK: - UIComponents
-    let scrollView = UIScrollView()
+    let scrollView: UIScrollView = {
+        let sv = UIScrollView()
+        sv.showsVerticalScrollIndicator = false
+        return sv
+    }()
     let contentView = UIView()
     let titleLabel: UILabel = {
         let l = UILabel()

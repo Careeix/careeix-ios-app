@@ -37,7 +37,7 @@ struct OnboardViewModel {
             .asDriver(onErrorJustReturn: 0)
         
         let needMoreInfoDriver = kakaoLoginTrigger
-            .flatMap { SocialLoginSDK.socialLogin(type: .kakao).asDriver(onErrorJustReturn: true) }
+            .flatMap { SocialLoginSDK.socialLogin(type: .kakao) }
             .asDriver(onErrorJustReturn: true)
         
         showHomeViewDriver = needMoreInfoDriver
