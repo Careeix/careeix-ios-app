@@ -60,7 +60,7 @@ extension SocialLoginService {
     func kakaoLogin() -> Observable<Bool> {
         return readAccessToken()
             .filter { $0 != "" }
-            .flatMap { self.callLoginApi(token: $0) }
+            .flatMap(self.callLoginApi)
             .do { UserDefaultManager.shared.jwtToken = $0.jwt ?? "" }
             .map { $0.jwt == nil }
     }

@@ -18,6 +18,11 @@
 		784BD0B828EDA3F600CA86F0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B728EDA3F600CA86F0 /* Kingfisher */; };
 		784BD0BB28EDA42300CA86F0 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BA28EDA42300CA86F0 /* PanModal */; };
 		784BD0BE28EDA44800CA86F0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BD28EDA44800CA86F0 /* SnapKit */; };
+		786F46922901443400215AF0 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F46912901443400215AF0 /* AddProjectViewController.swift */; };
+		786F469429018B2E00215AF0 /* BaseInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469329018B2E00215AF0 /* BaseInputView.swift */; };
+		786F469629018F5500215AF0 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469529018F5500215AF0 /* Date+.swift */; };
+		786F4698290199EF00215AF0 /* BaseTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F4697290199EF00215AF0 /* BaseTextView.swift */; };
+		786F469B29019BDE00215AF0 /* AddProjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469A29019BDE00215AF0 /* AddProjectViewModel.swift */; };
 		78D52E4F28FCFCF2001F5747 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = 78D52E4E28FCFCF2001F5747 /* RxKeyboard */; };
 		78D52E5128FD14FF001F5747 /* SignUpModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D52E5028FD14FF001F5747 /* SignUpModel.swift */; };
 		78D52E5328FD3142001F5747 /* SocialLoginSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D52E5228FD3142001F5747 /* SocialLoginSDK.swift */; };
@@ -88,6 +93,11 @@
 		784BD0A428EDA23A00CA86F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		784BD0A628EDA23A00CA86F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		784BD0AC28EDA35500CA86F0 /* OnboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewController.swift; sourceTree = "<group>"; };
+		786F46912901443400215AF0 /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
+		786F469329018B2E00215AF0 /* BaseInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseInputView.swift; sourceTree = "<group>"; };
+		786F469529018F5500215AF0 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
+		786F4697290199EF00215AF0 /* BaseTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTextView.swift; sourceTree = "<group>"; };
+		786F469A29019BDE00215AF0 /* AddProjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewModel.swift; sourceTree = "<group>"; };
 		78D52E5028FD14FF001F5747 /* SignUpModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpModel.swift; sourceTree = "<group>"; };
 		78D52E5228FD3142001F5747 /* SocialLoginSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginSDK.swift; sourceTree = "<group>"; };
 		78D52EA228FE5C3E001F5747 /* SocialLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginService.swift; sourceTree = "<group>"; };
@@ -185,12 +195,53 @@
 				78DC17B428FA75D300331A22 /* Onboard */,
 				78DC17BA28FA937400331A22 /* SignUp */,
 				7AFE501828FD90C600A72D65 /* Home */,
+				786F46902901441700215AF0 /* AddProject */,
 				7AFE501528FD8FB400A72D65 /* Extensions */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
 				784BD0A628EDA23A00CA86F0 /* Info.plist */,
 			);
 			path = Careeix;
+			sourceTree = "<group>";
+		};
+		786F46902901441700215AF0 /* AddProject */ = {
+			isa = PBXGroup;
+			children = (
+				786F469A29019BDE00215AF0 /* AddProjectViewModel.swift */,
+				786F46912901443400215AF0 /* AddProjectViewController.swift */,
+			);
+			path = AddProject;
+			sourceTree = "<group>";
+		};
+		786F469929019A6600215AF0 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				78DC17C428FA9D9D00331A22 /* BaseTextField.swift */,
+				786F4697290199EF00215AF0 /* BaseTextView.swift */,
+				786F469329018B2E00215AF0 /* BaseInputView.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		786F469C29019E0000215AF0 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				786F469D29019E0F00215AF0 /* Pretendard */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		786F469D29019E0F00215AF0 /* Pretendard */ = {
+			isa = PBXGroup;
+			children = (
+				78F4CE44290046A800284B86 /* Pretendard-Bold.otf */,
+				78F4CE43290046A800284B86 /* Pretendard-ExtraBold.otf */,
+				78F4CE42290046A800284B86 /* Pretendard-Light.otf */,
+				78F4CE45290046A800284B86 /* Pretendard-Medium.otf */,
+				78F4CE40290046A800284B86 /* Pretendard-Regular.otf */,
+				78F4CE41290046A800284B86 /* Pretendard-SemiBold.otf */,
+			);
+			path = Pretendard;
 			sourceTree = "<group>";
 		};
 		78D52EA128FE5BE0001F5747 /* Services */ = {
@@ -280,8 +331,8 @@
 		78E94A2D28EF0D4900DBBF5C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				786F469929019A6600215AF0 /* Base */,
 				7AFE502128FD90C600A72D65 /* CompositionalLayout.swift */,
-				78DC17C428FA9D9D00331A22 /* BaseTextField.swift */,
 				78DC17C628FA9E1C00331A22 /* SimpleInputView.swift */,
 				78DC17CE28FAA58500331A22 /* CompleteButtonView.swift */,
 			);
@@ -291,12 +342,7 @@
 		78F4CE3F2900467300284B86 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				78F4CE44290046A800284B86 /* Pretendard-Bold.otf */,
-				78F4CE43290046A800284B86 /* Pretendard-ExtraBold.otf */,
-				78F4CE42290046A800284B86 /* Pretendard-Light.otf */,
-				78F4CE45290046A800284B86 /* Pretendard-Medium.otf */,
-				78F4CE40290046A800284B86 /* Pretendard-Regular.otf */,
-				78F4CE41290046A800284B86 /* Pretendard-SemiBold.otf */,
+				786F469C29019E0000215AF0 /* Fonts */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -307,6 +353,7 @@
 				7AFE501628FD8FB400A72D65 /* UIColor+.swift */,
 				78F4CE3D290045BB00284B86 /* UIFont+.swift */,
 				78F4CE4C290049D400284B86 /* UITextField+.swift */,
+				786F469529018F5500215AF0 /* Date+.swift */,
 			);
 			name = Extensions;
 			path = Careeix/Extensions;
@@ -448,6 +495,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				786F469B29019BDE00215AF0 /* AddProjectViewModel.swift in Sources */,
 				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
 				7AFE502728FD90C600A72D65 /* RelevantCareerProfilesCell.swift in Sources */,
 				78D52E5328FD3142001F5747 /* SocialLoginSDK.swift in Sources */,
@@ -465,17 +513,21 @@
 				7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */,
 				78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */,
 				7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */,
+				786F4698290199EF00215AF0 /* BaseTextView.swift in Sources */,
 				78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */,
 				7AFE502428FD90C600A72D65 /* HomeAlertViewController.swift in Sources */,
 				78DC17CF28FAA58500331A22 /* CompleteButtonView.swift in Sources */,
+				786F469429018B2E00215AF0 /* BaseInputView.swift in Sources */,
 				784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */,
 				78D52E5128FD14FF001F5747 /* SignUpModel.swift in Sources */,
 				7A39BE5C29008F2B0067D2DC /* EmptyCareerProfileCell.swift in Sources */,
 				784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */,
 				78F4CE3E290045BB00284B86 /* UIFont+.swift in Sources */,
+				786F46922901443400215AF0 /* AddProjectViewController.swift in Sources */,
 				784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */,
 				7AFE502228FD90C600A72D65 /* RelevantHeaderView.swift in Sources */,
 				78DC17BF28FA943E00331A22 /* SignUpViewController.swift in Sources */,
+				786F469629018F5500215AF0 /* Date+.swift in Sources */,
 				78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */,
 				78DC17C728FA9E1C00331A22 /* SimpleInputView.swift in Sources */,
 				7A84D46F2902C80900939D89 /* CardProfileDetailViewController.swift in Sources */,

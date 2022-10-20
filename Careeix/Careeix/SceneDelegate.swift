@@ -8,9 +8,9 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
-
+    
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         if let url = URLContexts.first?.url {
             SocialLoginSDK.setUrl(with: url)
@@ -26,7 +26,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.backgroundColor = .white
         UserDefaultManager.shared.jwtToken = ""
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
-        ? UINavigationController(rootViewController: OnboardViewController())
+        ? UINavigationController(rootViewController: AddProjectViewController(
+            viewModel: .init(titleSimpleInputViewModel: .init(title: "제목", placeholder: "프로젝트 제목을 입력해주세요."),
+                             periodInputViewModel: .init(title: "기간"),
+                             divisionInputViewModel: .init(title: "구분", placeholder: "Ex. 개인활동/팀활동/(소속이름)"),
+                             introduceInputViewModel: .init(title: "소개", placeholder: "진행한 일을 2줄 이내로 소개해주세요.")))
+        )
         : TabBarController()
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateWindow),
@@ -46,28 +51,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
     }
-
+    
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
     }
-
+    
     func sceneWillResignActive(_ scene: UIScene) {
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
     }
-
+    
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
     }
-
+    
     func sceneDidEnterBackground(_ scene: UIScene) {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
+    
+    
 }
 

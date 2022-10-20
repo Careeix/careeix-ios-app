@@ -21,7 +21,7 @@ class BaseTextField: UITextField {
         layer.cornerRadius = 10
         layer.borderWidth = 1
         layer.borderColor = UIColor.appColor(.gray100).cgColor
-        setLeftPaddingPoints(14)
+        setLeftPaddingPoints(15)
         font = .pretendardFont(size: 13, style: .regular)
     }
 }
