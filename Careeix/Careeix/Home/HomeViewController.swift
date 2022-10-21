@@ -85,8 +85,6 @@ class HomeViewController: UIViewController {
             case .minimalCareerProfile(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: minimalCareerProfileRegistraion, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
-                cell.layer.cornerRadius = 10
-                cell.backgroundColor = .orange
                 return cell
             case .RelevantCareerProfiles(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: relevantCareerProfilesRegistraion, for: indexPath, item: itemIdentifier)
