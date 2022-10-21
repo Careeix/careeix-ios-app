@@ -27,9 +27,11 @@ struct PeriodInputViewModel {
     init(title: String, description: String) {
         titleDriver = .just(title)
         descriptionDriver = .just(description)
-        startDateViewModel = .init(content: Date().toString())
-        endDateViewModel = .init(content: Date().toString())
+        let currentDateString = Date().toString()
+        startDateViewModel = .init(content: currentDateString)
+        endDateViewModel = .init(content: currentDateString)
     }
+    
 }
 
 class PeriodInputView: UIView {

@@ -31,11 +31,11 @@ class AddProjectViewController: UIViewController {
                 }
             }.disposed(by: disposeBag)
     
-        titleSimpleInputView.textField.rx.tapGesture()
+        titleInputView.textField.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                owner.scrollView.setContentOffset(.init(x: 0, y: owner.titleSimpleInputView.frame.minY), animated: true)
+                owner.scrollView.setContentOffset(.init(x: 0, y: owner.titleInputView.frame.minY), animated: true)
             }.disposed(by: disposeBag)
         
         divisionInputView.textField.rx.tapGesture()
@@ -56,13 +56,14 @@ class AddProjectViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                owner.view.endEditing(true)
-                owner.contentView.snp.updateConstraints {
-                    $0.bottom.equalToSuperview().inset(250)
-                }
-                owner.datePickerView.snp.updateConstraints {
-                    $0.bottom.equalToSuperview()
-                }
+                owner.didTapDateView(owner.startDatePickerView)
+            }.disposed(by: disposeBag)
+        
+        periodInputView.endDateView.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { owner, _ in
+                owner.didTapDateView(owner.endDatePickerView)
             }.disposed(by: disposeBag)
         
         completeButtonView.rx.tapGesture()
@@ -73,11 +74,58 @@ class AddProjectViewController: UIViewController {
                 print("다음 단계로 이동")
             }.disposed(by: disposeBag)
         
+        startDatePickerCompleteButtonView.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { owner, _ in
+                owner.didTapDatePickerCompleteButtonView()
+            }.disposed(by: disposeBag)
+        
+        startDatePicker.rx.date
+            .map { $0.toString() }
+            .asDriver(onErrorJustReturn: "")
+            .drive(periodInputView.startDateView.contentLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        endDatePicker.rx.date
+            .map { $0.toString() }
+            .asDriver(onErrorJustReturn: "")
+            .drive(periodInputView.endDateView.contentLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+    }
+    
+    // MARK: - function
+    func didTapDatePickerCompleteButtonView() {
+        startDatePickerView.snp.updateConstraints {
+            $0.bottom.equalToSuperview().offset(270)
+        }
+
+        endDatePickerView.snp.updateConstraints {
+            $0.bottom.equalToSuperview().offset(270)
+        }
+        UIView.animate(withDuration: 0.4) { [weak self] in
+            self?.view.layoutIfNeeded()
+        }
+    }
+    func didTapDateView(_ sender: UIView) {
+        view.endEditing(true)
+        scrollView.contentOffset.y = titleInputView.frame.minX
+        sender.isHidden = false
+        contentView.snp.updateConstraints {
+            $0.bottom.equalToSuperview().inset(250)
+        }
+        sender.snp.updateConstraints {
+            $0.bottom.equalToSuperview()
+        }
+        UIView.animate(withDuration: 0.4) { [weak self] in
+            self?.view.layoutIfNeeded()
+        }
     }
     
     // MARK: - Initializer
     init(viewModel: AddProjectViewModel) {
-        titleSimpleInputView = .init(viewModel: viewModel.titleSimpleInputViewModel)
+        titleInputView = .init(viewModel: viewModel.titleInputViewModel)
         periodInputView = .init(viewModel: viewModel.periodInputViewModel)
         divisionInputView = .init(viewModel: viewModel.divisionInputViewModel)
         introduceInputView = .init(viewModel: viewModel.introduceInputViewModel)
@@ -98,28 +146,53 @@ class AddProjectViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        titleSimpleInputView.textField.becomeFirstResponder()
+        titleInputView.textField.becomeFirstResponder()
     }
     
     // MARK: - UIComponents
     let scrollView = UIScrollView()
     let contentView = UIView()
-    let titleSimpleInputView: SimpleInputView
+    let titleInputView: SimpleInputView
     let periodInputView: PeriodInputView
     let divisionInputView: SimpleInputView
     let introduceInputView: ManyInputView
     let completeButtonView: CompleteButtonView
-    let datePickerView: UIView = {
+    let startDatePickerView: UIView = {
         let v = UIView()
         v.backgroundColor = .white
+        v.isHidden = true
         return v
     }()
-    let datePicker: UIDatePicker = {
+    let startDatePicker: UIDatePicker = {
+        let dp = UIDatePicker()
+        dp.datePickerMode = .date
+        dp.preferredDatePickerStyle = .wheels
+        
+        return dp
+    }()
+    let startDatePickerCompleteButtonView: UIView = {
+       let v = UIView()
+        v.backgroundColor = .appColor(.error)
+        return v
+    }()
+    let endDatePickerView: UIView = {
+        let v = UIView()
+        v.backgroundColor = .white
+        v.isHidden = true
+        return v
+    }()
+    let endDatePicker: UIDatePicker = {
         let dp = UIDatePicker()
         dp.datePickerMode = .date
         dp.preferredDatePickerStyle = .wheels
         return dp
     }()
+    let endDatePickerCompleteButtonView: UIView = {
+       let v = UIView()
+        v.backgroundColor = .appColor(.error)
+        return v
+    }()
+
 }
 
 extension AddProjectViewController {
@@ -137,15 +210,15 @@ extension AddProjectViewController {
             $0.width.equalToSuperview()
         }
         
-        [titleSimpleInputView, periodInputView, divisionInputView, introduceInputView].forEach { contentView.addSubview($0) }
+        [titleInputView, periodInputView, divisionInputView, introduceInputView].forEach { contentView.addSubview($0) }
         
-        titleSimpleInputView.snp.makeConstraints {
+        titleInputView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(20)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
         
         periodInputView.snp.makeConstraints {
-            $0.top.equalTo(titleSimpleInputView.snp.bottom).offset(40)
+            $0.top.equalTo(titleInputView.snp.bottom).offset(40)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
         
@@ -168,18 +241,43 @@ extension AddProjectViewController {
             $0.bottom.equalToSuperview()
         }
         
-        view.addSubview(datePickerView)
-        
-        datePickerView.snp.makeConstraints {
+        view.addSubview(startDatePickerView)
+        startDatePickerView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(250)
+            $0.bottom.equalToSuperview().offset(270)
+            
+        }
+
+        startDatePickerView.addSubview(startDatePicker)
+        startDatePickerView.addSubview(startDatePickerCompleteButtonView)
+            
+        
+        startDatePickerCompleteButtonView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(20)
+        }
+        
+        startDatePicker.snp.makeConstraints {
+            $0.top.equalTo(startDatePickerCompleteButtonView.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(250)
         }
         
-        datePickerView.addSubview(datePicker)
         
-        datePicker.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        view.addSubview(endDatePickerView)
+        endDatePickerView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(270)
+
+        }
+
+        endDatePickerView.addSubview(endDatePicker)
+        endDatePickerView.addSubview(endDatePickerCompleteButtonView)
+
+        endDatePicker.snp.makeConstraints {
+            $0.top.equalTo(endDatePickerCompleteButtonView.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(250)
         }
     }
 }

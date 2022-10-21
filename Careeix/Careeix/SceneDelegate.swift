@@ -26,9 +26,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.backgroundColor = .white
         UserDefaultManager.shared.jwtToken = ""
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
+//        ? UINavigationController(rootViewController: SignUpViewController())
         ? UINavigationController(rootViewController: AddProjectViewController(
             viewModel: .init(
-                titleSimpleInputViewModel: .init(title: "제목",
+                titleInputViewModel: .init(title: "제목",
                                                  placeholder: "프로젝트 제목을 입력해주세요."),
                 periodInputViewModel: .init(title: "기간",
                                             description: "프로젝트 기간을 입력해주세요."),

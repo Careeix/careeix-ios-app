@@ -9,8 +9,8 @@ import Foundation
 
 extension Date {
     func toString() -> String {
-        let dateFomatter = ""
-        print(self, "TODO")
-        return "TODO"
+        let dateFomatter = DateFormatter()
+        dateFomatter.dateFormat = "YYYY-MM-dd"
+        return dateFomatter.string(from: self)
     }
 }
