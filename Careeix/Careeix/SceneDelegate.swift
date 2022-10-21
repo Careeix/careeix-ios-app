@@ -24,13 +24,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         SocialLoginSDK.initSDK(type: .kakao)
         window = UIWindow(windowScene: windowScene)
         window?.backgroundColor = .white
+        // test start
         UserDefaultManager.shared.jwtToken = ""
-        window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
-//        ? UINavigationController(rootViewController: SignUpViewController())
-        ? UINavigationController(rootViewController: AddProjectViewController(
+        let twoButtonAlertViewController = TwoButtonAlertViewController(viewModel: .init(
+            content: "발행하시겠습니까?",
+            leftString: "취소",
+            leftColor: .gray400,
+            rightString: "발행",
+            rightColor: .point))
+        let signUpViewController = UINavigationController(rootViewController: SignUpViewController())
+        let homeViewController = UINavigationController(rootViewController: HomeViewController())
+        let addProjectViewController = UINavigationController(rootViewController: AddProjectViewController(
             viewModel: .init(
                 titleInputViewModel: .init(title: "제목",
-                                                 placeholder: "프로젝트 제목을 입력해주세요."),
+                                           placeholder: "프로젝트 제목을 입력해주세요."),
                 periodInputViewModel: .init(title: "기간",
                                             description: "프로젝트 기간을 입력해주세요."),
                 divisionInputViewModel: .init(title: "구분",
@@ -39,7 +46,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                placeholder: "진행한 일을 2줄 이내로 소개해주세요.")
             )
         ))
+        
+        window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
+        ? twoButtonAlertViewController
         : TabBarController()
+        // test end
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateWindow),
                                                name: Notification.Name("loginSuccess"),

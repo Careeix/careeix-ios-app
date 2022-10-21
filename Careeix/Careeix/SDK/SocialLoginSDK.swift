@@ -11,7 +11,7 @@ import RxSwift
 
 // TODO: 애플로그인 구현
 struct LoginAPI {
-    struct Response {
+    struct Response: Decodable {
         let jwt: String?
     }
 }

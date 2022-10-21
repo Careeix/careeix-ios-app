@@ -15,6 +15,10 @@ class UserDefaultManager {
 
     @UserDefault(key: CareeixKey.UserDefaultKey.jwtToken, defaultValue: "")
     public var jwtToken: String
+    
+    @UserDefault(key: CareeixKey.UserDefaultKey.kakaoAccessToken, defaultValue: "")
+    public var kakaoAccessToken: String
+
 }
 
 @propertyWrapper

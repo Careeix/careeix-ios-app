@@ -8,7 +8,8 @@
 import Foundation
 import Moya
 import CareeixKey
-
+import RxSwift
+import RxMoya
 enum CustomTask {
     case requestPlain
     case requestJSONEncodable(Encodable)
@@ -17,7 +18,7 @@ enum CustomTask {
 
 struct APIResponse<T: Decodable>: Decodable {
     let code: Int?
-    let data: T?
+    let data: T
     let message: String?
 }
 
@@ -28,14 +29,13 @@ struct ServiceAPI: TargetType {
     var baseURL: URL { return URL(string: CareeixKey.urlString)! }
     var task: Moya.Task
     var headers: [String : String]?
-    
 }
 
 class API<T: Decodable> {
     
     let api: ServiceAPI
     private let provider = MoyaProvider<MultiTarget>()
-    
+
     init(
         path: String,
         method: Moya.Method,
@@ -53,6 +53,22 @@ class API<T: Decodable> {
             newTask = .requestParameters(parameters: parameters, encoding: encodingType)
         }
         self.api = .init(path: path, method: method, parameters: parameters, task: newTask, headers: headers)
+    }
+    
+    func requestRX() -> Single<T>{
+        let endpoint = MultiTarget.target(api)
+        return provider.rx.request(endpoint)
+            .flatMap { response in
+                do {
+                    _ = try response.filterSuccessfulStatusCodes()
+                    let result = try response.map(APIResponse<T>.self)
+                    return .just(result.data)
+                } catch (let error) {
+                    print("error: ", error.localizedDescription)
+                    return .error(error)
+                }
+            }
+        
     }
     
     func request(completion: @escaping (Result<APIResponse<T>, Error>) -> Void) {
@@ -87,6 +103,13 @@ class API<T: Decodable> {
     
     
 }
+
+
+
+//extension Reactive where Base: API<T: Decodable> {
+//
+//}
+
 public enum NetworkError: Error {
     case objectMapping // 데이터 파싱 오류
     case httpStatus(Int) // statusCode 200...299 이 아님

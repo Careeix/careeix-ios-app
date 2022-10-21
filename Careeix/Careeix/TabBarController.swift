@@ -12,7 +12,6 @@ class TabBarController: UITabBarController {
     lazy var homeViewController: UIViewController = {
         let vc = UINavigationController(rootViewController: HomeViewController())
         
-        
         vc.tabBarItem = UITabBarItem(title: "홈", image: UIImage(systemName: "house"), tag: 0)
         
         return vc

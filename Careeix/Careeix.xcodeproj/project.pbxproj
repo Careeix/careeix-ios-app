@@ -12,7 +12,6 @@
 		784BD0A228EDA23A00CA86F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 784BD0A128EDA23A00CA86F0 /* Assets.xcassets */; };
 		784BD0A528EDA23A00CA86F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */; };
 		784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD0AC28EDA35500CA86F0 /* OnboardViewController.swift */; };
-		784BD0B028EDA3C400CA86F0 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0AF28EDA3C400CA86F0 /* Moya */; };
 		784BD0B328EDA3D500CA86F0 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B228EDA3D500CA86F0 /* RxCocoa */; };
 		784BD0B528EDA3D500CA86F0 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B428EDA3D500CA86F0 /* RxRelay */; };
 		784BD0B828EDA3F600CA86F0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B728EDA3F600CA86F0 /* Kingfisher */; };
@@ -26,6 +25,9 @@
 		786F46A02901A1A400215AF0 /* ManyInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469F2901A1A400215AF0 /* ManyInputView.swift */; };
 		786F46A22901A21B00215AF0 /* BaseCheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F46A12901A21B00215AF0 /* BaseCheckBoxView.swift */; };
 		786F46A42901A24E00215AF0 /* PeriodInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F46A32901A24E00215AF0 /* PeriodInputView.swift */; };
+		786F46A729028DE900215AF0 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 786F46A629028DE900215AF0 /* Moya */; };
+		786F46A929028DE900215AF0 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 786F46A829028DE900215AF0 /* RxMoya */; };
+		7881F5522902D91D00111395 /* TwoButtonAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */; };
 		78D52E4F28FCFCF2001F5747 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = 78D52E4E28FCFCF2001F5747 /* RxKeyboard */; };
 		78D52E5128FD14FF001F5747 /* SignUpModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D52E5028FD14FF001F5747 /* SignUpModel.swift */; };
 		78D52E5328FD3142001F5747 /* SocialLoginSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D52E5228FD3142001F5747 /* SocialLoginSDK.swift */; };
@@ -104,6 +106,7 @@
 		786F469F2901A1A400215AF0 /* ManyInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManyInputView.swift; sourceTree = "<group>"; };
 		786F46A12901A21B00215AF0 /* BaseCheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCheckBoxView.swift; sourceTree = "<group>"; };
 		786F46A32901A24E00215AF0 /* PeriodInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodInputView.swift; sourceTree = "<group>"; };
+		7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoButtonAlertViewController.swift; sourceTree = "<group>"; };
 		78D52E5028FD14FF001F5747 /* SignUpModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpModel.swift; sourceTree = "<group>"; };
 		78D52E5228FD3142001F5747 /* SocialLoginSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginSDK.swift; sourceTree = "<group>"; };
 		78D52EA228FE5C3E001F5747 /* SocialLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginService.swift; sourceTree = "<group>"; };
@@ -156,12 +159,13 @@
 				78D52E7D28FD3DAD001F5747 /* RxKakaoSDKUser in Frameworks */,
 				784BD0B528EDA3D500CA86F0 /* RxRelay in Frameworks */,
 				78DC17BD28FA93BD00331A22 /* RxGesture in Frameworks */,
+				786F46A929028DE900215AF0 /* RxMoya in Frameworks */,
 				784BD0B328EDA3D500CA86F0 /* RxCocoa in Frameworks */,
 				78D52E7928FD3DAD001F5747 /* RxKakaoSDKAuth in Frameworks */,
+				786F46A729028DE900215AF0 /* Moya in Frameworks */,
 				784BD0BE28EDA44800CA86F0 /* SnapKit in Frameworks */,
 				78D52E7628FD3D91001F5747 /* KakaoSDKUser in Frameworks */,
 				78D52E7B28FD3DAD001F5747 /* RxKakaoSDKCommon in Frameworks */,
-				784BD0B028EDA3C400CA86F0 /* Moya in Frameworks */,
 				784BD0BB28EDA42300CA86F0 /* PanModal in Frameworks */,
 				78D52EAA28FE6DA4001F5747 /* CareeixKey.framework in Frameworks */,
 				78D52E7228FD3D91001F5747 /* KakaoSDKAuth in Frameworks */,
@@ -251,6 +255,22 @@
 			path = Pretendard;
 			sourceTree = "<group>";
 		};
+		7881F5542902D94A00111395 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		7881F5552902D96400111395 /* StaticFunction */ = {
+			isa = PBXGroup;
+			children = (
+				7AFE502128FD90C600A72D65 /* CompositionalLayout.swift */,
+			);
+			path = StaticFunction;
+			sourceTree = "<group>";
+		};
 		78D52EA128FE5BE0001F5747 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,7 +339,9 @@
 		78E94A2C28EF0D4100DBBF5C /* Commons */ = {
 			isa = PBXGroup;
 			children = (
+				7881F5552902D96400111395 /* StaticFunction */,
 				78F4CE3F2900467300284B86 /* Resource */,
+				7881F5542902D94A00111395 /* ViewControllers */,
 				78E94A2D28EF0D4900DBBF5C /* Views */,
 			);
 			path = Commons;
@@ -329,7 +351,6 @@
 			isa = PBXGroup;
 			children = (
 				786F469929019A6600215AF0 /* Base */,
-				7AFE502128FD90C600A72D65 /* CompositionalLayout.swift */,
 				78DC17C628FA9E1C00331A22 /* SimpleInputView.swift */,
 				78DC17CA28FAA46A00331A22 /* RadioInputView.swift */,
 				78DC17CC28FAA4DA00331A22 /* MultiInputView.swift */,
@@ -410,7 +431,6 @@
 			);
 			name = Careeix;
 			packageProductDependencies = (
-				784BD0AF28EDA3C400CA86F0 /* Moya */,
 				784BD0B228EDA3D500CA86F0 /* RxCocoa */,
 				784BD0B428EDA3D500CA86F0 /* RxRelay */,
 				784BD0B728EDA3F600CA86F0 /* Kingfisher */,
@@ -424,6 +444,8 @@
 				78D52E7828FD3DAD001F5747 /* RxKakaoSDKAuth */,
 				78D52E7A28FD3DAD001F5747 /* RxKakaoSDKCommon */,
 				78D52E7C28FD3DAD001F5747 /* RxKakaoSDKUser */,
+				786F46A629028DE900215AF0 /* Moya */,
+				786F46A829028DE900215AF0 /* RxMoya */,
 			);
 			productName = Careeix;
 			productReference = 784BD09528EDA23900CA86F0 /* Careeix.app */;
@@ -454,7 +476,6 @@
 			);
 			mainGroup = 784BD08C28EDA23900CA86F0;
 			packageReferences = (
-				784BD0AE28EDA3C400CA86F0 /* XCRemoteSwiftPackageReference "Moya" */,
 				784BD0B128EDA3D500CA86F0 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				784BD0B628EDA3F600CA86F0 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				784BD0B928EDA42300CA86F0 /* XCRemoteSwiftPackageReference "PanModal" */,
@@ -463,6 +484,7 @@
 				78D52E4D28FCFCF2001F5747 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				78D52E7028FD3D91001F5747 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				78D52E7728FD3DAD001F5747 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
+				786F46A529028DE900215AF0 /* XCRemoteSwiftPackageReference "Moya" */,
 			);
 			productRefGroup = 784BD09628EDA23900CA86F0 /* Products */;
 			projectDirPath = "";
@@ -525,6 +547,7 @@
 				78D52E5128FD14FF001F5747 /* SignUpModel.swift in Sources */,
 				7A39BE5C29008F2B0067D2DC /* EmptyCareerProfileCell.swift in Sources */,
 				784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */,
+				7881F5522902D91D00111395 /* TwoButtonAlertViewController.swift in Sources */,
 				78F4CE3E290045BB00284B86 /* UIFont+.swift in Sources */,
 				786F46922901443400215AF0 /* AddProjectViewController.swift in Sources */,
 				784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */,
@@ -748,14 +771,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		784BD0AE28EDA3C400CA86F0 /* XCRemoteSwiftPackageReference "Moya" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Moya/Moya";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		784BD0B128EDA3D500CA86F0 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
@@ -786,6 +801,14 @@
 			requirement = {
 				kind = upToNextMinorVersion;
 				minimumVersion = 5.6.0;
+			};
+		};
+		786F46A529028DE900215AF0 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya";
+			requirement = {
+				branch = master;
+				kind = branch;
 			};
 		};
 		78D52E4D28FCFCF2001F5747 /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
@@ -823,11 +846,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		784BD0AF28EDA3C400CA86F0 /* Moya */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 784BD0AE28EDA3C400CA86F0 /* XCRemoteSwiftPackageReference "Moya" */;
-			productName = Moya;
-		};
 		784BD0B228EDA3D500CA86F0 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 784BD0B128EDA3D500CA86F0 /* XCRemoteSwiftPackageReference "RxSwift" */;
@@ -852,6 +870,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 784BD0BC28EDA44800CA86F0 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		786F46A629028DE900215AF0 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 786F46A529028DE900215AF0 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		786F46A829028DE900215AF0 /* RxMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 786F46A529028DE900215AF0 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = RxMoya;
 		};
 		78D52E4E28FCFCF2001F5747 /* RxKeyboard */ = {
 			isa = XCSwiftPackageProductDependency;

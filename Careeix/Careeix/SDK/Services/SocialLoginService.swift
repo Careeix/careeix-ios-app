@@ -15,6 +15,7 @@ import RxKakaoSDKAuth
 import KakaoSDKUser
 import RxKakaoSDKUser
 import CareeixKey
+import Moya
 
 protocol KakaoLoginService {
     func setKakaoUrl(with url: URL) -> Bool
@@ -48,13 +49,23 @@ extension SocialLoginService {
         return UserApi.shared.rx.loginWithKakaoAccount()
             .map { $0.accessToken }
             .catch { _ in .just("") }
+            .do { UserDefaultManager.shared.kakaoAccessToken = $0 }
+            .debug("카카오 로그인 SDK")
     }
     
     func callLoginApi(token: String) -> Single<LoginAPI.Response> {
-        return Single.create { single in
-            single(.success(.init(jwt: nil)))
+        // test
+        let a = Single.create { single in
+            single(.success(LoginAPI.Response.init(jwt: nil)))
             return Disposables.create()
-        }
+        }.debug("AAAAAA")
+        
+//        // 현재 api call (이상함. access토큰을 body로 보내야함)
+//        let b = API<LoginAPI.Response>(path: "/api/v1/users/check-login/\(token)", method: .post, parameters: [:], task: .requestPlain).requestRX().debug("BBBBBB")
+//        
+//        // 정상적인 api call
+//        let c = API<LoginAPI.Response>(path: "/api/v1/users/check-login)", method: .post, parameters: ["X-ACCESS-TOKEN": token], task: .requestParameters(encoding: JSONEncoding.default)).requestRX().debug("CCCCCC")
+        return a
     }
     
     func kakaoLogin() -> Observable<Bool> {

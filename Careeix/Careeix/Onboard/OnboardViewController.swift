@@ -71,14 +71,14 @@ class OnboardViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         viewModel.showHomeViewDriver
-            .debug("🩳🩳🩳홈 화면으로 가요🩳🩳🩳")
+            .debug("🩳🩳🩳 로그인 완료 Driver 🩳🩳🩳")
             .drive (with: self) { owner, _ in
                 let vc = HomeViewController()
                 owner.navigationController?.pushViewController(vc, animated: true)
             }.disposed(by: disposeBag)
 
         viewModel.showSignUpViewDriver
-            .debug("🧶🧶🧶회원가입 화면으로 가요🧶🧶🧶")
+            .debug("🧶🧶🧶 추가정보 필요 Driver 🧶🧶🧶")
             .drive (with: self) { owner, _ in
                 let vc = SignUpViewController()
                 owner.navigationController?.pushViewController(vc, animated: true)
