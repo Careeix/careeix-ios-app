@@ -39,6 +39,7 @@ class PeriodInputView: UIView {
         viewModel.titleDriver
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
+        
     }
     
     init(viewModel: PeriodInputViewModel) {

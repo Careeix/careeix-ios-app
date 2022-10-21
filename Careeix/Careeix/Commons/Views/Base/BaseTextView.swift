@@ -7,7 +7,7 @@
 
 import UIKit
 class BaseTextView: UITextView {
-//    initView
+
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: nil)
         configure()

@@ -10,6 +10,7 @@ import UIKit
 struct BaseCheckBoxViewModel {
     
 }
+
 class BaseCheckBoxView: UIView {
     init() {
         super.init(frame: .zero)

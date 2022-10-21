@@ -213,8 +213,8 @@
 		786F46902901441700215AF0 /* AddProject */ = {
 			isa = PBXGroup;
 			children = (
-				786F469A29019BDE00215AF0 /* AddProjectViewModel.swift */,
 				786F46912901443400215AF0 /* AddProjectViewController.swift */,
+				786F469A29019BDE00215AF0 /* AddProjectViewModel.swift */,
 			);
 			path = AddProject;
 			sourceTree = "<group>";

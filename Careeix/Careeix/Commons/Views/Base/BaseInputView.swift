@@ -6,7 +6,9 @@
 //
 
 import UIKit
+import RxSwift
 import RxCocoa
+import RxRelay
 // 기간 입력 시 사용
 struct BaseInputViewModel {
     let contentDriver: Driver<String>
@@ -18,9 +20,14 @@ struct BaseInputViewModel {
 
 class BaseInputView: UIView {
     
+    var disposeBag = DisposeBag()
+    
     func bind(to viewModel: BaseInputViewModel) {
-        
+        viewModel.contentDriver
+            .drive(contentLabel.rx.text)
+            .disposed(by: disposeBag)
     }
+    
     init(viewModel: BaseInputViewModel) {
         super.init(frame: .zero)
         configure()
@@ -31,8 +38,8 @@ class BaseInputView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    let contentLabel = UILabel()
     
+    let contentLabel = UILabel()
     
     func configure() {
         layer.cornerRadius = 10

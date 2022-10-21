@@ -23,8 +23,8 @@ struct RadioInputViewModel {
     let contentsDriver: Driver<[String]>
     
     init(title: String, contents: [String]) {
-        titleStringDriver = Observable.just(title).asDriver(onErrorJustReturn: "")
-        contentsDriver = Observable.just(contents).asDriver(onErrorJustReturn: [])
+        titleStringDriver = .just(title)
+        contentsDriver = .just(contents)
     }
 }
 

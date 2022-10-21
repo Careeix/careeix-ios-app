@@ -103,18 +103,9 @@ class SignUpViewController: UIViewController, EventDelegate {
         bind()
         
         annualInputView.delegate = self
-        
         view.backgroundColor = .white
         
-        let backButtonSpacer = UIBarButtonItem()
-        backButtonSpacer.width = -28
-        
-        let backButton = UIBarButtonItem(image: UIImage(named: "back")?.withRenderingMode(.alwaysOriginal),
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(didTapBackButton))
-        navigationItem.setLeftBarButtonItems([backButtonSpacer, backButton], animated: false)
-        navigationController?.navigationBar.barTintColor = .appColor(.white)
+        configureNavigationBar()
     }
     override func viewDidAppear(_ animated: Bool) {
         nickNameInputView.textField.becomeFirstResponder()
@@ -129,6 +120,17 @@ class SignUpViewController: UIViewController, EventDelegate {
         scrollView.setContentOffset(.init(x: 0, y: annualInputView.frame.minY), animated: true)
     }
     
+    func configureNavigationBar() {
+        let backButtonSpacer = UIBarButtonItem()
+        backButtonSpacer.width = -28
+        
+        let backButton = UIBarButtonItem(image: UIImage(named: "back")?.withRenderingMode(.alwaysOriginal),
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(didTapBackButton))
+        navigationItem.setLeftBarButtonItems([backButtonSpacer, backButton], animated: false)
+        navigationController?.navigationBar.barTintColor = .appColor(.white)
+    }
     // MARK: - UIComponents
     let scrollView: UIScrollView = {
         let sv = UIScrollView()

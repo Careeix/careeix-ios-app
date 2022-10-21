@@ -10,7 +10,7 @@ import Foundation
 extension Date {
     func toString() -> String {
         let dateFomatter = ""
-        print(self, "TODO!!")
+        print(self, "TODO")
         return "TODO"
     }
 }

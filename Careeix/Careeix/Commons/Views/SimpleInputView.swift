@@ -18,8 +18,8 @@ struct SimpleInputViewModel {
     let titleStringDriver: Driver<String>
     let placeholderStringDriver: Driver<String>
     init(title: String, placeholder: String) {
-        titleStringDriver = Observable.just(title).asDriver(onErrorJustReturn: "")
-        placeholderStringDriver = Observable.just(placeholder).asDriver(onErrorJustReturn: "")
+        titleStringDriver = .just(title)
+        placeholderStringDriver = .just(placeholder)
     }
 }
 
