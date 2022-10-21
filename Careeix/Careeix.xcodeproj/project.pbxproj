@@ -53,7 +53,7 @@
 		78F4CE4A290046A800284B86 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78F4CE44290046A800284B86 /* Pretendard-Bold.otf */; };
 		78F4CE4B290046A800284B86 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78F4CE45290046A800284B86 /* Pretendard-Medium.otf */; };
 		78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F4CE4C290049D400284B86 /* UITextField+.swift */; };
-		7A39BE5C29008F2B0067D2DC /* EmptyCareerProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A39BE5B29008F2B0067D2DC /* EmptyCareerProfile.swift */; };
+		7A39BE5C29008F2B0067D2DC /* EmptyCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A39BE5B29008F2B0067D2DC /* EmptyCareerProfileCell.swift */; };
 		7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501628FD8FB400A72D65 /* UIColor+.swift */; };
 		7AFE502228FD90C600A72D65 /* RelevantHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501928FD90C600A72D65 /* RelevantHeaderView.swift */; };
 		7AFE502428FD90C600A72D65 /* HomeAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501B28FD90C600A72D65 /* HomeAlertViewController.swift */; };
@@ -114,7 +114,7 @@
 		78F4CE44290046A800284B86 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		78F4CE45290046A800284B86 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		78F4CE4C290049D400284B86 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
-		7A39BE5B29008F2B0067D2DC /* EmptyCareerProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCareerProfile.swift; sourceTree = "<group>"; };
+		7A39BE5B29008F2B0067D2DC /* EmptyCareerProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCareerProfileCell.swift; sourceTree = "<group>"; };
 		7AFE501628FD8FB400A72D65 /* UIColor+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		7AFE501928FD90C600A72D65 /* RelevantHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelevantHeaderView.swift; sourceTree = "<group>"; };
 		7AFE501B28FD90C600A72D65 /* HomeAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeAlertViewController.swift; sourceTree = "<group>"; };
@@ -325,7 +325,7 @@
 			children = (
 				7AFE501E28FD90C600A72D65 /* RelevantCareerProfilesCell.swift */,
 				7AFE501F28FD90C600A72D65 /* MinimalCareerProfileCell.swift */,
-				7A39BE5B29008F2B0067D2DC /* EmptyCareerProfile.swift */,
+				7A39BE5B29008F2B0067D2DC /* EmptyCareerProfileCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -463,7 +463,7 @@
 				78DC17CF28FAA58500331A22 /* CompleteButtonView.swift in Sources */,
 				784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */,
 				78D52E5128FD14FF001F5747 /* SignUpModel.swift in Sources */,
-				7A39BE5C29008F2B0067D2DC /* EmptyCareerProfile.swift in Sources */,
+				7A39BE5C29008F2B0067D2DC /* EmptyCareerProfileCell.swift in Sources */,
 				784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */,
 				78F4CE3E290045BB00284B86 /* UIFont+.swift in Sources */,
 				784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */,
