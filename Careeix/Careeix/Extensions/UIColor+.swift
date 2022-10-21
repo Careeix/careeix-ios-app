@@ -43,7 +43,7 @@ extension UIColor {
         case .gray600:
             return UIColor(red: 107/255.0, green: 107/255.0, blue: 107/255.0, alpha: 1)
         case .gray700:
-            return UIColor(red: 130/255.0, green: 130/255.0, blue: 130/255.0, alpha: 1)
+            return UIColor(red: 95/255.0, green: 95/255.0, blue: 95/255.0, alpha: 1)
         case .gray900:
             return UIColor(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1)
         case .white:
