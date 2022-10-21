@@ -21,6 +21,7 @@ import UIKit
 class MinimalCareerProfileCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupGradient()
     }
     
     required init?(coder: NSCoder) {
@@ -69,7 +70,6 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     }
     
     func setup() {
-
         [logoImage, nickName, careerName, careerGrade]
             .forEach { contentView.addSubview($0) }
         
@@ -93,5 +93,21 @@ class MinimalCareerProfileCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(24)
             $0.top.equalTo(careerName.snp.bottom).offset(6)
         }
+    }
+    
+    func setupGradient() {
+        var gradientLayer: CAGradientLayer!
+        gradientLayer = CAGradientLayer()
+        gradientLayer.frame = self.contentView.bounds
+        gradientLayer.colors = [
+            UIColor(red: 28/255, green: 26/255, blue: 129/255, alpha: 0.9).cgColor,
+            UIColor(red: 149/255, green: 148/255, blue: 232/255, alpha: 0.3).cgColor
+        ]
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0.7)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+        gradientLayer.cornerRadius = 10
+        
+        contentView.layer.addSublayer(gradientLayer)
+        
     }
 }
