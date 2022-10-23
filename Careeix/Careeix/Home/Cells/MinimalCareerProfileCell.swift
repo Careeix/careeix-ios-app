@@ -28,8 +28,7 @@ class MinimalCareerProfileCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    let logoImage: UIImageView = {
+    let profileImageView: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleToFill
         image.layer.cornerRadius = 75 / 2
@@ -61,7 +60,7 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     }()
 
     func configure(_ info: CareerModel) {
-        logoImage.image = UIImage(systemName: "person")
+        profileImageView.image = UIImage(systemName: "person")
         nickName.text = info.nickname
         careerName.text = info.careerName
         careerGrade.text = info.careerGrade
@@ -70,23 +69,23 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     }
     
     func setup() {
-        [logoImage, nickName, careerName, careerGrade]
+        [profileImageView, nickName, careerName, careerGrade]
             .forEach { contentView.addSubview($0) }
         
-        logoImage.snp.makeConstraints {
+        profileImageView.snp.makeConstraints {
             $0.leading.equalTo(24)
             $0.width.height.equalTo(75)
-            $0.top.equalToSuperview().offset(-15)
+            $0.top.equalToSuperview().offset(-30)
         }
         
         nickName.snp.makeConstraints {
-            $0.leading.equalTo(logoImage.snp.trailing).offset(5)
+            $0.leading.equalTo(profileImageView.snp.trailing).offset(5)
             $0.top.equalTo(19)
         }
         
         careerName.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(24)
-            $0.top.equalTo(logoImage.snp.bottom).offset(11)
+            $0.top.equalTo(profileImageView.snp.bottom).offset(11)
         }
         
         careerGrade.snp.makeConstraints {
@@ -99,12 +98,11 @@ class MinimalCareerProfileCell: UICollectionViewCell {
         var gradientLayer: CAGradientLayer!
         gradientLayer = CAGradientLayer()
         gradientLayer.frame = self.contentView.bounds
-        gradientLayer.colors = [
-            UIColor(red: 28/255, green: 26/255, blue: 129/255, alpha: 0.9).cgColor,
-            UIColor(red: 149/255, green: 148/255, blue: 232/255, alpha: 0.3).cgColor
-        ]
+        let startPoint = UIColor(red: 53/255, green: 120/255, blue: 181/255, alpha: 0.9).cgColor
+        let endPoint = UIColor(red: 105/255, green: 175/255, blue: 239/255, alpha: 0.45).cgColor
+        gradientLayer.colors = [startPoint, endPoint]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0.7)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 0.2)
         gradientLayer.cornerRadius = 10
         
         contentView.layer.addSublayer(gradientLayer)
