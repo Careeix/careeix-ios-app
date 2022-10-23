@@ -15,7 +15,11 @@ class CardProfileDetailViewController: UIViewController {
         super.viewDidLoad()
         createNavigationBarItem()
         setCollectionView()
+        configurationDatasource()
+        tabBarController?.tabBar.isHidden = true
     }
+    
+    var cardProfileModel: RelevantCareerModel = RelevantCareerModel(profileImage: "", nickname: "", careerName: "", careerGrade: "", detailCareerName: [])
     
     func createNavigationBarItem() {
         let backButtonImageView = UIImage(named: "back")
@@ -64,6 +68,16 @@ class CardProfileDetailViewController: UIViewController {
 //                return cell
             }
         })
+        changeDatasource()
+    }
+    
+    func changeDatasource() {
+        var snapshot = NSDiffableDataSourceSnapshot<CardProfileSection, CardProfileItem>()
+        snapshot.appendSections([.userProfile])
+        snapshot.appendItems([.userProfile(cardProfileModel)])
+//        snapshot.appendSections([.RelevantCareerProfiles])
+//        snapshot.appendItems(RelevantCareerModel.releventCareerProfiles.map { .RelevantCareerProfiles($0) })
+        datasource.apply(snapshot)
     }
 }
 
@@ -73,9 +87,9 @@ extension CardProfileDetailViewController {
             switch sectionIndex {
             case 0:
                 let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.4))
-                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.4), subitems: [item])
+                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.4), subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
-//                section.contentInsets = NSDirectionalEdgeInsets(top: 54, leading: 20, bottom: 45, trailing: 20)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 62, leading: 0, bottom: 0, trailing: 0)
                 return section
 //            case 1:
 //                let item = CompositionalLayout.createItem(width: .fractionalWidth(0.3), height: .fractionalHeight(1))
