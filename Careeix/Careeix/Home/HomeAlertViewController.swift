@@ -22,30 +22,32 @@ class HomeAlertViewController: UIViewController {
     let containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.layer.cornerRadius = 5
+        view.layer.cornerRadius = 10
         return view
     }()
     
-    let titleText: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "가입을 축하해요!"
-        label.font = .systemFont(ofSize: 18, weight: .semibold)
-        label.textColor = .label
+        let name = CareerModel.minimalCareerProfile.map { $0.nickname }
+        label.text = "\(name[0])님, 반가워요!"
+        label.font = .pretendardFont(size: 18, style: .medium)
+        label.textColor = .appColor(.gray900)
         return label
     }()
     
-    let descriptionText: UILabel = {
+    let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "회원가입을 축하해요! \ncareeix에서 당신의 성장을 기록해보세요."
+        label.text = "careeix에 오신 걸 환영해요! \n당신의 빛나는 성장을 기록해보세요."
         label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 15, weight: .regular)
-        label.textColor = .darkGray
+        label.addInterlineSpacing(spacingValue: 5)
+        label.font = .pretendardFont(size: 15, style: .regular)
+        label.textColor = .appColor(.gray600)
         return label
     }()
     
-    let modalImage: UIImageView = {
+    let modalImageView: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(systemName: "questionmark.circle")
+        image.image = UIImage(named: "greet")
         image.contentMode = .scaleAspectFill
         return image
     }()
@@ -53,7 +55,8 @@ class HomeAlertViewController: UIViewController {
     let confirmButton: UIButton = {
         let button = UIButton()
         button.setTitle("확인", for: .normal)
-        button.setTitleColor(.darkGray, for: .normal)
+        button.setTitleColor(.appColor(.gray400), for: .normal)
+        button.titleLabel?.font = .pretendardFont(size: 15, style: .light)
         button.backgroundColor = .clear
         button.contentMode = .center
         return button
@@ -72,32 +75,49 @@ class HomeAlertViewController: UIViewController {
 
         containerView.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.width.equalToSuperview().multipliedBy(0.8)
+            $0.width.equalTo(343)
+            $0.height.equalTo(425)
         }
         
-        [titleText, descriptionText, modalImage, confirmButton]
+        [titleLabel, descriptionLabel, modalImageView, confirmButton]
             .forEach { containerView.addSubview($0) }
         
-        titleText.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(29)
+            $0.leading.equalToSuperview().offset(26)
         }
         
-        descriptionText.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.top.equalTo(titleText.snp.bottom)
+        descriptionLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(37)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(12.11)
         }
         
-        modalImage.snp.makeConstraints {
+        modalImageView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(descriptionText.snp.bottom).offset(25.16)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(25.16)
             $0.width.equalTo(266)
             $0.height.equalTo(225)
         }
         
         confirmButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(modalImage.snp.bottom).offset(17)
+            $0.top.equalTo(modalImageView.snp.bottom).offset(17)
             $0.bottom.equalToSuperview().inset(26)
         }
+    }
+}
+
+private extension UILabel {
+    func addInterlineSpacing(spacingValue: CGFloat = 2) {
+        guard let textString = text else { return }
+        let attributedString = NSMutableAttributedString(string: textString)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = spacingValue
+        attributedString.addAttribute(
+            .paragraphStyle,
+            value: paragraphStyle,
+            range: NSRange(location: 0, length: attributedString.length
+        ))
+        attributedText = attributedString
     }
 }

@@ -31,16 +31,35 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupCollectionView()
         configurationDatasource()
+        createNavigationBarItem()
+        homeCollectionView.delegate = self
+        showModalView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        showModalView()
+    }
+    
+    func createNavigationBarItem() {
+        let logoImageView = UIImage(named: "logo")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: logoImageView, style: .plain, target: self, action: #selector(moveToHome))
+    }
+    
+    @objc func moveToHome() {
         showModalView()
     }
     
     func showModalView() {
-        let modalView = HomeAlertViewController()
+        let modalView: UIViewController = HomeAlertViewController()
         modalView.modalPresentationStyle = .overCurrentContext
         self.present(modalView, animated: true)
     }
-    
-    private var viewModel = HomeViewModel()
     
     private let homeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
@@ -62,6 +81,16 @@ class HomeViewController: UIViewController {
         }
     }
     
+    let colorSet: [UIColor] = [.appColor(.next), .appColor(.date), .appColor(.progressBar), .appColor(.deep), .appColor(.main), .appColor(.name)]
+    
+    func itemColor(cell: RelevantCareerProfilesCell, indexPath: Int) {
+        for i in 0...indexPath {
+            if indexPath == i {
+                cell.backgroundColor = colorSet.randomElement()
+            }
+        }
+    }
+    
     func configurationDatasource() {
         let minimalCareerProfileRegistraion = UICollectionView.CellRegistration<MinimalCareerProfileCell, HomeItem> { _, _, _ in }
         let relevantCareerProfilesRegistraion = UICollectionView.CellRegistration<RelevantCareerProfilesCell, HomeItem> { _, _, _ in }
@@ -73,14 +102,12 @@ class HomeViewController: UIViewController {
             case .minimalCareerProfile(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: minimalCareerProfileRegistraion, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
-                cell.layer.cornerRadius = 10
-                cell.backgroundColor = .orange
                 return cell
             case .RelevantCareerProfiles(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: relevantCareerProfilesRegistraion, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
                 cell.layer.cornerRadius = 10
-                cell.backgroundColor = .orange
+                self.itemColor(cell: cell, indexPath: indexPath.item)
                 return cell
             }
         })
@@ -96,11 +123,29 @@ class HomeViewController: UIViewController {
     func changeDatasource() {
         var snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>()
         snapshot.appendSections([.minimalCareerProfile])
-        snapshot.appendItems(viewModel.minimalCareerProfile.map { .minimalCareerProfile($0) })
+        snapshot.appendItems(CareerModel.minimalCareerProfile.map { .minimalCareerProfile($0) })
         snapshot.appendSections([.RelevantCareerProfiles])
-        snapshot.appendItems(viewModel.releventCareerProfiles.map { .RelevantCareerProfiles($0) })
+        snapshot.appendItems(RelevantCareerModel.releventCareerProfiles.map { .RelevantCareerProfiles($0) })
         datasource.apply(snapshot)
     }
+}
+
+extension HomeViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cardProfileVC = CardProfileDetailViewController()
+
+        if indexPath.section == 0 {
+            let minimalProfile = CareerModel.minimalCareerProfile[indexPath.item]
+//            self.navigationController?.pushViewController(cardProfileVC, animated: true)
+            print("minimalprofile: \(minimalProfile)")
+        } else {
+            let cardProfile = RelevantCareerModel.releventCareerProfiles[indexPath.item]
+            cardProfileVC.cardProfileModel = cardProfile
+            self.navigationController?.pushViewController(cardProfileVC, animated: true)
+            print("cardprofile: \(cardProfile)")
+        }
+    }
+    
 }
 
 extension HomeViewController {
@@ -111,7 +156,7 @@ extension HomeViewController {
                 let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.4))
                 let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.4), subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 54, leading: 20, bottom: 45, trailing: 20)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 62, leading: 20, bottom: 20, trailing: 20)
                 return section
             case 1:
                 let item = CompositionalLayout.createItem(width: .fractionalWidth(0.3), height: .fractionalHeight(1))
