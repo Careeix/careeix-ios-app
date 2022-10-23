@@ -7,11 +7,19 @@
 
 import UIKit
 
-struct BaseCheckBoxViewModel {
-    
-}
-
 class BaseCheckBoxView: UIView {
+    var _isSelected: Bool = false
+    var isSelected: Bool {
+        get {
+            return _isSelected
+        }
+        set (newVal) {
+            _isSelected = newVal
+            layer.borderWidth = _isSelected ? 0 : 1
+            backgroundColor = _isSelected ? .appColor(.main) : .appColor(.white)
+        }
+    }
+    
     init() {
         super.init(frame: .zero)
         configure()
@@ -29,7 +37,8 @@ class BaseCheckBoxView: UIView {
     }()
     
     func configure() {
-        backgroundColor = .red
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.appColor(.gray100).cgColor
         layer.cornerRadius = 2
     }
     

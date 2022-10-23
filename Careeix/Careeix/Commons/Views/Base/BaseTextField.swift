@@ -6,6 +6,10 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+/// no intrinsic size
+/// intrinsic size 없습니다
 class BaseTextField: UITextField {
     
     override init(frame: CGRect) {
@@ -23,6 +27,11 @@ class BaseTextField: UITextField {
         layer.borderColor = UIColor.appColor(.gray100).cgColor
         setLeftPaddingPoints(15)
         font = .pretendardFont(size: 13, style: .regular)
+    }
+}
+extension Reactive where Base: BaseTextField {
+    var text: ControlProperty<String?> {
+        value
     }
 }
 

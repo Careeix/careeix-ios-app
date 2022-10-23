@@ -9,6 +9,12 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxRelay
+
+protocol TwoButtonAlertViewDelegate: AnyObject {
+    func didTapRightButton()
+    func didTapLeftButton()
+}
+
 struct TwoButtonAlertViewModel {
     let contentStringDriver: Driver<String>
     let leftButtonTextDriver: Driver<String>
@@ -16,21 +22,20 @@ struct TwoButtonAlertViewModel {
     let rightButtonTextDriver: Driver<String>
     let rightTextColorDriver: Driver<AssetsColor>
     
-    
-    
     init(content: String, leftString: String, leftColor: AssetsColor, rightString: String, rightColor: AssetsColor) {
         contentStringDriver = .just(content)
         leftButtonTextDriver = .just(leftString)
         leftTextColorDriver = .just(leftColor)
         rightButtonTextDriver = .just(rightString)
         rightTextColorDriver = .just(rightColor)
-        
     }
     
 }
+
 class TwoButtonAlertViewController: UIViewController {
     // MARK: - Properties
     var disposeBag = DisposeBag()
+    weak var delegate: TwoButtonAlertViewDelegate?
     
     // MARK: - Binding
     func bind(to viewModel: TwoButtonAlertViewModel) {
@@ -60,7 +65,14 @@ class TwoButtonAlertViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                owner.dismiss(animated: true)
+                owner.delegate?.didTapLeftButton()
+            }.disposed(by: disposeBag)
+        
+        rightLabel.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { owner, _ in
+                owner.delegate?.didTapRightButton()
             }.disposed(by: disposeBag)
     }
     
@@ -81,6 +93,7 @@ class TwoButtonAlertViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     // MARK: - UIComponents
     let contentView = UIView()
     let contentLabel = UILabel()
@@ -94,7 +107,9 @@ class TwoButtonAlertViewController: UIViewController {
                                       : .regular)
         sender.textAlignment = .center
     }
-    
+}
+
+extension TwoButtonAlertViewController {
     func setUI() {
         view.addSubview(contentView)
         
@@ -124,5 +139,4 @@ class TwoButtonAlertViewController: UIViewController {
             $0.height.equalToSuperview().multipliedBy(0.4)
         }
     }
-    
 }

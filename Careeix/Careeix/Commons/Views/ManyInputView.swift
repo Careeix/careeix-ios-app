@@ -32,14 +32,14 @@ class ManyInputView: UIView {
         viewModel.titleStringDriver
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
-        
+        // TODO: - !!!???
 //        viewModel.placeholderStringDriver
 //            .drive(.rx.placeholder)
 //            .disposed(by: disposeBag)
         
-//        textField.rx.text.orEmpty
-//            .bind(to: viewModel.inputStringRelay)
-//            .disposed(by: disposeBag)
+        textView.rx.text.orEmpty
+            .bind(to: viewModel.inputStringRelay)
+            .disposed(by: disposeBag)
     }
     
     // MARK: Initializer

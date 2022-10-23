@@ -14,16 +14,15 @@ class RadioCell: UITableViewCell {
         configure()
         setUI()
     }
-
+    
     func configure() {
         selectionStyle = .none
-        
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     let contentLabel: UILabel = {
         let l = UILabel()
         l.font = .pretendardFont(size: 13, style: .regular)
@@ -49,9 +48,9 @@ class RadioCell: UITableViewCell {
         [contentLabel, selectedMarkBorder, selectedMark, ].forEach { contentView.addSubview($0) }
         
         contentLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(15)
-            $0.top.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(48).priority(.high)
+            $0.height.equalTo(48)
         }
         
         selectedMark.snp.makeConstraints {

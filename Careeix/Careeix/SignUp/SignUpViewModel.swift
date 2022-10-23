@@ -10,11 +10,11 @@ import RxCocoa
 import RxSwift
 import RxRelay
 class SignUpViewModel {
-    // MARK: Types
-    typealias nickName = String
-    typealias job = String
-    typealias annualIndex = IndexPath
-    typealias detailJobs = [String]
+    // TODO: 주석 삭제
+//    typealias nickName = String
+//    typealias job = String
+//    typealias annualIndex = IndexPath
+//    typealias detailJobs = [String]
     
     // MARK: SubViewModels
     let nickNameInputViewModel: SimpleInputViewModel
@@ -24,7 +24,8 @@ class SignUpViewModel {
     let completeButtonViewModel: CompleteButtonViewModel
     
     // MARK: - Input
-    let combinedInputValuesObservable: Observable<(nickName, job, annualIndex, detailJobs)>
+    // TODO: 주석 삭제
+//    let combinedInputValuesObservable: Observable<(nickName, job, annualIndex, detailJobs)>
     let createUserTrigger =  PublishRelay<Void>()
     
     // MARK: - Output
@@ -40,7 +41,7 @@ class SignUpViewModel {
         self.detailJobsInputViewModel = detailJobsInputViewModel
         self.completeButtonViewModel = completeButtonViewModel
         
-        combinedInputValuesObservable =  Observable.combineLatest(
+        let combinedInputValuesObservable =  Observable.combineLatest(
             nickNameInputViewModel.inputStringRelay,
             jobInputViewModel.inputStringRelay,
             annualInputViewModel.selectedIndexRelay,
@@ -58,14 +59,11 @@ class SignUpViewModel {
         let buttonStateDriver = combinedInputValuesObservable
             .map { nickName, job, annualIndex, detailJobs in
                 nickName != "" && job != "" && detailJobs.count != 0
-            }.asDriver(onErrorJustReturn: false)
+            }.distinctUntilChanged()
+            .asDriver(onErrorJustReturn: false)
         
         completeButtonEnableDriver = buttonStateDriver.filter { $0 }.map { _ in () }
         completeButtonDisableDriver = buttonStateDriver.filter { !$0 }.map { _ in () }
-        
-        
-//        var filters = ["도ㅗ안", "자규ㅜㅁ"]
-        
     }
 
 }

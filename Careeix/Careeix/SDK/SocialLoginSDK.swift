@@ -26,7 +26,6 @@ class SocialLoginSDK {
     typealias needMoreInfo = Bool
     enum SocialLoginType {
         case kakao
-//        case apple
     }
     
     public static func setUrl(with url: URL) -> Bool {
@@ -50,6 +49,7 @@ class SocialLoginSDK {
     
     public static func socialLogout(type: SocialLoginType) -> Observable<Bool> {
         switch type {
+        // TODO: - 로그인 형식을 Realm에 저장해야하는가 고민
         case .kakao:
             return socialLoginService.kakaoLogout()
         }

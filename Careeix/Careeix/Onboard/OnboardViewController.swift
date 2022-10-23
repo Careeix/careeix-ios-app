@@ -52,7 +52,7 @@ class OnboardViewController: UIViewController {
             .map { ($1.targetContentOffset.pointee.x, $0.view.frame.width) }
             .bind(to: viewModel.endDraggingRelay)
             .disposed(by: disposeBag)
-
+        
         viewModel.currentPageDriver
             .drive(pageControl.rx.currentPage)
             .disposed(by: disposeBag)
@@ -76,14 +76,32 @@ class OnboardViewController: UIViewController {
                 let vc = HomeViewController()
                 owner.navigationController?.pushViewController(vc, animated: true)
             }.disposed(by: disposeBag)
-
+        
         viewModel.showSignUpViewDriver
             .debug("🧶🧶🧶 추가정보 필요 Driver 🧶🧶🧶")
             .drive (with: self) { owner, _ in
-                let vc = SignUpViewController()
+                let vc = SignUpViewController(
+                    viewModel: .init(
+                        nickNameInputViewModel: .init(title: "닉네임",
+                                                      placeholder: "10자 이내로 한글, 영문, 숫자를 입력해주세요."),
+                        jobInputViewModel: .init(title: "직무",
+                                                 placeholder: "직무를 입력해주세요.(Ex. 서버 개발자)"),
+                        annualInputViewModel: .init(title: "연차",
+                                                    contents: ["입문(1년 미만)",
+                                                               "주니어(1~4년차)",
+                                                               "미들(5~8년차)",
+                                                               "시니어(9년차~)"]),
+                        detailJobsInputViewModel: .init(title: "상세 직무",
+                                                        description: "상세 직무 개수는 1~3개까지 입력 가능합니다.",
+                                                        placeholders: Array(repeating: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)",
+                                                                            count: 3)),
+                        completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable
+                                                      )
+                    )
+                )
                 owner.navigationController?.pushViewController(vc, animated: true)
             }.disposed(by: disposeBag)
-
+        
     }
     
     // MARK: - UIComponents

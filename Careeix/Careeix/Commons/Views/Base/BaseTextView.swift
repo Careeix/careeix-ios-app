@@ -28,11 +28,6 @@ class BaseTextView: UITextView {
         
         configure()
     }
-//    override init(frame: CGRect, textContainer: NSTextContainer?) {
-//
-//
-//
-//    }
     var disposeBag = DisposeBag()
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -43,11 +38,22 @@ class BaseTextView: UITextView {
             .bind(to: viewModel.inputRelay).disposed(by: disposeBag)
         viewModel.driver
             .drive { a in
-                print(a, a.contains("\n"))
+                print(self.contentSize.height)
+//                print(self.)
+//                print(a, a.contains("\n"))
             }.disposed(by: disposeBag)
+        translatesAutoresizingMaskIntoConstraints = true
+        sizeToFit()
         layer.cornerRadius = 10
         layer.borderWidth = 1
         layer.borderColor = UIColor.appColor(.gray100).cgColor
         font = .pretendardFont(size: 13, style: .regular)
+        isScrollEnabled = false
+    }
+}
+
+extension Reactive where Base: BaseTextView {
+    var text: ControlProperty<String?> {
+        value
     }
 }

@@ -32,9 +32,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             leftColor: .gray400,
             rightString: "발행",
             rightColor: .point))
-        let signUpViewController = UINavigationController(rootViewController: SignUpViewController())
+        
+        let signUpViewController = UINavigationController(rootViewController: SignUpViewController(viewModel: .init(
+            nickNameInputViewModel: .init(title: "닉네임",
+                                          placeholder: "10자 이내로 한글, 영문, 숫자를 입력해주세요."),
+            jobInputViewModel: .init(title: "직무",
+                                     placeholder: "직무를 입력해주세요.(Ex. 서버 개발자)"),
+            annualInputViewModel: .init(title: "연차",
+                                        contents: ["입문(1년 미만)",
+                                                   "주니어(1~4년차)",
+                                                   "미들(5~8년차)",
+                                                   "시니어(9년차~)"]),
+            detailJobsInputViewModel: .init(title: "상세 직무",
+                                            description: "상세 직무 개수는 1~3개까지 입력 가능합니다.",
+                                            placeholders: Array(repeating: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)",
+                                                                count: 3)),
+            completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable)
+        )))
         let homeViewController = UINavigationController(rootViewController: HomeViewController())
-        let addProjectViewController = UINavigationController(rootViewController: AddProjectViewController(
+        let addProjectViewController = UINavigationController(rootViewController: ProjectInputViewController(
             viewModel: .init(
                 titleInputViewModel: .init(title: "제목",
                                            placeholder: "프로젝트 제목을 입력해주세요."),
@@ -46,21 +62,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                placeholder: "진행한 일을 2줄 이내로 소개해주세요.")
             )
         ))
-        
+        let projectInputDetailViewController = UINavigationController(rootViewController: ProjectInputDetailViewController(viewModel: .init()))
+        let noteInputViewComtroller = UINavigationController(rootViewController: NoteInputViewController(viewModel: .init()))
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
-        ? twoButtonAlertViewController
+        ? noteInputViewComtroller
         : TabBarController()
         // test end
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(updateWindow),
+                                               selector: #selector(showTabBarController),
                                                name: Notification.Name("loginSuccess"),
                                                object: nil)
         window?.makeKeyAndVisible()
     }
     
     @objc
-    func updateWindow() {
+    func showTabBarController() {
         window?.rootViewController = TabBarController()
+        window?.makeKeyAndVisible()
+    }
+    
+    @objc
+    func showOnboardController() {
+        window?.rootViewController = UINavigationController(rootViewController: OnboardViewController())
         window?.makeKeyAndVisible()
     }
     func sceneDidDisconnect(_ scene: UIScene) {

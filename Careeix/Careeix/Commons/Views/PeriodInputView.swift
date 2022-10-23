@@ -10,6 +10,10 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
+protocol PeriodInputViewDelegate: AnyObject {
+    func didTapProceedingCheckBox(isProceed: Bool)
+}
+
 struct PeriodInputViewModel {
     
     let startDateViewModel: BaseInputViewModel
@@ -18,12 +22,12 @@ struct PeriodInputViewModel {
     // MARK: Input
     let startDateTappedRelay = PublishRelay<Void>()
     let endDateTappedRelay = PublishRelay<Void>()
+    let isSelectedProceedingRelay = PublishRelay<Bool>()
     
     // MARK: Output
     let titleDriver: Driver<String>
     let descriptionDriver: Driver<String>
-    //    let startDateDriver: Driver<String>
-    //    let endDateDriver: Driver<String>
+    
     init(title: String, description: String) {
         titleDriver = .just(title)
         descriptionDriver = .just(description)
@@ -31,17 +35,39 @@ struct PeriodInputViewModel {
         startDateViewModel = .init(content: currentDateString)
         endDateViewModel = .init(content: currentDateString)
     }
-    
 }
 
 class PeriodInputView: UIView {
     let disposeBag = DisposeBag()
+    weak var delegate: PeriodInputViewDelegate?
     
     func bind(to viewModel: PeriodInputViewModel) {
         viewModel.titleDriver
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
         
+        proceedingCheckBox.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .map { owner, _ in !owner.proceedingCheckBox.isSelected }
+            .do(onNext: didTapProceedingCheckBox)
+            .bind(to: proceedingCheckBox.rx.isSelected)
+            .disposed(by: disposeBag)
+        
+    }
+    
+    func didTapProceedingCheckBox(_ isProceed: Bool) {
+        endDateView.backgroundColor = isProceed
+        ? .appColor(.gray20)
+        : .appColor(.white)
+        
+        endDateView.contentLabel.text = Date().toString()
+        endDateView.contentLabel.textColor = isProceed
+        ? .appColor(.gray100)
+        : .appColor(.black)
+        
+        endDateView.isUserInteractionEnabled = !isProceed
+        delegate?.didTapProceedingCheckBox(isProceed: isProceed)
     }
     
     init(viewModel: PeriodInputViewModel) {
@@ -79,7 +105,7 @@ class PeriodInputView: UIView {
     let proceedingLabel: UILabel = {
         let l = UILabel()
         l.text = "진행 중"
-        l.textColor = .appColor(.error)
+        l.textColor = .appColor(.gray600)
         l.font = .pretendardFont(size: 12, style: .regular)
         return l
     }()
@@ -125,7 +151,7 @@ extension PeriodInputView {
             $0.top.equalTo(endDateView.snp.bottom).offset(10)
             $0.bottom.equalToSuperview()
         }
-
+        
         proceedingLabel.snp.makeConstraints {
             $0.leading.equalTo(proceedingCheckBox.snp.trailing).offset(8)
             $0.top.equalTo(endDateView.snp.bottom).offset(11)

@@ -54,10 +54,11 @@ class MultiInputView: UIView {
     // MARK: - Initializer
     init(viewModel: MultiInputViewModel) {
         super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
         bind(to: viewModel)
         setUI()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -81,9 +82,7 @@ class MultiInputView: UIView {
         tv.register(MultiInputCell.self, forCellReuseIdentifier: MultiInputCell.self.description())
         tv.isScrollEnabled = false
         tv.separatorStyle = .none
-        tv.backgroundColor = .orange
-        tv.rowHeight = UITableView.automaticDimension
-        tv.estimatedRowHeight = 53.0
+        tv.rowHeight = 53
         return tv
     }()
 }
@@ -105,7 +104,7 @@ extension MultiInputView {
         tableView.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(11)
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(tableView.contentSize.height)
+            $0.height.greaterThanOrEqualTo(53 * 3)
         }
     }
 }

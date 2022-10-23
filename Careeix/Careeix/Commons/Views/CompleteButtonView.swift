@@ -23,6 +23,7 @@ class CompleteButtonView: UIView {
         self.backgroundColor = .appColor(viewModel.backgroundColor)
         contentLabel.text = viewModel.content
         setUI()
+        
     }
 
     override init(frame: CGRect) {

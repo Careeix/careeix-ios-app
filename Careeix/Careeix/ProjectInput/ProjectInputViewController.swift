@@ -1,5 +1,5 @@
 //
-//  AddProjectViewController.swift
+//  ProjectInputViewController.swift
 //  Careeix
 //
 //  Created by 김지훈 on 2022/10/20.
@@ -11,26 +11,57 @@ import RxRelay
 import RxSwift
 import RxKeyboard
 
-class AddProjectViewController: UIViewController {
+class ProjectInputViewController: UIViewController {
     // MARK: - Properties
     var disposeBag = DisposeBag()
+    let viewModel: ProjectInputViewModel
     
+    let datePickerViewHeight: CGFloat = DatePickerView.datePickerHeight + DatePickerView.datePickerTopViewHeight
+    lazy var datePickerOffset: CGFloat = datePickerViewHeight + DatePickerView.datePickerShadowHeight * 10
     // MARK: - Binding
-    func bind(to viewModel: AddProjectViewModel) {
+    func bind(to viewModel: ProjectInputViewModel) {
+        
+        viewModel.nextButtonEnableDriver
+            .drive(with: self) { owner, _ in
+                owner.completeButtonView.backgroundColor = .appColor(.next)
+                owner.completeButtonView.isUserInteractionEnabled = true
+                print(owner.completeButtonView.isUserInteractionEnabled)
+            }.disposed(by: disposeBag)
+        
+        viewModel.nextButtonDisableDriver
+            .drive(with: self) { owner, _ in
+                owner.completeButtonView.backgroundColor = .appColor(.disable)
+                owner.completeButtonView.isUserInteractionEnabled = false
+            }.disposed(by: disposeBag)
+        
+        viewModel.showNextViewWithInputValueDriver
+            .drive(with: self) { owner, inputs in
+                // TODO: -
+                print("입력값: ", inputs)
+                owner.view.endEditing(true)
+                owner.navigationController?.pushViewController(ProjectInputDetailViewController.init(viewModel: .init()), animated: true)
+            }.disposed(by: disposeBag)
+        
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
             .drive(with: self) { owner, keyboardVisibleHeight in
+                print(keyboardVisibleHeight)
                 owner.contentView.snp.updateConstraints {
                     $0.bottom.equalToSuperview().inset(keyboardVisibleHeight)
                 }
                 owner.completeButtonView.snp.updateConstraints {
                     $0.bottom.equalToSuperview().inset(keyboardVisibleHeight)
                 }
+                if keyboardVisibleHeight != 0 {
+                    owner.hideBottomUpView(owner.startDatePickerView)
+                    owner.hideBottomUpView(owner.endDatePickerView)
+                }
+                
                 UIView.animate(withDuration: 0.4) {
                     owner.view.layoutIfNeeded()
                 }
             }.disposed(by: disposeBag)
-    
+        
         titleInputView.textField.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
@@ -56,83 +87,94 @@ class AddProjectViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                owner.didTapDateView(owner.startDatePickerView)
+                owner.hideBottomUpView(owner.endDatePickerView)
+                owner.showBottomUpView(owner.startDatePickerView)
             }.disposed(by: disposeBag)
         
         periodInputView.endDateView.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                owner.didTapDateView(owner.endDatePickerView)
+                owner.hideBottomUpView(owner.startDatePickerView)
+                owner.showBottomUpView(owner.endDatePickerView)
             }.disposed(by: disposeBag)
         
         completeButtonView.rx.tapGesture()
             .when(.recognized)
-            .withUnretained(self)
-            .bind { owner, _ in
-                // TODO: - 화면전환
-                print("다음 단계로 이동")
-            }.disposed(by: disposeBag)
-        
-        startDatePickerCompleteButtonView.rx.tapGesture()
+            .map { _ in () }
+            .bind(to: viewModel.nextStepTrigger)
+            .disposed(by: disposeBag)
+            
+        startDatePickerView.datePickerTopViewRightLabel.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                owner.didTapDatePickerCompleteButtonView()
+                owner.hideBottomUpView(owner.startDatePickerView)
             }.disposed(by: disposeBag)
         
-        startDatePicker.rx.date
-            .map { $0.toString() }
-            .asDriver(onErrorJustReturn: "")
+        endDatePickerView.datePickerTopViewRightLabel.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { owner, _ in
+                owner.hideBottomUpView(owner.endDatePickerView)
+            }.disposed(by: disposeBag)
+        
+        startDatePickerView.datePicker.rx.date
+            .bind(to: viewModel.startDateRelay)
+            .disposed(by: disposeBag)
+        
+        endDatePickerView.datePicker.rx.date
+            .bind(to: viewModel.endDateRelay)
+            .disposed(by: disposeBag)
+        
+        viewModel.startDateStringDriver
             .drive(periodInputView.startDateView.contentLabel.rx.text)
             .disposed(by: disposeBag)
         
-        endDatePicker.rx.date
-            .map { $0.toString() }
-            .asDriver(onErrorJustReturn: "")
+        viewModel.endDateStringDriver
             .drive(periodInputView.endDateView.contentLabel.rx.text)
             .disposed(by: disposeBag)
-        
     }
-    
-    // MARK: - function
-    func didTapDatePickerCompleteButtonView() {
-        startDatePickerView.snp.updateConstraints {
-            $0.bottom.equalToSuperview().offset(270)
-        }
 
-        endDatePickerView.snp.updateConstraints {
-            $0.bottom.equalToSuperview().offset(270)
+    // MARK: - function
+    func hideBottomUpView(_ sender: UIView) {
+        sender.snp.updateConstraints {
+            $0.bottom.equalToSuperview().offset(datePickerOffset)
         }
+        
         UIView.animate(withDuration: 0.4) { [weak self] in
             self?.view.layoutIfNeeded()
         }
     }
-    func didTapDateView(_ sender: UIView) {
+    
+    func showBottomUpView(_ sender: UIView) {
         view.endEditing(true)
-        scrollView.contentOffset.y = titleInputView.frame.minX
-        sender.isHidden = false
-        contentView.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(250)
-        }
         sender.snp.updateConstraints {
             $0.bottom.equalToSuperview()
         }
         UIView.animate(withDuration: 0.4) { [weak self] in
-            self?.view.layoutIfNeeded()
+            guard let self else { return }
+            self.view.layoutIfNeeded()
+        }
+        
+        contentView.snp.updateConstraints {
+            $0.bottom.equalToSuperview().inset(datePickerViewHeight)
         }
     }
     
     // MARK: - Initializer
-    init(viewModel: AddProjectViewModel) {
+    init(viewModel: ProjectInputViewModel) {
+        self.viewModel = viewModel
         titleInputView = .init(viewModel: viewModel.titleInputViewModel)
         periodInputView = .init(viewModel: viewModel.periodInputViewModel)
         divisionInputView = .init(viewModel: viewModel.divisionInputViewModel)
         introduceInputView = .init(viewModel: viewModel.introduceInputViewModel)
         completeButtonView = .init(viewModel: .init(content: "다음", backgroundColor: .disable))
         super.init(nibName: nil, bundle: nil)
+        periodInputView.delegate = self
         setUI()
         bind(to: viewModel)
+        self.completeButtonView.isUserInteractionEnabled = false
     }
     
     required init?(coder: NSCoder) {
@@ -157,48 +199,15 @@ class AddProjectViewController: UIViewController {
     let divisionInputView: SimpleInputView
     let introduceInputView: ManyInputView
     let completeButtonView: CompleteButtonView
-    let startDatePickerView: UIView = {
-        let v = UIView()
-        v.backgroundColor = .white
-        v.isHidden = true
-        return v
-    }()
-    let startDatePicker: UIDatePicker = {
-        let dp = UIDatePicker()
-        dp.datePickerMode = .date
-        dp.preferredDatePickerStyle = .wheels
-        
-        return dp
-    }()
-    let startDatePickerCompleteButtonView: UIView = {
-       let v = UIView()
-        v.backgroundColor = .appColor(.error)
-        return v
-    }()
-    let endDatePickerView: UIView = {
-        let v = UIView()
-        v.backgroundColor = .white
-        v.isHidden = true
-        return v
-    }()
-    let endDatePicker: UIDatePicker = {
-        let dp = UIDatePicker()
-        dp.datePickerMode = .date
-        dp.preferredDatePickerStyle = .wheels
-        return dp
-    }()
-    let endDatePickerCompleteButtonView: UIView = {
-       let v = UIView()
-        v.backgroundColor = .appColor(.error)
-        return v
-    }()
-
+    let startDatePickerView = DatePickerView(viewModel: .init(title: "시작 날짜"))
+    let endDatePickerView = DatePickerView(viewModel: .init(title: "종료 날짜"))
+    
+    
 }
 
-extension AddProjectViewController {
+extension ProjectInputViewController {
     func setUI() {
         view.addSubview(scrollView)
-        
         scrollView.addSubview(contentView)
         
         scrollView.snp.makeConstraints {
@@ -243,41 +252,25 @@ extension AddProjectViewController {
         
         view.addSubview(startDatePickerView)
         startDatePickerView.snp.makeConstraints {
+            
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(270)
-            
+            $0.bottom.equalToSuperview().offset(datePickerOffset)
         }
-
-        startDatePickerView.addSubview(startDatePicker)
-        startDatePickerView.addSubview(startDatePickerCompleteButtonView)
-            
-        
-        startDatePickerCompleteButtonView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(20)
-        }
-        
-        startDatePicker.snp.makeConstraints {
-            $0.top.equalTo(startDatePickerCompleteButtonView.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(250)
-        }
-        
         
         view.addSubview(endDatePickerView)
+        
         endDatePickerView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(270)
-
+            $0.bottom.equalToSuperview().offset(datePickerOffset)
         }
+        
+    }
+}
 
-        endDatePickerView.addSubview(endDatePicker)
-        endDatePickerView.addSubview(endDatePickerCompleteButtonView)
-
-        endDatePicker.snp.makeConstraints {
-            $0.top.equalTo(endDatePickerCompleteButtonView.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(250)
-        }
+extension ProjectInputViewController: PeriodInputViewDelegate {
+    func didTapProceedingCheckBox(isProceed: Bool) {
+        viewModel.endDateRelay.accept(Date())
+        endDatePickerView.datePicker.setDate(Date(), animated: false)
+        hideBottomUpView(endDatePickerView)
     }
 }
