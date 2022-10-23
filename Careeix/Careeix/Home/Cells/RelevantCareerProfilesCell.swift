@@ -32,6 +32,7 @@ class RelevantCareerProfilesCell: UICollectionViewCell {
         label.textColor = .appColor(.white)
         label.font = .pretendardFont(size: 15, style: .semiBold)
         label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
         return label
     }()
     
@@ -93,6 +94,7 @@ class RelevantCareerProfilesCell: UICollectionViewCell {
         careerName.snp.makeConstraints {
             $0.leading.equalTo(11)
             $0.top.equalTo(15)
+            $0.width.equalTo(83)
         }
         
         careerGrade.snp.makeConstraints {
@@ -105,12 +107,12 @@ class RelevantCareerProfilesCell: UICollectionViewCell {
             $0.bottom.equalTo(secondDetailCareerName.snp.top).inset(2)
         }
         secondDetailCareerName.snp.makeConstraints {
-            $0.leading.equalTo(11)
+            $0.leading.equalTo(firstDetailCareerName.snp.leading)
             $0.bottom.equalTo(thirdDetailCareerName.snp.top).inset(2)
         }
         
         thirdDetailCareerName.snp.makeConstraints {
-            $0.leading.equalTo(11)
+            $0.leading.equalTo(secondDetailCareerName.snp.leading)
             $0.bottom.equalToSuperview().inset(12)
         }
     }
