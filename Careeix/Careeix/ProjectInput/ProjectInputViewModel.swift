@@ -1,5 +1,5 @@
 //
-//  AddProjectViewModel.swift
+//  ProjectInputViewModel.swift
 //  Careeix
 //
 //  Created by 김지훈 on 2022/10/21.
@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
-struct ProjectBaseInputValue {
+struct ProjectBaseInputValue: Codable {
     let title: String
     let startDateString: String
     let endDateString: String

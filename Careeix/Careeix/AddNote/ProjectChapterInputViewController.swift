@@ -1,5 +1,5 @@
 //
-//  AddNoteViewController.swift
+//  ProjectChapterInputViewModel.swift
 //  Careeix
 //
 //  Created by 김지훈 on 2022/10/23.
@@ -10,31 +10,30 @@ import RxSwift
 import RxCocoa
 import RxRelay
 import RxKeyboard
-struct NoteInputViewmodel {
+struct ProjectChapterInputViewModel {
     // MARK: Input
     let titleStringRelay = PublishRelay<String>()
     let contentStringRelay = PublishRelay<String>()
+//    let completeTrigger = PublishRelay<Void>()
     
+    let currentIndex: Int
     // MARK: Output
-    init() {
+    
+    init(currentIndex: Int) {
         let combinedInputValuesObservable = Observable.combineLatest(titleStringRelay, contentStringRelay) { ($0, $1) }
         combinedInputValuesObservable.subscribe {
             print($0, $1)
         }
+        self.currentIndex = currentIndex
     }
 }
 
-class NoteInputViewController: UIViewController {
+class ProjectChapterInputViewController: UIViewController {
     var disposeBag = DisposeBag()
-    init(viewModel: NoteInputViewmodel) {
-        super.init(nibName: nil, bundle: nil)
-        bind(to: viewModel)
-        setUI()
-        titleTextField.becomeFirstResponder()
-        completeButtonView.isUserInteractionEnabled = false
-    }
+    var viewModel: ProjectChapterInputViewModel
     
-    func bind(to viewModel: NoteInputViewmodel) {
+    // MARK: Binding
+    func bind(to viewModel: ProjectChapterInputViewModel) {
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
             .drive(with: self) { owner, keyboardVisibleHeight in
@@ -58,8 +57,6 @@ class NoteInputViewController: UIViewController {
             .bind(to: viewModel.contentStringRelay)
             .disposed(by: disposeBag)
         
-
-        
         addNoteButtonView.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
@@ -71,15 +68,70 @@ class NoteInputViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                print("컴플릿 탭 !")
+                owner.didTapCompleteButtonView()
             }.disposed(by: disposeBag)
     }
+    // MARK: Function
+    func didTapCompleteButtonView() {
+        print("저장 버튼이 눌렸어요")
+        updateProjectChapter()
+    }
+    
+    func updateProjectChapter() {
+        guard let title = titleTextField.text, let content = contentTextView.text else {
+            print("제목 또는 내용이 nil이에요")
+            return
+        }
+        if viewModel.currentIndex == UserDefaultManager.shared.projectChapters.count {
+            print("메모 업데이트 성공")
+            UserDefaultManager.shared.projectChapters.append(.init(title: title, content: content, notes: []))
+        }
+    }
+    
+    func checkAndRemove() {
+        if viewModel.currentIndex < UserDefaultManager.shared.projectChapters.count {
+            let currentChapter = UserDefaultManager.shared.projectChapters[viewModel.currentIndex]
+            if currentChapter.content == ""
+                && currentChapter.title == ""
+                && currentChapter.notes.filter({ $0 != "" }).count == 0 {
+                UserDefaultManager.shared.projectChapters.remove(at: viewModel.currentIndex)
+            }
+        }
+    }
+    func fillInputs() {
+        
+        if UserDefaultManager.shared.projectChapters.count < viewModel.currentIndex {
+            print("아래 내용을 채워야해요")
+            print(UserDefaultManager.shared.projectChapters[viewModel.currentIndex])
+        }
+    }
+
+    // MARK: Initializer
+    init(viewModel: ProjectChapterInputViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        view.backgroundColor = .white
+        bind(to: viewModel)
+        setUI()
+        titleTextField.becomeFirstResponder()
+        title = "\(viewModel.currentIndex)"
+        fillInputs()
+//        completeButtonView.isUserInteractionEnabled = false
+        configureNavigationBar()
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        updateProjectChapter()
+        checkAndRemove()
     }
 
     // MARK: UIComponents
@@ -105,7 +157,7 @@ class NoteInputViewController: UIViewController {
     }()
     let completeButtonView = CompleteButtonView(viewModel: .init(content: "저장하기", backgroundColor: .disable))
 }
-extension NoteInputViewController {
+extension ProjectChapterInputViewController {
     func setUI() {
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints {

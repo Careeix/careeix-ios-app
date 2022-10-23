@@ -20,7 +20,7 @@
 		785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF52F29054A8900592F7F /* ProjectInputDetailViewController.swift */; };
 		785AF53429054EFE00592F7F /* ProjectChapterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF53329054EFE00592F7F /* ProjectChapterCell.swift */; };
 		785AF53629054F2500592F7F /* ContentsAddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF53529054F2500592F7F /* ContentsAddButtonView.swift */; };
-		785AF5392905574A00592F7F /* NoteInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF5382905574A00592F7F /* NoteInputViewController.swift */; };
+		785AF5392905574A00592F7F /* ProjectChapterInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */; };
 		786F46922901443400215AF0 /* ProjectInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F46912901443400215AF0 /* ProjectInputViewController.swift */; };
 		786F469429018B2E00215AF0 /* BaseInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469329018B2E00215AF0 /* BaseInputView.swift */; };
 		786F469629018F5500215AF0 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469529018F5500215AF0 /* Date+.swift */; };
@@ -32,6 +32,8 @@
 		786F46A729028DE900215AF0 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 786F46A629028DE900215AF0 /* Moya */; };
 		786F46A929028DE900215AF0 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 786F46A829028DE900215AF0 /* RxMoya */; };
 		7881F5522902D91D00111395 /* TwoButtonAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */; };
+		78C9099A2905918A00AA9AA3 /* ProjectChapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C909992905918A00AA9AA3 /* ProjectChapter.swift */; };
+		78C9099C2905A18800AA9AA3 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C9099B2905A18800AA9AA3 /* UIViewController+.swift */; };
 		78CE4CF22904386600FAFA8E /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CE4CF12904386600FAFA8E /* DatePickerView.swift */; };
 		78D52E4F28FCFCF2001F5747 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = 78D52E4E28FCFCF2001F5747 /* RxKeyboard */; };
 		78D52E5128FD14FF001F5747 /* SignUpModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D52E5028FD14FF001F5747 /* SignUpModel.swift */; };
@@ -106,7 +108,7 @@
 		785AF52F29054A8900592F7F /* ProjectInputDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInputDetailViewController.swift; sourceTree = "<group>"; };
 		785AF53329054EFE00592F7F /* ProjectChapterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterCell.swift; sourceTree = "<group>"; };
 		785AF53529054F2500592F7F /* ContentsAddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentsAddButtonView.swift; sourceTree = "<group>"; };
-		785AF5382905574A00592F7F /* NoteInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteInputViewController.swift; sourceTree = "<group>"; };
+		785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterInputViewController.swift; sourceTree = "<group>"; };
 		786F46912901443400215AF0 /* ProjectInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInputViewController.swift; sourceTree = "<group>"; };
 		786F469329018B2E00215AF0 /* BaseInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseInputView.swift; sourceTree = "<group>"; };
 		786F469529018F5500215AF0 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
@@ -116,6 +118,8 @@
 		786F46A12901A21B00215AF0 /* BaseCheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCheckBoxView.swift; sourceTree = "<group>"; };
 		786F46A32901A24E00215AF0 /* PeriodInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodInputView.swift; sourceTree = "<group>"; };
 		7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoButtonAlertViewController.swift; sourceTree = "<group>"; };
+		78C909992905918A00AA9AA3 /* ProjectChapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapter.swift; sourceTree = "<group>"; };
+		78C9099B2905A18800AA9AA3 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		78CE4CF12904386600FAFA8E /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		78D52E5028FD14FF001F5747 /* SignUpModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpModel.swift; sourceTree = "<group>"; };
 		78D52E5228FD3142001F5747 /* SocialLoginSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginSDK.swift; sourceTree = "<group>"; };
@@ -255,7 +259,7 @@
 		785AF5372905572900592F7F /* AddNote */ = {
 			isa = PBXGroup;
 			children = (
-				785AF5382905574A00592F7F /* NoteInputViewController.swift */,
+				785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */,
 			);
 			path = AddNote;
 			sourceTree = "<group>";
@@ -315,6 +319,14 @@
 				7AFE502128FD90C600A72D65 /* CompositionalLayout.swift */,
 			);
 			path = StaticFunction;
+			sourceTree = "<group>";
+		};
+		78C909972905914100AA9AA3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				78C909992905918A00AA9AA3 /* ProjectChapter.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		78D52EA128FE5BE0001F5747 /* Services */ = {
@@ -389,6 +401,7 @@
 				78F4CE3F2900467300284B86 /* Resource */,
 				7881F5542902D94A00111395 /* ViewControllers */,
 				78E94A2D28EF0D4900DBBF5C /* Views */,
+				78C909972905914100AA9AA3 /* Models */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -423,6 +436,7 @@
 				78F4CE3D290045BB00284B86 /* UIFont+.swift */,
 				78F4CE4C290049D400284B86 /* UITextField+.swift */,
 				786F469529018F5500215AF0 /* Date+.swift */,
+				78C9099B2905A18800AA9AA3 /* UIViewController+.swift */,
 			);
 			name = Extensions;
 			path = Careeix/Extensions;
@@ -573,6 +587,7 @@
 				78D52EA328FE5C3E001F5747 /* SocialLoginService.swift in Sources */,
 				78DC17CD28FAA4DB00331A22 /* MultiInputView.swift in Sources */,
 				785AF53629054F2500592F7F /* ContentsAddButtonView.swift in Sources */,
+				78C9099C2905A18800AA9AA3 /* UIViewController+.swift in Sources */,
 				78DC17D128FBE7E800331A22 /* SignUpViewModel.swift in Sources */,
 				78DC17D428FBEA0000331A22 /* RadioCell.swift in Sources */,
 				7AFE502928FD90C600A72D65 /* CompositionalLayout.swift in Sources */,
@@ -588,6 +603,7 @@
 				785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */,
 				7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */,
 				786F46A22901A21B00215AF0 /* BaseCheckBoxView.swift in Sources */,
+				78C9099A2905918A00AA9AA3 /* ProjectChapter.swift in Sources */,
 				786F4698290199EF00215AF0 /* BaseTextView.swift in Sources */,
 				78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */,
 				7AFE502428FD90C600A72D65 /* HomeAlertViewController.swift in Sources */,
@@ -604,7 +620,7 @@
 				784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */,
 				7AFE502228FD90C600A72D65 /* RelevantHeaderView.swift in Sources */,
 				78DC17BF28FA943E00331A22 /* SignUpViewController.swift in Sources */,
-				785AF5392905574A00592F7F /* NoteInputViewController.swift in Sources */,
+				785AF5392905574A00592F7F /* ProjectChapterInputViewController.swift in Sources */,
 				786F469629018F5500215AF0 /* Date+.swift in Sources */,
 				786F46A02901A1A400215AF0 /* ManyInputView.swift in Sources */,
 				78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */,

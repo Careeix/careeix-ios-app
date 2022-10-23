@@ -25,13 +25,12 @@ class ProjectInputViewController: UIViewController {
             .drive(with: self) { owner, _ in
                 owner.completeButtonView.backgroundColor = .appColor(.next)
                 owner.completeButtonView.isUserInteractionEnabled = true
-                print(owner.completeButtonView.isUserInteractionEnabled)
             }.disposed(by: disposeBag)
         
         viewModel.nextButtonDisableDriver
             .drive(with: self) { owner, _ in
                 owner.completeButtonView.backgroundColor = .appColor(.disable)
-                owner.completeButtonView.isUserInteractionEnabled = false
+//                owner.completeButtonView.isUserInteractionEnabled = false
             }.disposed(by: disposeBag)
         
         viewModel.showNextViewWithInputValueDriver
@@ -174,7 +173,8 @@ class ProjectInputViewController: UIViewController {
         periodInputView.delegate = self
         setUI()
         bind(to: viewModel)
-        self.completeButtonView.isUserInteractionEnabled = false
+        configureNavigationBar()
+//        completeButtonView.isUserInteractionEnabled = false
     }
     
     required init?(coder: NSCoder) {
@@ -184,6 +184,7 @@ class ProjectInputViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -201,8 +202,6 @@ class ProjectInputViewController: UIViewController {
     let completeButtonView: CompleteButtonView
     let startDatePickerView = DatePickerView(viewModel: .init(title: "시작 날짜"))
     let endDatePickerView = DatePickerView(viewModel: .init(title: "종료 날짜"))
-    
-    
 }
 
 extension ProjectInputViewController {

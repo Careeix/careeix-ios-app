@@ -73,7 +73,6 @@ class RadioInputView: UIView {
     init(viewModel: RadioInputViewModel) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        print(tableView.rowHeight)
         setUI()
         bind(to: viewModel)
     }

@@ -36,12 +36,11 @@ class BaseTextView: UITextView {
     func configure() {
         rx.text.orEmpty
             .bind(to: viewModel.inputRelay).disposed(by: disposeBag)
+        // TODO: !!!
         viewModel.driver
-            .drive { a in
-                print(self.contentSize.height)
-//                print(self.)
-//                print(a, a.contains("\n"))
+            .drive { _ in
             }.disposed(by: disposeBag)
+        
         translatesAutoresizingMaskIntoConstraints = true
         sizeToFit()
         layer.cornerRadius = 10

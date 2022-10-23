@@ -50,7 +50,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable)
         )))
         let homeViewController = UINavigationController(rootViewController: HomeViewController())
-        let addProjectViewController = UINavigationController(rootViewController: ProjectInputViewController(
+        let projectInputViewController = UINavigationController(rootViewController: ProjectInputViewController(
             viewModel: .init(
                 titleInputViewModel: .init(title: "제목",
                                            placeholder: "프로젝트 제목을 입력해주세요."),
@@ -63,11 +63,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             )
         ))
         let projectInputDetailViewController = UINavigationController(rootViewController: ProjectInputDetailViewController(viewModel: .init()))
-        let noteInputViewComtroller = UINavigationController(rootViewController: NoteInputViewController(viewModel: .init()))
-        window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
-        ? noteInputViewComtroller
-        : TabBarController()
+//        let noteInputViewComtroller = UINavigationController(rootViewController: NoteInputViewController(viewModel: .init()))
+        
+        UserDefaultManager.shared.projectChapters = []
+        UserDefaultManager.shared.projectInput = .init(title: "", startDateString: "", endDateString: "", division: "", indroduce: "")
         // test end
+        
+        
+        window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
+        ? projectInputViewController
+        : TabBarController()
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(showTabBarController),
                                                name: Notification.Name("loginSuccess"),
