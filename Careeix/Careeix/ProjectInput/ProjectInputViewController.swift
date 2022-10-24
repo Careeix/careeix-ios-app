@@ -30,13 +30,14 @@ class ProjectInputViewController: UIViewController {
         viewModel.nextButtonDisableDriver
             .drive(with: self) { owner, _ in
                 owner.completeButtonView.backgroundColor = .appColor(.disable)
-//                owner.completeButtonView.isUserInteractionEnabled = false
+                owner.completeButtonView.isUserInteractionEnabled = false
             }.disposed(by: disposeBag)
         
         viewModel.showNextViewWithInputValueDriver
             .drive(with: self) { owner, inputs in
                 // TODO: -
                 print("입력값: ", inputs)
+                UserDefaultManager.shared.projectInput = inputs
                 owner.view.endEditing(true)
                 owner.navigationController?.pushViewController(ProjectInputDetailViewController.init(viewModel: .init()), animated: true)
             }.disposed(by: disposeBag)
@@ -103,7 +104,7 @@ class ProjectInputViewController: UIViewController {
             .map { _ in () }
             .bind(to: viewModel.nextStepTrigger)
             .disposed(by: disposeBag)
-            
+        
         startDatePickerView.datePickerTopViewRightLabel.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
@@ -134,7 +135,7 @@ class ProjectInputViewController: UIViewController {
             .drive(periodInputView.endDateView.contentLabel.rx.text)
             .disposed(by: disposeBag)
     }
-
+    
     // MARK: - function
     func hideBottomUpView(_ sender: UIView) {
         sender.snp.updateConstraints {
@@ -174,8 +175,11 @@ class ProjectInputViewController: UIViewController {
         setUI()
         bind(to: viewModel)
         configureNavigationBar()
-//        completeButtonView.isUserInteractionEnabled = false
+        view.backgroundColor = .appColor(.white)
+        
+        completeButtonView.isUserInteractionEnabled = false
     }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -184,7 +188,13 @@ class ProjectInputViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {

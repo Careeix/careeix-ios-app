@@ -27,15 +27,6 @@ struct ProjectInputDetailViewModel {
 class ProjectInputDetailViewController: UIViewController {
     var disposeBag = DisposeBag()
     var viewModel: ProjectInputDetailViewModel
-    // MARK: Initializer
-    init(viewModel: ProjectInputDetailViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-        setUI()
-        bind(to: viewModel)
-        view.backgroundColor = .appColor(.white)
-        configureNavigationBar()
-    }
     
     // MARK: Binding
     func bind(to viewModel: ProjectInputDetailViewModel) {
@@ -59,19 +50,28 @@ class ProjectInputDetailViewController: UIViewController {
             .bind { owner, indexPath in
                 owner.navigationController?.pushViewController(ProjectChapterInputViewController(viewModel: .init(currentIndex: indexPath.row)), animated: true)
             }.disposed(by: disposeBag)
-        
+        completeButtonView.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { owner, _ in
+                print("발행전 데이터 확인")
+                print(UserDefaultManager.shared.projectInput)
+                print(UserDefaultManager.shared.projectChapters)
+                
+            }.disposed(by: disposeBag)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        viewModel.viewWillAppearRelay.accept(())
-        tableView.snp.updateConstraints {
-            $0.height.equalTo(CGFloat(UserDefaultManager.shared.projectChapters.count) * tableView.rowHeight)
-        }
-        print("이 화면에서의 수집 데이터들")
-        print(UserDefaultManager.shared.projectChapters)
-        print(UserDefaultManager.shared.projectInput)
+
+    // MARK: Initializer
+    init(viewModel: ProjectInputDetailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        setUI()
+        bind(to: viewModel)
+        view.backgroundColor = .appColor(.white)
+        configureNavigationBar()
+        completeButtonView.isUserInteractionEnabled = false
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -79,7 +79,21 @@ class ProjectInputDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
+        viewModel.viewWillAppearRelay.accept(())
+        tableView.snp.updateConstraints {
+            $0.height.equalTo(CGFloat(UserDefaultManager.shared.projectChapters.count) * tableView.rowHeight)
+        }
+        print("이 화면에서의 수집 데이터들")
+        print(UserDefaultManager.shared.projectChapters)
+        completeButtonView.isUserInteractionEnabled = !(UserDefaultManager.shared.projectChapters.count == 0)
+        completeButtonView.backgroundColor = completeButtonView.isUserInteractionEnabled ? .appColor(.main) : .appColor(.disable)
+        print(UserDefaultManager.shared.projectInput)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
+    }
     // MARK: UIComponents
     let titleLabel: UILabel = {
        let l = UILabel()
@@ -133,6 +147,13 @@ extension ProjectInputDetailViewController {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(48)
             $0.bottom.equalToSuperview().inset(80)
+        }
+        
+        view.addSubview(completeButtonView)
+        
+        completeButtonView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(78)
         }
     }
 }

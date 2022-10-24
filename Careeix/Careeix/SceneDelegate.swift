@@ -71,7 +71,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
-        ? projectInputViewController
+        ? UINavigationController(rootViewController: OnboardViewController())
         : TabBarController()
         
         NotificationCenter.default.addObserver(self,

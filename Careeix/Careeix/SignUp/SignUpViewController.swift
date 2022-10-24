@@ -54,6 +54,12 @@ class SignUpViewController: UIViewController, EventDelegate {
                 owner.completeButtonView.isUserInteractionEnabled = true
             }.disposed(by: disposeBag)
         
+        viewModel.showTabbarCotrollerDriver
+            .drive(with: self) { owner, _ in
+                NotificationCenter.default.post(name: Notification.Name("loginSuccess"), object: nil)
+//                owner.navigationController?.pushViewController(TabBarController(), animated: false)
+            }.disposed(by: disposeBag)
+        
         nickNameInputView.textField.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
@@ -75,6 +81,7 @@ class SignUpViewController: UIViewController, EventDelegate {
             .bind { owner, _ in
                 owner.scrollView.setContentOffset(.init(x: 0, y: owner.detailJobTagInputView.frame.minY), animated: true)
             }.disposed(by: disposeBag)
+        
         
     }
     

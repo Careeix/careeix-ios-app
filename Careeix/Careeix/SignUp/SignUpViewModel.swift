@@ -31,6 +31,8 @@ class SignUpViewModel {
     // MARK: - Output
     let completeButtonEnableDriver: Driver<Void>
     let completeButtonDisableDriver: Driver<Void>
+    let showTabbarCotrollerDriver: Driver<Void>
+    
     
     // MARK: - Initializer
     init(nickNameInputViewModel: SimpleInputViewModel, jobInputViewModel: SimpleInputViewModel, annualInputViewModel: RadioInputViewModel, detailJobsInputViewModel: MultiInputViewModel, completeButtonViewModel: CompleteButtonViewModel) {
@@ -50,12 +52,14 @@ class SignUpViewModel {
             ($0, $1, $2, $3)
         }
         
-        createUserTrigger
-            .withLatestFrom(combinedInputValuesObservable) { $1 }
-            .subscribe {
-                print("post: ", $0)
-            } // 실제 api 연결 시 map 사용
+//        createUserTrigger
+
         
+        showTabbarCotrollerDriver = createUserTrigger
+            .withLatestFrom(combinedInputValuesObservable) { $1 }
+            .do { print("post: ", $0) }
+            .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
         let buttonStateDriver = combinedInputValuesObservable
             .map { nickName, job, annualIndex, detailJobs in
                 nickName != "" && job != "" && detailJobs.count != 0

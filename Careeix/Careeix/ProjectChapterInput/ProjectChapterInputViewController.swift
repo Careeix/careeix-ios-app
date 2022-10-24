@@ -116,7 +116,7 @@ class ProjectChapterInputViewController: UIViewController {
         titleTextField.becomeFirstResponder()
         title = "\(viewModel.currentIndex)"
         fillInputs()
-//        completeButtonView.isUserInteractionEnabled = false
+        completeButtonView.isUserInteractionEnabled = false
         configureNavigationBar()
     }
     
@@ -128,8 +128,11 @@ class ProjectChapterInputViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
+    }
     override func viewWillDisappear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
         updateProjectChapter()
         checkAndRemove()
     }

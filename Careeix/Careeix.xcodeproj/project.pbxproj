@@ -221,7 +221,7 @@
 				7AFE501828FD90C600A72D65 /* Home */,
 				786F46902901441700215AF0 /* ProjectInput */,
 				785AF52E290512C200592F7F /* ProjectInputDetail */,
-				785AF5372905572900592F7F /* AddNote */,
+				785AF5372905572900592F7F /* ProjectChapterInput */,
 				7AFE501528FD8FB400A72D65 /* Extensions */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
@@ -256,12 +256,12 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		785AF5372905572900592F7F /* AddNote */ = {
+		785AF5372905572900592F7F /* ProjectChapterInput */ = {
 			isa = PBXGroup;
 			children = (
 				785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */,
 			);
-			path = AddNote;
+			path = ProjectChapterInput;
 			sourceTree = "<group>";
 		};
 		786F46902901441700215AF0 /* ProjectInput */ = {
