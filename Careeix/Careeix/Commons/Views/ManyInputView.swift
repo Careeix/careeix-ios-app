@@ -1,8 +1,8 @@
 //
-//  BaseInputView.swift
+//  ManyInputView.swift
 //  Careeix
 //
-//  Created by 김지훈 on 2022/10/15.
+//  Created by 김지훈 on 2022/10/21.
 //
 
 import UIKit
@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
-struct SimpleInputViewModel {
+struct ManyInputViewModel {
     // MARK: - Input
     let inputStringRelay = PublishRelay<String>()
     
@@ -23,27 +23,27 @@ struct SimpleInputViewModel {
     }
 }
 
-class SimpleInputView: UIView {
+class ManyInputView: UIView {
     // MARK: Properties
     var disposeBag = DisposeBag()
     
     // MARK: - Binding
-    func bind(to viewModel: SimpleInputViewModel) {
+    func bind(to viewModel: ManyInputViewModel) {
         viewModel.titleStringDriver
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
+        // TODO: - !!!???
+//        viewModel.placeholderStringDriver
+//            .drive(.rx.placeholder)
+//            .disposed(by: disposeBag)
         
-        viewModel.placeholderStringDriver
-            .drive(textField.rx.placeholder)
-            .disposed(by: disposeBag)
-        
-        textField.rx.text.orEmpty
+        textView.rx.text.orEmpty
             .bind(to: viewModel.inputStringRelay)
             .disposed(by: disposeBag)
     }
     
     // MARK: Initializer
-    init(viewModel: SimpleInputViewModel) {
+    init(viewModel: ManyInputViewModel) {
         super.init(frame: .zero)
         bind(to: viewModel)
         setUI()
@@ -64,21 +64,21 @@ class SimpleInputView: UIView {
         l.textColor = .appColor(.gray900)
         return l
     }()
-    var textField: BaseTextField = BaseTextField()
+    var textView: BaseTextView = BaseTextView()
     
     
     func setUI() {
-        [titleLabel, textField].forEach { addSubview($0) }
+        [titleLabel, textView].forEach { addSubview($0) }
         
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(4)
         }
         
-        textField.snp.makeConstraints {
+        textView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.top.equalTo(titleLabel.snp.bottom).offset(7)
-            $0.height.equalTo(48)
+            $0.height.equalTo(91)
             $0.bottom.equalToSuperview()
         }
     }

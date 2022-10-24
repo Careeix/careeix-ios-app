@@ -11,8 +11,8 @@ import RxSwift
 
 // TODO: 애플로그인 구현
 struct LoginAPI {
-    struct Response {
-        let jwt: String
+    struct Response: Decodable {
+        let jwt: String?
     }
 }
 
@@ -26,11 +26,10 @@ class SocialLoginSDK {
     typealias needMoreInfo = Bool
     enum SocialLoginType {
         case kakao
-//        case apple
     }
     
-    public static func setUrl(with url: URL) {
-        socialLoginService.setKakaoUrl(with: url)
+    public static func setUrl(with url: URL) -> Bool {
+        socialLoginService.setKakaoUrl( with: url)
     }
     
     public static func initSDK(type: SocialLoginType) {
@@ -48,17 +47,11 @@ class SocialLoginSDK {
         }
     }
     
-    public static func socialLogout(type: SocialLoginType) -> Bool {
+    public static func socialLogout(type: SocialLoginType) -> Observable<Bool> {
         switch type {
+        // TODO: - 로그인 형식을 Realm에 저장해야하는가 고민
         case .kakao:
             return socialLoginService.kakaoLogout()
-        }
-    }
-    
-    public static func readUserInfo(type: SocialLoginType) {
-        switch type {
-        case .kakao:
-            return socialLoginService.readKakaoUserInfo()
         }
     }
 }

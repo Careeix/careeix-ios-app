@@ -10,6 +10,10 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
+protocol EventDelegate: AnyObject {
+    func didTapRadioInputView()
+}
+
 struct RadioInputViewModel {
     // MARK: - Input
     var selectedIndexRelay = PublishRelay<IndexPath>()
@@ -19,14 +23,16 @@ struct RadioInputViewModel {
     let contentsDriver: Driver<[String]>
     
     init(title: String, contents: [String]) {
-        titleStringDriver = Observable.just(title).asDriver(onErrorJustReturn: "")
-        contentsDriver = Observable.just(contents).asDriver(onErrorJustReturn: [])
+        titleStringDriver = .just(title)
+        contentsDriver = .just(contents)
+        
     }
 }
 
 class RadioInputView: UIView {
     // MARK: - Properties
     var disposeBag = DisposeBag()
+    weak var delegate: EventDelegate?
     
     // MARK: - Binding
     func bind(to viewModel: RadioInputViewModel) {
@@ -56,17 +62,19 @@ class RadioInputView: UIView {
             }.compactMap { self.tableView.cellForRow(at: $0) as? RadioCell }
             .asDriver(onErrorJustReturn: RadioCell())
             .drive {
+                self.delegate?.didTapRadioInputView()
                 $0.selectedMark.isHidden = false
                 $0.selectedMarkBorder.layer.borderColor = UIColor.appColor(.main).cgColor
             }.disposed(by: disposeBag)
+        
     }
     
     // MARK: - Initializer
     init(viewModel: RadioInputViewModel) {
         super.init(frame: .zero)
-        bind(to: viewModel)
+        translatesAutoresizingMaskIntoConstraints = false
         setUI()
-        
+        bind(to: viewModel)
     }
     
     required init?(coder: NSCoder) {
@@ -80,13 +88,12 @@ class RadioInputView: UIView {
         l.textColor = .appColor(.gray900)
         return l
     }()
-    let tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tv = UITableView()
         tv.register(RadioCell.self, forCellReuseIdentifier: RadioCell.self.description())
         tv.isScrollEnabled = false
         tv.separatorInset.left = 0
-        tv.rowHeight = UITableView.automaticDimension
-        tv.estimatedRowHeight = 48.0
+        tv.rowHeight = 48
         tv.layer.borderWidth = 1
         tv.layer.borderColor = UIColor.appColor(.gray100).cgColor
         tv.layer.cornerRadius = 10
@@ -105,8 +112,9 @@ extension RadioInputView {
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(7)
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(tableView.contentSize.height)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(tableView.rowHeight * 4)
         }
     }
 }

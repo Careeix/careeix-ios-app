@@ -67,12 +67,13 @@ class MultiInputCell: UITableViewCell {
         [textField, emptyView].forEach { contentView.addSubview($0) }
         textField.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(48).priority(.high)
+            $0.height.equalTo(48)
         }
-        emptyView.snp.makeConstraints {
-            $0.top.equalTo(textField.snp.bottom)
-            $0.height.equalTo(5)
-            $0.leading.trailing.bottom.equalToSuperview()
-        }
+//        emptyView.snp.makeConstraints {
+//            $0.top.equalTo(textField.snp.bottom)
+//            $0.height.equalTo(5)
+//            $0.leading.trailing.equalToSuperview()
+//        }
+        
     }
 }

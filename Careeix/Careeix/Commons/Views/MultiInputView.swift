@@ -15,16 +15,21 @@ struct MultiInputViewModel {
     
     // MARK: - Output
     let titleDriver:Driver<String>
-    var inputValuesObservable: Observable<[String]>
-    var placeholdersDriver: Driver<[String]>
+    let descriptionDriver: Driver<String>
+    let inputValuesObservable: Observable<[String]>
+    let placeholdersDriver: Driver<[String]>
     
-    init(title: String, placeholders: [String]) {
-        self.titleDriver =  Observable.just(title).asDriver(onErrorJustReturn: "")
-        self.placeholdersDriver = Observable.just(placeholders).asDriver(onErrorJustReturn: [])
-        self.multiInputCellViewModels = placeholders.map { .init(placeholder: $0) }
-        self.inputValuesObservable = Observable
+    init(title: String, description: String, placeholders: [String]) {
+        titleDriver = .just(title)
+        descriptionDriver = .just(description)
+        placeholdersDriver = .just(placeholders)
+        
+        multiInputCellViewModels = placeholders.map { .init(placeholder: $0) }
+        inputValuesObservable = Observable
             .combineLatest(self.multiInputCellViewModels.map { $0.inputStringRelay })
             .map { $0.filter { $0 != "" } }
+        
+        
     }
 }
 
@@ -44,17 +49,16 @@ class MultiInputView: UIView {
                 cell.viewModel = viewModel.multiInputCellViewModels[row]
                 return cell
             }.disposed(by: disposeBag)
-        
-//        tableView.rx.delegat
     }
     
     // MARK: - Initializer
     init(viewModel: MultiInputViewModel) {
         super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
         bind(to: viewModel)
         setUI()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -78,9 +82,7 @@ class MultiInputView: UIView {
         tv.register(MultiInputCell.self, forCellReuseIdentifier: MultiInputCell.self.description())
         tv.isScrollEnabled = false
         tv.separatorStyle = .none
-        tv.backgroundColor = .orange
-        tv.rowHeight = UITableView.automaticDimension
-        tv.estimatedRowHeight = 53.0
+        tv.rowHeight = 53
         return tv
     }()
 }
@@ -102,7 +104,7 @@ extension MultiInputView {
         tableView.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(11)
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(tableView.contentSize.height)
+            $0.height.greaterThanOrEqualTo(53 * 3)
         }
     }
 }

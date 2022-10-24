@@ -15,6 +15,15 @@ class UserDefaultManager {
 
     @UserDefault(key: CareeixKey.UserDefaultKey.jwtToken, defaultValue: "")
     public var jwtToken: String
+    
+    @UserDefault(key: CareeixKey.UserDefaultKey.kakaoAccessToken, defaultValue: "")
+    public var kakaoAccessToken: String
+    
+    @UserDefault(key: "projectChapters", defaultValue: [])
+    public var projectChapters: [ProjectChapter]
+    
+    @UserDefault(key: "projectInput", defaultValue: ProjectBaseInputValue.init(title: "", startDateString: "", endDateString: "", division: "", indroduce: ""))
+    public var projectInput: ProjectBaseInputValue
 }
 
 @propertyWrapper

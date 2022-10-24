@@ -12,27 +12,12 @@ import RxCocoa
 import RxKeyboard
 import RxGesture
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, EventDelegate {
     // MARK: Properties
     let disposeBag = DisposeBag()
-    let viewModel = SignUpViewModel(
-        nickNameInputViewModel: .init(title: "닉네임",
-                                      placeholder: "10자 이내로 한글, 영문, 숫자를 입력해주세요."),
-        jobInputViewModel: .init(title: "직무",
-                                 placeholder: "직무를 입력해주세요.(Ex. 서버 개발자)"),
-        annualInputViewModel: .init(title: "연차",
-                                    contents: ["입문(1년 미만)",
-                                               "주니어(1~4년차)",
-                                               "미들(5~8년차)",
-                                               "시니어(9년차~)"]),
-        detailJobsInputViewModel: .init(title: "상세 직무",
-                                        placeholders: Array(repeating: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)",
-                                                            count: 3)),
-        completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable)
-    )
     
     // MARK: - Binding
-    func bind() {
+    func bind(to viewModel: SignUpViewModel) {
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
             .drive(with: self) { owner, keyboardVisibleHeight in
@@ -49,8 +34,7 @@ class SignUpViewController: UIViewController {
                 UIView.animate(withDuration: 0.4) {
                     owner.view.layoutIfNeeded()
                 }
-            }
-            .disposed(by: disposeBag)
+            }.disposed(by: disposeBag)
         
         completeButtonView.rx.tapGesture()
             .when(.recognized)
@@ -69,19 +53,82 @@ class SignUpViewController: UIViewController {
                 owner.completeButtonView.backgroundColor = .appColor(.main)
                 owner.completeButtonView.isUserInteractionEnabled = true
             }.disposed(by: disposeBag)
+        
+        viewModel.showTabbarCotrollerDriver
+            .drive(with: self) { owner, _ in
+                NotificationCenter.default.post(name: Notification.Name("loginSuccess"), object: nil)
+//                owner.navigationController?.pushViewController(TabBarController(), animated: false)
+            }.disposed(by: disposeBag)
+        
+        nickNameInputView.textField.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { owner, _ in
+                print(owner.nickNameInputView.frame.midY)
+                owner.scrollView.setContentOffset(.init(x: 0, y: owner.titleLabel.frame.minY), animated: true)
+            }.disposed(by: disposeBag)
+        
+        jobInputView.textField.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { owner, _ in
+                owner.scrollView.setContentOffset(.init(x: 0, y: owner.nickNameInputView.frame.minY), animated: true)
+            }.disposed(by: disposeBag)
+        
+        detailJobTagInputView.tableView.rx.tapGesture()
+            .when(.recognized)
+            .withUnretained(self)
+            .bind { owner, _ in
+                owner.scrollView.setContentOffset(.init(x: 0, y: owner.detailJobTagInputView.frame.minY), animated: true)
+            }.disposed(by: disposeBag)
+        
+        
     }
     
     // MARK: - Life Cycle
+    init(viewModel: SignUpViewModel) {
+        nickNameInputView = SimpleInputView(viewModel: viewModel.nickNameInputViewModel)
+        jobInputView = SimpleInputView(viewModel: viewModel.jobInputViewModel)
+        annualInputView = RadioInputView(viewModel: viewModel.annualInputViewModel)
+        detailJobTagInputView = MultiInputView(viewModel: viewModel.detailJobsInputViewModel)
+        completeButtonView = {
+            let v = CompleteButtonView(viewModel: viewModel.completeButtonViewModel)
+            v.layer.cornerRadius = 10
+            v.backgroundColor = .appColor(.disable)
+            return v
+        }()
+        super.init(nibName: nil, bundle: nil)
+        bind(to: viewModel)
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
         setUI()
+        annualInputView.delegate = self
         view.backgroundColor = .white
+        
+        configureNavigationBar()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         nickNameInputView.textField.becomeFirstResponder()
     }
     
+    // MARK: - function
+    func didTapRadioInputView() {
+        scrollView.setContentOffset(.init(x: 0, y: annualInputView.frame.minY), animated: true)
+    }
+    
+
+    
     // MARK: - UIComponents
-    let scrollView = UIScrollView()
+    let scrollView: UIScrollView = {
+        let sv = UIScrollView()
+        sv.showsVerticalScrollIndicator = false
+        return sv
+    }()
     let contentView = UIView()
     let titleLabel: UILabel = {
         let l = UILabel()
@@ -105,16 +152,11 @@ class SignUpViewController: UIViewController {
         l.textColor = .appColor(.error)
         return l
     }()
-    lazy var nickNameInputView = SimpleInputView(viewModel: viewModel.nickNameInputViewModel)
-    lazy var jobInputView = SimpleInputView(viewModel: viewModel.jobInputViewModel)
-    lazy var annualInputView = RadioInputView(viewModel: viewModel.annualInputViewModel)
-    lazy var detailJobTagInputView = MultiInputView(viewModel: viewModel.detailJobsInputViewModel)
-    lazy var completeButtonView: CompleteButtonView = {
-        let v = CompleteButtonView(viewModel: viewModel.completeButtonViewModel)
-        v.layer.cornerRadius = 10
-        v.backgroundColor = .appColor(.disable)
-        return v
-    }()
+    let nickNameInputView:SimpleInputView
+    let jobInputView:SimpleInputView
+    let annualInputView:RadioInputView
+    let detailJobTagInputView:MultiInputView
+    let completeButtonView: CompleteButtonView
     
 }
 
@@ -129,9 +171,7 @@ extension SignUpViewController {
         scrollView.addSubview(contentView)
         
         contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.width.equalTo(UIScreen.main.bounds.width)
-            
+            $0.edges.width.equalToSuperview()
         }
         
         [titleLabel, descriptionLabel, nickNameInputView, nicknameCheckLabel, jobInputView, annualInputView, detailJobTagInputView].forEach { contentView.addSubview($0) }
@@ -171,7 +211,7 @@ extension SignUpViewController {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().inset(161)
         }
-        
+
         view.addSubview(completeButtonView)
         
         completeButtonView.snp.makeConstraints {

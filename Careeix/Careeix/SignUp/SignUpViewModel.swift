@@ -10,11 +10,11 @@ import RxCocoa
 import RxSwift
 import RxRelay
 class SignUpViewModel {
-    // MARK: Types
-    typealias nickName = String
-    typealias job = String
-    typealias annualIndex = IndexPath
-    typealias detailJobs = [String]
+    // TODO: 주석 삭제
+//    typealias nickName = String
+//    typealias job = String
+//    typealias annualIndex = IndexPath
+//    typealias detailJobs = [String]
     
     // MARK: SubViewModels
     let nickNameInputViewModel: SimpleInputViewModel
@@ -24,12 +24,15 @@ class SignUpViewModel {
     let completeButtonViewModel: CompleteButtonViewModel
     
     // MARK: - Input
-    let combinedInputValuesObservable: Observable<(nickName, job, annualIndex, detailJobs)>
+    // TODO: 주석 삭제
+//    let combinedInputValuesObservable: Observable<(nickName, job, annualIndex, detailJobs)>
     let createUserTrigger =  PublishRelay<Void>()
     
     // MARK: - Output
     let completeButtonEnableDriver: Driver<Void>
     let completeButtonDisableDriver: Driver<Void>
+    let showTabbarCotrollerDriver: Driver<Void>
+    
     
     // MARK: - Initializer
     init(nickNameInputViewModel: SimpleInputViewModel, jobInputViewModel: SimpleInputViewModel, annualInputViewModel: RadioInputViewModel, detailJobsInputViewModel: MultiInputViewModel, completeButtonViewModel: CompleteButtonViewModel) {
@@ -40,7 +43,7 @@ class SignUpViewModel {
         self.detailJobsInputViewModel = detailJobsInputViewModel
         self.completeButtonViewModel = completeButtonViewModel
         
-        combinedInputValuesObservable =  Observable.combineLatest(
+        let combinedInputValuesObservable =  Observable.combineLatest(
             nickNameInputViewModel.inputStringRelay,
             jobInputViewModel.inputStringRelay,
             annualInputViewModel.selectedIndexRelay,
@@ -49,20 +52,22 @@ class SignUpViewModel {
             ($0, $1, $2, $3)
         }
         
-        createUserTrigger
-            .withLatestFrom(combinedInputValuesObservable) { $1 }
-            .subscribe {
-                print("post: ", $0)
-            } // 실제 api 연결 시 map 사용
+//        createUserTrigger
+
         
+        showTabbarCotrollerDriver = createUserTrigger
+            .withLatestFrom(combinedInputValuesObservable) { $1 }
+            .do { print("post: ", $0) }
+            .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
         let buttonStateDriver = combinedInputValuesObservable
             .map { nickName, job, annualIndex, detailJobs in
                 nickName != "" && job != "" && detailJobs.count != 0
-            }.asDriver(onErrorJustReturn: false)
+            }.distinctUntilChanged()
+            .asDriver(onErrorJustReturn: false)
         
         completeButtonEnableDriver = buttonStateDriver.filter { $0 }.map { _ in () }
         completeButtonDisableDriver = buttonStateDriver.filter { !$0 }.map { _ in () }
-
     }
 
 }
