@@ -48,10 +48,8 @@ class ProjectInputDetailViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         viewModel.chaptersDriver
-            .debug("😱😱챕 터 데이터소스😱😱😱")
             .drive(tableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: ProjectChapterCell.self.description(), for: IndexPath(row: row, section: 0)) as? ProjectChapterCell else { return UITableViewCell() }
-                print("😱😱", tv, row, data)
                 cell.bind(viewModel: .init(index: row + 1, title: data.title))
                 return cell
             }.disposed(by: disposeBag)
