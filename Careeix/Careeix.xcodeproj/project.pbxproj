@@ -34,7 +34,6 @@
 		7881F5522902D91D00111395 /* TwoButtonAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */; };
 		78C9099A2905918A00AA9AA3 /* ProjectChapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C909992905918A00AA9AA3 /* ProjectChapter.swift */; };
 		78C9099C2905A18800AA9AA3 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C9099B2905A18800AA9AA3 /* UIViewController+.swift */; };
-		78CE4CF22904386600FAFA8E /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CE4CF12904386600FAFA8E /* DatePickerView.swift */; };
 		78D52E4F28FCFCF2001F5747 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = 78D52E4E28FCFCF2001F5747 /* RxKeyboard */; };
 		78D52E5128FD14FF001F5747 /* SignUpModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D52E5028FD14FF001F5747 /* SignUpModel.swift */; };
 		78D52E5328FD3142001F5747 /* SocialLoginSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D52E5228FD3142001F5747 /* SocialLoginSDK.swift */; };
@@ -120,7 +119,6 @@
 		7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoButtonAlertViewController.swift; sourceTree = "<group>"; };
 		78C909992905918A00AA9AA3 /* ProjectChapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapter.swift; sourceTree = "<group>"; };
 		78C9099B2905A18800AA9AA3 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
-		78CE4CF12904386600FAFA8E /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		78D52E5028FD14FF001F5747 /* SignUpModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpModel.swift; sourceTree = "<group>"; };
 		78D52E5228FD3142001F5747 /* SocialLoginSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginSDK.swift; sourceTree = "<group>"; };
 		78D52EA228FE5C3E001F5747 /* SocialLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginService.swift; sourceTree = "<group>"; };
@@ -416,7 +414,6 @@
 				78DC17CE28FAA58500331A22 /* CompleteButtonView.swift */,
 				786F469F2901A1A400215AF0 /* ManyInputView.swift */,
 				786F46A32901A24E00215AF0 /* PeriodInputView.swift */,
-				78CE4CF12904386600FAFA8E /* DatePickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -597,7 +594,6 @@
 				78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */,
 				78DC17CB28FAA46A00331A22 /* RadioInputView.swift in Sources */,
 				7AB279AF2902D15F00ED3D97 /* CardProfileCell.swift in Sources */,
-				78CE4CF22904386600FAFA8E /* DatePickerView.swift in Sources */,
 				7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */,
 				78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */,
 				785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */,
