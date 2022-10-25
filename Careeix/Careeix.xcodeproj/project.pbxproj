@@ -33,6 +33,7 @@
 		786F46A929028DE900215AF0 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 786F46A829028DE900215AF0 /* RxMoya */; };
 		7881F5522902D91D00111395 /* TwoButtonAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */; };
 		789F27C029068C2200F634F0 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F27BF29068C2200F634F0 /* DatePickerView.swift */; };
+		789F27C32906ECA400F634F0 /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F27C22906ECA400F634F0 /* NoteCell.swift */; };
 		78C9099A2905918A00AA9AA3 /* ProjectChapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C909992905918A00AA9AA3 /* ProjectChapter.swift */; };
 		78C9099C2905A18800AA9AA3 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C9099B2905A18800AA9AA3 /* UIViewController+.swift */; };
 		78D52E4F28FCFCF2001F5747 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = 78D52E4E28FCFCF2001F5747 /* RxKeyboard */; };
@@ -119,6 +120,7 @@
 		786F46A32901A24E00215AF0 /* PeriodInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodInputView.swift; sourceTree = "<group>"; };
 		7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoButtonAlertViewController.swift; sourceTree = "<group>"; };
 		789F27BF29068C2200F634F0 /* DatePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
+		789F27C22906ECA400F634F0 /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
 		78C909992905918A00AA9AA3 /* ProjectChapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapter.swift; sourceTree = "<group>"; };
 		78C9099B2905A18800AA9AA3 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		78D52E5028FD14FF001F5747 /* SignUpModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpModel.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */,
+				789F27C12906EA4C00F634F0 /* Cells */,
 			);
 			path = ProjectChapterInput;
 			sourceTree = "<group>";
@@ -319,6 +322,14 @@
 				7AFE502128FD90C600A72D65 /* CompositionalLayout.swift */,
 			);
 			path = StaticFunction;
+			sourceTree = "<group>";
+		};
+		789F27C12906EA4C00F634F0 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				789F27C22906ECA400F634F0 /* NoteCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		78C909972905914100AA9AA3 /* Models */ = {
@@ -626,6 +637,7 @@
 				78DC17C728FA9E1C00331A22 /* SimpleInputView.swift in Sources */,
 				7A84D46F2902C80900939D89 /* CardProfileDetailViewController.swift in Sources */,
 				789F27C029068C2200F634F0 /* DatePickerView.swift in Sources */,
+				789F27C32906ECA400F634F0 /* NoteCell.swift in Sources */,
 				7AFE502628FD90C600A72D65 /* HomeModel.swift in Sources */,
 				78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */,
 			);
@@ -767,7 +779,7 @@
 				CODE_SIGN_ENTITLEMENTS = Careeix/CareeixDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W9K8S57VSZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Careeix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

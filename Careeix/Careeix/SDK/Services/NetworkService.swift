@@ -67,7 +67,7 @@ class API<T: Decodable> {
                     print("error: ", error.localizedDescription)
                     return .error(error)
                 }
-            }
+            }.debug("🤬🤬🤬서버통신🤬🤬🤬")
         
     }
     

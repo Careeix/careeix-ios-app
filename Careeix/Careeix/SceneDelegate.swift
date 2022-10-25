@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.backgroundColor = .white
         // test start
-        UserDefaultManager.shared.jwtToken = ""
+        
         let twoButtonAlertViewController = TwoButtonAlertViewController(viewModel: .init(
             content: "발행하시겠습니까?",
             leftString: "취소",
@@ -63,15 +63,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             )
         ))
         let projectInputDetailViewController = UINavigationController(rootViewController: ProjectInputDetailViewController(viewModel: .init()))
-//        let noteInputViewComtroller = UINavigationController(rootViewController: NoteInputViewController(viewModel: .init()))
-        
+        let chapterInputViewComtroller = UINavigationController(rootViewController: ProjectChapterInputViewController(viewModel: .init(currentIndex: 0)))
+        let onboardingViewController = UINavigationController(rootViewController: OnboardViewController())
         UserDefaultManager.shared.projectChapters = []
         UserDefaultManager.shared.projectInput = .init(title: "", startDateString: "", endDateString: "", division: "", indroduce: "")
+        UserDefaultManager.shared.jwtToken = ""
         // test end
         
         
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
-        ? UINavigationController(rootViewController: OnboardViewController())
+        ? chapterInputViewComtroller
         : TabBarController()
         
         NotificationCenter.default.addObserver(self,

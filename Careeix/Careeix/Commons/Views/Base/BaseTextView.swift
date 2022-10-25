@@ -41,13 +41,16 @@ class BaseTextView: UITextView {
             .drive { _ in
             }.disposed(by: disposeBag)
         
-        translatesAutoresizingMaskIntoConstraints = true
+//        translatesAutoresizingMaskIntoConstraints = true
         sizeToFit()
+        isScrollEnabled = false
+        
+        
         layer.cornerRadius = 10
         layer.borderWidth = 1
         layer.borderColor = UIColor.appColor(.gray100).cgColor
         font = .pretendardFont(size: 13, style: .regular)
-        isScrollEnabled = false
+        
     }
 }
 

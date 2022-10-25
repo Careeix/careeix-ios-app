@@ -34,7 +34,6 @@ class ProjectInputDetailViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                print("Asd")
                 owner.navigationController?.pushViewController(ProjectChapterInputViewController(viewModel: .init(currentIndex: UserDefaultManager.shared.projectChapters.count)), animated: true)
             }.disposed(by: disposeBag)
         
@@ -113,7 +112,7 @@ class ProjectInputDetailViewController: UIViewController {
         return tv
     }()
     let addButtonView = ContentsAddButtonView()
-    let completeButtonView = CompleteButtonView(viewModel: .init(content: "발행하기", backgroundColor: .disable))
+    let completeButtonView = CompleteButtonView(viewModel: .init(content: "발행하기", backgroundColor: .white))
 }
 
 extension ProjectInputDetailViewController {

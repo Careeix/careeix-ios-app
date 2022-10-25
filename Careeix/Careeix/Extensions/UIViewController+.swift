@@ -11,7 +11,7 @@ extension UIViewController {
 
     func configureNavigationBar() {
         // TODO: rootView일 경우 어떻게 없앨 수 있을까 ?
-        print(self, self.navigationController?.viewControllers)
+//        print(self, self.navigationController?.viewControllers)
         let backButtonSpacer = UIBarButtonItem()
         backButtonSpacer.width = -28
         let backButton = UIBarButtonItem(image: UIImage(named: "back")?.withRenderingMode(.alwaysOriginal),

@@ -47,10 +47,11 @@ extension SocialLoginService {
     
     func readAccessToken() -> Observable<String> {
         return UserApi.shared.rx.loginWithKakaoAccount()
+            .debug("카카오 로그인 SDK")
             .map { $0.accessToken }
             .catch { _ in .just("") }
             .do { UserDefaultManager.shared.kakaoAccessToken = $0 }
-            .debug("카카오 로그인 SDK")
+            
     }
     
     func callLoginApi(token: String) -> Single<LoginAPI.Response> {
@@ -62,9 +63,9 @@ extension SocialLoginService {
         
 //        // 현재 api call (이상함. access토큰을 body로 보내야함)
 //        let b = API<LoginAPI.Response>(path: "/api/v1/users/check-login/\(token)", method: .post, parameters: [:], task: .requestPlain).requestRX().debug("BBBBBB")
-//        
-//        // 정상적인 api call
-//        let c = API<LoginAPI.Response>(path: "/api/v1/users/check-login)", method: .post, parameters: ["X-ACCESS-TOKEN": token], task: .requestParameters(encoding: JSONEncoding.default)).requestRX().debug("CCCCCC")
+        
+//         정상적인 api call
+        let c = API<LoginAPI.Response>(path: "/api/v1/users/check-login", method: .post, parameters: ["X-ACCESS-TOKEN": token], task: .requestParameters(encoding: JSONEncoding.default)).requestRX().debug("CCCCCC")
         return a
     }
     
