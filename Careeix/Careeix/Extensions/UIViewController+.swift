@@ -28,4 +28,29 @@ extension UIViewController {
     }
 }
 
+extension UINavigationController {
+
+
+    func setProgressBar(view: UIView, from: CGFloat, to: CGFloat) {
+        view.backgroundColor = .red
+        navigationBar.addSubview(view)
+
+        view.snp.remakeConstraints {
+            $0.top.equalTo(navigationBar.snp.bottom)
+            $0.leading.equalToSuperview()
+            $0.width.equalTo(UIScreen.main.bounds.width * from)
+            $0.height.equalTo(3)
+        }
+        
+        navigationBar.layoutIfNeeded()
+        
+        UIView.animate(withDuration: 0.2) {
+            view.snp.updateConstraints {
+                $0.width.equalTo(UIScreen.main.bounds.width * to)
+                self.navigationBar.layoutIfNeeded()
+            }
+        }
+    }
+}
+
 

@@ -64,7 +64,7 @@ class ManyInputView: UIView {
         l.textColor = .appColor(.gray900)
         return l
     }()
-    var textView: BaseTextView = BaseTextView()
+    var textView: BaseTextView = BaseTextView(viewModel: .init())
     
     
     func setUI() {

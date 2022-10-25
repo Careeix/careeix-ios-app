@@ -21,6 +21,7 @@ struct ProjectInputDetailViewModel {
         chaptersDriver = viewWillAppearRelay
             .map { _ in UserDefaultManager.shared.projectChapters }
             .asDriver(onErrorJustReturn: [])
+            
     }
 }
 
@@ -49,6 +50,7 @@ class ProjectInputDetailViewController: UIViewController {
             .bind { owner, indexPath in
                 owner.navigationController?.pushViewController(ProjectChapterInputViewController(viewModel: .init(currentIndex: indexPath.row)), animated: true)
             }.disposed(by: disposeBag)
+        
         completeButtonView.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
@@ -69,6 +71,7 @@ class ProjectInputDetailViewController: UIViewController {
         bind(to: viewModel)
         view.backgroundColor = .appColor(.white)
         configureNavigationBar()
+        
         completeButtonView.isUserInteractionEnabled = false
     }
     required init?(coder: NSCoder) {
@@ -89,6 +92,7 @@ class ProjectInputDetailViewController: UIViewController {
         completeButtonView.isUserInteractionEnabled = !(UserDefaultManager.shared.projectChapters.count == 0)
         completeButtonView.backgroundColor = completeButtonView.isUserInteractionEnabled ? .appColor(.main) : .appColor(.disable)
         print(UserDefaultManager.shared.projectInput)
+
     }
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false

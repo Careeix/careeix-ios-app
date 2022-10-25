@@ -8,11 +8,13 @@
 import UIKit
 
 class ContentsAddButtonView: UIView {
-    init(content: String = "") {
+    init(content: String = "", disableMessage: String = "") {
         super.init(frame: .zero)
         setUI()
         configure()
-        label.text = "\(content)\(content == "" ? "" : " ")추가"
+        enableLabel.text = "\(content)\(content == "" ? "" : " ")추가"
+        disableLabel.text = disableMessage
+        disableView.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -20,19 +22,25 @@ class ContentsAddButtonView: UIView {
     }
     
     // MARK: - UIComponents
-    let contentView = UIView()
+    let enableView = UIView()
+    let disableView = UIView()
     let imageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "plusIcon")
         return iv
     }()
-    let label: UILabel = {
+    let enableLabel: UILabel = {
         let l = UILabel()
         l.font = .pretendardFont(size: 14, style: .medium)
         l.textColor = .appColor(.gray600)
         return l
     }()
-    
+    let disableLabel: UILabel = {
+       let l = UILabel()
+        l.font = .pretendardFont(size: 14, style: .medium)
+        l.textColor = .appColor(.gray250)
+        return l
+    }()
     func configure() {
         layer.cornerRadius = 10
         layer.borderColor = UIColor.appColor(.gray100).cgColor
@@ -42,22 +50,34 @@ class ContentsAddButtonView: UIView {
 
 extension ContentsAddButtonView {
     func setUI() {
-        addSubview(contentView)
-        contentView.snp.makeConstraints {
+        addSubview(enableView)
+        
+        enableView.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
         
-        [imageView, label].forEach { contentView.addSubview($0) }
+        [imageView, enableLabel].forEach { enableView.addSubview($0) }
         
         imageView.snp.makeConstraints {
             $0.width.height.equalTo(24)
             $0.top.leading.bottom.equalToSuperview()
         }
         
-        label.snp.makeConstraints {
+        enableLabel.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(13)
             $0.trailing.equalToSuperview()
             $0.centerY.equalToSuperview()
         }
+        
+        addSubview(disableView)
+        disableView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        disableView.addSubview(disableLabel)
+        disableLabel.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
     }
 }

@@ -11,46 +11,77 @@ import RxSwift
 import RxCocoa
 import RxRelay
 struct BaseTextViewModel {
-    let limitLines: Int
     let inputRelay = PublishRelay<String>()
     
-    let driver: Driver<String>
     
-    init(limitLines: Int) {
-        self.limitLines = limitLines
-        driver = inputRelay.asDriver(onErrorJustReturn: "")
+    let placeholderDriver: Driver<String>
+    let hiddenPlaceholderLabelDriver: Driver<Bool>
+    
+    init(placeholder: String = "내용을 입력해주세요.") {
+        placeholderDriver = .just(placeholder)
+        hiddenPlaceholderLabelDriver = inputRelay
+            .map { $0 != "" }
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: true)
     }
 }
 class BaseTextView: UITextView {
-    let viewModel = BaseTextViewModel(limitLines: 2)
-    init() {
+    var disposeBag = DisposeBag()
+    
+    // MARK: Initializer
+    init(viewModel: BaseTextViewModel) {
         super.init(frame: .zero, textContainer: nil)
-        
+        setUI()
+        bind(to: viewModel)
         configure()
     }
-    var disposeBag = DisposeBag()
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure() {
+    // MARK: Binding
+    func bind(to viewModel: BaseTextViewModel) {
         rx.text.orEmpty
-            .bind(to: viewModel.inputRelay).disposed(by: disposeBag)
-        // TODO: !!!
-        viewModel.driver
-            .drive { _ in
-            }.disposed(by: disposeBag)
+            .bind(to: viewModel.inputRelay)
+            .disposed(by: disposeBag)
+
+        viewModel.placeholderDriver
+            .drive(placeholerLabel.rx.text)
+            .disposed(by: disposeBag)
         
-//        translatesAutoresizingMaskIntoConstraints = true
+        viewModel.hiddenPlaceholderLabelDriver
+            .drive(placeholerLabel.rx.isHidden)
+            .disposed(by: disposeBag)
+    }
+    
+    // MARK: UIComponents
+    let placeholerLabel: UILabel = {
+        let l = UILabel()
+        l.font = .pretendardFont(size: 12, style: .regular)
+        l.textColor = .appColor(.gray250)
+        return l
+    }()
+    
+    func configure() {
         sizeToFit()
         isScrollEnabled = false
-        
-        
         layer.cornerRadius = 10
         layer.borderWidth = 1
         layer.borderColor = UIColor.appColor(.gray100).cgColor
         font = .pretendardFont(size: 13, style: .regular)
+        contentInset = .init(top: 10, left: 10, bottom: -10, right: 10)
         
+        placeholerLabel.numberOfLines = 0
+    }
+    
+    func setUI() {
+        addSubview(placeholerLabel)
+        
+        placeholerLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(8)
+            $0.leading.equalToSuperview().inset(5)
+        }
     }
 }
 

@@ -25,10 +25,13 @@ class ProjectChapterInputViewModel {
     let noteTableViewHeightRelay = PublishRelay<CGFloat>()
     let titleStringRelay = PublishRelay<String>()
     let contentStringRelay = PublishRelay<String>()
+    let scrollToHeightRelay = PublishRelay<CGFloat>()
     //    let completeTrigger = PublishRelay<Void>()
     // MARK: Output
     let cellDataDriver: Driver<[NoteCellViewModel]>
+    let canAddNoteDriver: Driver<Bool>
     let noteTableViewHeightDriver: Driver<CGFloat>
+    let scrollToHeightDriver: Driver<CGFloat>
 //    let notes: Driver<[String]>
     init(currentIndex: Int) {
         let combinedInputValuesObservable = Observable.combineLatest(titleStringRelay, contentStringRelay) { ($0, $1) }
@@ -36,9 +39,20 @@ class ProjectChapterInputViewModel {
             print($0, $1)
         }
         self.currentIndex = currentIndex
-        cellDataDriver = cellDataRelay.asDriver(onErrorJustReturn: [])
-       
+        let cellDataRelayShare = cellDataRelay.share()
+        cellDataDriver = cellDataRelayShare.asDriver(onErrorJustReturn: [])
+        
+        canAddNoteDriver = cellDataRelayShare.map { $0.count }
+            .do { print($0) }
+            .map { $0 < 3 }
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: true)
+        
         noteTableViewHeightDriver = noteTableViewHeightRelay
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: 0)
+        
+        scrollToHeightDriver = scrollToHeightRelay
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: 0)
         
@@ -53,13 +67,13 @@ class ProjectChapterInputViewModel {
 class ProjectChapterInputViewController: UIViewController {
     var disposeBag = DisposeBag()
     var viewModel: ProjectChapterInputViewModel
-    
+    var willDeletedIndex: Int!
     // MARK: Binding
     func bind(to viewModel: ProjectChapterInputViewModel) {
+        print("이게 왜불려")
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
             .drive(with: self) { owner, keyboardVisibleHeight in
-                print("키보드 변경감지", keyboardVisibleHeight == 0 ? "내려가유" : "올라가유")
                 owner.contentView.snp.updateConstraints {
                     $0.bottom.equalToSuperview().inset(keyboardVisibleHeight)
                 }
@@ -94,15 +108,27 @@ class ProjectChapterInputViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         viewModel.cellDataDriver
-            .debug("😒😒😒노트셀의 데이터😒😒😒")
             .drive(noteTableView.rx.items) { tv, row, data in
-                print("😡", data.cellRow, data.inputStringRelay.value)
                 guard let cell = tv.dequeueReusableCell(withIdentifier: NoteCell.self.description(), for: IndexPath(row: row, section: 0)) as? NoteCell else { return UITableViewCell() }
                 cell.textView.delegate = self
                 let text = viewModel.noteCellViewModels[row].inputStringRelay.value
                 cell.viewModel = viewModel.noteCellViewModels[row]
                 cell.textView.text = text
-
+                cell.textView.rx.tapGesture()
+                    .when(.recognized)
+                    .withUnretained(self)
+                    .bind { owner, _ in
+                        print("셀 텍스트 뷰 클릭됐어 ! 궁극의 위치가 필요해 스크롤 릴레이로 보내야해", row)
+                    }.disposed(by: self.disposeBag)
+                
+                cell.deleteButtonImageView
+                    .rx.tapGesture()
+                    .when(.recognized)
+                    .withUnretained(self)
+                    .bind { owner, _ in
+                        owner.willDeletedIndex = row
+                        owner.showDeleteNoteWarningAlert()
+                    }.disposed(by: self.disposeBag)
                 return cell
             }.disposed(by: disposeBag)
         
@@ -111,8 +137,26 @@ class ProjectChapterInputViewController: UIViewController {
                 owner.noteTableView.snp.updateConstraints {
                     $0.height.equalTo(height + 10)
                 }
+                UIView.animate(withDuration: 0.2) {
+                    self.view.layoutIfNeeded()
+                }
             }.disposed(by: disposeBag)
         
+        viewModel.canAddNoteDriver
+            .drive(with: self) { owner, canAddNote in
+                owner.setAddButtonViewState(with: canAddNote)
+            }.disposed(by: disposeBag)
+        
+        noteTableView.rx.itemSelected
+            .debug("셀셀셀😎😎😎")
+            .compactMap(noteTableView.cellForRow(at:))
+            .map { $0.frame }
+            .distinctUntilChanged()
+            .bind { frame in
+                print("선택한 셀의 프레임이에요 궁극의 프레임을 따서 스크롤 위치값을 변경합시다.", frame)
+            }.disposed(by: disposeBag)
+        
+       
 //        viewModel.notes
 //            .debug("🤯🤯🤯노트들🤯🤯🤯")
 //            .drive { a in
@@ -120,13 +164,30 @@ class ProjectChapterInputViewController: UIViewController {
 //            }.disposed(by: disposeBag)
     }
     // MARK: Function
+    func showDeleteNoteWarningAlert() {
+        let alert = TwoButtonAlertViewController(viewModel: .init(content: "NOTE를 삭제하시겠습니까?",
+                                                                  leftString: "취소",
+                                                                  leftColor: .gray400,
+                                                                  rightString: "삭제",
+                                                                  rightColor: .error))
+        alert.modalTransitionStyle = .crossDissolve
+        alert.modalPresentationStyle = .overFullScreen
+        alert.delegate = self
+        
+        present(alert, animated: true)
+    }
+    func setAddButtonViewState(with canAddNote: Bool) {
+        addNoteButtonView.enableView.isHidden = !canAddNote
+        addNoteButtonView.disableView.isHidden = canAddNote
+        addNoteButtonView.isUserInteractionEnabled = canAddNote
+    }
     func updateTableViewHeight() {
-        let a: CGFloat = noteTableView.visibleCells
+        let tableViewHeight: CGFloat = noteTableView.visibleCells
             .map { $0.frame.height }
             .reduce(0) { $0 + $1 }
         
         viewModel.noteTableViewHeightRelay
-            .accept(a)
+            .accept(tableViewHeight)
             
 //        noteTableView.visibleCells
 //            .compactMap { $0 as? NoteCell }
@@ -136,17 +197,16 @@ class ProjectChapterInputViewController: UIViewController {
 //            }
     }
     func addNoteCell() {
-        print("노트를 추가하는 함수가 호출되었어요")
+        print("노트 추가하는 함수가 호출되었어요")
         view.endEditing(false)
         viewModel.noteCellViewModels.append(.init(inputStringRelay: BehaviorRelay<String>(value: ""), row: viewModel.noteCellViewModels.count))
         
         updateTableViewHeight()
         
-        guard let cell = noteTableView.cellForRow(at: IndexPath(row: viewModel.noteCellViewModels.count-1, section: 0)) as? NoteCell else {
-            print("실패~")
-            return }
+//        guard let cell = noteTableView.cellForRow(at: IndexPath(row: viewModel.noteCellViewModels.count - 1, section: 0)) as? NoteCell else {
+//            return }
 //        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.height + scrollView.contentInset.bottom + 50)
-//        scrollView.setContentOffset(bottomOffset, animated: true)
+//        scrollView.setContentOffset(bottomOffset, animated: false)
 //        cell.textView.becomeFirstResponder()
     }
     func didTapCompleteButtonView() {
@@ -187,13 +247,12 @@ class ProjectChapterInputViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         view.backgroundColor = .white
-        bind(to: viewModel)
+        
         setUI()
         title = "\(viewModel.currentIndex)"
-        
         completeButtonView.isUserInteractionEnabled = false
         configureNavigationBar()
-        noteTableView.delegate = self
+//        noteTableView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -205,8 +264,9 @@ class ProjectChapterInputViewController: UIViewController {
         super.viewDidLoad()
     }
     override func viewWillAppear(_ animated: Bool) {
-        fillInputs()
         tabBarController?.tabBar.isHidden = true
+        bind(to: viewModel)
+        fillInputs()
     }
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
@@ -223,10 +283,12 @@ class ProjectChapterInputViewController: UIViewController {
     let titleTextField: BaseTextField = {
         let tf = BaseTextField()
         tf.placeholder = "제목을 입력해주세요."
+        tf.setPlaceholder(fontSize: 16, font: .medium)
+        tf.font = .pretendardFont(size: 16, style: .medium)
         return tf
     }()
     let contentTextView: BaseTextView = {
-        let tv = BaseTextView()
+        let tv = BaseTextView(viewModel: .init())
         return tv
     }()
     let noteTableView: UITableView = {
@@ -238,7 +300,7 @@ class ProjectChapterInputViewController: UIViewController {
         return v
     }()
     let addNoteButtonView: ContentsAddButtonView = {
-        let v = ContentsAddButtonView()
+        let v = ContentsAddButtonView(disableMessage: "노트 추가는 3개까지 가능합니다.")
         return v
     }()
     let completeButtonView = CompleteButtonView(viewModel: .init(content: "저장하기", backgroundColor: .disable))
@@ -268,21 +330,21 @@ extension ProjectChapterInputViewController {
             $0.height.greaterThanOrEqualTo(200)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
+        noteTableView.snp.makeConstraints {
+            $0.top.equalTo(contentTextView.snp.bottom)
+            $0.leading.trailing.equalTo(titleTextField)
+            $0.height.equalTo(15)
+        }
+        
         addNoteButtonView.snp.makeConstraints {
+            $0.top.equalTo(noteTableView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(48)
             $0.bottom.equalToSuperview().inset(80)
         }
-        noteTableView.snp.makeConstraints {
-            $0.top.equalTo(contentTextView.snp.bottom).offset(0)
-            $0.leading.trailing.equalTo(titleTextField)
-            $0.bottom.equalTo(addNoteButtonView.snp.top)
-            $0.height.equalTo(20)
-        }
-        
-        
+
+ 
         view.addSubview(completeButtonView)
-        
         completeButtonView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(78)
@@ -291,17 +353,32 @@ extension ProjectChapterInputViewController {
     }
 }
 
-extension ProjectChapterInputViewController: UITableViewDelegate, UITextViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
+extension ProjectChapterInputViewController: UITextViewDelegate {
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let cell = noteTableView.cellForRow(at: indexPath)
+//        print(cell!.frame)
+//    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return UITableView.automaticDimension
+//    }
     
     func textViewDidChange(_ textView: UITextView) {
         noteTableView.beginUpdates()
-        
-       
         noteTableView.endUpdates()
-        
         updateTableViewHeight()
     }
+}
+
+extension ProjectChapterInputViewController: TwoButtonAlertViewDelegate {
+    func didTapRightButton() {
+        dismiss(animated: true)
+        viewModel.noteCellViewModels.remove(at: willDeletedIndex)
+        updateTableViewHeight()
+    }
+    
+    func didTapLeftButton() {
+        dismiss(animated: true)
+    }
+    
+    
 }

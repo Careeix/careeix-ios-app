@@ -21,12 +21,23 @@ class BaseTextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setPlaceholder(textColor: UIColor = .appColor(.gray250), fontSize: CGFloat = 12, font: UIFont.FontType.Pretentdard = .regular) {
+        guard let string = self.placeholder else {
+            return
+        }
+        attributedPlaceholder = NSAttributedString(string: string, attributes: [
+            .foregroundColor: textColor,
+            .font: UIFont.pretendardFont(size: fontSize, style: font)
+        ])
+    }
+    
     func configure() {
         layer.cornerRadius = 10
         layer.borderWidth = 1
         layer.borderColor = UIColor.appColor(.gray100).cgColor
         setLeftPaddingPoints(15)
         font = .pretendardFont(size: 13, style: .regular)
+        attributedPlaceholder = NSAttributedString(string: placeholder ?? "", attributes: [.foregroundColor: UIColor.appColor(.gray250)])
     }
 }
 extension Reactive where Base: BaseTextField {

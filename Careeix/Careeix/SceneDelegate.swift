@@ -67,7 +67,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let onboardingViewController = UINavigationController(rootViewController: OnboardViewController())
         UserDefaultManager.shared.projectChapters = []
         UserDefaultManager.shared.projectInput = .init(title: "", startDateString: "", endDateString: "", division: "", indroduce: "")
-        UserDefaultManager.shared.jwtToken = ""
+        UserDefaultManager.shared.jwtToken = "a"
         // test end
         
         

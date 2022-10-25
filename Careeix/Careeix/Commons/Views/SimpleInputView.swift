@@ -47,6 +47,7 @@ class SimpleInputView: UIView {
         super.init(frame: .zero)
         bind(to: viewModel)
         setUI()
+        textField.setPlaceholder()
     }
     
     override init(frame: CGRect) {
