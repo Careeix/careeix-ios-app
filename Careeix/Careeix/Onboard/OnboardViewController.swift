@@ -40,7 +40,9 @@ class OnboardViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.onboardImageNamesDriver
-            .do { self.pageControl.numberOfPages = $0.count }
+            .do { [weak self] in
+                   self?.pageControl.numberOfPages = $0.count
+            }
             .drive(onboardCollectionView.rx.items) { collectionView, row, data in
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OnboardCell.self.description(), for: IndexPath(row: row, section: 0)) as? OnboardCell else { return UICollectionViewCell() }
                 cell.bind(to: .init(imageName: data))
