@@ -33,11 +33,11 @@ class ProjectInputViewController: UIViewController {
                 owner.completeButtonView.isUserInteractionEnabled = false
             }.disposed(by: disposeBag)
         
-        viewModel.showNextViewWithInputValueDriver
-            .drive(with: self) { owner, inputs in
+        viewModel.showNextViewDriver
+            .drive(with: self) { owner, _ in
                 // TODO: -
-                print("입력값: ", inputs)
-                UserDefaultManager.shared.projectInput = inputs
+                print("입력값: ", UserDefaultManager.shared.projectInput)
+//                 = inputs
                 owner.view.endEditing(true)
                 owner.navigationController?.pushViewController(ProjectInputDetailViewController.init(viewModel: .init()), animated: true)
             }.disposed(by: disposeBag)
@@ -83,6 +83,7 @@ class ProjectInputViewController: UIViewController {
                 owner.scrollView.setContentOffset(.init(x: 0, y: owner.periodInputView.frame.maxY), animated: true)
             }.disposed(by: disposeBag)
         
+        
         periodInputView.startDateView.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
@@ -101,8 +102,8 @@ class ProjectInputViewController: UIViewController {
         
         completeButtonView.rx.tapGesture()
             .when(.recognized)
-            .map { _ in () }
-            .bind(to: viewModel.nextStepTrigger)
+            .map { _ in true }
+            .bind(to: viewModel.viewWillDisappearWithIsWritingRelay)
             .disposed(by: disposeBag)
         
         startDatePickerView.datePickerTopViewRightLabel.rx.tapGesture()
@@ -120,23 +121,48 @@ class ProjectInputViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         startDatePickerView.datePicker.rx.date
-            .bind(to: viewModel.startDateRelay)
+            .map { $0.toString() }
+            .bind(to: viewModel.periodInputViewModel.startDateViewModel.inputStringRelay)
             .disposed(by: disposeBag)
         
         endDatePickerView.datePicker.rx.date
-            .bind(to: viewModel.endDateRelay)
+            .map { $0.toString() }
+            .bind(to: viewModel.periodInputViewModel.endDateViewModel.inputStringRelay)
             .disposed(by: disposeBag)
         
-        viewModel.startDateStringDriver
-            .drive(periodInputView.startDateView.contentLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        viewModel.endDateStringDriver
-            .drive(periodInputView.endDateView.contentLabel.rx.text)
-            .disposed(by: disposeBag)
+        viewModel.popViewControllerDriver
+            .debug("popViewControllerDriver")
+            .drive(with: self) { owner, _ in
+                owner.navigationController?.popViewController(animated: true)
+            }.disposed(by: disposeBag)
+//        viewModel.startDateStringDriver
+//            .drive(periodInputView.startDateView.contentLabel.rx.text)
+//            .disposed(by: disposeBag)
+//
+//        viewModel.endDateStringDriver
+//            .drive(periodInputView.endDateView.contentLabel.rx.text)
+//            .disposed(by: disposeBag)
     }
     
     // MARK: - function
+    override func didTapBackButton() {
+        showWarningCancelWritingAlertView()
+    }
+    
+    func showAskingKeepWritingView() {
+        let askingKeepWritingView = TwoButtonAlertViewController(viewModel: .init(type: .askingKeepWriting))
+        askingKeepWritingView.delegate = self
+        present(askingKeepWritingView, animated: true)
+    }
+    
+    func showWarningCancelWritingAlertView() {
+        let warningCancelWritingAlertView = TwoButtonAlertViewController(viewModel: .init(type: .wraningCancelWriting))
+        warningCancelWritingAlertView.delegate = self
+        
+        present(warningCancelWritingAlertView, animated: true)
+        
+    }
+    
     func hideBottomUpView(_ sender: UIView) {
         sender.snp.updateConstraints {
             $0.bottom.equalToSuperview().offset(datePickerOffset)
@@ -152,8 +178,7 @@ class ProjectInputViewController: UIViewController {
         sender.snp.updateConstraints {
             $0.bottom.equalToSuperview()
         }
-        UIView.animate(withDuration: 0.4) { [weak self] in
-            guard let self else { return }
+        UIView.animate(withDuration: 0.4) {
             self.view.layoutIfNeeded()
         }
         
@@ -199,6 +224,15 @@ class ProjectInputViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+//        UserDefaultManager.shared.projectInput = .init(title: "a", division: "ㅠ", indroduce: "ㅊ")
+//        print("asds", UserDefaultManager.shared.projectInput.checkRemain())
+//        print("Asd", UserDefaultManager.shared.projectInput)
+        if !UserDefaultManager.shared.isWritingProject &&
+            viewModel.checkRemainingData() {
+            showAskingKeepWritingView()
+        }
+        // TODO: 주석 풀기
+        UserDefaultManager.shared.isWritingProject = true
         titleInputView.textField.becomeFirstResponder()
     }
     
@@ -278,8 +312,36 @@ extension ProjectInputViewController {
 
 extension ProjectInputViewController: PeriodInputViewDelegate {
     func didTapProceedingCheckBox(isProceed: Bool) {
-        viewModel.endDateRelay.accept(Date())
+        viewModel.periodInputViewModel.endDateViewModel.inputStringRelay.accept(Date().toString())
         endDatePickerView.datePicker.setDate(Date(), animated: false)
         hideBottomUpView(endDatePickerView)
+        
+        UserDefaultManager.shared.projectInput.isProceed = isProceed
+    }
+}
+
+extension ProjectInputViewController: TwoButtonAlertViewDelegate {
+    func didTapRightButton(type: TwoButtonAlertType) {
+        dismiss(animated: true)
+        switch type {
+        case .askingKeepWriting:
+            viewModel.fillRemainingInput()
+        case .wraningCancelWriting:
+            viewModel.viewWillDisappearWithIsWritingRelay.accept(false)
+        default:
+            break
+        }
+    }
+    
+    func didTapLeftButton(type: TwoButtonAlertType) {
+        dismiss(animated: true)
+        switch type {
+        case .askingKeepWriting:
+            UserDefaultManager.shared.projectInput = .init(title: "", division: "", indroduce: "")
+            UserDefaultManager.shared.projectChapters = []
+        default:
+            break
+        }
+        
     }
 }

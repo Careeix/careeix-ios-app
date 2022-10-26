@@ -70,7 +70,6 @@ class OnboardViewController: UIViewController {
             .map { _ in .apple }
             .bind(to: viewModel.socialLoginTrigger)
             .disposed(by: disposeBag)
-//            .bind(to: viewModel.appleLoginTrigger).disposed(by: disposeBag)
         
         viewModel.showHomeViewDriver
             .debug("🩳🩳🩳 로그인 완료 Driver 🩳🩳🩳")
@@ -97,15 +96,16 @@ class OnboardViewController: UIViewController {
                                                         description: "상세 직무 개수는 1~3개까지 입력 가능합니다.",
                                                         placeholders: Array(repeating: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)",
                                                                             count: 3)),
-                        completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable
-                                                      )
+                        completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable)
                     )
                 )
                 owner.navigationController?.pushViewController(vc, animated: true)
             }.disposed(by: disposeBag)
         
     }
-    
+    deinit {
+        disposeBag = DisposeBag()
+    }
     // MARK: - UIComponents
     let logoImageView = UIImageView()
     lazy var onboardCollectionView: UICollectionView = {

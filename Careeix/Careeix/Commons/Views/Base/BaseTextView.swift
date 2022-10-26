@@ -11,18 +11,24 @@ import RxSwift
 import RxCocoa
 import RxRelay
 struct BaseTextViewModel {
-    let inputRelay = PublishRelay<String>()
+    // MARK: Input
+    let inputStringRelay = PublishRelay<String>()
     
-    
+    // MARK: Output
+    let inputStringDriver: Driver<String>
     let placeholderDriver: Driver<String>
     let hiddenPlaceholderLabelDriver: Driver<Bool>
     
     init(placeholder: String = "내용을 입력해주세요.") {
         placeholderDriver = .just(placeholder)
-        hiddenPlaceholderLabelDriver = inputRelay
+        let inputStringRelayShare = inputStringRelay.share()
+        hiddenPlaceholderLabelDriver = inputStringRelayShare
             .map { $0 != "" }
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: true)
+        
+        inputStringDriver = inputStringRelayShare
+            .asDriver(onErrorJustReturn: "")
     }
 }
 class BaseTextView: UITextView {
@@ -43,7 +49,8 @@ class BaseTextView: UITextView {
     // MARK: Binding
     func bind(to viewModel: BaseTextViewModel) {
         rx.text.orEmpty
-            .bind(to: viewModel.inputRelay)
+            .distinctUntilChanged()
+            .bind(to: viewModel.inputStringRelay)
             .disposed(by: disposeBag)
 
         viewModel.placeholderDriver
@@ -52,6 +59,10 @@ class BaseTextView: UITextView {
         
         viewModel.hiddenPlaceholderLabelDriver
             .drive(placeholerLabel.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        viewModel.inputStringDriver
+            .drive(rx.text)
             .disposed(by: disposeBag)
     }
     
@@ -82,11 +93,5 @@ class BaseTextView: UITextView {
             $0.top.equalToSuperview().inset(8)
             $0.leading.equalToSuperview().inset(5)
         }
-    }
-}
-
-extension Reactive where Base: BaseTextView {
-    var text: ControlProperty<String?> {
-        value
     }
 }

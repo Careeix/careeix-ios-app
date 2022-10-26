@@ -22,7 +22,7 @@ class BaseTextField: UITextField {
     }
     
     func setPlaceholder(textColor: UIColor = .appColor(.gray250), fontSize: CGFloat = 12, font: UIFont.FontType.Pretentdard = .regular) {
-        guard let string = self.placeholder else {
+        guard let string = placeholder else {
             return
         }
         attributedPlaceholder = NSAttributedString(string: string, attributes: [

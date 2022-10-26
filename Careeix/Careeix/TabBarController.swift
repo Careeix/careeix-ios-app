@@ -36,9 +36,7 @@ class TabBarController: UITabBarController {
 extension TabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if let fromVC = tabBarController.selectedViewController as? UINavigationController{
-            print(viewController)
             if viewController.tabBarItem.tag == 1 {
-                print("ASd")
                 let vc = ProjectInputViewController(
                     viewModel: .init(
                         titleInputViewModel: .init(title: "제목",
@@ -48,7 +46,7 @@ extension TabBarController: UITabBarControllerDelegate {
                         divisionInputViewModel: .init(title: "구분",
                                                       placeholder: "Ex. 개인활동/팀활동/(소속이름)"),
                         introduceInputViewModel: .init(title: "소개",
-                                                       placeholder: "진행한 일을 2줄 이내로 소개해주세요.")
+                                                       baseTextViewModel: .init(placeholder: "진행한 일을 2줄 이내로 소개해주세요."))
                     ))
                 if viewController.tabBarItem.tag == 1 {
                     fromVC.pushViewController(vc, animated: true)

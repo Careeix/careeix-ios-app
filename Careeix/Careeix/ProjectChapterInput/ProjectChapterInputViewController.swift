@@ -68,6 +68,7 @@ class ProjectChapterInputViewController: UIViewController {
     var disposeBag = DisposeBag()
     var viewModel: ProjectChapterInputViewModel
     var willDeletedIndex: Int!
+
     // MARK: Binding
     func bind(to viewModel: ProjectChapterInputViewModel) {
         print("이게 왜불려")
@@ -118,20 +119,25 @@ class ProjectChapterInputViewController: UIViewController {
                     .when(.recognized)
                     .withUnretained(self)
                     .bind { owner, _ in
-                        print("셀 텍스트 뷰 클릭됐어 ! 궁극의 위치가 필요해 스크롤 릴레이로 보내야해", row)
-                    }.disposed(by: self.disposeBag)
+                        let rootView = owner.titleTextField
+                        print("셀 텍스트 뷰 클릭됐어 ! 궁극의 위치가 필요해 스크롤 릴레이로 보내야해", owner.view.convert(cell.frame, to: rootView))
+                        owner.scrollView.setContentOffset(CGPoint(x: 0, y: UIScreen.main.bounds.height * 0.35 + owner.view.convert(cell.frame, to: rootView).minY - owner.scrollView.contentOffset.y), animated: true)
+                    }.disposed(by: cell.disposeBag)
                 
                 cell.deleteButtonImageView
                     .rx.tapGesture()
                     .when(.recognized)
-                    .do { self.willDeletedIndex = row }
-                    .map { _ in self.willDeletedIndex }
+                    .do { [weak self] _ in
+                        self?.willDeletedIndex = row
+                    }.map { [weak self] _ in
+                        self?.willDeletedIndex
+                    }
                     .distinctUntilChanged()
                     .withUnretained(self)
                     .bind { owner, _ in
                         owner.willDeletedIndex = row
                         owner.showDeleteNoteWarningAlert()
-                    }.disposed(by: self.disposeBag)
+                    }.disposed(by: cell.disposeBag)
                 return cell
             }.disposed(by: disposeBag)
         
@@ -159,7 +165,7 @@ class ProjectChapterInputViewController: UIViewController {
                 print("선택한 셀의 프레임이에요 궁극의 프레임을 따서 스크롤 위치값을 변경합시다.", frame)
             }.disposed(by: disposeBag)
         
-       
+
 //        viewModel.notes
 //            .debug("🤯🤯🤯노트들🤯🤯🤯")
 //            .drive { a in
@@ -168,11 +174,7 @@ class ProjectChapterInputViewController: UIViewController {
     }
     // MARK: Function
     func showDeleteNoteWarningAlert() {
-        let alert = TwoButtonAlertViewController(viewModel: .init(content: "NOTE를 삭제하시겠습니까?",
-                                                                  leftString: "취소",
-                                                                  leftColor: .gray400,
-                                                                  rightString: "삭제",
-                                                                  rightColor: .error))
+        let alert = TwoButtonAlertViewController(viewModel: .init(type: .warningDeleteNote))
         alert.modalTransitionStyle = .crossDissolve
         alert.modalPresentationStyle = .overFullScreen
         alert.delegate = self
@@ -255,7 +257,6 @@ class ProjectChapterInputViewController: UIViewController {
         title = "\(viewModel.currentIndex)"
         completeButtonView.isUserInteractionEnabled = false
         configureNavigationBar()
-//        noteTableView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -346,25 +347,15 @@ extension ProjectChapterInputViewController {
             $0.bottom.equalToSuperview().inset(80)
         }
 
- 
         view.addSubview(completeButtonView)
         completeButtonView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(78)
         }
-        
     }
 }
 
 extension ProjectChapterInputViewController: UITextViewDelegate {
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let cell = noteTableView.cellForRow(at: indexPath)
-//        print(cell!.frame)
-//    }
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return UITableView.automaticDimension
-//    }
-    
     func textViewDidChange(_ textView: UITextView) {
         noteTableView.beginUpdates()
         noteTableView.endUpdates()
@@ -373,15 +364,13 @@ extension ProjectChapterInputViewController: UITextViewDelegate {
 }
 
 extension ProjectChapterInputViewController: TwoButtonAlertViewDelegate {
-    func didTapRightButton() {
+    func didTapRightButton(type: TwoButtonAlertType) {
         dismiss(animated: true)
         viewModel.noteCellViewModels.remove(at: willDeletedIndex)
         updateTableViewHeight()
     }
     
-    func didTapLeftButton() {
+    func didTapLeftButton(type: TwoButtonAlertType) {
         dismiss(animated: true)
     }
-    
-    
 }

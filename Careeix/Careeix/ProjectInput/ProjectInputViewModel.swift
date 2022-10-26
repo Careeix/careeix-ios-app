@@ -11,14 +11,6 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
-struct ProjectBaseInputValue: Codable {
-    let title: String
-    let startDateString: String
-    let endDateString: String
-    let division: String
-    let indroduce: String
-}
-
 struct ProjectInputViewModel {
     
     let titleInputViewModel: SimpleInputViewModel
@@ -27,17 +19,13 @@ struct ProjectInputViewModel {
     let introduceInputViewModel: ManyInputViewModel
     
     // MARK: Input
-    let nextStepTrigger = PublishRelay<Void>()
-    let startDateRelay = PublishRelay<Date>()
-    let endDateRelay = PublishRelay<Date>()
-//    let combinedInputValuesObservable: Observable<(String, String,String)>
+    //    let nextStepTrigger = PublishRelay<Void>()
+    let viewWillDisappearWithIsWritingRelay = PublishRelay<Bool>()
     // MARK: Output
     let nextButtonEnableDriver: Driver<Void>
     let nextButtonDisableDriver: Driver<Void>
-    let startDateStringDriver: Driver<String>
-    let endDateStringDriver: Driver<String>
-//    let showAddProjectDetailDriver: Driver<Void>
-    let showNextViewWithInputValueDriver: Driver<ProjectBaseInputValue>
+    let showNextViewDriver: Driver<Void>
+    let popViewControllerDriver: Driver<Void>
     
     init(titleInputViewModel: SimpleInputViewModel,
          periodInputViewModel: PeriodInputViewModel,
@@ -47,36 +35,41 @@ struct ProjectInputViewModel {
         self.periodInputViewModel = periodInputViewModel
         self.divisionInputViewModel = divisionInputViewModel
         self.introduceInputViewModel = introduceInputViewModel
-        let startDateStringRelay = startDateRelay
-            .map { $0.toString() }
-        let endDateStringRelay = endDateRelay
-            .map { $0.toString() }
+        // TODO: 끝났을 때,
         let combinedInputValuesObservable = Observable.combineLatest(titleInputViewModel.inputStringRelay,
-                                                                     startDateStringRelay,
-                                                                     endDateStringRelay,
+                                                                     periodInputViewModel.startDateViewModel.inputStringRelay,
+                                                                     periodInputViewModel.endDateViewModel.inputStringRelay,
                                                                      divisionInputViewModel.inputStringRelay,
-                                                                     introduceInputViewModel.inputStringRelay) {
-            ($0, $1, $2, $3, $4)
+                                                                     introduceInputViewModel.baseTextViewModel.inputStringRelay) {
+            return ($0, $1, $2, $3, $4)
         }
         
-        startDateStringDriver = startDateRelay
-            .map { $0.toString() }
-            .asDriver(onErrorJustReturn: "")
+        // TODO: 중간에 뭔일 발생 확인!!
+        let viewWillDisappearWithIsWritingRelayShare = viewWillDisappearWithIsWritingRelay
+            .debug("😡😡뷰윌 어피어😡😡")
+            .withLatestFrom(combinedInputValuesObservable) { isWriting, inputs in
+                UserDefaultManager.shared.isWritingProject = isWriting
+                UserDefaultManager.shared.projectInput = .init(title: inputs.0, startDateString: inputs.1, endDateString: inputs.2, division: inputs.3, indroduce: inputs.4, isProceed: UserDefaultManager.shared.projectInput.isProceed)
+                return isWriting
+            }
+            .debug("중간에 뭔일발생함??")
+            .share()
         
-        endDateStringDriver = endDateRelay
-            .map { $0.toString() }
-            .asDriver(onErrorJustReturn: "")
+        showNextViewDriver = viewWillDisappearWithIsWritingRelayShare
+            .filter { $0 }
+            .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
         
-        showNextViewWithInputValueDriver = nextStepTrigger
-            .withLatestFrom(combinedInputValuesObservable) { $1 }
-            .map { title, startDateString, endDateString, division, introduce in
-                .init(title: title, startDateString: startDateString, endDateString: endDateString, division: division, indroduce: introduce)
-            }.asDriver(onErrorJustReturn: .init(title: "", startDateString: "", endDateString: "", division: "", indroduce: ""))
+        popViewControllerDriver = viewWillDisappearWithIsWritingRelayShare
+            .filter { !$0 }
+            .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
         
         let buttonStateDriver = combinedInputValuesObservable
             .map { title, _, _, division, introduce in
                 title != "" && division != "" && introduce != ""
             }.distinctUntilChanged()
+            .share()
             .asDriver(onErrorJustReturn: false)
         
         nextButtonEnableDriver = buttonStateDriver
@@ -85,6 +78,14 @@ struct ProjectInputViewModel {
         nextButtonDisableDriver = buttonStateDriver
             .filter { !$0 }
             .map { _ in () }
-        
+    }
+    func checkRemainingData() -> Bool {
+        return UserDefaultManager.shared.projectInput.checkRemain() || UserDefaultManager.shared.projectChapters.count != 0
+    }
+    func fillRemainingInput() {
+        let remainigInput = UserDefaultManager.shared.projectInput
+        titleInputViewModel.inputStringRelay.accept(remainigInput.title)
+        divisionInputViewModel.inputStringRelay.accept(remainigInput.division)
+        introduceInputViewModel.baseTextViewModel.inputStringRelay.accept(remainigInput.indroduce)
     }
 }

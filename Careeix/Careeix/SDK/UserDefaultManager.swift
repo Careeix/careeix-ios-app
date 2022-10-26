@@ -22,8 +22,11 @@ class UserDefaultManager {
     @UserDefault(key: "projectChapters", defaultValue: [])
     public var projectChapters: [ProjectChapter]
     
-    @UserDefault(key: "projectInput", defaultValue: ProjectBaseInputValue.init(title: "", startDateString: "", endDateString: "", division: "", indroduce: ""))
+    @UserDefault(key: "projectInput", defaultValue: ProjectBaseInputValue.init(title: "", division: "", indroduce: ""))
     public var projectInput: ProjectBaseInputValue
+    
+    @UserDefault(key: "isWritingProject", defaultValue: false)
+    public var isWritingProject: Bool
 }
 
 @propertyWrapper

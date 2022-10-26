@@ -31,9 +31,9 @@ struct PeriodInputViewModel {
     init(title: String, description: String) {
         titleDriver = .just(title)
         descriptionDriver = .just(description)
-        let currentDateString = Date().toString()
-        startDateViewModel = .init(content: currentDateString)
-        endDateViewModel = .init(content: currentDateString)
+        print("asd", UserDefaultManager.shared.projectInput.startDateString)
+        startDateViewModel = .init(content: UserDefaultManager.shared.projectInput.startDateString)
+        endDateViewModel = .init(content: UserDefaultManager.shared.projectInput.endDateString)
     }
 }
 
@@ -62,6 +62,7 @@ class PeriodInputView: UIView {
         : .appColor(.white)
         
         endDateView.contentLabel.text = Date().toString()
+        UserDefaultManager.shared.projectInput.endDateString = Date().toString()
         endDateView.contentLabel.textColor = isProceed
         ? .appColor(.gray100)
         : .appColor(.black)
