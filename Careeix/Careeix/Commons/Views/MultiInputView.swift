@@ -28,8 +28,6 @@ struct MultiInputViewModel {
         inputValuesObservable = Observable
             .combineLatest(self.multiInputCellViewModels.map { $0.inputStringRelay })
             .map { $0.filter { $0 != "" } }
-        
-        
     }
 }
 

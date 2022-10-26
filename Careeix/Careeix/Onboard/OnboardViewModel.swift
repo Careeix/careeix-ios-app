@@ -17,7 +17,8 @@ struct OnboardViewModel {
     // MARK: - Input
     let endDraggingRelay = BehaviorRelay<(contentOffsetX, screenWidth)>(value: (0, 1))
     let kakaoLoginTrigger = PublishRelay<Void>()
-    
+    let appleLoginTrigger = PublishRelay<Void>()
+    let socialLoginTrigger = PublishRelay<SocialLoginSDK.SocialLoginType>()
     // MARK: - Output
     let logoImageNameDriver: Driver<String>
     let kakaoLoginButtonImageNameDriver: Driver<String>
@@ -36,18 +37,22 @@ struct OnboardViewModel {
             .map { Int($0 / $1) }
             .asDriver(onErrorJustReturn: 0)
         
-        let needMoreInfoDriver = kakaoLoginTrigger
-            .debug("카카오 로그인 버튼 클릭 !")
-            .flatMap { SocialLoginSDK.socialLogin(type: .kakao) }
+        let needMoreInfoObservableShare = socialLoginTrigger
+            .debug("소셜 로그인 버튼 클릭 !")
+            .flatMap(SocialLoginSDK.socialLogin)
+            .debug("🤢🤢🤢소셜로그인 호출 후 디버깅 🤢🤢🤢")
             .do { print("🌂🌂🌂result: 🌂🌂🌂", $0)}
-            .asDriver(onErrorJustReturn: true)
-        
-        showHomeViewDriver = needMoreInfoDriver
+            .share()
+            
+        showHomeViewDriver = needMoreInfoObservableShare
             .filter { !$0 }
             .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
         
-        showSignUpViewDriver = needMoreInfoDriver
+        showSignUpViewDriver = needMoreInfoObservableShare
+            .debug("😡😡😡추가정보 드라이버😡😡😡")
             .filter { $0 }
             .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
     }
 }

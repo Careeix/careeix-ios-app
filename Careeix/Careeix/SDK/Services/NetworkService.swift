@@ -17,9 +17,9 @@ enum CustomTask {
 }
 
 struct APIResponse<T: Decodable>: Decodable {
-    let code: Int?
-    let data: T
-    let message: String?
+    let code: Int
+    let result: T
+    let message: String
 }
 
 struct ServiceAPI: TargetType {
@@ -62,7 +62,7 @@ class API<T: Decodable> {
                 do {
                     _ = try response.filterSuccessfulStatusCodes()
                     let result = try response.map(APIResponse<T>.self)
-                    return .just(result.data)
+                    return .just(result.result)
                 } catch (let error) {
                     print("error: ", error.localizedDescription)
                     return .error(error)

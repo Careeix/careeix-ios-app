@@ -124,6 +124,9 @@ class ProjectChapterInputViewController: UIViewController {
                 cell.deleteButtonImageView
                     .rx.tapGesture()
                     .when(.recognized)
+                    .do { self.willDeletedIndex = row }
+                    .map { _ in self.willDeletedIndex }
+                    .distinctUntilChanged()
                     .withUnretained(self)
                     .bind { owner, _ in
                         owner.willDeletedIndex = row

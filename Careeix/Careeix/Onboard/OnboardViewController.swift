@@ -59,16 +59,16 @@ class OnboardViewController: UIViewController {
         
         kakaoLoginButtonImageView.rx.tapGesture()
             .when(.recognized)
-            .map { _ in () }
-            .bind (to: viewModel.kakaoLoginTrigger)
+            .map { _ in .kakao }
+            .bind (to: viewModel.socialLoginTrigger)
             .disposed(by: disposeBag)
         
         appleLoginButtonImageView.rx.tapGesture()
             .when(.recognized)
-            .withUnretained(self)
-            .bind { owner, _ in
-                print("애플 로그인!")
-            }.disposed(by: disposeBag)
+            .map { _ in .apple }
+            .bind(to: viewModel.socialLoginTrigger)
+            .disposed(by: disposeBag)
+//            .bind(to: viewModel.appleLoginTrigger).disposed(by: disposeBag)
         
         viewModel.showHomeViewDriver
             .debug("🩳🩳🩳 로그인 완료 Driver 🩳🩳🩳")

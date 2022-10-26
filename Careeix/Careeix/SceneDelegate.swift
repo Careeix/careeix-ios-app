@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
@@ -67,18 +68,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let onboardingViewController = UINavigationController(rootViewController: OnboardViewController())
         UserDefaultManager.shared.projectChapters = []
         UserDefaultManager.shared.projectInput = .init(title: "", startDateString: "", endDateString: "", division: "", indroduce: "")
-        UserDefaultManager.shared.jwtToken = "a"
+        UserDefaultManager.shared.jwtToken = ""
         // test end
         
         
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
-        ? chapterInputViewComtroller
+        ? onboardingViewController
         : TabBarController()
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(showTabBarController),
                                                name: Notification.Name("loginSuccess"),
                                                object: nil)
+        window?.overrideUserInterfaceStyle = .light
         window?.makeKeyAndVisible()
     }
     
