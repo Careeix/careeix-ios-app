@@ -42,7 +42,9 @@ extension TabBarController: UITabBarControllerDelegate {
                         titleInputViewModel: .init(title: "제목",
                                                    placeholder: "프로젝트 제목을 입력해주세요."),
                         periodInputViewModel: .init(title: "기간",
-                                                    description: "프로젝트 기간을 입력해주세요."),
+                                                    description: "프로젝트 기간을 입력해주세요.",
+                                                    checkBoxViewModel: .init()
+                                                   ),
                         divisionInputViewModel: .init(title: "구분",
                                                       placeholder: "Ex. 개인활동/팀활동/(소속이름)"),
                         introduceInputViewModel: .init(title: "소개",

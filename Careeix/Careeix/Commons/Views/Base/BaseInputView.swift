@@ -14,7 +14,6 @@ struct BaseInputViewModel {
     let inputStringRelay = BehaviorRelay<String>(value: Date().toString())
     
     let inputStringDriver: Driver<String>
-    
     let contentDriver: Driver<String>
     
     init(content: String) {

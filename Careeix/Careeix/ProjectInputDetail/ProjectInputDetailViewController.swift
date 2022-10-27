@@ -21,7 +21,6 @@ struct ProjectInputDetailViewModel {
         chaptersDriver = viewWillAppearRelay
             .map { _ in UserDefaultManager.shared.projectChapters }
             .asDriver(onErrorJustReturn: [])
-            
     }
 }
 
@@ -58,11 +57,15 @@ class ProjectInputDetailViewController: UIViewController {
                 print("발행전 데이터 확인")
                 print(UserDefaultManager.shared.projectInput)
                 print(UserDefaultManager.shared.projectChapters)
-                
             }.disposed(by: disposeBag)
     }
     
-
+    // MARK: - Functions
+    func updateCompleteButtonView() {
+        completeButtonView.isUserInteractionEnabled = !(UserDefaultManager.shared.projectChapters.count == 0)
+        completeButtonView.backgroundColor = completeButtonView.isUserInteractionEnabled ? .appColor(.main) : .appColor(.disable)
+    }
+    
     // MARK: Initializer
     init(viewModel: ProjectInputDetailViewModel) {
         self.viewModel = viewModel
@@ -78,22 +81,20 @@ class ProjectInputDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
         viewModel.viewWillAppearRelay.accept(())
         tableView.snp.updateConstraints {
             $0.height.equalTo(CGFloat(UserDefaultManager.shared.projectChapters.count) * tableView.rowHeight)
         }
-        print("이 화면에서의 수집 데이터들")
-        print(UserDefaultManager.shared.projectChapters)
-        completeButtonView.isUserInteractionEnabled = !(UserDefaultManager.shared.projectChapters.count == 0)
-        completeButtonView.backgroundColor = completeButtonView.isUserInteractionEnabled ? .appColor(.main) : .appColor(.disable)
-        print(UserDefaultManager.shared.projectInput)
-
+        updateCompleteButtonView()
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
     }

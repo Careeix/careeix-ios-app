@@ -12,14 +12,16 @@ import RxCocoa
 import RxRelay
 class BaseTextViewModel {
     // MARK: Input
-    let inputStringRelay = BehaviorRelay<String>(value: "")
+    let inputStringRelay: BehaviorRelay<String>
     let inputStringShare: Observable<String>
     // MARK: Output
     let inputStringDriver: Driver<String>
     let placeholderDriver: Driver<String>
     let hiddenPlaceholderLabelDriver: Driver<Bool>
     
-    init(placeholder: String = "내용을 입력해주세요.") {
+    init(placeholder: String = "내용을 입력해주세요.", inputStringRelay: BehaviorRelay<String> = BehaviorRelay<String>(value: "")) {
+        self.inputStringRelay = inputStringRelay
+        
         placeholderDriver = .just(placeholder)
         inputStringShare = inputStringRelay.share()
         hiddenPlaceholderLabelDriver = inputStringShare
@@ -33,9 +35,10 @@ class BaseTextViewModel {
 }
 class BaseTextView: UITextView {
     var disposeBag = DisposeBag()
-    
+    var viewModel: BaseTextViewModel
     // MARK: Initializer
     init(viewModel: BaseTextViewModel) {
+        self.viewModel = viewModel
         super.init(frame: .zero, textContainer: nil)
         setUI()
         bind(to: viewModel)

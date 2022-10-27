@@ -41,7 +41,6 @@ class ProjectChapterInputViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         completeButtonView.rx.tapGesture()
-            .debug("저장버튼 눌렸어요")
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
@@ -52,9 +51,9 @@ class ProjectChapterInputViewController: UIViewController {
             .drive(noteTableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: NoteCell.self.description(), for: IndexPath(row: row, section: 0)) as? NoteCell else { return UITableViewCell() }
                 cell.textView.delegate = self
-                let text = viewModel.noteCellViewModels[row].inputStringRelay.value
+//                let text = viewModel.noteCellViewModels[row].textViewModel.inputStringRelay.value
                 cell.viewModel = viewModel.noteCellViewModels[row]
-                cell.textView.text = text
+//                cell.textView.text = text
                 cell.textView.rx.tapGesture()
                     .when(.recognized)
                     .withUnretained(self)
@@ -81,7 +80,6 @@ class ProjectChapterInputViewController: UIViewController {
 
         viewModel.updateTableViewHeightTriggerRelay
             .withUnretained(self)
-//            .debug("노트 테이블뷰 업데이트 필요!")
             .map { owner, _ in owner.getTableViewHeight()}
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: 0)
@@ -107,18 +105,12 @@ class ProjectChapterInputViewController: UIViewController {
             .bind { owner, frame in
                 owner.scrollToFit(with: frame)
             }.disposed(by: disposeBag)
-        
-        // TODO: 노트들 저장해야함 !
-//        viewModel.notes
-//            .debug("🤯🤯🤯노트들🤯🤯🤯")
-//            .drive { a in
-//                print(a)
-//            }.disposed(by: disposeBag)
     }
     override func viewDidLayoutSubviews() {
         view.layoutIfNeeded()
         viewModel.updateTableViewHeightTriggerRelay.accept(())
     }
+    
     // MARK: Function
     func scrollToFit(with cellFrame: CGRect) {
         scrollView.setContentOffset(CGPoint(x: 0, y: UIScreen.main.bounds.height * 0.35 + view.convert(cellFrame, to: titleTextField).minY - scrollView.contentOffset.y), animated: true)
@@ -139,17 +131,19 @@ class ProjectChapterInputViewController: UIViewController {
             .map { $0.frame.height }
             .reduce(0) { $0 + $1 }
     }
+    
     func addNoteCell() {
         view.endEditing(false)
-        viewModel.noteCellViewModels.append(.init(inputStringRelay: BehaviorRelay<String>(value: ""), row: viewModel.noteCellViewModels.count))
+        viewModel.noteCellViewModels.append(.init(inputStringRelay: BehaviorRelay<String>(value: ""), row: viewModel.noteCellViewModels.count, textViewModel: .init()))
         viewModel.updateTableViewHeightTriggerRelay.accept(())
         guard let cell = noteTableView.cellForRow(at: IndexPath(row: viewModel.noteCellViewModels.count - 1, section: 0)) as? NoteCell else {
             return }
         cell.textView.becomeFirstResponder()
         scrollToFit(with: cell.frame)
     }
+    
     func didTapCompleteButtonView() {
-        viewModel.updateProjectChapter()
+        view.endEditing(true)
     }
     
     func checkAndRemove() {
@@ -170,6 +164,7 @@ class ProjectChapterInputViewController: UIViewController {
         titleTextField.setPlaceholder(fontSize: 16, font: .medium)
         titleTextField.font = .pretendardFont(size: 16, style: .medium)
         contentTextView = BaseTextView(viewModel: viewModel.contentViewModel)
+        viewModel.updateProjectChapter()
         super.init(nibName: nil, bundle: nil)
         view.backgroundColor = .white
         setUI()
@@ -196,7 +191,6 @@ class ProjectChapterInputViewController: UIViewController {
     }
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
-        viewModel.updateProjectChapter()
         checkAndRemove()
     }
     override func viewDidAppear(_ animated: Bool) {

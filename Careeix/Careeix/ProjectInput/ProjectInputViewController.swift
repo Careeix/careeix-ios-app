@@ -33,14 +33,11 @@ class ProjectInputViewController: UIViewController {
                 owner.completeButtonView.isUserInteractionEnabled = false
             }.disposed(by: disposeBag)
         
-        viewModel.showNextViewDriver
-            .drive(with: self) { owner, _ in
-                // TODO: -
-                print("입력값: ", UserDefaultManager.shared.projectInput)
-//                 = inputs
-                owner.view.endEditing(true)
-                owner.navigationController?.pushViewController(ProjectInputDetailViewController.init(viewModel: .init()), animated: true)
+        viewModel.combinedDataDriver
+            .drive { data in
+                viewModel.updatePersistanceData(data)
             }.disposed(by: disposeBag)
+        
         
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
@@ -102,9 +99,10 @@ class ProjectInputViewController: UIViewController {
         
         completeButtonView.rx.tapGesture()
             .when(.recognized)
-            .map { _ in true }
-            .bind(to: viewModel.viewWillDisappearWithIsWritingRelay)
-            .disposed(by: disposeBag)
+            .withUnretained(self)
+            .bind { owner, _ in
+                owner.showNextView()
+            }.disposed(by: disposeBag)
         
         startDatePickerView.datePickerTopViewRightLabel.rx.tapGesture()
             .when(.recognized)
@@ -130,23 +128,32 @@ class ProjectInputViewController: UIViewController {
             .bind(to: viewModel.periodInputViewModel.endDateViewModel.inputStringRelay)
             .disposed(by: disposeBag)
         
-        viewModel.popViewControllerDriver
-            .debug("popViewControllerDriver")
-            .drive(with: self) { owner, _ in
-                owner.navigationController?.popViewController(animated: true)
+        viewModel.checkBoxIsSelctedDriver
+            .drive(with: self) { owner, isSelected in
+                owner.updatePeriodView(isProceed: isSelected)
             }.disposed(by: disposeBag)
-//        viewModel.startDateStringDriver
-//            .drive(periodInputView.startDateView.contentLabel.rx.text)
-//            .disposed(by: disposeBag)
-//
-//        viewModel.endDateStringDriver
-//            .drive(periodInputView.endDateView.contentLabel.rx.text)
-//            .disposed(by: disposeBag)
+        
+        
     }
     
     // MARK: - function
+    func updatePeriodView(isProceed: Bool) {
+        viewModel.periodInputViewModel.endDateViewModel.inputStringRelay.accept(Date().toString())
+        endDatePickerView.datePicker.setDate(Date(), animated: false)
+        hideBottomUpView(endDatePickerView)
+    }
+    
     override func didTapBackButton() {
         showWarningCancelWritingAlertView()
+    }
+    
+    func popViewController() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func showNextView() {
+        view.endEditing(true)
+        navigationController?.pushViewController(ProjectInputDetailViewController.init(viewModel: .init()), animated: true)
     }
     
     func showAskingKeepWritingView() {
@@ -158,9 +165,7 @@ class ProjectInputViewController: UIViewController {
     func showWarningCancelWritingAlertView() {
         let warningCancelWritingAlertView = TwoButtonAlertViewController(viewModel: .init(type: .wraningCancelWriting))
         warningCancelWritingAlertView.delegate = self
-        
         present(warningCancelWritingAlertView, animated: true)
-        
     }
     
     func hideBottomUpView(_ sender: UIView) {
@@ -196,12 +201,10 @@ class ProjectInputViewController: UIViewController {
         introduceInputView = .init(viewModel: viewModel.introduceInputViewModel)
         completeButtonView = .init(viewModel: .init(content: "다음", backgroundColor: .disable))
         super.init(nibName: nil, bundle: nil)
-        periodInputView.delegate = self
         setUI()
         bind(to: viewModel)
         configureNavigationBar()
         view.backgroundColor = .appColor(.white)
-        
         completeButtonView.isUserInteractionEnabled = false
     }
     
@@ -224,16 +227,15 @@ class ProjectInputViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        UserDefaultManager.shared.projectInput = .init(title: "a", division: "ㅠ", indroduce: "ㅊ")
-//        print("asds", UserDefaultManager.shared.projectInput.checkRemain())
-//        print("Asd", UserDefaultManager.shared.projectInput)
         if !UserDefaultManager.shared.isWritingProject &&
             viewModel.checkRemainingData() {
             showAskingKeepWritingView()
         }
-        // TODO: 주석 풀기
         UserDefaultManager.shared.isWritingProject = true
         titleInputView.textField.becomeFirstResponder()
+    }
+    deinit {
+        UserDefaultManager.shared.isWritingProject = false
     }
     
     // MARK: - UIComponents
@@ -310,16 +312,6 @@ extension ProjectInputViewController {
     }
 }
 
-extension ProjectInputViewController: PeriodInputViewDelegate {
-    func didTapProceedingCheckBox(isProceed: Bool) {
-        viewModel.periodInputViewModel.endDateViewModel.inputStringRelay.accept(Date().toString())
-        endDatePickerView.datePicker.setDate(Date(), animated: false)
-        hideBottomUpView(endDatePickerView)
-        
-        UserDefaultManager.shared.projectInput.isProceed = isProceed
-    }
-}
-
 extension ProjectInputViewController: TwoButtonAlertViewDelegate {
     func didTapRightButton(type: TwoButtonAlertType) {
         dismiss(animated: true)
@@ -327,7 +319,7 @@ extension ProjectInputViewController: TwoButtonAlertViewDelegate {
         case .askingKeepWriting:
             viewModel.fillRemainingInput()
         case .wraningCancelWriting:
-            viewModel.viewWillDisappearWithIsWritingRelay.accept(false)
+            popViewController()
         default:
             break
         }
@@ -337,8 +329,7 @@ extension ProjectInputViewController: TwoButtonAlertViewDelegate {
         dismiss(animated: true)
         switch type {
         case .askingKeepWriting:
-            UserDefaultManager.shared.projectInput = .init(title: "", division: "", indroduce: "")
-            UserDefaultManager.shared.projectChapters = []
+            viewModel.initPersistenceData()
         default:
             break
         }

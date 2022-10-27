@@ -10,16 +10,21 @@ import RxSwift
 import RxCocoa
 import RxRelay
 struct NoteCellViewModel {
-    var cellRow: Int
-    let inputStringRelay: BehaviorRelay<String>
+    var row: Int
+    let textViewModel: BaseTextViewModel
+    // input
+//    let inputStringRelay: BehaviorRelay<String>
+    
+    // output
     let inputStringDriver: Driver<String>
-    init(inputStringRelay: BehaviorRelay<String>, row: Int) {
-        cellRow = row
-        self.inputStringRelay = inputStringRelay
-        inputStringDriver = inputStringRelay
+    
+    init(inputStringRelay: BehaviorRelay<String>, row: Int, textViewModel: BaseTextViewModel) {
+        self.row = row
+        self.textViewModel = textViewModel
+//        self.inputStringRelay = inputStringRelay
+        inputStringDriver = textViewModel.inputStringShare
             .asDriver(onErrorJustReturn: "")
     }
-    
 }
 
 class NoteCell: UITableViewCell {
@@ -27,20 +32,21 @@ class NoteCell: UITableViewCell {
     var viewModel: NoteCellViewModel? {
         didSet {
             guard let viewModel else { return }
-            bind(to: viewModel)
+//            bind(to: viewModel)
         }
     }
     var disposeBag = DisposeBag()
 
     func bind(to viewModel: NoteCellViewModel) {
-        textView.rx.text.orEmpty
-            .distinctUntilChanged()
-            .bind(to: viewModel.inputStringRelay)
-            .disposed(by: disposeBag)
-        
         viewModel.inputStringDriver
-            .drive(textView.rx.text)
+            .drive { a in
+                print("찍히나 ??", a)
+            }
             .disposed(by: disposeBag)
+//        textView.viewModel.inputStringRelay
+//            .debug("훠이")
+//            .bind(to: viewModel.inputStringRelay)
+//            .disposed(by: disposeBag)
     }
     
     override func prepareForReuse() {

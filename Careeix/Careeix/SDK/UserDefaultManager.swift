@@ -29,6 +29,8 @@ class UserDefaultManager {
     
     @UserDefault(key: "isWritingProject", defaultValue: false)
     public var isWritingProject: Bool
+    
+//    @User
 }
 
 @propertyWrapper

@@ -10,38 +10,40 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
-protocol PeriodInputViewDelegate: AnyObject {
-    func didTapProceedingCheckBox(isProceed: Bool)
-}
+//protocol PeriodInputViewDelegate: AnyObject {
+//    func didTapProceedingCheckBox(isProceed: Bool)
+//}
 
 struct PeriodInputViewModel {
     let startDateViewModel: BaseInputViewModel
     let endDateViewModel: BaseInputViewModel
+    let checkBoxViewModel: BaseCheckBoxViewModel
     
     // MARK: Input
     let startDateTappedRelay = PublishRelay<Void>()
     let endDateTappedRelay = PublishRelay<Void>()
     let isSelectedProceedingRelay = PublishRelay<Bool>()
     
+    
     // MARK: Output
     let titleDriver: Driver<String>
     let descriptionDriver: Driver<String>
+    let checkBoxIsSelectedDriver: Driver<Bool>
     
-    init(title: String, description: String) {
+    init(title: String, description: String, checkBoxViewModel: BaseCheckBoxViewModel) {
+        self.checkBoxViewModel = checkBoxViewModel
         titleDriver = .just(title)
         descriptionDriver = .just(description)
-        print("asd", UserDefaultManager.shared.projectInput.startDateString)
         startDateViewModel = .init(content: UserDefaultManager.shared.projectInput.startDateString)
         endDateViewModel = .init(content: UserDefaultManager.shared.projectInput.endDateString)
+        checkBoxIsSelectedDriver = checkBoxViewModel.isSeclectedRelayShare
+            .asDriver(onErrorJustReturn: false)
     }
-    
-    
 }
 
 class PeriodInputView: UIView {
     // MARK: Properties
     let disposeBag = DisposeBag()
-    weak var delegate: PeriodInputViewDelegate?
     
     // MARK: Binding
     func bind(to viewModel: PeriodInputViewModel) {
@@ -49,24 +51,14 @@ class PeriodInputView: UIView {
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
         
-        proceedingCheckBox.rx.tapGesture()
-            .when(.recognized)
-            .withUnretained(self)
-            .map { owner, _ in !owner.proceedingCheckBox.isSelected }
-            .do(onNext: didTapProceedingCheckBox)
-            .bind(to: proceedingCheckBox.rx.isSelected)
-            .disposed(by: disposeBag)
-        
-        viewModel.isSelectedProceedingRelay
-                .asDriver(onErrorJustReturn: false)
-                .drive(with: self) { owner, isProceed in
-                    owner.proceedingCheckBox.isSelected = isProceed
-                    owner.didTapProceedingCheckBox(isProceed)
-                }.disposed(by: disposeBag)
+        viewModel.checkBoxIsSelectedDriver
+            .drive(with: self) { owner, isSelected in
+                owner.updateCheckBox(isProceed: isSelected)
+            }.disposed(by: disposeBag)
     }
     
     // MARK: Functions
-    func didTapProceedingCheckBox(_ isProceed: Bool) {
+    func updateCheckBox(isProceed: Bool) {
         endDateView.backgroundColor = isProceed
         ? .appColor(.gray20)
         : .appColor(.white)
@@ -78,12 +70,12 @@ class PeriodInputView: UIView {
         : .appColor(.black)
         
         endDateView.isUserInteractionEnabled = !isProceed
-        delegate?.didTapProceedingCheckBox(isProceed: isProceed)
     }
     // MARK: Initializer
     init(viewModel: PeriodInputViewModel) {
         startDateView = .init(viewModel: viewModel.startDateViewModel)
         endDateView = .init(viewModel: viewModel.endDateViewModel)
+        proceedingCheckBox = .init(viewModel: viewModel.checkBoxViewModel)
         super.init(frame: .zero)
         bind(to: viewModel)
         setUI()
@@ -113,7 +105,7 @@ class PeriodInputView: UIView {
         l.font = .pretendardFont(size: 16, style: .semiBold)
         return l
     }()
-    let proceedingCheckBox = BaseCheckBoxView()
+    let proceedingCheckBox: BaseCheckBoxView
     let proceedingLabel: UILabel = {
         let l = UILabel()
         l.text = "진행 중"

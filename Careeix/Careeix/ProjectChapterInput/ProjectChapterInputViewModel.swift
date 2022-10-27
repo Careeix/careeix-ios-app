@@ -11,41 +11,51 @@ import RxCocoa
 import RxRelay
 
 class ProjectChapterInputViewModel {
+    // MARK: Properties
     var noteCellViewModels: [NoteCellViewModel] = [] {
         didSet {
             cellDataRelay.accept(noteCellViewModels)
         }
     }
     let currentIndex: Int
+    
+    // MARK: - SubViewModels
     let titleTextFieldViewModel: BaseTextFieldViewModel
     let contentViewModel: BaseTextViewModel
-    // MARK: Input
+    
+    // MARK: - Input
     let cellDataRelay = BehaviorRelay<[NoteCellViewModel]>(value: [])
     let noteTableViewHeightRelay = PublishRelay<CGFloat>()
     let updateTableViewHeightTriggerRelay = PublishRelay<Void>()
     let scrollToHeightRelay = PublishRelay<CGFloat>()
-    // MARK: Output
+    
+    // MARK: - Output
+//    let combinedDataDriver: Driver<ProjectChapter>
     let cellDataDriver: Driver<[NoteCellViewModel]>
     let canAddNoteDriver: Driver<Bool>
     let noteTableViewHeightDriver: Driver<CGFloat>
     let scrollToHeightDriver: Driver<CGFloat>
+    
+    // MARK: - Initializer
     init(currentIndex: Int) {
+        self.currentIndex = currentIndex
         self.titleTextFieldViewModel = .init()
         self.contentViewModel = .init()
-//        let combinedInputValuesObservable =
-        let combinedInputValuesObservable = Observable.combineLatest(titleTextFieldViewModel.inputStringShare, contentViewModel.inputStringShare) { ($0, $1) }
-
-        combinedInputValuesObservable.subscribe {
-            print("모은데이터 들이야 ~", $0, $1)
+        
+        let combinedInputValuesObservableShare = Observable.combineLatest(titleTextFieldViewModel.inputStringRelay, contentViewModel.inputStringRelay, cellDataRelay).share()
+        
+        combinedInputValuesObservableShare.subscribe {
+            print("모은데이터 들이야 ~", $0, $1, $2.map { $0.textViewModel.inputStringRelay.value })
         }
-
-        Observable.combineLatest(noteCellViewModels.map {$0.inputStringRelay})
-            .debug("노트들")
-            .subscribe { notes in
-                print(notes)
-            }
-        self.currentIndex = currentIndex
+        
+//        Observable.combineLatest(cell)
+//            .debug("노트들")
+//            .subscribe { notes in
+//                print(notes)
+//            }
+        
         let cellDataRelayShare = cellDataRelay.share()
+        
         cellDataDriver = cellDataRelayShare.asDriver(onErrorJustReturn: [])
         
         canAddNoteDriver = cellDataRelayShare.map { $0.count }
@@ -61,28 +71,36 @@ class ProjectChapterInputViewModel {
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: 0)
     }
+    
     func fillInputs() {
         if currentIndex < UserDefaultManager.shared.projectChapters.count {
-            print("ㅁㄴㄴㄴㄴ아래 내용을 채워야해요")
-            print(UserDefaultManager.shared.projectChapters[currentIndex])
             let needFillData = UserDefaultManager.shared.projectChapters[currentIndex]
             titleTextFieldViewModel.inputStringRelay.accept(needFillData.title)
             contentViewModel.inputStringRelay.accept(needFillData.content)
-            noteCellViewModels = needFillData.notes.filter { !$0.isEmpty }.enumerated().map { .init(inputStringRelay: BehaviorRelay<String>(value: $1), row: $0)}
+            noteCellViewModels = needFillData.notes.filter { !$0.isEmpty }.enumerated().map { .init(inputStringRelay: BehaviorRelay<String>(value: $1), row: $0, textViewModel: .init(inputStringRelay: BehaviorRelay<String>(value: $1))) }
         }
-        updateTableViewHeightTriggerRelay.accept(())
+//        updateTableViewHeightTriggerRelay.accept(())
+    }
+    
+    func updateProjectChapter(title: String, content: String) {
+        if checkProjectChaptersRange() {
+            UserDefaultManager.shared.projectChapters[currentIndex].title = title
+            UserDefaultManager.shared.projectChapters[currentIndex].content = content
+        }
+    }
+    
+    func updateProjectChapter(notes: [String]) {
+        checkProjectChaptersRange()
+        ? UserDefaultManager.shared.projectChapters[currentIndex].notes = notes
+        : nil
     }
     func updateProjectChapter() {
-        let title = titleTextFieldViewModel.inputStringRelay.value
-        let content = contentViewModel.inputStringRelay.value
-        //TODO: !!!!!!!!!
-        print("이놈들의 왜 비어있을까? ", title, content)
-        if currentIndex == UserDefaultManager.shared.projectChapters.count {
-            UserDefaultManager.shared.projectChapters.append(.init(title: title, content: content, notes: noteCellViewModels.map { $0.inputStringRelay.value }))
-        } else if  currentIndex < UserDefaultManager.shared.projectChapters.count {
-            UserDefaultManager.shared.projectChapters[currentIndex] = .init(title: title, content: content, notes: noteCellViewModels.map { $0.inputStringRelay.value }.filter { !$0.isEmpty } )
-        }
-        print(UserDefaultManager.shared.projectChapters)
-        
+        checkProjectChaptersRange()
+        ? nil
+        : UserDefaultManager.shared.projectChapters.append(.init(title: "", content: "", notes: []))
+    }
+    
+    func checkProjectChaptersRange() -> Bool {
+        UserDefaultManager.shared.projectChapters.count > currentIndex
     }
 }
