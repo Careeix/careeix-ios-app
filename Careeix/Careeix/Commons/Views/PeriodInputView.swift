@@ -18,24 +18,25 @@ struct PeriodInputViewModel {
     let startDateViewModel: BaseInputViewModel
     let endDateViewModel: BaseInputViewModel
     let checkBoxViewModel: BaseCheckBoxViewModel
+    let projectId: Int
     
     // MARK: Input
     let startDateTappedRelay = PublishRelay<Void>()
     let endDateTappedRelay = PublishRelay<Void>()
     let isSelectedProceedingRelay = PublishRelay<Bool>()
     
-    
     // MARK: Output
     let titleDriver: Driver<String>
     let descriptionDriver: Driver<String>
     let checkBoxIsSelectedDriver: Driver<Bool>
     
-    init(title: String, description: String, checkBoxViewModel: BaseCheckBoxViewModel) {
+    init(title: String, description: String, checkBoxViewModel: BaseCheckBoxViewModel, projectId: Int = -1) {
         self.checkBoxViewModel = checkBoxViewModel
+        self.projectId = projectId
         titleDriver = .just(title)
         descriptionDriver = .just(description)
-        startDateViewModel = .init(content: UserDefaultManager.shared.projectInput.startDateString)
-        endDateViewModel = .init(content: UserDefaultManager.shared.projectInput.endDateString)
+        startDateViewModel = .init(content: UserDefaultManager.shared.projectInput[projectId]?.startDateString ?? Date().toString())
+        endDateViewModel = .init(content: UserDefaultManager.shared.projectInput[projectId]?.endDateString ?? Date().toString())
         checkBoxIsSelectedDriver = checkBoxViewModel.isSeclectedRelayShare
             .asDriver(onErrorJustReturn: false)
     }
@@ -44,7 +45,7 @@ struct PeriodInputViewModel {
 class PeriodInputView: UIView {
     // MARK: Properties
     let disposeBag = DisposeBag()
-    
+    var viewModel: PeriodInputViewModel
     // MARK: Binding
     func bind(to viewModel: PeriodInputViewModel) {
         viewModel.titleDriver
@@ -64,7 +65,7 @@ class PeriodInputView: UIView {
         : .appColor(.white)
         
         endDateView.contentLabel.text = Date().toString()
-        UserDefaultManager.shared.projectInput.endDateString = Date().toString()
+        UserDefaultManager.shared.projectInput[viewModel.projectId]?.endDateString = Date().toString()
         endDateView.contentLabel.textColor = isProceed
         ? .appColor(.gray100)
         : .appColor(.black)
@@ -73,6 +74,7 @@ class PeriodInputView: UIView {
     }
     // MARK: Initializer
     init(viewModel: PeriodInputViewModel) {
+        self.viewModel = viewModel
         startDateView = .init(viewModel: viewModel.startDateViewModel)
         endDateView = .init(viewModel: viewModel.endDateViewModel)
         proceedingCheckBox = .init(viewModel: viewModel.checkBoxViewModel)

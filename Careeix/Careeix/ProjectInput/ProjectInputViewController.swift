@@ -26,7 +26,7 @@ class ProjectInputViewController: UIViewController {
                 owner.completeButtonView.backgroundColor = .appColor(.next)
                 owner.completeButtonView.isUserInteractionEnabled = true
             }.disposed(by: disposeBag)
-        
+
         viewModel.nextButtonDisableDriver
             .drive(with: self) { owner, _ in
                 owner.completeButtonView.backgroundColor = .appColor(.disable)
@@ -101,7 +101,7 @@ class ProjectInputViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                owner.showNextView()
+                owner.showNextViewController()
             }.disposed(by: disposeBag)
         
         startDatePickerView.datePickerTopViewRightLabel.rx.tapGesture()
@@ -144,14 +144,16 @@ class ProjectInputViewController: UIViewController {
     }
     
     override func didTapBackButton() {
-        showWarningCancelWritingAlertView()
+        viewModel.checkRemainingData()
+        ? showWarningCancelWritingAlertView()
+        : popViewController()
     }
     
     func popViewController() {
         navigationController?.popViewController(animated: true)
     }
     
-    func showNextView() {
+    func showNextViewController() {
         view.endEditing(true)
         navigationController?.pushViewController(ProjectInputDetailViewController.init(viewModel: .init()), animated: true)
     }

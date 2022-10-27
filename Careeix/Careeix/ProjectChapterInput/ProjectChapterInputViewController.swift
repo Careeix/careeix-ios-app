@@ -50,10 +50,11 @@ class ProjectChapterInputViewController: UIViewController {
         viewModel.cellDataDriver
             .drive(noteTableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: NoteCell.self.description(), for: IndexPath(row: row, section: 0)) as? NoteCell else { return UITableViewCell() }
+                print(data, "데이터를 그릴꺼에요")
                 cell.textView.delegate = self
-//                let text = viewModel.noteCellViewModels[row].textViewModel.inputStringRelay.value
+                let text = viewModel.noteCellViewModels[row].textViewModel.inputStringRelay.value
                 cell.viewModel = viewModel.noteCellViewModels[row]
-//                cell.textView.text = text
+                cell.textView.text = text
                 cell.textView.rx.tapGesture()
                     .when(.recognized)
                     .withUnretained(self)
@@ -145,17 +146,7 @@ class ProjectChapterInputViewController: UIViewController {
     func didTapCompleteButtonView() {
         view.endEditing(true)
     }
-    
-    func checkAndRemove() {
-        if viewModel.currentIndex < UserDefaultManager.shared.projectChapters.count {
-            let currentChapter = UserDefaultManager.shared.projectChapters[viewModel.currentIndex]
-            if currentChapter.content == ""
-                && currentChapter.title == ""
-                && currentChapter.notes.filter({ $0 != "" }).count == 0 {
-                UserDefaultManager.shared.projectChapters.remove(at: viewModel.currentIndex)
-            }
-        }
-    }
+
 
     // MARK: Initializer
     init(viewModel: ProjectChapterInputViewModel) {
@@ -191,7 +182,7 @@ class ProjectChapterInputViewController: UIViewController {
     }
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
-        checkAndRemove()
+        viewModel.checkAndRemove()
     }
     override func viewDidAppear(_ animated: Bool) {
         titleTextField.becomeFirstResponder()

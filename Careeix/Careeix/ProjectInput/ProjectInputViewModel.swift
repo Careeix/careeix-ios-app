@@ -41,11 +41,10 @@ struct ProjectInputViewModel {
                                                                      periodInputViewModel.endDateViewModel.inputStringRelay,
                                                                      divisionInputViewModel.inputStringRelay,
                                                                      introduceInputViewModel.baseTextViewModel.inputStringRelay,
-                                                                     periodInputViewModel.checkBoxViewModel.isSelectedRelay).share()
+                                                                     periodInputViewModel.checkBoxViewModel.isSelectedRelay).skip(3).share()
         
         combinedDataDriver = combinedInputValuesObservable
             .map { inputs in
-                print(inputs.0)
                 return ProjectBaseInputValue(title: inputs.0, startDateString: inputs.1, endDateString: inputs.2, division: inputs.3, indroduce: inputs.4, isProceed: inputs.5)
             }.asDriver(onErrorJustReturn: .init(title: "", division: "", indroduce: ""))
         
@@ -69,15 +68,15 @@ struct ProjectInputViewModel {
     }
     
     func updatePersistanceData(_ sender :ProjectBaseInputValue) {
-        UserDefaultManager.shared.projectInput = sender
+        UserDefaultManager.shared.projectInput[projectId] = sender
     }
     
     func checkRemainingData() -> Bool {
-        return UserDefaultManager.shared.projectInput != .init(title: "", division: "", indroduce: "") || UserDefaultManager.shared.projectChapters.count != 0
+        return UserDefaultManager.shared.projectInput[projectId] != .init(title: "", division: "", indroduce: "") || UserDefaultManager.shared.projectChapters[projectId]?.count != 0
     }
     
     func fillRemainingInput() {
-        let remainigInput = UserDefaultManager.shared.projectInput
+        guard let remainigInput = UserDefaultManager.shared.projectInput[projectId] else { return }
         print("로컬에 저장된 데이터: ", remainigInput)
         titleInputViewModel.inputStringRelay.accept(remainigInput.title)
         divisionInputViewModel.inputStringRelay.accept(remainigInput.division)
@@ -89,7 +88,7 @@ struct ProjectInputViewModel {
     }
     
     func initPersistenceData() {
-        UserDefaultManager.shared.projectInput = .init(title: "", division: "", indroduce: "")
-        UserDefaultManager.shared.projectChapters = []
+        UserDefaultManager.shared.projectInput[-1] = .init(title: "", division: "", indroduce: "")
+        UserDefaultManager.shared.projectChapters[-1] = []
     }
 }

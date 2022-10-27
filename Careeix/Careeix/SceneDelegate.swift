@@ -63,12 +63,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let onboardingViewController = UINavigationController(rootViewController: OnboardViewController())
 ////        UserDefaultManager.shared.projectChapters = []
 
-        UserDefaultManager.shared.jwtToken = "ㅁ"
+        UserDefaultManager.shared.jwtToken = ""
         // test end
         
         
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
-        ? UINavigationController(rootViewController: ProjectChapterInputViewController(viewModel: .init(currentIndex: 0)))
+        ? UINavigationController(rootViewController: ProjectInputDetailViewController(viewModel: .init()))
         : TabBarController()
         
         NotificationCenter.default.addObserver(self,

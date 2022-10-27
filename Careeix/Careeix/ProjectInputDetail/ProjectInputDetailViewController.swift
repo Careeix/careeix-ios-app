@@ -13,13 +13,15 @@ import RxRelay
 struct ProjectInputDetailViewModel {
     // MARK: Input
     let viewWillAppearRelay = PublishRelay<Void>()
-    
+    let projectId: Int
     // MARK: Output
     let chaptersDriver: Driver<[ProjectChapter]>
     
-    init() {
+    init(projectId: Int = -1) {
+        self.projectId = projectId
+        
         chaptersDriver = viewWillAppearRelay
-            .map { _ in UserDefaultManager.shared.projectChapters }
+            .compactMap { _ in UserDefaultManager.shared.projectChapters[projectId] }
             .asDriver(onErrorJustReturn: [])
     }
 }
@@ -34,26 +36,27 @@ class ProjectInputDetailViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                owner.navigationController?.pushViewController(ProjectChapterInputViewController(viewModel: .init(currentIndex: UserDefaultManager.shared.projectChapters.count)), animated: true)
+                owner.showProjectChapterInputViewController(index: UserDefaultManager.shared.projectChapters.count)
             }.disposed(by: disposeBag)
         
         viewModel.chaptersDriver
             .drive(tableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: ProjectChapterCell.self.description(), for: IndexPath(row: row, section: 0)) as? ProjectChapterCell else { return UITableViewCell() }
-                cell.bind(viewModel: .init(index: row + 1, title: data.title))
+                cell.bind(viewModel: .init(index: row, title: data.title))
                 return cell
             }.disposed(by: disposeBag)
         
         tableView.rx.itemSelected
             .withUnretained(self)
             .bind { owner, indexPath in
-                owner.navigationController?.pushViewController(ProjectChapterInputViewController(viewModel: .init(currentIndex: indexPath.row)), animated: true)
+                owner.showProjectChapterInputViewController(index: indexPath.row)
             }.disposed(by: disposeBag)
         
         completeButtonView.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
+                // TODO: - 서버 통신
                 print("발행전 데이터 확인")
                 print(UserDefaultManager.shared.projectInput)
                 print(UserDefaultManager.shared.projectChapters)
@@ -61,6 +64,10 @@ class ProjectInputDetailViewController: UIViewController {
     }
     
     // MARK: - Functions
+    func showProjectChapterInputViewController(index: Int) {
+        navigationController?.pushViewController(ProjectChapterInputViewController(viewModel: .init(currentIndex: index)), animated: true)
+    }
+    
     func updateCompleteButtonView() {
         completeButtonView.isUserInteractionEnabled = !(UserDefaultManager.shared.projectChapters.count == 0)
         completeButtonView.backgroundColor = completeButtonView.isUserInteractionEnabled ? .appColor(.main) : .appColor(.disable)
@@ -74,7 +81,6 @@ class ProjectInputDetailViewController: UIViewController {
         bind(to: viewModel)
         view.backgroundColor = .appColor(.white)
         configureNavigationBar()
-        
         completeButtonView.isUserInteractionEnabled = false
     }
     required init?(coder: NSCoder) {

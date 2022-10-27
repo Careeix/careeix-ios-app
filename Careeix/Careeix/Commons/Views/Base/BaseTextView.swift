@@ -53,7 +53,6 @@ class BaseTextView: UITextView {
     func bind(to viewModel: BaseTextViewModel) {
         rx.text.orEmpty
             .distinctUntilChanged()
-            .debug("asds")
             .bind(to: viewModel.inputStringRelay)
             .disposed(by: disposeBag)
 
