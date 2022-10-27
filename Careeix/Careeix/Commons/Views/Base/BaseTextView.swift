@@ -14,6 +14,7 @@ class BaseTextViewModel {
     // MARK: Input
     let inputStringRelay: BehaviorRelay<String>
     let inputStringShare: Observable<String>
+    
     // MARK: Output
     let inputStringDriver: Driver<String>
     let placeholderDriver: Driver<String>
@@ -24,6 +25,7 @@ class BaseTextViewModel {
         
         placeholderDriver = .just(placeholder)
         inputStringShare = inputStringRelay.share()
+        
         hiddenPlaceholderLabelDriver = inputStringShare
             .map { $0 != "" }
             .distinctUntilChanged()
@@ -53,6 +55,7 @@ class BaseTextView: UITextView {
     func bind(to viewModel: BaseTextViewModel) {
         rx.text.orEmpty
             .distinctUntilChanged()
+
             .bind(to: viewModel.inputStringRelay)
             .disposed(by: disposeBag)
 

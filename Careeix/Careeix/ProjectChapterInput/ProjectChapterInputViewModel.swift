@@ -30,7 +30,7 @@ class ProjectChapterInputViewModel {
     let scrollToHeightRelay = PublishRelay<CGFloat>()
     
     // MARK: - Output
-//    let combinedDataDriver: Driver<ProjectChapter>
+    let combinedDataDriver: Driver<ProjectChapter>
     let cellDataDriver: Driver<[NoteCellViewModel]>
     let canAddNoteDriver: Driver<Bool>
     let noteTableViewHeightDriver: Driver<CGFloat>
@@ -43,11 +43,29 @@ class ProjectChapterInputViewModel {
         self.titleTextFieldViewModel = .init()
         self.contentViewModel = .init()
         
-        let combinedInputValuesObservableShare = Observable.combineLatest(titleTextFieldViewModel.inputStringRelay, contentViewModel.inputStringRelay, cellDataRelay).share()
+        let combinedInputValuesObservableShare = Observable.combineLatest(titleTextFieldViewModel.inputStringRelay, contentViewModel.inputStringRelay)
         
-        combinedInputValuesObservableShare.subscribe {
-            print("모은데이터 들이야 ~", $0, $1, $2.map { $0.textViewModel.inputStringRelay.value })
-        }
+        let combinedNotesObservable = Observable.combineLatest(noteCellViewModels.map { $0.inputStringRelay } )
+
+        combinedDataDriver = Observable.combineLatest(combinedInputValuesObservableShare, combinedNotesObservable)
+            .debug("왜 안모으냐 ~")
+            .map { ProjectChapter(title: $0.0, content: $0.1, notes: $1) }
+            .asDriver(onErrorJustReturn: .init(title: "", content: "", notes: []))
+        
+        
+        let a = cellDataRelay
+            .map { notes in
+            let b = notes.map {$0.inputStringRelay}
+            return Observable.combineLatest(combinedInputValuesObservableShare, Observable.combineLatest(b))
+        }.flatMap { $0 }
+            .debug("😟😟궁극의 시퀀스 생성😟")
+            .subscribe(onNext: { b,c in
+                print(b, c)
+            })
+//            .map { ProjectChapter.init(title: $0, content: <#T##String#>, notes: <#T##[String]#>) }
+//            .debug("😟😟궁극의 시퀀스 생성😟")
+//            .asDriver(onErrorJustReturn: ProjectChapter.init(title: "", content: "", notes: ""))
+        
         
         let cellDataRelayShare = cellDataRelay.share()
         
@@ -72,9 +90,15 @@ class ProjectChapterInputViewModel {
             guard let needFillData = UserDefaultManager.shared.projectChapters[projectId]?[currentIndex] else { return }
             titleTextFieldViewModel.inputStringRelay.accept(needFillData.title)
             contentViewModel.inputStringRelay.accept(needFillData.content)
-            noteCellViewModels = needFillData.notes.filter { !$0.isEmpty }.enumerated().map { .init(inputStringRelay: BehaviorRelay<String>(value: $1), row: $0, textViewModel: .init(inputStringRelay: BehaviorRelay<String>(value: $1))) }
+            noteCellViewModels = needFillData.notes.filter { !$0.isEmpty }.map { .init(inputStringRelay: BehaviorRelay(value: $0)) }
         }
         updateTableViewHeightTriggerRelay.accept(())
+    }
+    
+    func updateProjectChapter(data: ProjectChapter) {
+        checkProjectChaptersRange()
+        ? UserDefaultManager.shared.projectChapters[projectId]?[currentIndex] = data
+        : nil
     }
     
     func updateProjectChapter(title: String, content: String) {

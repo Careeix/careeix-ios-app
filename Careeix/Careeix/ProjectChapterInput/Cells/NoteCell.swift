@@ -9,50 +9,41 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxRelay
-struct NoteCellViewModel {
-    var row: Int
-    let textViewModel: BaseTextViewModel
-    // input
-//    let inputStringRelay: BehaviorRelay<String>
-    
+class NoteCellViewModel {
+    var inputStringRelay: BehaviorRelay<String>
     // output
-    let inputStringDriver: Driver<String>
+    var inputStringDriver: Driver<String>
     
-    init(inputStringRelay: BehaviorRelay<String>, row: Int, textViewModel: BaseTextViewModel) {
-        self.row = row
-        self.textViewModel = textViewModel
-//        self.inputStringRelay = inputStringRelay
-        inputStringDriver = textViewModel.inputStringShare
+    init(inputStringRelay: BehaviorRelay<String> = BehaviorRelay<String>(value: "")) {
+        self.inputStringRelay = inputStringRelay
+        inputStringDriver = inputStringRelay
             .asDriver(onErrorJustReturn: "")
     }
 }
 
 class NoteCell: UITableViewCell {
-
-    var viewModel: NoteCellViewModel? {
-        didSet {
-            guard let viewModel else { return }
-//            bind(to: viewModel)
-        }
-    }
     var disposeBag = DisposeBag()
-
+    var viewModel: NoteCellViewModel?
     func bind(to viewModel: NoteCellViewModel) {
-        viewModel.inputStringDriver
-            .drive { a in
-                print("찍히나 ??", a)
-            }
+        self.viewModel = viewModel
+        viewModel.inputStringRelay
+            .asDriver(onErrorJustReturn: "")
+            .distinctUntilChanged()
+            .debug("인풋~")
+            .drive(textView.rx.text)
             .disposed(by: disposeBag)
-//        textView.viewModel.inputStringRelay
-//            .debug("훠이")
-//            .bind(to: viewModel.inputStringRelay)
-//            .disposed(by: disposeBag)
+
+        
+        textView.viewModel.inputStringShare
+            .bind(to: viewModel.inputStringRelay)
+            .disposed(by: disposeBag)
+        
     }
     
     override func prepareForReuse() {
         disposeBag = DisposeBag()
         textView.delegate = nil
-        textView.text = ""
+//        textView.text = ""
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -86,7 +77,7 @@ class NoteCell: UITableViewCell {
         iv.image = UIImage(named: "minusIcon")
         return iv
     }()
-    let textView: BaseTextView = {
+    lazy var textView: BaseTextView = {
         let v = BaseTextView(viewModel: .init())
         v.backgroundColor = .clear
         v.layer.borderWidth = 0

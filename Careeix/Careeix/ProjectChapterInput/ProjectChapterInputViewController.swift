@@ -48,13 +48,16 @@ class ProjectChapterInputViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         viewModel.cellDataDriver
+            .debug("🤬🤬🤬🤬")
             .drive(noteTableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: NoteCell.self.description(), for: IndexPath(row: row, section: 0)) as? NoteCell else { return UITableViewCell() }
-                print(data, "데이터를 그릴꺼에요")
                 cell.textView.delegate = self
-                let text = viewModel.noteCellViewModels[row].textViewModel.inputStringRelay.value
-                cell.viewModel = viewModel.noteCellViewModels[row]
-                cell.textView.text = text
+                print(cell.viewModel?.inputStringRelay.value, "A")
+                print(data.inputStringRelay, "B")
+//                print(, "C")
+                cell.bind(to: data)
+
+                
                 cell.textView.rx.tapGesture()
                     .when(.recognized)
                     .withUnretained(self)
@@ -65,20 +68,27 @@ class ProjectChapterInputViewController: UIViewController {
                 cell.deleteButtonImageView
                     .rx.tapGesture()
                     .when(.recognized)
-                    .do { [weak self] _ in
-                        self?.willDeletedIndex = row
-                    }.map { [weak self] _ in
-                        self?.willDeletedIndex
+                    .withUnretained(self)
+                    .do { owner, _ in
+                        owner.willDeletedIndex = row
+                    }.map { owner, _ in
+                        owner.willDeletedIndex
                     }
                     .distinctUntilChanged()
-                    .withUnretained(self)
-                    .bind { owner, _ in
-                        owner.willDeletedIndex = row
+                    .asDriver(onErrorJustReturn: 0)
+                    .drive(with: self) { owner, _ in
                         owner.showDeleteNoteWarningAlert()
                     }.disposed(by: cell.disposeBag)
                 return cell
             }.disposed(by: disposeBag)
 
+        viewModel.combinedDataDriver
+            .do { _ in print(viewModel.noteCellViewModels.map {$0.inputStringRelay.value} )}
+            .debug("😎😎😎데이터를 모아보자😎😎😎")
+            .drive { _ in
+                
+            }.disposed(by: disposeBag)
+        
         viewModel.updateTableViewHeightTriggerRelay
             .withUnretained(self)
             .map { owner, _ in owner.getTableViewHeight()}
@@ -134,8 +144,15 @@ class ProjectChapterInputViewController: UIViewController {
     }
     
     func addNoteCell() {
+//        viewModel.cellDataRelay.compl
         view.endEditing(false)
-        viewModel.noteCellViewModels.append(.init(inputStringRelay: BehaviorRelay<String>(value: ""), row: viewModel.noteCellViewModels.count, textViewModel: .init()))
+        viewModel.noteCellViewModels.append(.init(inputStringRelay: BehaviorRelay<String>(value: "")))
+//        viewModel.combinedDataDriver.
+        viewModel.combinedDataDriver
+            .debug("😎😎😎데이터를 모아보자😎😎😎")
+            .drive { _ in
+                
+            }.disposed(by: disposeBag)
         viewModel.updateTableViewHeightTriggerRelay.accept(())
         guard let cell = noteTableView.cellForRow(at: IndexPath(row: viewModel.noteCellViewModels.count - 1, section: 0)) as? NoteCell else {
             return }
