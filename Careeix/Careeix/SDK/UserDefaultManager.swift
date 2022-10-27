@@ -7,7 +7,9 @@
 
 import Foundation
 import CareeixKey
-
+import RxSwift
+import RxCocoa
+import RxRelay
 class UserDefaultManager {
     static let shared = UserDefaultManager()
 
@@ -57,3 +59,5 @@ struct UserDefault<T: Codable> {
         }
     }
 }
+
+

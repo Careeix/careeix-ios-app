@@ -39,9 +39,11 @@ struct OnboardViewModel {
         
         let needMoreInfoObservableShare = socialLoginTrigger
             .debug("소셜 로그인 버튼 클릭 !")
-            .flatMap(SocialLoginSDK.socialLogin)
+            .flatMap(SocialLoginSDK.socialLogin) // Bool...
             .debug("🤢🤢🤢소셜로그인 호출 후 디버깅 🤢🤢🤢")
             .do { print("🌂🌂🌂result: 🌂🌂🌂", $0)}
+            .catch { error in print(error)
+                return .just(false) }
             .share()
             
         showHomeViewDriver = needMoreInfoObservableShare

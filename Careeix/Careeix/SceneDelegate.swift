@@ -27,48 +27,48 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.backgroundColor = .white
         // test start
         
-        let twoButtonAlertViewController = TwoButtonAlertViewController(viewModel: .init(type: .askingPublishProject))
+//        let twoButtonAlertViewController = TwoButtonAlertViewController(viewModel: .init(type: .askingPublishProject))
+//
+//        let signUpViewController = UINavigationController(rootViewController: SignUpViewController(viewModel: .init(
+//            nickNameInputViewModel: .init(title: "닉네임",
+//                                          placeholder: "10자 이내로 한글, 영문, 숫자를 입력해주세요."),
+//            jobInputViewModel: .init(title: "직무",
+//                                     placeholder: "직무를 입력해주세요.(Ex. 서버 개발자)"),
+//            annualInputViewModel: .init(title: "연차",
+//                                        contents: ["입문(1년 미만)",
+//                                                   "주니어(1~4년차)",
+//                                                   "미들(5~8년차)",
+//                                                   "시니어(9년차~)"]),
+//            detailJobsInputViewModel: .init(title: "상세 직무",
+//                                            description: "상세 직무 개수는 1~3개까지 입력 가능합니다.",
+//                                            placeholders: Array(repeating: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)",
+//                                                                count: 3)),
+//            completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable)
+//        )))
+//        let homeViewController = UINavigationController(rootViewController: HomeViewController())
+//        let projectInputViewController = UINavigationController(rootViewController: ProjectInputViewController(
+//            viewModel: .init(
+//                titleInputViewModel: .init(title: "제목",
+//                                           placeholder: "프로젝트 제목을 입력해주세요."),
+//                periodInputViewModel: .init(title: "기간",
+//                                            description: "프로젝트 기간을 입력해주세요."),
+//                divisionInputViewModel: .init(title: "구분",
+//                                              placeholder: "Ex. 개인활동/팀활동/(소속이름)"),
+//                introduceInputViewModel: .init(title: "소개",
+//                                               baseTextViewModel: .init(placeholder: "진행한 일을 2줄 이내로 소개해주세요."))
+//            )
+//        ))
+//        let projectInputDetailViewController = UINavigationController(rootViewController: ProjectInputDetailViewController(viewModel: .init()))
+////        let chapterInputViewController = UINavigationController(rootViewController: ProjectChapterInputViewController(viewModel: .init(currentIndex: <#T##Int#>, titleTextFieldViewModel: <#T##BaseTextFieldViewModel#>, contentViewModel: <#T##BaseTextViewModel#>)))
+//        let onboardingViewController = UINavigationController(rootViewController: OnboardViewController())
+////        UserDefaultManager.shared.projectChapters = []
 
-        let signUpViewController = UINavigationController(rootViewController: SignUpViewController(viewModel: .init(
-            nickNameInputViewModel: .init(title: "닉네임",
-                                          placeholder: "10자 이내로 한글, 영문, 숫자를 입력해주세요."),
-            jobInputViewModel: .init(title: "직무",
-                                     placeholder: "직무를 입력해주세요.(Ex. 서버 개발자)"),
-            annualInputViewModel: .init(title: "연차",
-                                        contents: ["입문(1년 미만)",
-                                                   "주니어(1~4년차)",
-                                                   "미들(5~8년차)",
-                                                   "시니어(9년차~)"]),
-            detailJobsInputViewModel: .init(title: "상세 직무",
-                                            description: "상세 직무 개수는 1~3개까지 입력 가능합니다.",
-                                            placeholders: Array(repeating: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)",
-                                                                count: 3)),
-            completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable)
-        )))
-        let homeViewController = UINavigationController(rootViewController: HomeViewController())
-        let projectInputViewController = UINavigationController(rootViewController: ProjectInputViewController(
-            viewModel: .init(
-                titleInputViewModel: .init(title: "제목",
-                                           placeholder: "프로젝트 제목을 입력해주세요."),
-                periodInputViewModel: .init(title: "기간",
-                                            description: "프로젝트 기간을 입력해주세요."),
-                divisionInputViewModel: .init(title: "구분",
-                                              placeholder: "Ex. 개인활동/팀활동/(소속이름)"),
-                introduceInputViewModel: .init(title: "소개",
-                                               baseTextViewModel: .init(placeholder: "진행한 일을 2줄 이내로 소개해주세요."))
-            )
-        ))
-        let projectInputDetailViewController = UINavigationController(rootViewController: ProjectInputDetailViewController(viewModel: .init()))
-        let chapterInputViewComtroller = UINavigationController(rootViewController: ProjectChapterInputViewController(viewModel: .init(currentIndex: 0)))
-        let onboardingViewController = UINavigationController(rootViewController: OnboardViewController())
-//        UserDefaultManager.shared.projectChapters = []
-
-        UserDefaultManager.shared.jwtToken = "a"
+        UserDefaultManager.shared.jwtToken = "ㅁ"
         // test end
         
         
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
-        ? projectInputViewController
+        ? TabBarController()
         : TabBarController()
         
         NotificationCenter.default.addObserver(self,

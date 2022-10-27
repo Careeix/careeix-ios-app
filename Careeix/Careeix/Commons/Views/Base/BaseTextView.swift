@@ -10,10 +10,10 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxRelay
-struct BaseTextViewModel {
+class BaseTextViewModel {
     // MARK: Input
-    let inputStringRelay = PublishRelay<String>()
-    
+    let inputStringRelay = BehaviorRelay<String>(value: "")
+    let inputStringShare: Observable<String>
     // MARK: Output
     let inputStringDriver: Driver<String>
     let placeholderDriver: Driver<String>
@@ -21,13 +21,13 @@ struct BaseTextViewModel {
     
     init(placeholder: String = "내용을 입력해주세요.") {
         placeholderDriver = .just(placeholder)
-        let inputStringRelayShare = inputStringRelay.share()
-        hiddenPlaceholderLabelDriver = inputStringRelayShare
+        inputStringShare = inputStringRelay.share()
+        hiddenPlaceholderLabelDriver = inputStringShare
             .map { $0 != "" }
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: true)
         
-        inputStringDriver = inputStringRelayShare
+        inputStringDriver = inputStringShare
             .asDriver(onErrorJustReturn: "")
     }
 }
@@ -50,6 +50,7 @@ class BaseTextView: UITextView {
     func bind(to viewModel: BaseTextViewModel) {
         rx.text.orEmpty
             .distinctUntilChanged()
+            .debug("asds")
             .bind(to: viewModel.inputStringRelay)
             .disposed(by: disposeBag)
 

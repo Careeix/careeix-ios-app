@@ -15,7 +15,6 @@ protocol PeriodInputViewDelegate: AnyObject {
 }
 
 struct PeriodInputViewModel {
-    
     let startDateViewModel: BaseInputViewModel
     let endDateViewModel: BaseInputViewModel
     
@@ -35,12 +34,16 @@ struct PeriodInputViewModel {
         startDateViewModel = .init(content: UserDefaultManager.shared.projectInput.startDateString)
         endDateViewModel = .init(content: UserDefaultManager.shared.projectInput.endDateString)
     }
+    
+    
 }
 
 class PeriodInputView: UIView {
+    // MARK: Properties
     let disposeBag = DisposeBag()
     weak var delegate: PeriodInputViewDelegate?
     
+    // MARK: Binding
     func bind(to viewModel: PeriodInputViewModel) {
         viewModel.titleDriver
             .drive(titleLabel.rx.text)
@@ -54,8 +57,15 @@ class PeriodInputView: UIView {
             .bind(to: proceedingCheckBox.rx.isSelected)
             .disposed(by: disposeBag)
         
+        viewModel.isSelectedProceedingRelay
+                .asDriver(onErrorJustReturn: false)
+                .drive(with: self) { owner, isProceed in
+                    owner.proceedingCheckBox.isSelected = isProceed
+                    owner.didTapProceedingCheckBox(isProceed)
+                }.disposed(by: disposeBag)
     }
     
+    // MARK: Functions
     func didTapProceedingCheckBox(_ isProceed: Bool) {
         endDateView.backgroundColor = isProceed
         ? .appColor(.gray20)
@@ -70,7 +80,7 @@ class PeriodInputView: UIView {
         endDateView.isUserInteractionEnabled = !isProceed
         delegate?.didTapProceedingCheckBox(isProceed: isProceed)
     }
-    
+    // MARK: Initializer
     init(viewModel: PeriodInputViewModel) {
         startDateView = .init(viewModel: viewModel.startDateViewModel)
         endDateView = .init(viewModel: viewModel.endDateViewModel)
@@ -83,6 +93,7 @@ class PeriodInputView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: UIComponents
     let titleLabel: UILabel = {
         let l = UILabel()
         l.font = .pretendardFont(size: 16, style: .semiBold)

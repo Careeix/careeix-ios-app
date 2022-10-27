@@ -12,7 +12,7 @@ import RxRelay
 
 struct SimpleInputViewModel {
     // MARK: - Input
-    let inputStringRelay = PublishRelay<String>()
+    let inputStringRelay = BehaviorRelay<String>(value: "")
     
     // MARK: - Output
     let inputStringDriver: Driver<String>
@@ -73,7 +73,7 @@ class SimpleInputView: UIView {
         l.textColor = .appColor(.gray900)
         return l
     }()
-    var textField: BaseTextField = BaseTextField()
+    var textField: BaseTextField = BaseTextField(viewModel: .init())
     
     
     func setUI() {

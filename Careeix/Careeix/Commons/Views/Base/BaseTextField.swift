@@ -8,13 +8,47 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxRelay
 /// no intrinsic size
 /// intrinsic size 없습니다
-class BaseTextField: UITextField {
+class BaseTextFieldViewModel {
+    // MARK: Input
+    let inputStringRelay = BehaviorRelay<String>(value: "")
+    let inputStringShare: Observable<String>
+    // MARK: Output
+    let inputStringDriver: Driver<String>
+    let placeholderDriver: Driver<String>
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(placeholder: String = "내용을 입력해주세요.") {
+        placeholderDriver = .just(placeholder)
+        inputStringShare = inputStringRelay.share()
+        inputStringDriver = inputStringShare
+            .asDriver(onErrorJustReturn: "")
+    }
+}
+class BaseTextField: UITextField {
+    var disposeBag = DisposeBag()
+    
+    init(viewModel: BaseTextFieldViewModel) {
+        super.init(frame: .zero)
         configure()
+        bind(to: viewModel)
+    }
+    
+    func bind(to viewModel: BaseTextFieldViewModel) {
+        rx.text.orEmpty
+            .distinctUntilChanged()
+            .debug("입력이 되고 있는걸")
+            .bind(to: viewModel.inputStringRelay)
+            .disposed(by: disposeBag)
+        
+        viewModel.placeholderDriver
+            .drive(rx.placeholder)
+            .disposed(by: disposeBag)
+        
+        viewModel.inputStringDriver
+            .drive(rx.text)
+            .disposed(by: disposeBag)
     }
     
     required init?(coder: NSCoder) {

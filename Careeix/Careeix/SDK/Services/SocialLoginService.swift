@@ -52,25 +52,23 @@ extension SocialLoginService {
     
     func readAccessToken() -> Observable<String> {
         return UserApi.shared.rx.loginWithKakaoAccount()
+            .take(1)
             .debug("카카오 로그인 SDK")
             .map { $0.accessToken }
             .catch { _ in .just("") }
             .do { UserDefaultManager.shared.kakaoAccessToken = $0 }
-            
     }
     
     func callKakaoLoginApi(accessToken: String) -> Single<LoginAPI.Response> {
         // test
         let a = Single.create { single in
             single(.success(LoginAPI.Response.init(jwt: nil)))
+//            single(.failure(LoginAPI.Response.init(jwt: nil)))
             return Disposables.create()
         }.debug("AAAAAA")
         
-//        // 현재 api call (이상함. access토큰을 body로 보내야함)
-//        let b = API<LoginAPI.Response>(path: "/api/v1/users/check-login/\(token)", method: .post, parameters: [:], task: .requestPlain).requestRX().debug("BBBBBB")
-        
 //         정상적인 api call
-        let c = API<LoginAPI.Response>(path: "/api/v1/users/check-login", method: .post, parameters: ["X-ACCESS-TOKEN": accessToken], task: .requestParameters(encoding: JSONEncoding.default)).requestRX().debug("CCCCCC")
+        _ = API<LoginAPI.Response>(path: "/api/v1/users/check-login", method: .post, parameters: ["X-ACCESS-TOKEN": accessToken], task: .requestParameters(encoding: JSONEncoding.default)).requestRX().debug("CCCCCC")
         return a
     }
 
@@ -90,7 +88,6 @@ extension SocialLoginService {
     }
 
     func callAppleLoginApi(identityToken: Data) -> Single<LoginAPI.Response> {
-        print(identityToken)
         // test
         let a = Single.create { single in
             single(.success(LoginAPI.Response.init(jwt: nil)))
@@ -110,7 +107,6 @@ extension SocialLoginService {
             authorizationController.performRequests()
         return appleIdentityTokenSubject
             .debug("😤😤😤need More Info😤😤😤")
-            .take(1)
             .flatMap(callAppleLoginApi)
             .map { $0.jwt == nil }
     }
@@ -126,11 +122,9 @@ extension SocialLoginService: ASAuthorizationControllerDelegate,   ASAuthorizati
             // Apple ID
             case let appleIDCredential as ASAuthorizationAppleIDCredential:
                 // 계정 정보 가져오기
-            guard let identityToken = appleIDCredential.identityToken else {
-                print("identityToken을 애플 서버에서 받아오는데에 실패했습니다,")
-                return
-            }
+            guard let identityToken = appleIDCredential.identityToken else { return }
             appleIdentityTokenSubject.onNext(identityToken)
+            appleIdentityTokenSubject.onCompleted()
             default:
                 break
             }

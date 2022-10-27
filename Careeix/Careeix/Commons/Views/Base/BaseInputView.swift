@@ -11,9 +11,10 @@ import RxCocoa
 import RxRelay
 // 기간 입력 시 사용
 struct BaseInputViewModel {
-    let inputStringRelay = PublishRelay<String>()
+    let inputStringRelay = BehaviorRelay<String>(value: Date().toString())
     
     let inputStringDriver: Driver<String>
+    
     let contentDriver: Driver<String>
     
     init(content: String) {

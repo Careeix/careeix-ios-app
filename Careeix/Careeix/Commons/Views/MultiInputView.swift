@@ -26,7 +26,7 @@ struct MultiInputViewModel {
         
         multiInputCellViewModels = placeholders.map { .init(placeholder: $0) }
         inputValuesObservable = Observable
-            .combineLatest(multiInputCellViewModels.map { $0.inputStringRelay })
+            .combineLatest(multiInputCellViewModels.map { $0.textFieldViewModel.inputStringRelay })
             .map { $0.filter { $0 != "" } }
     }
 }

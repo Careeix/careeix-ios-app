@@ -10,12 +10,6 @@ import RxCocoa
 import RxSwift
 import RxRelay
 class SignUpViewModel {
-    // TODO: 주석 삭제
-//    typealias nickName = String
-//    typealias job = String
-//    typealias annualIndex = IndexPath
-//    typealias detailJobs = [String]
-    
     // MARK: SubViewModels
     let nickNameInputViewModel: SimpleInputViewModel
     let jobInputViewModel: SimpleInputViewModel
@@ -52,14 +46,12 @@ class SignUpViewModel {
             ($0, $1, $2, $3)
         }
         
-//        createUserTrigger
-
-        
         showTabbarCotrollerDriver = createUserTrigger
             .withLatestFrom(combinedInputValuesObservable) { $1 }
             .do { print("post: ", $0) }
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
+        
         let buttonStateDriver = combinedInputValuesObservable
             .map { nickName, job, annualIndex, detailJobs in
                 nickName != "" && job != "" && detailJobs.count != 0

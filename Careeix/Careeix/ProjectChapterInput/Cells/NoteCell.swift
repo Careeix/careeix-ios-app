@@ -12,11 +12,14 @@ import RxRelay
 struct NoteCellViewModel {
     var cellRow: Int
     let inputStringRelay: BehaviorRelay<String>
-
+    let inputStringDriver: Driver<String>
     init(inputStringRelay: BehaviorRelay<String>, row: Int) {
-        self.inputStringRelay = inputStringRelay
         cellRow = row
+        self.inputStringRelay = inputStringRelay
+        inputStringDriver = inputStringRelay
+            .asDriver(onErrorJustReturn: "")
     }
+    
 }
 
 class NoteCell: UITableViewCell {
@@ -31,14 +34,13 @@ class NoteCell: UITableViewCell {
 
     func bind(to viewModel: NoteCellViewModel) {
         textView.rx.text.orEmpty
-            .do { print("\(viewModel.cellRow)의 내용:  \($0)") }
+            .distinctUntilChanged()
             .bind(to: viewModel.inputStringRelay)
             .disposed(by: disposeBag)
         
-        viewModel.inputStringRelay
-            .subscribe {
-                print("asd", $0)
-            }.disposed(by: disposeBag)
+        viewModel.inputStringDriver
+            .drive(textView.rx.text)
+            .disposed(by: disposeBag)
     }
     
     override func prepareForReuse() {
@@ -50,13 +52,6 @@ class NoteCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUI()
-        
-//        textView.snp.updateConstraints {
-//            $0.height.greaterThanOrEqualTo(119)
-//        }
-//        UIView.animate(withDuration: 0.2) {
-//            self.layoutIfNeeded()
-//        }
         selectionStyle = .none
     }
     

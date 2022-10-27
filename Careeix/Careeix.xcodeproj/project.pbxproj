@@ -32,6 +32,7 @@
 		786F46A729028DE900215AF0 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 786F46A629028DE900215AF0 /* Moya */; };
 		786F46A929028DE900215AF0 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 786F46A829028DE900215AF0 /* RxMoya */; };
 		7881F5522902D91D00111395 /* TwoButtonAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */; };
+		788A09FF290A7BBD003EF027 /* ProjectChapterInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788A09FE290A7BBD003EF027 /* ProjectChapterInputViewModel.swift */; };
 		789F27C029068C2200F634F0 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F27BF29068C2200F634F0 /* DatePickerView.swift */; };
 		789F27C32906ECA400F634F0 /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F27C22906ECA400F634F0 /* NoteCell.swift */; };
 		78C9099A2905918A00AA9AA3 /* ProjectChapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C909992905918A00AA9AA3 /* ProjectChapter.swift */; };
@@ -119,6 +120,7 @@
 		786F46A12901A21B00215AF0 /* BaseCheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCheckBoxView.swift; sourceTree = "<group>"; };
 		786F46A32901A24E00215AF0 /* PeriodInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodInputView.swift; sourceTree = "<group>"; };
 		7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoButtonAlertViewController.swift; sourceTree = "<group>"; };
+		788A09FE290A7BBD003EF027 /* ProjectChapterInputViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterInputViewModel.swift; sourceTree = "<group>"; };
 		789F27BF29068C2200F634F0 /* DatePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		789F27C22906ECA400F634F0 /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
 		78C909992905918A00AA9AA3 /* ProjectChapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapter.swift; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 			isa = PBXGroup;
 			children = (
 				785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */,
+				788A09FE290A7BBD003EF027 /* ProjectChapterInputViewModel.swift */,
 				789F27C12906EA4C00F634F0 /* Cells */,
 			);
 			path = ProjectChapterInput;
@@ -611,6 +614,7 @@
 				7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */,
 				78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */,
 				785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */,
+				788A09FF290A7BBD003EF027 /* ProjectChapterInputViewModel.swift in Sources */,
 				7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */,
 				786F46A22901A21B00215AF0 /* BaseCheckBoxView.swift in Sources */,
 				78C9099A2905918A00AA9AA3 /* ProjectChapter.swift in Sources */,
@@ -779,7 +783,7 @@
 				CODE_SIGN_ENTITLEMENTS = Careeix/CareeixDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = W9K8S57VSZ;
+				DEVELOPMENT_TEAM = 3AQ2WDVH35;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Careeix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -807,7 +811,7 @@
 				CODE_SIGN_ENTITLEMENTS = Careeix/Careeix.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = W9K8S57VSZ;
+				DEVELOPMENT_TEAM = 3AQ2WDVH35;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Careeix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
