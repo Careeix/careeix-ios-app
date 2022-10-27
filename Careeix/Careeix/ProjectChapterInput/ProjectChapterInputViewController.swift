@@ -52,11 +52,8 @@ class ProjectChapterInputViewController: UIViewController {
             .drive(noteTableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: NoteCell.self.description(), for: IndexPath(row: row, section: 0)) as? NoteCell else { return UITableViewCell() }
                 cell.textView.delegate = self
-                print(cell.viewModel?.inputStringRelay.value, "A")
-                print(data.inputStringRelay, "B")
-//                print(, "C")
+                
                 cell.bind(to: data)
-
                 
                 cell.textView.rx.tapGesture()
                     .when(.recognized)
@@ -83,10 +80,8 @@ class ProjectChapterInputViewController: UIViewController {
             }.disposed(by: disposeBag)
 
         viewModel.combinedDataDriver
-            .do { _ in print(viewModel.noteCellViewModels.map {$0.inputStringRelay.value} )}
-            .debug("😎😎😎데이터를 모아보자😎😎😎")
-            .drive { _ in
-                
+            .drive { data in
+                viewModel.updateProjectChapter(data: data)
             }.disposed(by: disposeBag)
         
         viewModel.updateTableViewHeightTriggerRelay
@@ -144,15 +139,8 @@ class ProjectChapterInputViewController: UIViewController {
     }
     
     func addNoteCell() {
-//        viewModel.cellDataRelay.compl
         view.endEditing(false)
         viewModel.noteCellViewModels.append(.init(inputStringRelay: BehaviorRelay<String>(value: "")))
-//        viewModel.combinedDataDriver.
-        viewModel.combinedDataDriver
-            .debug("😎😎😎데이터를 모아보자😎😎😎")
-            .drive { _ in
-                
-            }.disposed(by: disposeBag)
         viewModel.updateTableViewHeightTriggerRelay.accept(())
         guard let cell = noteTableView.cellForRow(at: IndexPath(row: viewModel.noteCellViewModels.count - 1, section: 0)) as? NoteCell else {
             return }

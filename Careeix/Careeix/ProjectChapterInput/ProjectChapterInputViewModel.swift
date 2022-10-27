@@ -45,31 +45,17 @@ class ProjectChapterInputViewModel {
         
         let combinedInputValuesObservableShare = Observable.combineLatest(titleTextFieldViewModel.inputStringRelay, contentViewModel.inputStringRelay)
         
-        let combinedNotesObservable = Observable.combineLatest(noteCellViewModels.map { $0.inputStringRelay } )
-
-        combinedDataDriver = Observable.combineLatest(combinedInputValuesObservableShare, combinedNotesObservable)
-            .debug("왜 안모으냐 ~")
-            .map { ProjectChapter(title: $0.0, content: $0.1, notes: $1) }
-            .asDriver(onErrorJustReturn: .init(title: "", content: "", notes: []))
-        
-        
-        let a = cellDataRelay
+        combinedDataDriver = cellDataRelay
             .map { notes in
-            let b = notes.map {$0.inputStringRelay}
-            return Observable.combineLatest(combinedInputValuesObservableShare, Observable.combineLatest(b))
-        }.flatMap { $0 }
-            .debug("😟😟궁극의 시퀀스 생성😟")
-            .subscribe(onNext: { b,c in
-                print(b, c)
-            })
-//            .map { ProjectChapter.init(title: $0, content: <#T##String#>, notes: <#T##[String]#>) }
-//            .debug("😟😟궁극의 시퀀스 생성😟")
-//            .asDriver(onErrorJustReturn: ProjectChapter.init(title: "", content: "", notes: ""))
-        
+                Observable.combineLatest(combinedInputValuesObservableShare, Observable.combineLatest(notes.map {$0.inputStringRelay}))
+            }.flatMap { $0 }
+            .map { ProjectChapter(title: $0.0, content: $0.1, notes: $1 ) }
+            .asDriver(onErrorJustReturn: .init(title: "", content: "", notes: []))
         
         let cellDataRelayShare = cellDataRelay.share()
         
-        cellDataDriver = cellDataRelayShare.asDriver(onErrorJustReturn: [])
+        cellDataDriver = cellDataRelayShare
+            .asDriver(onErrorJustReturn: [])
         
         canAddNoteDriver = cellDataRelayShare.map { $0.count }
             .map { $0 < 3 }
@@ -101,18 +87,6 @@ class ProjectChapterInputViewModel {
         : nil
     }
     
-    func updateProjectChapter(title: String, content: String) {
-        if checkProjectChaptersRange() {
-            UserDefaultManager.shared.projectChapters[projectId]?[currentIndex].title = title
-            UserDefaultManager.shared.projectChapters[projectId]?[currentIndex].content = content
-        }
-    }
-    
-    func updateProjectChapter(notes: [String]) {
-        checkProjectChaptersRange()
-        ? UserDefaultManager.shared.projectChapters[projectId]?[currentIndex].notes = notes
-        : nil
-    }
     func updateProjectChapter() {
         checkProjectChaptersRange()
         ? nil
