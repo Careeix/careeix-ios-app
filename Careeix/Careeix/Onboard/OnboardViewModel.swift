@@ -28,10 +28,10 @@ struct OnboardViewModel {
     let showHomeViewDriver: Driver<Void>
     let showSignUpViewDriver: Driver<Void>
     init() {
-        logoImageNameDriver = Observable.just("logo").asDriver(onErrorJustReturn: "")
-        kakaoLoginButtonImageNameDriver = Observable.just("kakaoLogin").asDriver(onErrorJustReturn: "")
-        appleLoginButtonImageNameDriver = Observable.just("appleLogin").asDriver(onErrorJustReturn: "")
-        onboardImageNamesDriver = Observable.just(["onboard_0", "onboard_1", "onboard_2"]).asDriver(onErrorJustReturn: [])
+        logoImageNameDriver = .just("logo")
+        kakaoLoginButtonImageNameDriver = .just("kakaoLogin")
+        appleLoginButtonImageNameDriver = .just("appleLogin")
+        onboardImageNamesDriver = .just(["onboard_0", "onboard_1", "onboard_2"])
         
         currentPageDriver = endDraggingRelay
             .map { Int($0 / $1) }

@@ -84,9 +84,9 @@ class OnboardViewController: UIViewController {
                 let vc = SignUpViewController(
                     viewModel: .init(
                         nickNameInputViewModel: .init(title: "닉네임",
-                                                      placeholder: "10자 이내로 한글, 영문, 숫자를 입력해주세요."),
+                                                      textFieldViewModel: .init(placeholder: "10자 이내로 한글, 영문, 숫자를 입력해주세요.")),
                         jobInputViewModel: .init(title: "직무",
-                                                 placeholder: "직무를 입력해주세요.(Ex. 서버 개발자)"),
+                                                 textFieldViewModel: .init(placeholder: "직무를 입력해주세요.(Ex. 서버 개발자)")),
                         annualInputViewModel: .init(title: "연차",
                                                     contents: ["입문(1년 미만)",
                                                                "주니어(1~4년차)",
@@ -94,8 +94,8 @@ class OnboardViewController: UIViewController {
                                                                "시니어(9년차~)"]),
                         detailJobsInputViewModel: .init(title: "상세 직무",
                                                         description: "상세 직무 개수는 1~3개까지 입력 가능합니다.",
-                                                        placeholders: Array(repeating: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)",
-                                                                            count: 3)),
+                                                        textFieldViewModels:[BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)"),BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)"),BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)")]),
+                                                                
                         completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable)
                     )
                 )

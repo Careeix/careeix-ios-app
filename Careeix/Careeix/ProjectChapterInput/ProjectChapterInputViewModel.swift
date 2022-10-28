@@ -46,9 +46,8 @@ class ProjectChapterInputViewModel {
         let combinedInputValuesObservableShare = Observable.combineLatest(titleTextFieldViewModel.inputStringRelay, contentViewModel.inputStringRelay)
         
         combinedDataDriver = cellDataRelay
-            .map { notes in
-                Observable.combineLatest(combinedInputValuesObservableShare, Observable.combineLatest(notes.map {$0.inputStringRelay}))
-            }.flatMap { $0 }
+            .map { Observable.combineLatest(combinedInputValuesObservableShare, Observable.combineLatest($0.map {$0.inputStringRelay})) }
+            .flatMap { $0 }
             .map { ProjectChapter(title: $0.0, content: $0.1, notes: $1 ) }
             .asDriver(onErrorJustReturn: .init(title: "", content: "", notes: []))
         

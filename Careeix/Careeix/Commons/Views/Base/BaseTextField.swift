@@ -18,8 +18,9 @@ class BaseTextFieldViewModel {
     // MARK: Output
     let inputStringDriver: Driver<String>
     let placeholderDriver: Driver<String>
-    
+
     init(placeholder: String = "내용을 입력해주세요.") {
+        print(placeholder)
         placeholderDriver = .just(placeholder)
         inputStringDriver = inputStringRelay
             .asDriver(onErrorJustReturn: "")

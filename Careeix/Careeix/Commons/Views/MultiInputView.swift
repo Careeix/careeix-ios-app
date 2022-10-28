@@ -17,14 +17,11 @@ struct MultiInputViewModel {
     let titleDriver:Driver<String>
     let descriptionDriver: Driver<String>
     let inputValuesObservable: Observable<[String]>
-    let placeholdersDriver: Driver<[String]>
     
-    init(title: String, description: String, placeholders: [String]) {
+    init(title: String, description: String, textFieldViewModels: [BaseTextFieldViewModel]) {
         titleDriver = .just(title)
         descriptionDriver = .just(description)
-        placeholdersDriver = .just(placeholders)
-        
-        multiInputCellViewModels = placeholders.map { .init(placeholder: $0) }
+        multiInputCellViewModels = textFieldViewModels.map { .init(textFieldViewModel: $0) }
         inputValuesObservable = Observable
             .combineLatest(multiInputCellViewModels.map { $0.textFieldViewModel.inputStringRelay })
             .map { $0.filter { $0 != "" } }
@@ -40,11 +37,13 @@ class MultiInputView: UIView {
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
         
-        viewModel.placeholdersDriver
+        
+        
+        Observable.just(viewModel.multiInputCellViewModels)
+            .asDriver(onErrorJustReturn: [])
             .drive(tableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: MultiInputCell.self.description(),for: IndexPath(row: row, section: 0)) as? MultiInputCell else { return UITableViewCell() }
-                cell.textField.placeholder = data
-                cell.viewModel = viewModel.multiInputCellViewModels[row]
+                cell.viewModel = data
                 return cell
             }.disposed(by: disposeBag)
     }

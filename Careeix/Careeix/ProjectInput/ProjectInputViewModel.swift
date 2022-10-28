@@ -36,10 +36,10 @@ struct ProjectInputViewModel {
         self.periodInputViewModel = periodInputViewModel
         self.divisionInputViewModel = divisionInputViewModel
         self.introduceInputViewModel = introduceInputViewModel
-        let combinedInputValuesObservable = Observable.combineLatest(titleInputViewModel.inputStringRelay,
+        let combinedInputValuesObservable = Observable.combineLatest(titleInputViewModel.textfieldViewModel.inputStringRelay,
                                                                      periodInputViewModel.startDateViewModel.inputStringRelay,
                                                                      periodInputViewModel.endDateViewModel.inputStringRelay,
-                                                                     divisionInputViewModel.inputStringRelay,
+                                                                     divisionInputViewModel.textfieldViewModel.inputStringRelay,
                                                                      introduceInputViewModel.baseTextViewModel.inputStringRelay,
                                                                      periodInputViewModel.checkBoxViewModel.isSelectedRelay).skip(3).share()
         
@@ -78,8 +78,9 @@ struct ProjectInputViewModel {
     func fillRemainingInput() {
         guard let remainigInput = UserDefaultManager.shared.projectInput[projectId] else { return }
         print("로컬에 저장된 데이터: ", remainigInput)
-        titleInputViewModel.inputStringRelay.accept(remainigInput.title)
-        divisionInputViewModel.inputStringRelay.accept(remainigInput.division)
+        
+        titleInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.title)
+        divisionInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.division)
         periodInputViewModel.startDateViewModel.inputStringRelay.accept(remainigInput.startDateString)
         periodInputViewModel.endDateViewModel.inputStringRelay.accept(remainigInput.endDateString)
         periodInputViewModel.checkBoxViewModel.isSelectedRelay.accept(remainigInput.isProceed)

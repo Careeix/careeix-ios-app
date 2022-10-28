@@ -104,12 +104,6 @@ class API<T: Decodable> {
     
 }
 
-
-
-//extension Reactive where Base: API<T: Decodable> {
-//
-//}
-
 public enum NetworkError: Error {
     case objectMapping // 데이터 파싱 오류
     case httpStatus(Int) // statusCode 200...299 이 아님

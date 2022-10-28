@@ -29,7 +29,6 @@ class NoteCell: UITableViewCell {
         viewModel.inputStringRelay
             .asDriver(onErrorJustReturn: "")
             .distinctUntilChanged()
-            .debug("인풋~")
             .drive(textView.rx.text)
             .disposed(by: disposeBag)
 
@@ -43,7 +42,6 @@ class NoteCell: UITableViewCell {
     override func prepareForReuse() {
         disposeBag = DisposeBag()
         textView.delegate = nil
-//        textView.text = ""
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

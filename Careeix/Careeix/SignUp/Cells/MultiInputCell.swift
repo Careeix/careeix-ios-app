@@ -10,13 +10,11 @@ import RxSwift
 import RxCocoa
 
 struct MultiInputCellViewModel {
+    var textFieldViewModel: BaseTextFieldViewModel
     
-    let textFieldViewModel: BaseTextFieldViewModel
-    
-    init(placeholder: String) {
-        textFieldViewModel = .init(placeholder: placeholder)
+    init(textFieldViewModel: BaseTextFieldViewModel) {
+        self.textFieldViewModel = textFieldViewModel
     }
-    
 }
 
 class MultiInputCell: UITableViewCell {
@@ -24,32 +22,15 @@ class MultiInputCell: UITableViewCell {
     var viewModel: MultiInputCellViewModel? {
         didSet {
             guard let viewModel else { return }
-            bind(to: viewModel)
+            textField = BaseTextField(viewModel: viewModel.textFieldViewModel)
+            setUI()
         }
     }
     
-    func bind(to viewModel: MultiInputCellViewModel) {
-//        textField.rx.text.orEmpty
-//            .bind(to: viewModel.textFieldViewModel.inputStringRelay)
-//            .disposed(by: disposeBag)
-    }
-    
-    
     // MARK: - Initializer
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         textField = BaseTextField(viewModel: .init())
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setUI()
     }
     
     required init?(coder: NSCoder) {
@@ -60,7 +41,7 @@ class MultiInputCell: UITableViewCell {
         disposeBag = DisposeBag()
     }
     
-    let textField: BaseTextField
+    var textField: BaseTextField
     let emptyView = UIView()
     func setUI() {
         [textField, emptyView].forEach { contentView.addSubview($0) }

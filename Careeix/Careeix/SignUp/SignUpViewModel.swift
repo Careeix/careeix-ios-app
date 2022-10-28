@@ -18,8 +18,6 @@ class SignUpViewModel {
     let completeButtonViewModel: CompleteButtonViewModel
     
     // MARK: - Input
-    // TODO: 주석 삭제
-//    let combinedInputValuesObservable: Observable<(nickName, job, annualIndex, detailJobs)>
     let createUserTrigger =  PublishRelay<Void>()
     
     // MARK: - Output
@@ -38,13 +36,15 @@ class SignUpViewModel {
         self.completeButtonViewModel = completeButtonViewModel
         
         let combinedInputValuesObservable =  Observable.combineLatest(
-            nickNameInputViewModel.inputStringRelay,
-            jobInputViewModel.inputStringRelay,
+            nickNameInputViewModel.textfieldViewModel.inputStringRelay,
+//            nickNameInputViewModel.inputStringRelay,
+            jobInputViewModel.textfieldViewModel.inputStringRelay,
             annualInputViewModel.selectedIndexRelay,
             detailJobsInputViewModel.inputValuesObservable
         ) {
-            ($0, $1, $2, $3)
-        }
+            print("Aasd", $0, $1, $2, $3)
+            return ($0, $1, $2, $3)
+        }.share()
         
         showTabbarCotrollerDriver = createUserTrigger
             .withLatestFrom(combinedInputValuesObservable) { $1 }

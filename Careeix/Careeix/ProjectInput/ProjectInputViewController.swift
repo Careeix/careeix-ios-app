@@ -18,6 +18,7 @@ class ProjectInputViewController: UIViewController {
     
     let datePickerViewHeight: CGFloat = DatePickerView.datePickerHeight + DatePickerView.datePickerTopViewHeight
     lazy var datePickerOffset: CGFloat = datePickerViewHeight + DatePickerView.datePickerShadowHeight * 10
+    
     // MARK: - Binding
     func bind(to viewModel: ProjectInputViewModel) {
         
@@ -37,7 +38,6 @@ class ProjectInputViewController: UIViewController {
             .drive { data in
                 viewModel.updatePersistanceData(data)
             }.disposed(by: disposeBag)
-        
         
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
