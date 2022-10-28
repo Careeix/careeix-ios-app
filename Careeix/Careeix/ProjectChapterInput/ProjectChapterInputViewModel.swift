@@ -30,11 +30,12 @@ class ProjectChapterInputViewModel {
     let scrollToHeightRelay = PublishRelay<CGFloat>()
     
     // MARK: - Output
-    let combinedDataDriver: Driver<ProjectChapter>
+    let updateProjectChapterDriver: Driver<ProjectChapter>
     let cellDataDriver: Driver<[NoteCellViewModel]>
     let canAddNoteDriver: Driver<Bool>
     let noteTableViewHeightDriver: Driver<CGFloat>
     let scrollToHeightDriver: Driver<CGFloat>
+    let completeButtonEnableDriver: Driver<Bool>
     
     // MARK: - Initializer
     init(currentIndex: Int, projectId: Int = -1) {
@@ -45,12 +46,19 @@ class ProjectChapterInputViewModel {
         
         let combinedInputValuesObservableShare = Observable.combineLatest(titleTextFieldViewModel.inputStringRelay, contentViewModel.inputStringRelay)
         
-        combinedDataDriver = cellDataRelay
+        let combinedDataShare = cellDataRelay
             .map { Observable.combineLatest(combinedInputValuesObservableShare, Observable.combineLatest($0.map {$0.inputStringRelay})) }
             .flatMap { $0 }
-            .map { ProjectChapter(title: $0.0, content: $0.1, notes: $1 ) }
-//            .debug("저장 중이에요 !")
+            .map { ProjectChapter(title: $0.0, content: $0.1, notes: $1 ) }.skip(1)
+        
+        
+        updateProjectChapterDriver = combinedDataShare
             .asDriver(onErrorJustReturn: .init(title: "", content: "", notes: []))
+        
+        completeButtonEnableDriver = combinedDataShare
+            .distinctUntilChanged()
+            .map { $0 != ProjectChapter(title: "", content: "", notes: [])}
+            .asDriver(onErrorJustReturn: false)
         
         let cellDataRelayShare = cellDataRelay.share()
         
@@ -76,24 +84,20 @@ class ProjectChapterInputViewModel {
             guard let needFillData = UserDefaultManager.shared.projectChapters[projectId]?[currentIndex] else { return }
             titleTextFieldViewModel.inputStringRelay.accept(needFillData.title)
             contentViewModel.inputStringRelay.accept(needFillData.content)
-            noteCellViewModels = needFillData.notes.filter { !$0.isEmpty }.map { .init(inputStringRelay: BehaviorRelay(value: $0)) }
+            noteCellViewModels = needFillData.notes.map { .init(inputStringRelay: BehaviorRelay(value: $0)) }
         }
-//        updateTableViewHeightTriggerRelay.accept(())
     }
     
     func updateProjectChapter(data: ProjectChapter) {
-        print(checkProjectChaptersRange(), currentIndex, UserDefaultManager.shared.projectChapters)
         checkProjectChaptersRange()
         ? UserDefaultManager.shared.projectChapters[projectId]?[currentIndex] = data
         : nil
     }
     
     func updateProjectChapter() {
-        print("append 해야합니까? ", !checkProjectChaptersRange(), currentIndex)
         checkProjectChaptersRange()
         ? nil
         : UserDefaultManager.shared.projectChapters[projectId]?.append(.init(title: "", content: "", notes: []))
-        print("update 후 project: ", UserDefaultManager.shared.projectChapters, projectId)
     }
     
     func checkProjectChaptersRange() -> Bool {
@@ -106,7 +110,7 @@ class ProjectChapterInputViewModel {
             guard let currentChapter = UserDefaultManager.shared.projectChapters[projectId]?[currentIndex] else { return }
             if currentChapter.content == ""
                 && currentChapter.title == ""
-                && currentChapter.notes.filter({ $0 != "" }).count == 0 {
+                && currentChapter.notes.isEmpty {
                 UserDefaultManager.shared.projectChapters[projectId]?.remove(at: currentIndex)
             }
         }

@@ -79,16 +79,17 @@ class ProjectChapterInputViewController: UIViewController {
                 return cell
             }.disposed(by: disposeBag)
 
-        viewModel.combinedDataDriver
+        viewModel.updateProjectChapterDriver
             .drive { data in
                 viewModel.updateProjectChapter(data: data)
             }.disposed(by: disposeBag)
         
-        viewModel.updateTableViewHeightTriggerRelay
-            .withUnretained(self)
-            .map { owner, _ in owner.getTableViewHeight()}
-            .distinctUntilChanged()
-            .asDriver(onErrorJustReturn: 0)
+        viewModel.completeButtonEnableDriver
+            .drive(with: self) { owner,  isEnable in
+                owner.updateCompleteButtonView(with: isEnable)
+            }.disposed(by: disposeBag)
+        
+        viewModel.noteTableViewHeightDriver
             .drive(with: self) { owner, height in
                 owner.noteTableView.snp.updateConstraints {
                     $0.height.equalTo(height + 10)
@@ -112,12 +113,13 @@ class ProjectChapterInputViewController: UIViewController {
                 owner.scrollToFit(with: frame)
             }.disposed(by: disposeBag)
     }
-    override func viewDidLayoutSubviews() {
-        view.layoutIfNeeded()
-        viewModel.updateTableViewHeightTriggerRelay.accept(())
-    }
     
     // MARK: - Function
+    func updateCompleteButtonView(with isEnable: Bool) {
+        completeButtonView.backgroundColor = isEnable ? .appColor(.next) : .appColor(.disable)
+        completeButtonView.isUserInteractionEnabled = isEnable
+    }
+    
     func scrollToFit(with cellFrame: CGRect) {
         scrollView.setContentOffset(CGPoint(x: 0, y: UIScreen.main.bounds.height * 0.35 + view.convert(cellFrame, to: titleTextField).minY - scrollView.contentOffset.y), animated: true)
     }
@@ -134,14 +136,16 @@ class ProjectChapterInputViewController: UIViewController {
     }
     func getTableViewHeight() -> CGFloat {
         return noteTableView.visibleCells
-            .map { $0.frame.height }
-            .reduce(0) { $0 + $1 }
+            .map { cell in
+            cell.frame.height
+            }.reduce(0) { $0 + $1 }
     }
     
     func addNoteCell() {
         view.endEditing(false)
         viewModel.noteCellViewModels.append(.init(inputStringRelay: BehaviorRelay<String>(value: "")))
-        viewModel.updateTableViewHeightTriggerRelay.accept(())
+        viewModel.noteTableViewHeightRelay.accept(
+            getTableViewHeight())
         guard let cell = noteTableView.cellForRow(at: IndexPath(row: viewModel.noteCellViewModels.count - 1, section: 0)) as? NoteCell else {
             return }
         cell.textView.becomeFirstResponder()
@@ -175,14 +179,12 @@ class ProjectChapterInputViewController: UIViewController {
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
-        
+        viewModel.fillInputs()
         super.viewDidLoad()
     }
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
         bind(to: viewModel)
-        viewModel.fillInputs()
-//        view.layoutIfNeeded()
     }
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
@@ -190,7 +192,7 @@ class ProjectChapterInputViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         titleTextField.becomeFirstResponder()
-       
+        viewModel.noteTableViewHeightRelay.accept(getTableViewHeight())
     }
     
     // MARK: - UIComponents
@@ -262,7 +264,8 @@ extension ProjectChapterInputViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         noteTableView.beginUpdates()
         noteTableView.endUpdates()
-        viewModel.updateTableViewHeightTriggerRelay.accept(())
+        viewModel.noteTableViewHeightRelay.accept(
+            getTableViewHeight())
     }
 }
 
@@ -270,7 +273,8 @@ extension ProjectChapterInputViewController: TwoButtonAlertViewDelegate {
     func didTapRightButton(type: TwoButtonAlertType) {
         dismiss(animated: true)
         viewModel.noteCellViewModels.remove(at: willDeletedIndex)
-        viewModel.updateTableViewHeightTriggerRelay.accept(())
+        viewModel.noteTableViewHeightRelay.accept(
+            getTableViewHeight())
     }
     
     func didTapLeftButton(type: TwoButtonAlertType) {

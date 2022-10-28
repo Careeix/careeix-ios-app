@@ -42,7 +42,6 @@ class ProjectInputViewController: UIViewController {
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
             .drive(with: self) { owner, keyboardVisibleHeight in
-                print(keyboardVisibleHeight)
                 owner.contentView.snp.updateConstraints {
                     $0.bottom.equalToSuperview().inset(keyboardVisibleHeight)
                 }

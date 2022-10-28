@@ -65,7 +65,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         UserDefaultManager.shared.jwtToken = ""
       UserDefaultManager.shared.projectChapters[-1] = []
-        print(UserDefaultManager.shared.projectChapters[-1])
         // test end
         
         

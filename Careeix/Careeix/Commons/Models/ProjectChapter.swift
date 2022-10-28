@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 import RxRelay
-struct ProjectChapter: Codable {
+struct ProjectChapter: Codable, Equatable {
     var title: String
     var content: String
     var notes: [String]

@@ -72,7 +72,6 @@ class API<T: Decodable> {
     
     func request(completion: @escaping (Result<APIResponse<T>, Error>) -> Void) {
         let endpoint = MultiTarget.target(api)
-        print(api)
         provider.request(endpoint, completion: { result in
             switch result {
             case .success(let response):
