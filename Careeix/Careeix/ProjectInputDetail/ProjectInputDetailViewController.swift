@@ -10,33 +10,22 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
-struct ProjectInputDetailViewModel {
-    // MARK: Input
-    let viewWillAppearRelay = PublishRelay<Void>()
-    let projectId: Int
-    // MARK: Output
-    let chaptersDriver: Driver<[ProjectChapter]>
-    
-    init(projectId: Int = -1) {
-        self.projectId = projectId
-        
-        chaptersDriver = viewWillAppearRelay
-            .compactMap { _ in UserDefaultManager.shared.projectChapters[projectId] }
-            .asDriver(onErrorJustReturn: [])
-    }
-}
-
 class ProjectInputDetailViewController: UIViewController {
     var disposeBag = DisposeBag()
     var viewModel: ProjectInputDetailViewModel
     
     // MARK: Binding
     func bind(to viewModel: ProjectInputDetailViewModel) {
+        
         addButtonView.rx.tapGesture()
             .when(.recognized)
-            .withUnretained(self)
-            .bind { owner, _ in
-                owner.showProjectChapterInputViewController(index: UserDefaultManager.shared.projectChapters.count)
+            .map { _ in () }
+            .bind(to: viewModel.createTrigger)
+            .disposed(by: disposeBag)
+        
+        viewModel.createIndexDriver
+            .drive(with: self) { owner, index in
+                owner.showProjectChapterInputViewController(index: index)
             }.disposed(by: disposeBag)
         
         viewModel.chaptersDriver
@@ -56,10 +45,14 @@ class ProjectInputDetailViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                // TODO: - 서버 통신
-                print("발행전 데이터 확인")
-                print(UserDefaultManager.shared.projectInput)
-                print(UserDefaultManager.shared.projectChapters)
+                viewModel.createProject()
+            }.disposed(by: disposeBag)
+        
+        viewModel.updateTableViewHeightDriver
+            .drive(with: self) { owner, height in
+                owner.tableView.snp.updateConstraints {
+                    $0.height.equalTo(height * owner.tableView.rowHeight)
+                }
             }.disposed(by: disposeBag)
     }
     
@@ -89,15 +82,15 @@ class ProjectInputDetailViewController: UIViewController {
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
+        // TODO: 주석 삭제
+        UserDefaultManager.shared.projectChapters[viewModel.projectId] = []
         super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
         viewModel.viewWillAppearRelay.accept(())
-        tableView.snp.updateConstraints {
-            $0.height.equalTo(CGFloat(UserDefaultManager.shared.projectChapters.count) * tableView.rowHeight)
-        }
+
         updateCompleteButtonView()
     }
     

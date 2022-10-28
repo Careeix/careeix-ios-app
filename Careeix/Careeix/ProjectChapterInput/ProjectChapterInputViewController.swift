@@ -17,7 +17,7 @@ class ProjectChapterInputViewController: UIViewController {
     var viewModel: ProjectChapterInputViewModel
     var willDeletedIndex: Int!
 
-    // MARK: Binding
+    // MARK: - Binding
     func bind(to viewModel: ProjectChapterInputViewModel) {
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
@@ -48,7 +48,7 @@ class ProjectChapterInputViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         viewModel.cellDataDriver
-            .debug("🤬🤬🤬🤬")
+//            .debug("🤬🤬🤬🤬")
             .drive(noteTableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: NoteCell.self.description(), for: IndexPath(row: row, section: 0)) as? NoteCell else { return UITableViewCell() }
                 cell.textView.delegate = self
@@ -99,8 +99,8 @@ class ProjectChapterInputViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         viewModel.canAddNoteDriver
-            .drive(with: self) { owner, canAddNote in
-                owner.setAddButtonViewState(with: canAddNote)
+            .drive(with: self) { owner, canAddChapter in
+                owner.setAddButtonViewState(with: canAddChapter)
             }.disposed(by: disposeBag)
         
         noteTableView.rx.itemSelected
@@ -117,7 +117,7 @@ class ProjectChapterInputViewController: UIViewController {
         viewModel.updateTableViewHeightTriggerRelay.accept(())
     }
     
-    // MARK: Function
+    // MARK: - Function
     func scrollToFit(with cellFrame: CGRect) {
         scrollView.setContentOffset(CGPoint(x: 0, y: UIScreen.main.bounds.height * 0.35 + view.convert(cellFrame, to: titleTextField).minY - scrollView.contentOffset.y), animated: true)
     }
@@ -153,7 +153,7 @@ class ProjectChapterInputViewController: UIViewController {
     }
 
 
-    // MARK: Initializer
+    // MARK: - Initializer
     init(viewModel: ProjectChapterInputViewModel) {
         self.viewModel = viewModel
         titleTextField = BaseTextField(viewModel: viewModel.titleTextFieldViewModel)
@@ -173,17 +173,16 @@ class ProjectChapterInputViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Life Cycle
+    // MARK: - Life Cycle
     override func viewDidLoad() {
+        
         super.viewDidLoad()
     }
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
         bind(to: viewModel)
-        noteTableView.beginUpdates()
         viewModel.fillInputs()
-        view.layoutIfNeeded()
-        noteTableView.endUpdates()
+//        view.layoutIfNeeded()
     }
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
@@ -194,7 +193,7 @@ class ProjectChapterInputViewController: UIViewController {
        
     }
     
-    // MARK: UIComponents
+    // MARK: - UIComponents
     let scrollView = UIScrollView()
     let contentView = UIView()
     let titleTextField: BaseTextField

@@ -7,14 +7,20 @@
 
 import UIKit
 import SnapKit
+
 struct DatePickerViewModel {
     let title: String
+    
     init(title: String) {
         self.title = title
     }
 }
+
+/// 3가지 프로퍼티로 intrinsic Height 정할 수 있습니다.
+/// datePickerHeight
+/// datePickerTopViewHeight
+/// datePickerShadowHeight
 class DatePickerView: UIView {
-    // 아래 3가지 프로퍼티로 intrinsic Height 정할 수 있습니다.
     static let datePickerHeight: CGFloat = 250
     static let datePickerTopViewHeight: CGFloat = 41
     static let datePickerShadowHeight: CGFloat = 4

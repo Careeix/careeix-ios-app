@@ -37,8 +37,6 @@ class MultiInputView: UIView {
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
         
-        
-        
         Observable.just(viewModel.multiInputCellViewModels)
             .asDriver(onErrorJustReturn: [])
             .drive(tableView.rx.items) { tv, row, data in

@@ -25,6 +25,7 @@ class ManyInputView: UIView {
     // MARK: Properties
     var disposeBag = DisposeBag()
     var viewModel: ManyInputViewModel
+    
     // MARK: - Binding
     func bind(to viewModel: ManyInputViewModel) {
         viewModel.titleStringDriver
@@ -53,7 +54,6 @@ class ManyInputView: UIView {
         return l
     }()
     var textView: BaseTextView
-    
     
     func setUI() {
         [titleLabel, textView].forEach { addSubview($0) }

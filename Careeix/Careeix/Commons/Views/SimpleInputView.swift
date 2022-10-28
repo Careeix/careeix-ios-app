@@ -13,18 +13,12 @@ import RxRelay
 struct SimpleInputViewModel {
     // MARK: - Input
     let textfieldViewModel: BaseTextFieldViewModel
-//    let inputStringRelay = BehaviorRelay<String>(value: "")
     
     // MARK: - Output
-//    let inputStringDriver: Driver<String>
     let titleStringDriver: Driver<String>
-//    let placeholderStringDriver: Driver<String>
     init(title: String, textFieldViewModel: BaseTextFieldViewModel) {
         self.textfieldViewModel = textFieldViewModel
         titleStringDriver = .just(title)
-//        placeholderStringDriver = .just(placeholder)
-//        inputStringDriver = inputStringRelay
-//            .asDriver(onErrorJustReturn: "")
     }
 }
 
@@ -37,19 +31,6 @@ class SimpleInputView: UIView {
         viewModel.titleStringDriver
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
-        
-//        viewModel.placeholderStringDriver
-//            .drive(textField.rx.placeholder)
-//            .disposed(by: disposeBag)
-//
-//        textField.rx.text.orEmpty
-//            .distinctUntilChanged()
-//            .bind(to: viewModel.inputStringRelay)
-//            .disposed(by: disposeBag)
-//
-//        viewModel.inputStringDriver
-//            .drive(textField.rx.text)
-//            .disposed(by: disposeBag)
     }
     
     // MARK: Initializer

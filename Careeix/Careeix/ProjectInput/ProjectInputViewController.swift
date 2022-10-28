@@ -229,6 +229,7 @@ class ProjectInputViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         if !UserDefaultManager.shared.isWritingProject &&
             viewModel.checkRemainingData() {
             showAskingKeepWritingView()
@@ -332,6 +333,7 @@ extension ProjectInputViewController: TwoButtonAlertViewDelegate {
         switch type {
         case .askingKeepWriting:
             viewModel.initPersistenceData()
+            viewModel.fillRemainingInput()
         default:
             break
         }

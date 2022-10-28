@@ -17,6 +17,7 @@ class HomeAlertViewController: UIViewController {
         setup()
         buttonAction()
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        tabBarController?.tabBar.isHidden = false
     }
     
     let containerView: UIView = {

@@ -89,7 +89,13 @@ struct ProjectInputViewModel {
     }
     
     func initPersistenceData() {
-        UserDefaultManager.shared.projectInput[-1] = .init(title: "", division: "", indroduce: "")
-        UserDefaultManager.shared.projectChapters[-1] = []
+        // TODO: 수정일 경우 서버에서 받아야 함
+        if projectId == -1 {
+            UserDefaultManager.shared.projectInput[-1] = .init(title: "", division: "", indroduce: "")
+            UserDefaultManager.shared.projectChapters[-1] = []
+        } else {
+            // TODO: 서버 통신
+        }
+
     }
 }

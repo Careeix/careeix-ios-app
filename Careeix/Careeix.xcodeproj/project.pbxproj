@@ -61,6 +61,7 @@
 		78DC17D128FBE7E800331A22 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17D028FBE7E800331A22 /* SignUpViewModel.swift */; };
 		78DC17D428FBEA0000331A22 /* RadioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17D328FBEA0000331A22 /* RadioCell.swift */; };
 		78DC17D628FBEEA400331A22 /* MultiInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DC17D528FBEEA400331A22 /* MultiInputCell.swift */; };
+		78E6F00A290C70F20026655D /* ProjectInputDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E6F009290C70F20026655D /* ProjectInputDetailViewModel.swift */; };
 		78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2228EEDBA000DBBF5C /* NetworkService.swift */; };
 		78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */; };
 		78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E94A2E28EF0D7800DBBF5C /* TabBarController.swift */; };
@@ -142,6 +143,7 @@
 		78DC17D028FBE7E800331A22 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		78DC17D328FBEA0000331A22 /* RadioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioCell.swift; sourceTree = "<group>"; };
 		78DC17D528FBEEA400331A22 /* MultiInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiInputCell.swift; sourceTree = "<group>"; };
+		78E6F009290C70F20026655D /* ProjectInputDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInputDetailViewModel.swift; sourceTree = "<group>"; };
 		78E94A2228EEDBA000DBBF5C /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		78E94A2E28EF0D7800DBBF5C /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				785AF52F29054A8900592F7F /* ProjectInputDetailViewController.swift */,
+				78E6F009290C70F20026655D /* ProjectInputDetailViewModel.swift */,
 				785AF53229054EA700592F7F /* Cells */,
 				785AF53129054EA200592F7F /* Views */,
 			);
@@ -615,6 +618,7 @@
 				78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */,
 				785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */,
 				788A09FF290A7BBD003EF027 /* ProjectChapterInputViewModel.swift in Sources */,
+				78E6F00A290C70F20026655D /* ProjectInputDetailViewModel.swift in Sources */,
 				7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */,
 				786F46A22901A21B00215AF0 /* BaseCheckBoxView.swift in Sources */,
 				78C9099A2905918A00AA9AA3 /* ProjectChapter.swift in Sources */,

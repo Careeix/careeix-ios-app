@@ -14,6 +14,7 @@ typealias needMoreInfo = Bool
 struct LoginAPI {
     struct Response: Decodable {
         let jwt: String?
+        let message: String
     }
 }
 
@@ -45,7 +46,7 @@ class SocialLoginSDK {
     
     }
     
-    public static func socialLogin(type: SocialLoginType) -> Observable<needMoreInfo> {
+    public static func socialLogin(type: SocialLoginType) -> Observable<LoginAPI.Response> {
         switch type {
         case .kakao:
             return socialLoginService.kakaoLogin()

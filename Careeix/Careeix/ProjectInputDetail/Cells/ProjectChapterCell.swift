@@ -9,7 +9,9 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxRelay
+
 class ProjectChapterCellViewModel {
+    
     let indexDriver: Driver<String>
     let titleDriver: Driver<String>
     

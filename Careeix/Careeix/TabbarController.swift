@@ -31,7 +31,6 @@ class TabBarController: UITabBarController {
         delegate = self
         tabBar.tintColor = .black
     }
-    
 }
 extension TabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {

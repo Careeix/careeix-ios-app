@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 import SnapKit
 import RxGesture
+import Moya
 class OnboardViewController: UIViewController {
     var disposeBag = DisposeBag()
     var viewModel = OnboardViewModel()
@@ -21,7 +22,7 @@ class OnboardViewController: UIViewController {
         setUI()
         bind(to: viewModel)
     }
-    
+
     // MARK: - Binding
     func bind(to viewModel: OnboardViewModel) {
         viewModel.logoImageNameDriver
@@ -72,10 +73,9 @@ class OnboardViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.showHomeViewDriver
-            .debug("🩳🩳🩳 로그인 완료 Driver 🩳🩳🩳")
-            .drive (with: self) { owner, _ in
-                let vc = HomeViewController()
-                owner.navigationController?.pushViewController(vc, animated: true)
+            .map { _ in "loginSuccess"}
+            .drive (with: self) { owner, name in
+                NotificationCenter.default.post(name: Notification.Name(name), object: nil)
             }.disposed(by: disposeBag)
         
         viewModel.showSignUpViewDriver

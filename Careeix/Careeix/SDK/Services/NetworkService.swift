@@ -17,8 +17,8 @@ enum CustomTask {
 }
 
 struct APIResponse<T: Decodable>: Decodable {
-    let code: Int
-    let result: T
+    let code: String
+    let data: T?
     let message: String
 }
 
@@ -55,36 +55,32 @@ class API<T: Decodable> {
         self.api = .init(path: path, method: method, parameters: parameters, task: newTask, headers: headers)
     }
     
-    func requestRX() -> Single<T>{
-        let endpoint = MultiTarget.target(api)
-        return provider.rx.request(endpoint)
-            .flatMap { response in
-                do {
-                    _ = try response.filterSuccessfulStatusCodes()
-                    let result = try response.map(APIResponse<T>.self)
-                    return .just(result.result)
-                } catch (let error) {
-                    print("error: ", error.localizedDescription)
-                    return .error(error)
+    func requestRX() -> Observable<T>{
+        return Observable.create { observer in
+            self.request { result in
+                switch result {
+                case .success(let response):
+                    guard let data = response.data else { return }
+                    observer.onNext(data)
+                case .failure(let error):
+                    observer.onError(error)
                 }
-            }.debug("🤬🤬🤬서버통신🤬🤬🤬")
-        
+            }
+            return Disposables.create()
+        }
     }
     
     func request(completion: @escaping (Result<APIResponse<T>, Error>) -> Void) {
         let endpoint = MultiTarget.target(api)
+        print(api)
         provider.request(endpoint, completion: { result in
             switch result {
             case .success(let response):
                 do {
                     try self.httpProcess(response: response)
-                    
                     let data = try response.map(APIResponse<T>.self)
-                    
                     completion(.success(data))
-                } catch NetworkError.httpStatus(let code){
-                    print("Network Error Code: ", code)
-                } catch (let error) {
+                }  catch (let error) {
                     print("디폴트 에러: ", error.localizedDescription)
                     completion(.failure(error))
                 }
@@ -100,13 +96,9 @@ class API<T: Decodable> {
             throw NetworkError.httpStatus(response.statusCode)
         }
     }
-    
-    
 }
 
 public enum NetworkError: Error {
     case objectMapping // 데이터 파싱 오류
     case httpStatus(Int) // statusCode 200...299 이 아님
 }
-
-

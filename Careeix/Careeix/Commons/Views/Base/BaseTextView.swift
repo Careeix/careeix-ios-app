@@ -38,6 +38,7 @@ class BaseTextViewModel {
 class BaseTextView: UITextView {
     var disposeBag = DisposeBag()
     var viewModel: BaseTextViewModel
+    
     // MARK: Initializer
     init(viewModel: BaseTextViewModel) {
         self.viewModel = viewModel

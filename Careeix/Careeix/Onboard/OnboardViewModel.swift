@@ -37,13 +37,18 @@ struct OnboardViewModel {
             .map { Int($0 / $1) }
             .asDriver(onErrorJustReturn: 0)
         
-        let needMoreInfoObservableShare = socialLoginTrigger
+        let loginResponseObservable = socialLoginTrigger
             .debug("소셜 로그인 버튼 클릭 !")
             .flatMap(SocialLoginSDK.socialLogin) // Bool...
-            .debug("🤢🤢🤢소셜로그인 호출 후 디버깅 🤢🤢🤢")
-            .do { print("🌂🌂🌂result: 🌂🌂🌂", $0)}
-            .catch { error in print(error)
-                return .just(false) }
+            .catch { error in
+                print(error)
+                return .just(.init(jwt: nil, message: "로그인 실패"))
+            }
+        let needMoreInfoObservableShare = loginResponseObservable
+            .filter { $0.message != "로그인 실패" }
+            .do { UserDefaultManager.shared.jwtToken = $0.jwt ?? "" }
+            .map { $0.jwt == nil }
+            .do { _ in print("jwt Token: ", UserDefaultManager.shared.jwtToken) }
             .share()
             
         showHomeViewDriver = needMoreInfoObservableShare
@@ -52,7 +57,6 @@ struct OnboardViewModel {
             .asDriver(onErrorJustReturn: ())
         
         showSignUpViewDriver = needMoreInfoObservableShare
-            .debug("😡😡😡추가정보 드라이버😡😡😡")
             .filter { $0 }
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())

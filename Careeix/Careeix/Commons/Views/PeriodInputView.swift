@@ -10,22 +10,20 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
-//protocol PeriodInputViewDelegate: AnyObject {
-//    func didTapProceedingCheckBox(isProceed: Bool)
-//}
-
 struct PeriodInputViewModel {
+    
+    // MARK: - SubViewModels
     let startDateViewModel: BaseInputViewModel
     let endDateViewModel: BaseInputViewModel
     let checkBoxViewModel: BaseCheckBoxViewModel
     let projectId: Int
     
-    // MARK: Input
+    // MARK: - Input
     let startDateTappedRelay = PublishRelay<Void>()
     let endDateTappedRelay = PublishRelay<Void>()
     let isSelectedProceedingRelay = PublishRelay<Bool>()
     
-    // MARK: Output
+    // MARK: - Output
     let titleDriver: Driver<String>
     let descriptionDriver: Driver<String>
     let checkBoxIsSelectedDriver: Driver<Bool>
@@ -43,10 +41,10 @@ struct PeriodInputViewModel {
 }
 
 class PeriodInputView: UIView {
-    // MARK: Properties
+    // MARK: - Properties
     let disposeBag = DisposeBag()
     var viewModel: PeriodInputViewModel
-    // MARK: Binding
+    // MARK: - Binding
     func bind(to viewModel: PeriodInputViewModel) {
         viewModel.titleDriver
             .drive(titleLabel.rx.text)
@@ -58,7 +56,7 @@ class PeriodInputView: UIView {
             }.disposed(by: disposeBag)
     }
     
-    // MARK: Functions
+    // MARK: - Functions
     func updateCheckBox(isProceed: Bool) {
         endDateView.backgroundColor = isProceed
         ? .appColor(.gray20)
@@ -72,7 +70,7 @@ class PeriodInputView: UIView {
         
         endDateView.isUserInteractionEnabled = !isProceed
     }
-    // MARK: Initializer
+    // MARK: - Initializer
     init(viewModel: PeriodInputViewModel) {
         self.viewModel = viewModel
         startDateView = .init(viewModel: viewModel.startDateViewModel)
@@ -87,7 +85,7 @@ class PeriodInputView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: UIComponents
+    // MARK: - UIComponents
     let titleLabel: UILabel = {
         let l = UILabel()
         l.font = .pretendardFont(size: 16, style: .semiBold)

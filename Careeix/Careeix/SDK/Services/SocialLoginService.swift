@@ -59,25 +59,18 @@ extension SocialLoginService {
             .do { UserDefaultManager.shared.kakaoAccessToken = $0 }
     }
     
-    func callKakaoLoginApi(accessToken: String) -> Single<LoginAPI.Response> {
+    func callKakaoLoginApi(accessToken: String) -> Observable<LoginAPI.Response> {
         // test
-        let a = Single.create { single in
-            single(.success(LoginAPI.Response.init(jwt: nil)))
-//            single(.failure(LoginAPI.Response.init(jwt: nil)))
-            return Disposables.create()
-        }.debug("AAAAAA")
-        
-//         정상적인 api call
-        _ = API<LoginAPI.Response>(path: "/api/v1/users/check-login", method: .post, parameters: ["X-ACCESS-TOKEN": accessToken], task: .requestParameters(encoding: JSONEncoding.default)).requestRX().debug("CCCCCC")
-        return a
+        let c = API<LoginAPI.Response>(path: "users/check-login", method: .post, parameters: ["accessToken": accessToken], task: .requestParameters(encoding: JSONEncoding.default)).requestRX()
+            .asObservable()
+        return c
     }
 
-    func kakaoLogin() -> Observable<Bool> {
+    func kakaoLogin() -> Observable<LoginAPI.Response> {
         return readAccessToken()
+            .debug("🤪🤪🤪🤪🤪")
             .filter { $0 != "" }
             .flatMap(callKakaoLoginApi)
-            .do { UserDefaultManager.shared.jwtToken = $0.jwt ?? "" }
-            .map { $0.jwt == nil }
     }
     
     func kakaoLogout() -> Observable<Bool> {
@@ -90,13 +83,13 @@ extension SocialLoginService {
     func callAppleLoginApi(identityToken: Data) -> Single<LoginAPI.Response> {
         // test
         let a = Single.create { single in
-            single(.success(LoginAPI.Response.init(jwt: nil)))
+            single(.success(LoginAPI.Response.init(jwt: nil, message: "추가정보 입력!")))
             return Disposables.create()
         }.debug("😡AppleApi!😡")
         return a
     }
     
-    func appleLogin() -> Observable<Bool> {
+    func appleLogin() -> Observable<LoginAPI.Response> {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
             let request = appleIDProvider.createRequest()
                 
@@ -108,7 +101,6 @@ extension SocialLoginService {
         return appleIdentityTokenSubject
             .debug("😤😤😤need More Info😤😤😤")
             .flatMap(callAppleLoginApi)
-            .map { $0.jwt == nil }
     }
 }
 
