@@ -281,9 +281,3 @@ extension ProjectChapterInputViewController: TwoButtonAlertViewDelegate {
         dismiss(animated: true)
     }
 }
-
-extension UITableView {
-    open override func layoutSubviews() {
-        print("테이블뷰 콘텐츠 싸이즈 !", contentSize.height)
-    }
-}
