@@ -10,12 +10,6 @@ import RxCocoa
 import RxSwift
 import RxRelay
 class SignUpViewModel {
-    // TODO: 주석 삭제
-//    typealias nickName = String
-//    typealias job = String
-//    typealias annualIndex = IndexPath
-//    typealias detailJobs = [String]
-    
     // MARK: SubViewModels
     let nickNameInputViewModel: SimpleInputViewModel
     let jobInputViewModel: SimpleInputViewModel
@@ -24,8 +18,6 @@ class SignUpViewModel {
     let completeButtonViewModel: CompleteButtonViewModel
     
     // MARK: - Input
-    // TODO: 주석 삭제
-//    let combinedInputValuesObservable: Observable<(nickName, job, annualIndex, detailJobs)>
     let createUserTrigger =  PublishRelay<Void>()
     
     // MARK: - Output
@@ -44,22 +36,22 @@ class SignUpViewModel {
         self.completeButtonViewModel = completeButtonViewModel
         
         let combinedInputValuesObservable =  Observable.combineLatest(
-            nickNameInputViewModel.inputStringRelay,
-            jobInputViewModel.inputStringRelay,
+            nickNameInputViewModel.textfieldViewModel.inputStringRelay,
+//            nickNameInputViewModel.inputStringRelay,
+            jobInputViewModel.textfieldViewModel.inputStringRelay,
             annualInputViewModel.selectedIndexRelay,
             detailJobsInputViewModel.inputValuesObservable
         ) {
-            ($0, $1, $2, $3)
-        }
-        
-//        createUserTrigger
-
+            print("Aasd", $0, $1, $2, $3)
+            return ($0, $1, $2, $3)
+        }.share()
         
         showTabbarCotrollerDriver = createUserTrigger
             .withLatestFrom(combinedInputValuesObservable) { $1 }
             .do { print("post: ", $0) }
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
+        
         let buttonStateDriver = combinedInputValuesObservable
             .map { nickName, job, annualIndex, detailJobs in
                 nickName != "" && job != "" && detailJobs.count != 0

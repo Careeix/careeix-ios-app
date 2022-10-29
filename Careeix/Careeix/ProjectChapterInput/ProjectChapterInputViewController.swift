@@ -10,34 +10,18 @@ import RxSwift
 import RxCocoa
 import RxRelay
 import RxKeyboard
-struct ProjectChapterInputViewModel {
-    // MARK: Input
-    let titleStringRelay = PublishRelay<String>()
-    let contentStringRelay = PublishRelay<String>()
-//    let completeTrigger = PublishRelay<Void>()
-    
-    let currentIndex: Int
-    // MARK: Output
-    
-    init(currentIndex: Int) {
-        let combinedInputValuesObservable = Observable.combineLatest(titleStringRelay, contentStringRelay) { ($0, $1) }
-        combinedInputValuesObservable.subscribe {
-            print($0, $1)
-        }
-        self.currentIndex = currentIndex
-    }
-}
+
 
 class ProjectChapterInputViewController: UIViewController {
     var disposeBag = DisposeBag()
     var viewModel: ProjectChapterInputViewModel
-    
-    // MARK: Binding
+    var willDeletedIndex: Int!
+
+    // MARK: - Binding
     func bind(to viewModel: ProjectChapterInputViewModel) {
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
             .drive(with: self) { owner, keyboardVisibleHeight in
-                print(keyboardVisibleHeight)
                 owner.contentView.snp.updateConstraints {
                     $0.bottom.equalToSuperview().inset(keyboardVisibleHeight)
                 }
@@ -48,20 +32,12 @@ class ProjectChapterInputViewController: UIViewController {
                     owner.view.layoutIfNeeded()
                 }
             }.disposed(by: disposeBag)
-        
-        titleTextField.rx.text.orEmpty
-            .bind(to: viewModel.titleStringRelay)
-            .disposed(by: disposeBag)
-        
-        contentTextView.rx.text.orEmpty
-            .bind(to: viewModel.contentStringRelay)
-            .disposed(by: disposeBag)
-        
+
         addNoteButtonView.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                print("노트 추가 탭!")
+                owner.addNoteCell()
             }.disposed(by: disposeBag)
         
         completeButtonView.rx.tapGesture()
@@ -70,52 +46,129 @@ class ProjectChapterInputViewController: UIViewController {
             .bind { owner, _ in
                 owner.didTapCompleteButtonView()
             }.disposed(by: disposeBag)
-    }
-    // MARK: Function
-    func didTapCompleteButtonView() {
-        print("저장 버튼이 눌렸어요")
-        updateProjectChapter()
-    }
-    
-    func updateProjectChapter() {
-        guard let title = titleTextField.text, let content = contentTextView.text else {
-            print("제목 또는 내용이 nil이에요")
-            return
-        }
-        if viewModel.currentIndex == UserDefaultManager.shared.projectChapters.count {
-            print("메모 업데이트 성공")
-            UserDefaultManager.shared.projectChapters.append(.init(title: title, content: content, notes: []))
-        }
-    }
-    
-    func checkAndRemove() {
-        if viewModel.currentIndex < UserDefaultManager.shared.projectChapters.count {
-            let currentChapter = UserDefaultManager.shared.projectChapters[viewModel.currentIndex]
-            if currentChapter.content == ""
-                && currentChapter.title == ""
-                && currentChapter.notes.filter({ $0 != "" }).count == 0 {
-                UserDefaultManager.shared.projectChapters.remove(at: viewModel.currentIndex)
-            }
-        }
-    }
-    func fillInputs() {
         
-        if UserDefaultManager.shared.projectChapters.count < viewModel.currentIndex {
-            print("아래 내용을 채워야해요")
-            print(UserDefaultManager.shared.projectChapters[viewModel.currentIndex])
-        }
+        viewModel.cellDataDriver
+//            .debug("🤬🤬🤬🤬")
+            .drive(noteTableView.rx.items) { tv, row, data in
+                guard let cell = tv.dequeueReusableCell(withIdentifier: NoteCell.self.description(), for: IndexPath(row: row, section: 0)) as? NoteCell else { return UITableViewCell() }
+                cell.textView.delegate = self
+                
+                cell.bind(to: data)
+                
+                cell.textView.rx.tapGesture()
+                    .when(.recognized)
+                    .withUnretained(self)
+                    .bind { owner, _ in
+                        owner.scrollToFit(with: cell.frame)
+                    }.disposed(by: cell.disposeBag)
+                
+                cell.deleteButtonImageView
+                    .rx.tapGesture()
+                    .when(.recognized)
+                    .withUnretained(self)
+                    .do { owner, _ in
+                        owner.willDeletedIndex = row
+                    }.map { owner, _ in
+                        owner.willDeletedIndex
+                    }
+                    .distinctUntilChanged()
+                    .asDriver(onErrorJustReturn: 0)
+                    .drive(with: self) { owner, _ in
+                        owner.showDeleteNoteWarningAlert()
+                    }.disposed(by: cell.disposeBag)
+                return cell
+            }.disposed(by: disposeBag)
+
+        viewModel.updateProjectChapterDriver
+            .drive { data in
+                viewModel.updateProjectChapter(data: data)
+            }.disposed(by: disposeBag)
+        
+        viewModel.completeButtonEnableDriver
+            .drive(with: self) { owner,  isEnable in
+                owner.updateCompleteButtonView(with: isEnable)
+            }.disposed(by: disposeBag)
+        
+        viewModel.noteTableViewHeightDriver
+            .drive(with: self) { owner, height in
+                owner.noteTableView.snp.updateConstraints {
+                    $0.height.equalTo(height + 10)
+                }
+                UIView.animate(withDuration: 0.2) {
+                    self.view.layoutIfNeeded()
+                }
+            }.disposed(by: disposeBag)
+        
+        viewModel.canAddNoteDriver
+            .drive(with: self) { owner, canAddChapter in
+                owner.setAddButtonViewState(with: canAddChapter)
+            }.disposed(by: disposeBag)
+        
+        noteTableView.rx.itemSelected
+            .compactMap(noteTableView.cellForRow(at:))
+            .map { $0.frame }
+            .distinctUntilChanged()
+            .withUnretained(self)
+            .bind { owner, frame in
+                owner.scrollToFit(with: frame)
+            }.disposed(by: disposeBag)
+    }
+    
+    // MARK: - Function
+    func updateCompleteButtonView(with isEnable: Bool) {
+        completeButtonView.backgroundColor = isEnable ? .appColor(.next) : .appColor(.disable)
+        completeButtonView.isUserInteractionEnabled = isEnable
+    }
+    
+    func scrollToFit(with cellFrame: CGRect) {
+        scrollView.setContentOffset(CGPoint(x: 0, y: UIScreen.main.bounds.height * 0.35 + view.convert(cellFrame, to: titleTextField).minY - scrollView.contentOffset.y), animated: true)
+    }
+    
+    func showDeleteNoteWarningAlert() {
+        let alert = TwoButtonAlertViewController(viewModel: .init(type: .warningDeleteNote))
+        alert.delegate = self
+        present(alert, animated: true)
+    }
+    func setAddButtonViewState(with canAddNote: Bool) {
+        addNoteButtonView.enableView.isHidden = !canAddNote
+        addNoteButtonView.disableView.isHidden = canAddNote
+        addNoteButtonView.isUserInteractionEnabled = canAddNote
+    }
+    func getTableViewHeight() -> CGFloat {
+        return noteTableView.visibleCells
+            .map { cell in
+            cell.frame.height
+            }.reduce(0) { $0 + $1 }
+    }
+    
+    func addNoteCell() {
+        view.endEditing(false)
+        viewModel.noteCellViewModels.append(.init(inputStringRelay: BehaviorRelay<String>(value: "")))
+        viewModel.noteTableViewHeightRelay.accept(
+            getTableViewHeight())
+        guard let cell = noteTableView.cellForRow(at: IndexPath(row: viewModel.noteCellViewModels.count - 1, section: 0)) as? NoteCell else {
+            return }
+        cell.textView.becomeFirstResponder()
+        scrollToFit(with: cell.frame)
+    }
+    
+    func didTapCompleteButtonView() {
+        view.endEditing(true)
     }
 
-    // MARK: Initializer
+
+    // MARK: - Initializer
     init(viewModel: ProjectChapterInputViewModel) {
         self.viewModel = viewModel
+        titleTextField = BaseTextField(viewModel: viewModel.titleTextFieldViewModel)
+        titleTextField.setPlaceholder(fontSize: 16, font: .medium)
+        titleTextField.font = .pretendardFont(size: 16, style: .medium)
+        contentTextView = BaseTextView(viewModel: viewModel.contentViewModel)
+        viewModel.updateProjectChapter()
         super.init(nibName: nil, bundle: nil)
         view.backgroundColor = .white
-        bind(to: viewModel)
         setUI()
-        titleTextField.becomeFirstResponder()
         title = "\(viewModel.currentIndex)"
-        fillInputs()
         completeButtonView.isUserInteractionEnabled = false
         configureNavigationBar()
     }
@@ -124,38 +177,39 @@ class ProjectChapterInputViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Life Cycle
+    // MARK: - Life Cycle
     override func viewDidLoad() {
+        viewModel.fillInputs()
         super.viewDidLoad()
     }
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
+        bind(to: viewModel)
     }
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
-        updateProjectChapter()
-        checkAndRemove()
+        viewModel.checkAndRemove()
     }
-
-    // MARK: UIComponents
+    override func viewDidAppear(_ animated: Bool) {
+        titleTextField.becomeFirstResponder()
+        viewModel.noteTableViewHeightRelay.accept(getTableViewHeight())
+    }
+    
+    // MARK: - UIComponents
     let scrollView = UIScrollView()
     let contentView = UIView()
-    let titleTextField: BaseTextField = {
-        let tf = BaseTextField()
-        tf.placeholder = "제목을 입력해주세요."
-        return tf
-    }()
-    let contentTextView: BaseTextView = {
-        let tv = BaseTextView()
-        return tv
-    }()
+    let titleTextField: BaseTextField
+    let contentTextView: BaseTextView
     let noteTableView: UITableView = {
         let v = UITableView()
-        
+        v.estimatedRowHeight = 178
+        v.register(NoteCell.self, forCellReuseIdentifier: NoteCell.self.description())
+        v.separatorStyle = .none
+        v.isScrollEnabled = false
         return v
     }()
     let addNoteButtonView: ContentsAddButtonView = {
-        let v = ContentsAddButtonView()
+        let v = ContentsAddButtonView(disableMessage: "노트 추가는 3개까지 가능합니다.")
         return v
     }()
     let completeButtonView = CompleteButtonView(viewModel: .init(content: "저장하기", backgroundColor: .disable))
@@ -166,7 +220,7 @@ extension ProjectChapterInputViewController {
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
-
+        
         scrollView.addSubview(contentView)
         
         contentView.snp.makeConstraints {
@@ -182,28 +236,48 @@ extension ProjectChapterInputViewController {
         }
         contentTextView.snp.makeConstraints {
             $0.top.equalTo(titleTextField.snp.bottom).offset(10)
+            $0.height.greaterThanOrEqualTo(200)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
-        
         noteTableView.snp.makeConstraints {
-            $0.top.equalTo(contentTextView.snp.bottom).offset(0)
-            $0.leading.trailing.equalTo(titleTextField).inset(16)
-            $0.height.equalTo(0)
+            $0.top.equalTo(contentTextView.snp.bottom)
+            $0.leading.trailing.equalTo(titleTextField)
+            $0.height.equalTo(15)
         }
+        
         addNoteButtonView.snp.makeConstraints {
-            $0.top.equalTo(noteTableView.snp.bottom).offset(15)
+            $0.top.equalTo(noteTableView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(48)
             $0.bottom.equalToSuperview().inset(80)
         }
         
         view.addSubview(completeButtonView)
-        
         completeButtonView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(78)
         }
-        
     }
 }
 
+extension ProjectChapterInputViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        noteTableView.beginUpdates()
+        noteTableView.endUpdates()
+        viewModel.noteTableViewHeightRelay.accept(
+            getTableViewHeight())
+    }
+}
+
+extension ProjectChapterInputViewController: TwoButtonAlertViewDelegate {
+    func didTapRightButton(type: TwoButtonAlertType) {
+        dismiss(animated: true)
+        viewModel.noteCellViewModels.remove(at: willDeletedIndex)
+        viewModel.noteTableViewHeightRelay.accept(
+            getTableViewHeight())
+    }
+    
+    func didTapLeftButton(type: TwoButtonAlertType) {
+        dismiss(animated: true)
+    }
+}

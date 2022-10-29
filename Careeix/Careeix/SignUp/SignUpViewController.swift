@@ -12,7 +12,7 @@ import RxCocoa
 import RxKeyboard
 import RxGesture
 
-class SignUpViewController: UIViewController, EventDelegate {
+class SignUpViewController: UIViewController {
     // MARK: Properties
     let disposeBag = DisposeBag()
     
@@ -21,19 +21,7 @@ class SignUpViewController: UIViewController, EventDelegate {
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
             .drive(with: self) { owner, keyboardVisibleHeight in
-                owner.contentView.snp.updateConstraints {
-                    $0.bottom.equalToSuperview().inset(keyboardVisibleHeight)
-                }
-                owner.completeButtonView.snp.updateConstraints {
-                    $0.bottom.equalToSuperview().inset(
-                        keyboardVisibleHeight == 0
-                        ? 50
-                        :keyboardVisibleHeight + 26
-                    )
-                }
-                UIView.animate(withDuration: 0.4) {
-                    owner.view.layoutIfNeeded()
-                }
+                owner.updateView(with: keyboardVisibleHeight)
             }.disposed(by: disposeBag)
         
         completeButtonView.rx.tapGesture()
@@ -44,45 +32,69 @@ class SignUpViewController: UIViewController, EventDelegate {
         
         viewModel.completeButtonDisableDriver
             .drive(with: self) { owner, _ in
-                owner.completeButtonView.backgroundColor = .appColor(.disable)
-                owner.completeButtonView.isUserInteractionEnabled = false
+                owner.updateCompleteButtonView(with: false)
             }.disposed(by: disposeBag)
         
         viewModel.completeButtonEnableDriver
             .drive(with: self) { owner, _ in
-                owner.completeButtonView.backgroundColor = .appColor(.main)
-                owner.completeButtonView.isUserInteractionEnabled = true
+                owner.updateCompleteButtonView(with: true)
             }.disposed(by: disposeBag)
         
         viewModel.showTabbarCotrollerDriver
             .drive(with: self) { owner, _ in
                 NotificationCenter.default.post(name: Notification.Name("loginSuccess"), object: nil)
-//                owner.navigationController?.pushViewController(TabBarController(), animated: false)
             }.disposed(by: disposeBag)
         
         nickNameInputView.textField.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
-            .bind { owner, _ in
-                print(owner.nickNameInputView.frame.midY)
-                owner.scrollView.setContentOffset(.init(x: 0, y: owner.titleLabel.frame.minY), animated: true)
+            .map { owner, _ in (owner, owner.titleLabel.frame.minY - 10) }
+            .bind { owner, y in
+                owner.scrollTo(y: y)
             }.disposed(by: disposeBag)
         
         jobInputView.textField.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
-            .bind { owner, _ in
-                owner.scrollView.setContentOffset(.init(x: 0, y: owner.nickNameInputView.frame.minY), animated: true)
+            .map { owner, _ in (owner, owner.nickNameInputView.frame.maxY) }
+            .bind { owner, y in
+                owner.scrollTo(y: y)
             }.disposed(by: disposeBag)
         
         detailJobTagInputView.tableView.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
-            .bind { owner, _ in
-                owner.scrollView.setContentOffset(.init(x: 0, y: owner.detailJobTagInputView.frame.minY), animated: true)
+            .map { owner, _ in (owner, owner.detailJobTagInputView.frame.minY - 50) }
+            .bind { owner, y in
+                owner.scrollTo(y: y)
             }.disposed(by: disposeBag)
-        
-        
+    }
+    
+    // MARK: - Function
+    
+    func updateView(with keyboardHeight: CGFloat) {
+        contentView.snp.updateConstraints {
+            $0.bottom.equalToSuperview().inset(keyboardHeight)
+        }
+        completeButtonView.snp.updateConstraints {
+            $0.bottom.equalToSuperview().inset(
+                keyboardHeight == 0
+                ? 50
+                :keyboardHeight + 26
+            )
+        }
+        UIView.animate(withDuration: 0.4) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func updateCompleteButtonView(with state: Bool) {
+        completeButtonView.backgroundColor = .appColor(state ? .main : .disable)
+        completeButtonView.isUserInteractionEnabled = state
+    }
+    
+    func scrollTo(y: CGFloat) {
+        scrollView.setContentOffset(.init(x: 0, y: y), animated: true)
     }
     
     // MARK: - Life Cycle
@@ -115,12 +127,6 @@ class SignUpViewController: UIViewController, EventDelegate {
     override func viewDidAppear(_ animated: Bool) {
         nickNameInputView.textField.becomeFirstResponder()
     }
-    
-    // MARK: - function
-    func didTapRadioInputView() {
-        scrollView.setContentOffset(.init(x: 0, y: annualInputView.frame.minY), animated: true)
-    }
-    
 
     
     // MARK: - UIComponents
@@ -219,5 +225,11 @@ extension SignUpViewController {
             $0.height.equalTo(56)
             $0.bottom.equalToSuperview().inset(50)
         }
+    }
+}
+
+extension SignUpViewController: EventDelegate {
+    func didTapRadioInputView() {
+        scrollView.setContentOffset(.init(x: 0, y: annualInputView.frame.minY - 50), animated: true)
     }
 }

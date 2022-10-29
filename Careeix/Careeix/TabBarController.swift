@@ -31,25 +31,23 @@ class TabBarController: UITabBarController {
         delegate = self
         tabBar.tintColor = .black
     }
-    
 }
 extension TabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        print("😱😱😱", tabBarController.selectedViewController)
         if let fromVC = tabBarController.selectedViewController as? UINavigationController{
-            print(viewController)
             if viewController.tabBarItem.tag == 1 {
-                print("ASd")
                 let vc = ProjectInputViewController(
                     viewModel: .init(
                         titleInputViewModel: .init(title: "제목",
-                                                   placeholder: "프로젝r트 제목을 입력해주세요."),
+                                                   textFieldViewModel: .init(placeholder: "프로젝트 제목을 입력해주세요.")),
                         periodInputViewModel: .init(title: "기간",
-                                                    description: "프로젝트 기간을 입력해주세요."),
+                                                    description: "프로젝트 기간을 입력해주세요.",
+                                                    checkBoxViewModel: .init()
+                                                   ),
                         divisionInputViewModel: .init(title: "구분",
-                                                      placeholder: "Ex. 개인활동/팀활동/(소속이름)"),
+                                                      textFieldViewModel: .init(placeholder: "Ex. 개인활동/팀활동/(소속이름)")),
                         introduceInputViewModel: .init(title: "소개",
-                                                       placeholder: "진행한 일을 2줄 이내로 소개해주세요.")
+                                                       baseTextViewModel: .init(placeholder: "진행한 일을 2줄 이내로 소개해주세요."))
                     ))
                 if viewController.tabBarItem.tag == 1 {
                     fromVC.pushViewController(vc, animated: true)
@@ -59,8 +57,5 @@ extension TabBarController: UITabBarControllerDelegate {
             return false
         }
         return false
-    }
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        print(viewController)
     }
 }

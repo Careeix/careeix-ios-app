@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 import SnapKit
 import RxGesture
+import Moya
 class OnboardViewController: UIViewController {
     var disposeBag = DisposeBag()
     var viewModel = OnboardViewModel()
@@ -21,7 +22,7 @@ class OnboardViewController: UIViewController {
         setUI()
         bind(to: viewModel)
     }
-    
+
     // MARK: - Binding
     func bind(to viewModel: OnboardViewModel) {
         viewModel.logoImageNameDriver
@@ -40,7 +41,9 @@ class OnboardViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.onboardImageNamesDriver
-            .do { self.pageControl.numberOfPages = $0.count }
+            .do { [weak self] in
+                   self?.pageControl.numberOfPages = $0.count
+            }
             .drive(onboardCollectionView.rx.items) { collectionView, row, data in
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OnboardCell.self.description(), for: IndexPath(row: row, section: 0)) as? OnboardCell else { return UICollectionViewCell() }
                 cell.bind(to: .init(imageName: data))
@@ -59,22 +62,20 @@ class OnboardViewController: UIViewController {
         
         kakaoLoginButtonImageView.rx.tapGesture()
             .when(.recognized)
-            .map { _ in () }
-            .bind (to: viewModel.kakaoLoginTrigger)
+            .map { _ in .kakao }
+            .bind (to: viewModel.socialLoginTrigger)
             .disposed(by: disposeBag)
         
         appleLoginButtonImageView.rx.tapGesture()
             .when(.recognized)
-            .withUnretained(self)
-            .bind { owner, _ in
-                print("애플 로그인!")
-            }.disposed(by: disposeBag)
+            .map { _ in .apple }
+            .bind(to: viewModel.socialLoginTrigger)
+            .disposed(by: disposeBag)
         
         viewModel.showHomeViewDriver
-            .debug("🩳🩳🩳 로그인 완료 Driver 🩳🩳🩳")
-            .drive (with: self) { owner, _ in
-                let vc = HomeViewController()
-                owner.navigationController?.pushViewController(vc, animated: true)
+            .map { _ in "loginSuccess"}
+            .drive (with: self) { owner, name in
+                NotificationCenter.default.post(name: Notification.Name(name), object: nil)
             }.disposed(by: disposeBag)
         
         viewModel.showSignUpViewDriver
@@ -83,9 +84,9 @@ class OnboardViewController: UIViewController {
                 let vc = SignUpViewController(
                     viewModel: .init(
                         nickNameInputViewModel: .init(title: "닉네임",
-                                                      placeholder: "10자 이내로 한글, 영문, 숫자를 입력해주세요."),
+                                                      textFieldViewModel: .init(placeholder: "10자 이내로 한글, 영문, 숫자를 입력해주세요.")),
                         jobInputViewModel: .init(title: "직무",
-                                                 placeholder: "직무를 입력해주세요.(Ex. 서버 개발자)"),
+                                                 textFieldViewModel: .init(placeholder: "직무를 입력해주세요.(Ex. 서버 개발자)")),
                         annualInputViewModel: .init(title: "연차",
                                                     contents: ["입문(1년 미만)",
                                                                "주니어(1~4년차)",
@@ -93,17 +94,18 @@ class OnboardViewController: UIViewController {
                                                                "시니어(9년차~)"]),
                         detailJobsInputViewModel: .init(title: "상세 직무",
                                                         description: "상세 직무 개수는 1~3개까지 입력 가능합니다.",
-                                                        placeholders: Array(repeating: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)",
-                                                                            count: 3)),
-                        completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable
-                                                      )
+                                                        textFieldViewModels:[BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)"),BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)"),BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)")]),
+                                                                
+                        completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable)
                     )
                 )
                 owner.navigationController?.pushViewController(vc, animated: true)
             }.disposed(by: disposeBag)
         
     }
-    
+    deinit {
+        disposeBag = DisposeBag()
+    }
     // MARK: - UIComponents
     let logoImageView = UIImageView()
     lazy var onboardCollectionView: UICollectionView = {
