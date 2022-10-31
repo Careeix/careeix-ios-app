@@ -7,7 +7,9 @@
 
 import Foundation
 import CareeixKey
-
+import RxSwift
+import RxCocoa
+import RxRelay
 class UserDefaultManager {
     static let shared = UserDefaultManager()
 
@@ -19,16 +21,18 @@ class UserDefaultManager {
     @UserDefault(key: CareeixKey.UserDefaultKey.kakaoAccessToken, defaultValue: "")
     public var kakaoAccessToken: String
     
-    @UserDefault(key: "projectChapters", defaultValue: [])
-    public var projectChapters: [ProjectChapter]
-    
-    @UserDefault(key: "projectInput", defaultValue: ProjectBaseInputValue.init(title: "", startDateString: "", endDateString: "", division: "", indroduce: ""))
-    public var projectInput: ProjectBaseInputValue
+    @UserDefault(key: "projectChapters", defaultValue: [-1: []])
+    public var projectChapters: [Int: [ProjectChapter]]
     
     @UserDefault(key: "userId", defaultValue: 0)
     public var userId: Int
 
     
+    @UserDefault(key: "projectInput", defaultValue: [-1: ProjectBaseInputValue.init(title: "", division: "", indroduce: "")])
+    public var projectInput: [Int: ProjectBaseInputValue]
+    
+    @UserDefault(key: "isWritingProject", defaultValue: false)
+    public var isWritingProject: Bool
 }
 
 @propertyWrapper
@@ -59,3 +63,5 @@ struct UserDefault<T: Codable> {
         }
     }
 }
+
+

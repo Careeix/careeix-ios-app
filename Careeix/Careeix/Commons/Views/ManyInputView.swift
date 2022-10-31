@@ -11,46 +11,35 @@ import RxCocoa
 import RxRelay
 
 struct ManyInputViewModel {
-    // MARK: - Input
-    let inputStringRelay = PublishRelay<String>()
+    let baseTextViewModel: BaseTextViewModel
     
     // MARK: - Output
     let titleStringDriver: Driver<String>
-    let placeholderStringDriver: Driver<String>
-    init(title: String, placeholder: String) {
+    init(title: String, baseTextViewModel: BaseTextViewModel) {
         titleStringDriver = .just(title)
-        placeholderStringDriver = .just(placeholder)
+        self.baseTextViewModel = baseTextViewModel
     }
 }
 
 class ManyInputView: UIView {
     // MARK: Properties
     var disposeBag = DisposeBag()
+    var viewModel: ManyInputViewModel
     
     // MARK: - Binding
     func bind(to viewModel: ManyInputViewModel) {
         viewModel.titleStringDriver
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
-        // TODO: - !!!???
-//        viewModel.placeholderStringDriver
-//            .drive(.rx.placeholder)
-//            .disposed(by: disposeBag)
-        
-        textView.rx.text.orEmpty
-            .bind(to: viewModel.inputStringRelay)
-            .disposed(by: disposeBag)
     }
     
     // MARK: Initializer
     init(viewModel: ManyInputViewModel) {
+        self.viewModel = viewModel
+        textView = BaseTextView(viewModel: viewModel.baseTextViewModel)
         super.init(frame: .zero)
         bind(to: viewModel)
         setUI()
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
     }
     
     required init?(coder: NSCoder) {
@@ -64,8 +53,7 @@ class ManyInputView: UIView {
         l.textColor = .appColor(.gray900)
         return l
     }()
-    var textView: BaseTextView = BaseTextView()
-    
+    var textView: BaseTextView
     
     func setUI() {
         [titleLabel, textView].forEach { addSubview($0) }

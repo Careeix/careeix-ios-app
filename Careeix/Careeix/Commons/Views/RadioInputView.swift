@@ -53,16 +53,17 @@ class RadioInputView: UIView {
         
         // 이전 행의 mark를 hidden 하고 새로 선택된 행의 mark를 표시합니다.
         viewModel.selectedIndexRelay
-            .scan(IndexPath(row: -1, section: 0)){
-                if let cell = self.tableView.cellForRow(at: $0) as? RadioCell {
+            .scan(IndexPath(row: -1, section: 0)){ [weak self] in
+                if let cell = self?.tableView.cellForRow(at: $0) as? RadioCell {
                     cell.selectedMark.isHidden = true
                     cell.selectedMarkBorder.layer.borderColor = UIColor.appColor(.gray100).cgColor
                 }
                 return $1
-            }.compactMap { self.tableView.cellForRow(at: $0) as? RadioCell }
-            .asDriver(onErrorJustReturn: RadioCell())
-            .drive {
-                self.delegate?.didTapRadioInputView()
+            }.compactMap { [weak self] in
+                self?.tableView.cellForRow(at: $0) as? RadioCell
+            }.asDriver(onErrorJustReturn: RadioCell())
+            .drive { [weak self] in
+                self?.delegate?.didTapRadioInputView()
                 $0.selectedMark.isHidden = false
                 $0.selectedMarkBorder.layer.borderColor = UIColor.appColor(.main).cgColor
             }.disposed(by: disposeBag)

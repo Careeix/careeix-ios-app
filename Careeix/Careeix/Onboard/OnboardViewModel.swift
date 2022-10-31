@@ -17,7 +17,8 @@ struct OnboardViewModel {
     // MARK: - Input
     let endDraggingRelay = BehaviorRelay<(contentOffsetX, screenWidth)>(value: (0, 1))
     let kakaoLoginTrigger = PublishRelay<Void>()
-    
+    let appleLoginTrigger = PublishRelay<Void>()
+    let socialLoginTrigger = PublishRelay<SocialLoginSDK.SocialLoginType>()
     // MARK: - Output
     let logoImageNameDriver: Driver<String>
     let kakaoLoginButtonImageNameDriver: Driver<String>
@@ -27,27 +28,37 @@ struct OnboardViewModel {
     let showHomeViewDriver: Driver<Void>
     let showSignUpViewDriver: Driver<Void>
     init() {
-        logoImageNameDriver = Observable.just("logo").asDriver(onErrorJustReturn: "")
-        kakaoLoginButtonImageNameDriver = Observable.just("kakaoLogin").asDriver(onErrorJustReturn: "")
-        appleLoginButtonImageNameDriver = Observable.just("appleLogin").asDriver(onErrorJustReturn: "")
-        onboardImageNamesDriver = Observable.just(["onboard_0", "onboard_1", "onboard_2"]).asDriver(onErrorJustReturn: [])
+        logoImageNameDriver = .just("logo")
+        kakaoLoginButtonImageNameDriver = .just("kakaoLogin")
+        appleLoginButtonImageNameDriver = .just("appleLogin")
+        onboardImageNamesDriver = .just(["onboard_0", "onboard_1", "onboard_2"])
         
         currentPageDriver = endDraggingRelay
             .map { Int($0 / $1) }
             .asDriver(onErrorJustReturn: 0)
         
-        let needMoreInfoDriver = kakaoLoginTrigger
-            .debug("카카오 로그인 버튼 클릭 !")
-            .flatMap { SocialLoginSDK.socialLogin(type: .kakao) }
-            .do { print("🌂🌂🌂result: 🌂🌂🌂", $0)}
-            .asDriver(onErrorJustReturn: true)
-        
-        showHomeViewDriver = needMoreInfoDriver
+        let loginResponseObservable = socialLoginTrigger
+            .debug("소셜 로그인 버튼 클릭 !")
+            .flatMap(SocialLoginSDK.socialLogin) // Bool...
+            .catch { error in
+                print(error)
+                return .just(.init(jwt: nil, message: "로그인 실패"))
+            }
+        let needMoreInfoObservableShare = loginResponseObservable
+            .filter { $0.message != "로그인 실패" }
+            .do { UserDefaultManager.shared.jwtToken = $0.jwt ?? "" }
+            .map { $0.jwt == nil }
+            .do { _ in print("jwt Token: ", UserDefaultManager.shared.jwtToken) }
+            .share()
+            
+        showHomeViewDriver = needMoreInfoObservableShare
             .filter { !$0 }
             .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
         
-        showSignUpViewDriver = needMoreInfoDriver
+        showSignUpViewDriver = needMoreInfoObservableShare
             .filter { $0 }
             .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
     }
 }

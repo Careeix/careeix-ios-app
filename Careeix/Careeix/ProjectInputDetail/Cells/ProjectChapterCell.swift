@@ -9,7 +9,9 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxRelay
+
 class ProjectChapterCellViewModel {
+    
     let indexDriver: Driver<String>
     let titleDriver: Driver<String>
     
@@ -21,6 +23,7 @@ class ProjectChapterCellViewModel {
 
 class ProjectChapterCell: UITableViewCell {
     var disposeBag = DisposeBag()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
@@ -44,7 +47,6 @@ class ProjectChapterCell: UITableViewCell {
     }
     
     func setUI() {
-        
         [indexLabel].forEach { contentView.addSubview($0) }
         
         indexLabel.snp.makeConstraints {

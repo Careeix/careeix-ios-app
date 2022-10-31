@@ -12,14 +12,13 @@ import RxRelay
 
 struct SimpleInputViewModel {
     // MARK: - Input
-    let inputStringRelay = PublishRelay<String>()
+    let textfieldViewModel: BaseTextFieldViewModel
     
     // MARK: - Output
     let titleStringDriver: Driver<String>
-    let placeholderStringDriver: Driver<String>
-    init(title: String, placeholder: String) {
+    init(title: String, textFieldViewModel: BaseTextFieldViewModel) {
+        self.textfieldViewModel = textFieldViewModel
         titleStringDriver = .just(title)
-        placeholderStringDriver = .just(placeholder)
     }
 }
 
@@ -32,25 +31,15 @@ class SimpleInputView: UIView {
         viewModel.titleStringDriver
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
-        
-        viewModel.placeholderStringDriver
-            .drive(textField.rx.placeholder)
-            .disposed(by: disposeBag)
-        
-        textField.rx.text.orEmpty
-            .bind(to: viewModel.inputStringRelay)
-            .disposed(by: disposeBag)
     }
     
     // MARK: Initializer
     init(viewModel: SimpleInputViewModel) {
+        textField = BaseTextField(viewModel: viewModel.textfieldViewModel)
         super.init(frame: .zero)
         bind(to: viewModel)
         setUI()
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+        textField.setPlaceholder()
     }
     
     required init?(coder: NSCoder) {
@@ -64,8 +53,7 @@ class SimpleInputView: UIView {
         l.textColor = .appColor(.gray900)
         return l
     }()
-    var textField: BaseTextField = BaseTextField()
-    
+    var textField: BaseTextField
     
     func setUI() {
         [titleLabel, textField].forEach { addSubview($0) }

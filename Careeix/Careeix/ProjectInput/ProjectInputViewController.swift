@@ -18,6 +18,7 @@ class ProjectInputViewController: UIViewController {
     
     let datePickerViewHeight: CGFloat = DatePickerView.datePickerHeight + DatePickerView.datePickerTopViewHeight
     lazy var datePickerOffset: CGFloat = datePickerViewHeight + DatePickerView.datePickerShadowHeight * 10
+    
     // MARK: - Binding
     func bind(to viewModel: ProjectInputViewModel) {
         
@@ -26,26 +27,21 @@ class ProjectInputViewController: UIViewController {
                 owner.completeButtonView.backgroundColor = .appColor(.next)
                 owner.completeButtonView.isUserInteractionEnabled = true
             }.disposed(by: disposeBag)
-        
+
         viewModel.nextButtonDisableDriver
             .drive(with: self) { owner, _ in
                 owner.completeButtonView.backgroundColor = .appColor(.disable)
                 owner.completeButtonView.isUserInteractionEnabled = false
             }.disposed(by: disposeBag)
         
-        viewModel.showNextViewWithInputValueDriver
-            .drive(with: self) { owner, inputs in
-                // TODO: -
-                print("입력값: ", inputs)
-                UserDefaultManager.shared.projectInput = inputs
-                owner.view.endEditing(true)
-                owner.navigationController?.pushViewController(ProjectInputDetailViewController.init(viewModel: .init()), animated: true)
+        viewModel.combinedDataDriver
+            .drive { data in
+                viewModel.updatePersistanceData(data)
             }.disposed(by: disposeBag)
         
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
             .drive(with: self) { owner, keyboardVisibleHeight in
-                print(keyboardVisibleHeight)
                 owner.contentView.snp.updateConstraints {
                     $0.bottom.equalToSuperview().inset(keyboardVisibleHeight)
                 }
@@ -83,6 +79,7 @@ class ProjectInputViewController: UIViewController {
                 owner.scrollView.setContentOffset(.init(x: 0, y: owner.periodInputView.frame.maxY), animated: true)
             }.disposed(by: disposeBag)
         
+        
         periodInputView.startDateView.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
@@ -101,9 +98,10 @@ class ProjectInputViewController: UIViewController {
         
         completeButtonView.rx.tapGesture()
             .when(.recognized)
-            .map { _ in () }
-            .bind(to: viewModel.nextStepTrigger)
-            .disposed(by: disposeBag)
+            .withUnretained(self)
+            .bind { owner, _ in
+                owner.showNextViewController()
+            }.disposed(by: disposeBag)
         
         startDatePickerView.datePickerTopViewRightLabel.rx.tapGesture()
             .when(.recognized)
@@ -120,23 +118,57 @@ class ProjectInputViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         startDatePickerView.datePicker.rx.date
-            .bind(to: viewModel.startDateRelay)
+            .map { $0.toString() }
+            .bind(to: viewModel.periodInputViewModel.startDateViewModel.inputStringRelay)
             .disposed(by: disposeBag)
         
         endDatePickerView.datePicker.rx.date
-            .bind(to: viewModel.endDateRelay)
+            .map { $0.toString() }
+            .bind(to: viewModel.periodInputViewModel.endDateViewModel.inputStringRelay)
             .disposed(by: disposeBag)
         
-        viewModel.startDateStringDriver
-            .drive(periodInputView.startDateView.contentLabel.rx.text)
-            .disposed(by: disposeBag)
+        viewModel.checkBoxIsSelctedDriver
+            .drive(with: self) { owner, isSelected in
+                owner.updatePeriodView(isProceed: isSelected)
+            }.disposed(by: disposeBag)
         
-        viewModel.endDateStringDriver
-            .drive(periodInputView.endDateView.contentLabel.rx.text)
-            .disposed(by: disposeBag)
+        
     }
     
     // MARK: - function
+    func updatePeriodView(isProceed: Bool) {
+        viewModel.periodInputViewModel.endDateViewModel.inputStringRelay.accept(Date().toString())
+        endDatePickerView.datePicker.setDate(Date(), animated: false)
+        hideBottomUpView(endDatePickerView)
+    }
+    
+    override func didTapBackButton() {
+        viewModel.checkRemainingData()
+        ? showWarningCancelWritingAlertView()
+        : popViewController()
+    }
+    
+    func popViewController() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func showNextViewController() {
+        view.endEditing(true)
+        navigationController?.pushViewController(ProjectInputDetailViewController.init(viewModel: .init()), animated: true)
+    }
+    
+    func showAskingKeepWritingView() {
+        let askingKeepWritingView = TwoButtonAlertViewController(viewModel: .init(type: .askingKeepWriting))
+        askingKeepWritingView.delegate = self
+        present(askingKeepWritingView, animated: true)
+    }
+    
+    func showWarningCancelWritingAlertView() {
+        let warningCancelWritingAlertView = TwoButtonAlertViewController(viewModel: .init(type: .wraningCancelWriting))
+        warningCancelWritingAlertView.delegate = self
+        present(warningCancelWritingAlertView, animated: true)
+    }
+    
     func hideBottomUpView(_ sender: UIView) {
         sender.snp.updateConstraints {
             $0.bottom.equalToSuperview().offset(datePickerOffset)
@@ -152,8 +184,7 @@ class ProjectInputViewController: UIViewController {
         sender.snp.updateConstraints {
             $0.bottom.equalToSuperview()
         }
-        UIView.animate(withDuration: 0.4) { [weak self] in
-            guard let self else { return }
+        UIView.animate(withDuration: 0.4) {
             self.view.layoutIfNeeded()
         }
         
@@ -171,12 +202,10 @@ class ProjectInputViewController: UIViewController {
         introduceInputView = .init(viewModel: viewModel.introduceInputViewModel)
         completeButtonView = .init(viewModel: .init(content: "다음", backgroundColor: .disable))
         super.init(nibName: nil, bundle: nil)
-        periodInputView.delegate = self
         setUI()
         bind(to: viewModel)
         configureNavigationBar()
         view.backgroundColor = .appColor(.white)
-        
         completeButtonView.isUserInteractionEnabled = false
     }
     
@@ -199,7 +228,16 @@ class ProjectInputViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        if !UserDefaultManager.shared.isWritingProject &&
+            viewModel.checkRemainingData() {
+            showAskingKeepWritingView()
+        }
+        UserDefaultManager.shared.isWritingProject = true
         titleInputView.textField.becomeFirstResponder()
+    }
+    deinit {
+        UserDefaultManager.shared.isWritingProject = false
     }
     
     // MARK: - UIComponents
@@ -276,10 +314,28 @@ extension ProjectInputViewController {
     }
 }
 
-extension ProjectInputViewController: PeriodInputViewDelegate {
-    func didTapProceedingCheckBox(isProceed: Bool) {
-        viewModel.endDateRelay.accept(Date())
-        endDatePickerView.datePicker.setDate(Date(), animated: false)
-        hideBottomUpView(endDatePickerView)
+extension ProjectInputViewController: TwoButtonAlertViewDelegate {
+    func didTapRightButton(type: TwoButtonAlertType) {
+        dismiss(animated: true)
+        switch type {
+        case .askingKeepWriting:
+            viewModel.fillRemainingInput()
+        case .wraningCancelWriting:
+            popViewController()
+        default:
+            break
+        }
+    }
+    
+    func didTapLeftButton(type: TwoButtonAlertType) {
+        dismiss(animated: true)
+        switch type {
+        case .askingKeepWriting:
+            viewModel.initPersistenceData()
+            viewModel.fillRemainingInput()
+        default:
+            break
+        }
+        
     }
 }

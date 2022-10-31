@@ -10,58 +10,62 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
-struct ProjectInputDetailViewModel {
-    // MARK: Input
-    let viewWillAppearRelay = PublishRelay<Void>()
-    
-    // MARK: Output
-    let chaptersDriver: Driver<[ProjectChapter]>
-    
-    init() {
-        chaptersDriver = viewWillAppearRelay
-            .map { _ in UserDefaultManager.shared.projectChapters }
-            .asDriver(onErrorJustReturn: [])
-    }
-}
-
 class ProjectInputDetailViewController: UIViewController {
     var disposeBag = DisposeBag()
     var viewModel: ProjectInputDetailViewModel
     
     // MARK: Binding
     func bind(to viewModel: ProjectInputDetailViewModel) {
+        
         addButtonView.rx.tapGesture()
             .when(.recognized)
-            .withUnretained(self)
-            .bind { owner, _ in
-                print("Asd")
-                owner.navigationController?.pushViewController(ProjectChapterInputViewController(viewModel: .init(currentIndex: UserDefaultManager.shared.projectChapters.count)), animated: true)
+            .map { _ in () }
+            .bind(to: viewModel.createTrigger)
+            .disposed(by: disposeBag)
+        
+        viewModel.createIndexDriver
+            .drive(with: self) { owner, index in
+                owner.showProjectChapterInputViewController(index: index)
             }.disposed(by: disposeBag)
         
         viewModel.chaptersDriver
             .drive(tableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: ProjectChapterCell.self.description(), for: IndexPath(row: row, section: 0)) as? ProjectChapterCell else { return UITableViewCell() }
-                cell.bind(viewModel: .init(index: row + 1, title: data.title))
+                cell.bind(viewModel: .init(index: row, title: data.title))
                 return cell
             }.disposed(by: disposeBag)
         
         tableView.rx.itemSelected
             .withUnretained(self)
             .bind { owner, indexPath in
-                owner.navigationController?.pushViewController(ProjectChapterInputViewController(viewModel: .init(currentIndex: indexPath.row)), animated: true)
+                owner.showProjectChapterInputViewController(index: indexPath.row)
             }.disposed(by: disposeBag)
+        
         completeButtonView.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                print("발행전 데이터 확인")
-                print(UserDefaultManager.shared.projectInput)
-                print(UserDefaultManager.shared.projectChapters)
-                
+                viewModel.createProject()
+            }.disposed(by: disposeBag)
+        
+        viewModel.updateTableViewHeightDriver
+            .drive(with: self) { owner, height in
+                owner.tableView.snp.updateConstraints {
+                    $0.height.equalTo(height * owner.tableView.rowHeight)
+                }
             }.disposed(by: disposeBag)
     }
     
-
+    // MARK: - Functions
+    func showProjectChapterInputViewController(index: Int) {
+        navigationController?.pushViewController(ProjectChapterInputViewController(viewModel: .init(currentIndex: index)), animated: true)
+    }
+    
+    func updateCompleteButtonView() {
+        completeButtonView.isUserInteractionEnabled = !(UserDefaultManager.shared.projectChapters.count == 0)
+        completeButtonView.backgroundColor = completeButtonView.isUserInteractionEnabled ? .appColor(.main) : .appColor(.disable)
+    }
+    
     // MARK: Initializer
     init(viewModel: ProjectInputDetailViewModel) {
         self.viewModel = viewModel
@@ -76,21 +80,20 @@ class ProjectInputDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
+        // TODO: 주석 삭제
+        UserDefaultManager.shared.projectChapters[viewModel.projectId] = []
         super.viewDidLoad()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
         viewModel.viewWillAppearRelay.accept(())
-        tableView.snp.updateConstraints {
-            $0.height.equalTo(CGFloat(UserDefaultManager.shared.projectChapters.count) * tableView.rowHeight)
-        }
-        print("이 화면에서의 수집 데이터들")
-        print(UserDefaultManager.shared.projectChapters)
-        completeButtonView.isUserInteractionEnabled = !(UserDefaultManager.shared.projectChapters.count == 0)
-        completeButtonView.backgroundColor = completeButtonView.isUserInteractionEnabled ? .appColor(.main) : .appColor(.disable)
-        print(UserDefaultManager.shared.projectInput)
+
+        updateCompleteButtonView()
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
     }
@@ -113,7 +116,7 @@ class ProjectInputDetailViewController: UIViewController {
         return tv
     }()
     let addButtonView = ContentsAddButtonView()
-    let completeButtonView = CompleteButtonView(viewModel: .init(content: "발행하기", backgroundColor: .disable))
+    let completeButtonView = CompleteButtonView(viewModel: .init(content: "발행하기", backgroundColor: .white))
 }
 
 extension ProjectInputDetailViewController {

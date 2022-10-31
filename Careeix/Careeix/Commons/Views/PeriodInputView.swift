@@ -10,69 +10,72 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
-protocol PeriodInputViewDelegate: AnyObject {
-    func didTapProceedingCheckBox(isProceed: Bool)
-}
-
 struct PeriodInputViewModel {
     
+    // MARK: - SubViewModels
     let startDateViewModel: BaseInputViewModel
     let endDateViewModel: BaseInputViewModel
+    let checkBoxViewModel: BaseCheckBoxViewModel
+    let projectId: Int
     
-    // MARK: Input
+    // MARK: - Input
     let startDateTappedRelay = PublishRelay<Void>()
     let endDateTappedRelay = PublishRelay<Void>()
     let isSelectedProceedingRelay = PublishRelay<Bool>()
     
-    // MARK: Output
+    // MARK: - Output
     let titleDriver: Driver<String>
     let descriptionDriver: Driver<String>
+    let checkBoxIsSelectedDriver: Driver<Bool>
     
-    init(title: String, description: String) {
+    init(title: String, description: String, checkBoxViewModel: BaseCheckBoxViewModel, projectId: Int = -1) {
+        self.checkBoxViewModel = checkBoxViewModel
+        self.projectId = projectId
         titleDriver = .just(title)
         descriptionDriver = .just(description)
-        let currentDateString = Date().toString()
-        startDateViewModel = .init(content: currentDateString)
-        endDateViewModel = .init(content: currentDateString)
+        startDateViewModel = .init(content: UserDefaultManager.shared.projectInput[projectId]?.startDateString ?? Date().toString())
+        endDateViewModel = .init(content: UserDefaultManager.shared.projectInput[projectId]?.endDateString ?? Date().toString())
+        checkBoxIsSelectedDriver = checkBoxViewModel.isSeclectedRelayShare
+            .asDriver(onErrorJustReturn: false)
     }
 }
 
 class PeriodInputView: UIView {
+    // MARK: - Properties
     let disposeBag = DisposeBag()
-    weak var delegate: PeriodInputViewDelegate?
-    
+    var viewModel: PeriodInputViewModel
+    // MARK: - Binding
     func bind(to viewModel: PeriodInputViewModel) {
         viewModel.titleDriver
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
         
-        proceedingCheckBox.rx.tapGesture()
-            .when(.recognized)
-            .withUnretained(self)
-            .map { owner, _ in !owner.proceedingCheckBox.isSelected }
-            .do(onNext: didTapProceedingCheckBox)
-            .bind(to: proceedingCheckBox.rx.isSelected)
-            .disposed(by: disposeBag)
-        
+        viewModel.checkBoxIsSelectedDriver
+            .drive(with: self) { owner, isSelected in
+                owner.updateCheckBox(isProceed: isSelected)
+            }.disposed(by: disposeBag)
     }
     
-    func didTapProceedingCheckBox(_ isProceed: Bool) {
+    // MARK: - Functions
+    func updateCheckBox(isProceed: Bool) {
         endDateView.backgroundColor = isProceed
         ? .appColor(.gray20)
         : .appColor(.white)
         
         endDateView.contentLabel.text = Date().toString()
+        UserDefaultManager.shared.projectInput[viewModel.projectId]?.endDateString = Date().toString()
         endDateView.contentLabel.textColor = isProceed
         ? .appColor(.gray100)
         : .appColor(.black)
         
         endDateView.isUserInteractionEnabled = !isProceed
-        delegate?.didTapProceedingCheckBox(isProceed: isProceed)
     }
-    
+    // MARK: - Initializer
     init(viewModel: PeriodInputViewModel) {
+        self.viewModel = viewModel
         startDateView = .init(viewModel: viewModel.startDateViewModel)
         endDateView = .init(viewModel: viewModel.endDateViewModel)
+        proceedingCheckBox = .init(viewModel: viewModel.checkBoxViewModel)
         super.init(frame: .zero)
         bind(to: viewModel)
         setUI()
@@ -82,6 +85,7 @@ class PeriodInputView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - UIComponents
     let titleLabel: UILabel = {
         let l = UILabel()
         l.font = .pretendardFont(size: 16, style: .semiBold)
@@ -101,7 +105,7 @@ class PeriodInputView: UIView {
         l.font = .pretendardFont(size: 16, style: .semiBold)
         return l
     }()
-    let proceedingCheckBox = BaseCheckBoxView()
+    let proceedingCheckBox: BaseCheckBoxView
     let proceedingLabel: UILabel = {
         let l = UILabel()
         l.text = "진행 중"
