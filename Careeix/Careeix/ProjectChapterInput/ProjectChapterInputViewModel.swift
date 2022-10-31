@@ -47,28 +47,28 @@ class ProjectChapterInputViewModel {
         let combinedInputValuesObservableShare = Observable.combineLatest(titleTextFieldViewModel.inputStringRelay, contentViewModel.inputStringRelay)
         
         let combinedDataShare = cellDataRelay
-            .map { Observable.combineLatest(combinedInputValuesObservableShare, Observable.combineLatest($0.map {$0.inputStringRelay})) }
-            .flatMap { $0 }
-            .map { ProjectChapter(title: $0.0, content: $0.1, notes: $1 ) }.skip(1)
-        
+            .flatMap { Observable.combineLatest(
+                combinedInputValuesObservableShare,
+                Observable.combineLatest($0.map { $0.inputStringRelay })
+            ) }
+            .map { ProjectChapter(title: $0.0, content: $0.1, notes: $1 ) }
+            .share()
         
         updateProjectChapterDriver = combinedDataShare
             .asDriver(onErrorJustReturn: .init(title: "", content: "", notes: []))
         
         completeButtonEnableDriver = combinedDataShare
             .distinctUntilChanged()
-            .map { $0 != ProjectChapter(title: "", content: "", notes: [])}
+            .map { $0 != .init(title: "", content: "", notes: []) }
             .asDriver(onErrorJustReturn: false)
         
-        let cellDataRelayShare = cellDataRelay.share()
-        
-        cellDataDriver = cellDataRelayShare
-            .asDriver(onErrorJustReturn: [])
-        
-        canAddNoteDriver = cellDataRelayShare.map { $0.count }
-            .map { $0 < 3 }
+        canAddNoteDriver = cellDataRelay
+            .map { $0.count < 3 }
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: true)
+        
+        cellDataDriver = cellDataRelay
+            .asDriver(onErrorJustReturn: [])
         
         noteTableViewHeightDriver = noteTableViewHeightRelay
             .distinctUntilChanged()
@@ -84,7 +84,8 @@ class ProjectChapterInputViewModel {
             guard let needFillData = UserDefaultManager.shared.projectChapters[projectId]?[currentIndex] else { return }
             titleTextFieldViewModel.inputStringRelay.accept(needFillData.title)
             contentViewModel.inputStringRelay.accept(needFillData.content)
-            noteCellViewModels = needFillData.notes.map { .init(inputStringRelay: BehaviorRelay(value: $0)) }
+            noteCellViewModels = needFillData.notes
+                .map { .init(inputStringRelay: BehaviorRelay(value: $0)) }
         }
     }
     
@@ -106,7 +107,7 @@ class ProjectChapterInputViewModel {
     }
     
     func checkAndRemove() {
-        if currentIndex < UserDefaultManager.shared.projectChapters.count {
+        if checkProjectChaptersRange() {
             guard let currentChapter = UserDefaultManager.shared.projectChapters[projectId]?[currentIndex] else { return }
             if currentChapter.content == ""
                 && currentChapter.title == ""

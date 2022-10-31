@@ -37,18 +37,14 @@ class SignUpViewModel {
         
         let combinedInputValuesObservable =  Observable.combineLatest(
             nickNameInputViewModel.textfieldViewModel.inputStringRelay,
-//            nickNameInputViewModel.inputStringRelay,
             jobInputViewModel.textfieldViewModel.inputStringRelay,
             annualInputViewModel.selectedIndexRelay,
             detailJobsInputViewModel.inputValuesObservable
-        ) {
-            print("Aasd", $0, $1, $2, $3)
-            return ($0, $1, $2, $3)
-        }.share()
+        ).share()
         
         showTabbarCotrollerDriver = createUserTrigger
             .withLatestFrom(combinedInputValuesObservable) { $1 }
-            .do { print("post: ", $0) }
+//            .do { print("post: ", $0) }
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
         

@@ -55,12 +55,11 @@ extension SocialLoginService {
             .take(1)
             .debug("카카오 로그인 SDK")
             .map { $0.accessToken }
-            .catch { _ in .just("") }
+            .catch { _ in .just("토큰 에러") }
             .do { UserDefaultManager.shared.kakaoAccessToken = $0 }
     }
     
     func callKakaoLoginApi(accessToken: String) -> Observable<LoginAPI.Response> {
-        // test
         let c = API<LoginAPI.Response>(path: "users/check-login", method: .post, parameters: ["accessToken": accessToken], task: .requestParameters(encoding: JSONEncoding.default)).requestRX()
             .asObservable()
         return c
@@ -69,7 +68,7 @@ extension SocialLoginService {
     func kakaoLogin() -> Observable<LoginAPI.Response> {
         return readAccessToken()
             .debug("🤪🤪🤪🤪🤪")
-            .filter { $0 != "" }
+            .filter { $0 != "토큰 에러" }
             .flatMap(callKakaoLoginApi)
     }
     
@@ -99,7 +98,6 @@ extension SocialLoginService {
             authorizationController.presentationContextProvider = self
             authorizationController.performRequests()
         return appleIdentityTokenSubject
-            .debug("😤😤😤need More Info😤😤😤")
             .flatMap(callAppleLoginApi)
     }
 }
