@@ -13,22 +13,13 @@ class CardProfileDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        createNavigationBarItem()
         setCollectionView()
         configurationDatasource()
+        configureNavigationBar()
         tabBarController?.tabBar.isHidden = true
     }
     
-    var cardProfileModel: RelevantCareerModel = RelevantCareerModel(profileImage: "", nickname: "", careerName: "", careerGrade: "", detailCareerName: [])
-    
-    func createNavigationBarItem() {
-        let backButtonImageView = UIImage(named: "back")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: backButtonImageView, style: .plain, target: self, action: #selector(backToPreviousView))
-    }
-    
-    @objc func backToPreviousView() {
-        self.navigationController?.popViewController(animated: true)
-    }
+    var cardProfileModel: CareerModel = CareerModel(profileImage: "", nickname: "", careerName: "", careerGrade: "", detailCareerNames: [])
     
     private let cardProfileCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
@@ -41,17 +32,18 @@ class CardProfileDetailViewController: UIViewController {
     }
     
     enum CardProfileSection: Hashable {
-        case userProfile
+        case userProfile, introduce//, project
     }
     
     enum CardProfileItem: Hashable {
-        case userProfile(RelevantCareerModel)
+        case userProfile(CareerModel), introduce(String)//, project(CareerModel)
     }
     
     var datasource: UICollectionViewDiffableDataSource<CardProfileSection, CardProfileItem>!
     
     func configurationDatasource() {
         let cardProfileRegistraion = UICollectionView.CellRegistration<CardProfileCell, CardProfileItem> { _, _, _ in }
+        let introduceRegistration = UICollectionView.CellRegistration<IntroduceCell, CardProfileItem> { _, _, _ in }
         
         datasource = UICollectionViewDiffableDataSource<CardProfileSection, CardProfileItem>(collectionView: cardProfileCollectionView, cellProvider: {
             collectionView, indexPath, itemIdentifier in
@@ -60,12 +52,10 @@ class CardProfileDetailViewController: UIViewController {
                 let cell = collectionView.dequeueConfiguredReusableCell(using: cardProfileRegistraion, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
                 return cell
-//            case .RelevantCareerProfiles(let item):
-//                let cell = collectionView.dequeueConfiguredReusableCell(using: relevantCareerProfilesRegistraion, for: indexPath, item: itemIdentifier)
-//                cell.configure(item)
-//                cell.layer.cornerRadius = 10
-//                cell.backgroundColor = .orange
-//                return cell
+            case .introduce(let item):
+                let cell = collectionView.dequeueConfiguredReusableCell(using: introduceRegistration, for: indexPath, item: itemIdentifier)
+                cell.configure(item)
+                return cell
             }
         })
         changeDatasource()
@@ -75,8 +65,8 @@ class CardProfileDetailViewController: UIViewController {
         var snapshot = NSDiffableDataSourceSnapshot<CardProfileSection, CardProfileItem>()
         snapshot.appendSections([.userProfile])
         snapshot.appendItems([.userProfile(cardProfileModel)])
-//        snapshot.appendSections([.RelevantCareerProfiles])
-//        snapshot.appendItems(RelevantCareerModel.releventCareerProfiles.map { .RelevantCareerProfiles($0) })
+        snapshot.appendSections([.introduce])
+        snapshot.appendItems([.introduce("소개글이 없습니다.")])
         datasource.apply(snapshot)
     }
 }
@@ -91,16 +81,16 @@ extension CardProfileDetailViewController {
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(top: 62, leading: 0, bottom: 0, trailing: 0)
                 return section
-//            case 1:
-//                let item = CompositionalLayout.createItem(width: .fractionalWidth(0.3), height: .fractionalHeight(1))
-//                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .estimated(140), subitem: item, count: 3)
-//                group.interItemSpacing = .fixed(10)
-//                let section = NSCollectionLayoutSection(group: group)
-//                section.interGroupSpacing = 10
-//                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
-//                let headerText = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.2)), elementKind: RelevantHeaderView.identifier, alignment: .topLeading)
-//                section.boundarySupplementaryItems = [headerText]
-//                return section
+            case 1:
+                let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.4))
+                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.4), subitem: item, count: 1)
+                let section = NSCollectionLayoutSection(group: group)
+                return section
+            case 2:
+                let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.4))
+                let group = CompositionalLayout.createGroup(alignment: .vertical, width: .fractionalWidth(1), height: .fractionalWidth(0.4), subitem: item, count: 1)
+                let section = NSCollectionLayoutSection(group: group)
+                return section
             default:
                 return nil
             }

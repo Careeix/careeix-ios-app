@@ -24,6 +24,11 @@ class UserDefaultManager {
     
     @UserDefault(key: "projectInput", defaultValue: ProjectBaseInputValue.init(title: "", startDateString: "", endDateString: "", division: "", indroduce: ""))
     public var projectInput: ProjectBaseInputValue
+    
+    @UserDefault(key: "userId", defaultValue: 0)
+    public var userId: Int
+
+    
 }
 
 @propertyWrapper

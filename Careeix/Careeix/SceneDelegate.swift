@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.backgroundColor = .white
         // test start
-        UserDefaultManager.shared.jwtToken = ""
+        
         let twoButtonAlertViewController = TwoButtonAlertViewController(viewModel: .init(
             content: "발행하시겠습니까?",
             leftString: "취소",
@@ -49,7 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                                 count: 3)),
             completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable)
         )))
-        let homeViewController = UINavigationController(rootViewController: HomeViewController())
+        
         let projectInputViewController = UINavigationController(rootViewController: ProjectInputViewController(
             viewModel: .init(
                 titleInputViewModel: .init(title: "제목",
@@ -69,7 +69,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         UserDefaultManager.shared.projectInput = .init(title: "", startDateString: "", endDateString: "", division: "", indroduce: "")
         // test end
         
-        
+        UserDefaultManager.shared.jwtToken = "a"
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
         ? UINavigationController(rootViewController: OnboardViewController())
         : TabBarController()
@@ -84,7 +84,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     @objc
     func showTabBarController() {
         window?.rootViewController = TabBarController()
-        window?.makeKeyAndVisible()
+//        window?.makeKeyAndVisible()
     }
     
     @objc

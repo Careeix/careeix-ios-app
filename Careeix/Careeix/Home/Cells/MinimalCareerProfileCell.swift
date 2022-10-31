@@ -98,9 +98,9 @@ class MinimalCareerProfileCell: UICollectionViewCell {
         var gradientLayer: CAGradientLayer!
         gradientLayer = CAGradientLayer()
         gradientLayer.frame = self.contentView.bounds
-        let startPoint = UIColor(red: 53/255, green: 120/255, blue: 181/255, alpha: 0.9).cgColor
-        let endPoint = UIColor(red: 105/255, green: 175/255, blue: 239/255, alpha: 0.45).cgColor
-        gradientLayer.colors = [startPoint, endPoint]
+        let startPoint: UIColor = .appColor(.purpleGradientSP)
+        let endPoint: UIColor = .appColor(.purpleGradientEP)
+        gradientLayer.colors = [startPoint.cgColor, endPoint.cgColor]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0.7)
         gradientLayer.endPoint = CGPoint(x: 1, y: 0.2)
         gradientLayer.cornerRadius = 10

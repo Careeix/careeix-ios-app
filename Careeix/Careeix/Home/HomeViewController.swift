@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Moya
 
 /**
  1. navigationBaritem Image
@@ -24,6 +25,11 @@ import SnapKit
         - 직무, 연차, 상세 직무 태그
     - Snapshot
  */
+// MODEL
+struct DVResponse: Decodable {
+    let nickname: String
+    
+}
 
 class HomeViewController: UIViewController {
     
@@ -58,17 +64,18 @@ class HomeViewController: UIViewController {
     func showModalView() {
         let modalView: UIViewController = HomeAlertViewController()
         modalView.modalPresentationStyle = .overCurrentContext
+        modalView.modalTransitionStyle = .crossDissolve
         self.present(modalView, animated: true)
     }
     
     private let homeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     enum HomeSection: Hashable {
-        case minimalCareerProfile, RelevantCareerProfiles
+        case minimalCareerProfileDummy, RelevantCareerProfilesDummy
     }
     
     enum HomeItem: Hashable {
-        case minimalCareerProfile(CareerModel), RelevantCareerProfiles(RelevantCareerModel)
+        case minimalCareerProfileDummy(CareerModel), RelevantCareerProfilesDummy(CareerModel)
     }
     
     var datasource: UICollectionViewDiffableDataSource<HomeSection, HomeItem>!
@@ -92,18 +99,18 @@ class HomeViewController: UIViewController {
     }
     
     func configurationDatasource() {
-        let minimalCareerProfileRegistraion = UICollectionView.CellRegistration<MinimalCareerProfileCell, HomeItem> { _, _, _ in }
+        let minimalCareerProfileDummyRegistraion = UICollectionView.CellRegistration<MinimalCareerProfileCell, HomeItem> { _, _, _ in }
         let relevantCareerProfilesRegistraion = UICollectionView.CellRegistration<RelevantCareerProfilesCell, HomeItem> { _, _, _ in }
         let relevantHeaderRegistraion = UICollectionView.SupplementaryRegistration<RelevantHeaderView>(elementKind: RelevantHeaderView.identifier) { _, _, _ in }
         
         datasource = UICollectionViewDiffableDataSource<HomeSection, HomeItem>(collectionView: homeCollectionView, cellProvider: {
             collectionView, indexPath, itemIdentifier in
             switch itemIdentifier {
-            case .minimalCareerProfile(let item):
-                let cell = collectionView.dequeueConfiguredReusableCell(using: minimalCareerProfileRegistraion, for: indexPath, item: itemIdentifier)
+            case .minimalCareerProfileDummy(let item):
+                let cell = collectionView.dequeueConfiguredReusableCell(using: minimalCareerProfileDummyRegistraion, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
                 return cell
-            case .RelevantCareerProfiles(let item):
+            case .RelevantCareerProfilesDummy(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: relevantCareerProfilesRegistraion, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
                 cell.layer.cornerRadius = 10
@@ -113,7 +120,8 @@ class HomeViewController: UIViewController {
         })
         
         datasource.supplementaryViewProvider = { homeCollectionView, kind, indexPath in
-            let header = self.homeCollectionView.dequeueConfiguredReusableSupplementary(using: relevantHeaderRegistraion, for: indexPath)
+            let header = self.homeCollectionView.dequeueConfiguredReusableSupplementary(
+                using: relevantHeaderRegistraion, for: indexPath)
             return header
         }
         
@@ -122,12 +130,14 @@ class HomeViewController: UIViewController {
     
     func changeDatasource() {
         var snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>()
-        snapshot.appendSections([.minimalCareerProfile])
-        snapshot.appendItems(CareerModel.minimalCareerProfile.map { .minimalCareerProfile($0) })
-        snapshot.appendSections([.RelevantCareerProfiles])
-        snapshot.appendItems(RelevantCareerModel.releventCareerProfiles.map { .RelevantCareerProfiles($0) })
+        snapshot.appendSections([.minimalCareerProfileDummy])
+        snapshot.appendItems(CareerModel.minimalCareerProfileDummy.map { .minimalCareerProfileDummy($0) })
+        snapshot.appendSections([.RelevantCareerProfilesDummy])
+        snapshot.appendItems(CareerModel.releventCareerProfilesDummy.map { .RelevantCareerProfilesDummy($0) })
         datasource.apply(snapshot)
     }
+    
+    
 }
 
 extension HomeViewController: UICollectionViewDelegate {
@@ -135,17 +145,16 @@ extension HomeViewController: UICollectionViewDelegate {
         let cardProfileVC = CardProfileDetailViewController()
 
         if indexPath.section == 0 {
-            let minimalProfile = CareerModel.minimalCareerProfile[indexPath.item]
+            let minimalProfile = CareerModel.minimalCareerProfileDummy[indexPath.item]
 //            self.navigationController?.pushViewController(cardProfileVC, animated: true)
             print("minimalprofile: \(minimalProfile)")
         } else {
-            let cardProfile = RelevantCareerModel.releventCareerProfiles[indexPath.item]
+            let cardProfile = CareerModel.releventCareerProfilesDummy[indexPath.item]
             cardProfileVC.cardProfileModel = cardProfile
             self.navigationController?.pushViewController(cardProfileVC, animated: true)
             print("cardprofile: \(cardProfile)")
         }
     }
-    
 }
 
 extension HomeViewController {
