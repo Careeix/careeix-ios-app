@@ -15,9 +15,9 @@ class HomeAlertViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        view.layoutIfNeeded()
         buttonAction()
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        tabBarController?.tabBar.isHidden = false
+        view.backgroundColor = .appColor(.black).withAlphaComponent(0.5)
     }
     
     let containerView: UIView = {
@@ -29,7 +29,7 @@ class HomeAlertViewController: UIViewController {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        let name = CareerModel.minimalCareerProfile.map { $0.nickname }
+        let name = CareerModel.minimalCareerProfileDummy.map { $0.nickname }
         label.text = "\(name[0])님, 반가워요!"
         label.font = .pretendardFont(size: 18, style: .medium)
         label.textColor = .appColor(.gray900)

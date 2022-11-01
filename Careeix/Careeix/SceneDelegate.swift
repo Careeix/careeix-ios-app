@@ -67,7 +67,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //      UserDefaultManager.shared.projectChapters[-1] = []
         // test end
         
-        
+        UserDefaultManager.shared.jwtToken = "a"
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
         ? UINavigationController(rootViewController: OnboardViewController())
         : TabBarController()
@@ -83,7 +83,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     @objc
     func showTabBarController() {
         window?.rootViewController = TabBarController()
-        window?.makeKeyAndVisible()
+//        window?.makeKeyAndVisible()
     }
     
     @objc
