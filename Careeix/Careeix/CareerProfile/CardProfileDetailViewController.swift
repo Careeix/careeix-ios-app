@@ -15,7 +15,7 @@ class CardProfileDetailViewController: UIViewController {
         super.viewDidLoad()
         setCollectionView()
         configurationDatasource()
-        configureNavigationBar()
+        setupNavigationBackButton()
         
     }
     override func viewDidAppear(_ animated: Bool) {
