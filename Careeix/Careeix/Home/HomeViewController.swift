@@ -25,13 +25,9 @@ import Moya
         - 직무, 연차, 상세 직무 태그
     - Snapshot
  */
-// MODEL
-struct DVResponse: Decodable {
-    let nickname: String
-    
-}
 
 class HomeViewController: UIViewController {
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,8 +36,22 @@ class HomeViewController: UIViewController {
         createNavigationBarItem()
         homeCollectionView.delegate = self
         showModalView()
+        
+        getUserData()
+        
     }
-    
+    func getUserData() {
+        API<UserModel>(path: "users/profile/1", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
+            switch result {
+            case .success(let response):
+                // data:
+                self?.changeDatasource(data: response.data)
+            case .failure(let error):
+                // alert
+                print(error.localizedDescription)
+            }
+        }
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = false
@@ -75,7 +85,7 @@ class HomeViewController: UIViewController {
     }
     
     enum HomeItem: Hashable {
-        case minimalCareerProfileDummy(CareerModel), RelevantCareerProfilesDummy(CareerModel)
+        case minimalCareerProfileDummy(UserModel), RelevantCareerProfilesDummy(CareerModel)
     }
     
     var datasource: UICollectionViewDiffableDataSource<HomeSection, HomeItem>!
@@ -128,31 +138,32 @@ class HomeViewController: UIViewController {
         changeDatasource()
     }
     
-    func changeDatasource() {
+    func changeDatasource(data: UserModel? = nil) {
+        print("🙂😂😂😂😂", data)
         var snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>()
         snapshot.appendSections([.minimalCareerProfileDummy])
-        snapshot.appendItems(CareerModel.minimalCareerProfileDummy.map { .minimalCareerProfileDummy($0) })
+        snapshot.appendItems([.minimalCareerProfileDummy(data ?? .init(userId: 0, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "'", userIntro: "", userSocialProvider: 0))])
+
         snapshot.appendSections([.RelevantCareerProfilesDummy])
         snapshot.appendItems(CareerModel.releventCareerProfilesDummy.map { .RelevantCareerProfilesDummy($0) })
         datasource.apply(snapshot)
     }
-    
-    
 }
 
 extension HomeViewController: UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cardProfileVC = CardProfileDetailViewController()
+        
 
-        if indexPath.section == 0 {
-            let minimalProfile = CareerModel.minimalCareerProfileDummy[indexPath.item]
-//            self.navigationController?.pushViewController(cardProfileVC, animated: true)
-            print("minimalprofile: \(minimalProfile)")
-        } else {
-            let cardProfile = CareerModel.releventCareerProfilesDummy[indexPath.item]
-            cardProfileVC.cardProfileModel = cardProfile
-            self.navigationController?.pushViewController(cardProfileVC, animated: true)
-            print("cardprofile: \(cardProfile)")
+        if indexPath.section == 1 {
+            // TODO: 화면전환
+            
+//           guard let cell = collectionView.cellForItem(at: indexPath) as? CardProfileCell else { return }
+//            let vc = CardProfileDetailViewController(userId: cell.userId)
+//            self.navigationController?.pushViewController(vc, animated: true)
+//
+//            print(cell.userId)
+//
         }
     }
 }

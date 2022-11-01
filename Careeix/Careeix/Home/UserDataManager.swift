@@ -10,5 +10,5 @@ import Moya
 import CareeixKey
 
 class UserDataManager {
-    
+
 }

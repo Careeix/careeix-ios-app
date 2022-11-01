@@ -19,6 +19,7 @@ import UIKit
 */
 
 class MinimalCareerProfileCell: UICollectionViewCell {
+    var userId: Int = -1
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupGradient()
@@ -59,15 +60,17 @@ class MinimalCareerProfileCell: UICollectionViewCell {
         return label
     }()
 
-    func configure(_ info: CareerModel) {
-        profileImageView.image = UIImage(systemName: "person")
-        nickName.text = info.nickname
-        careerName.text = info.careerName
-        careerGrade.text = info.careerGrade
-        
+    func configure(_ info: UserModel) {
+        profileImageView.image = UIImage(named: info.userProfileImg)
+        nickName.text = info.userNickname
+        careerName.text = info.userJob
+        careerGrade.text = String(info.userWork)
+        userId = info.userId
         setup()
     }
-    
+    override func prepareForReuse() {
+        userId = -1
+    }
     func setup() {
         [profileImageView, nickName, careerName, careerGrade]
             .forEach { contentView.addSubview($0) }

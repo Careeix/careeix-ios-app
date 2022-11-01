@@ -14,16 +14,32 @@ struct CareerModel: Hashable, Codable {
     let careerName: String
     let careerGrade: String
     let detailCareerNames: [String]
-    
-//    let userId: String
-//    let userProfileImage: String
-//    let userNickname: String
-//    let careerName: String
-//    let careerGrade: Int
-//    let detailCareerName: [String]
-//    let userIntro: String
-//    let userprofleColor: String
-//    let userSocialProvider: Int
+}
+//{
+//  "jwt": "string",
+//  "message": "string",
+//  "userDetailJobs": [
+//    "string"
+//  ],
+//  "userId": 0,
+//  "userIntro": "string",
+//  "userJob": "string",
+//  "userNickname": "string",
+//  "userProfileColor": "string",
+//  "userProfileImg": "string",
+//  "userSocialProvider": 0,
+//  "userWork": 0
+//}
+struct UserModel: Hashable, Codable {
+    let userId: Int
+    let userJob: String
+    let userDetailJobs: [String]
+    let userWork: Int
+    let userNickname: String
+    let userProfileImg: String
+    let userProfileColor: String
+    let userIntro: String?
+    let userSocialProvider: Int
 }
 
 extension CareerModel {

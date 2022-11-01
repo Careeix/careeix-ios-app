@@ -16,9 +16,15 @@ class CardProfileDetailViewController: UIViewController {
         setCollectionView()
         configurationDatasource()
         configureNavigationBar()
+        
+    }
+    override func viewDidAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
+    }
     var cardProfileModel: CareerModel = CareerModel(profileImage: "", nickname: "", careerName: "", careerGrade: "", detailCareerNames: [])
     
     private let cardProfileCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
