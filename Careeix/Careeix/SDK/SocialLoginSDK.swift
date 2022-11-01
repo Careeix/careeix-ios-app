@@ -9,17 +9,12 @@ import Foundation
 
 import RxSwift
 
-// TODO: 애플로그인 구현
 typealias needMoreInfo = Bool
 struct LoginAPI {
     struct Response: Decodable {
         let jwt: String?
         let message: String
     }
-}
-
-struct KakaoUser {
-    
 }
 
 class SocialLoginSDK {
@@ -57,7 +52,6 @@ class SocialLoginSDK {
     
     public static func socialLogout(type: SocialLoginType) -> Observable<Bool> {
         switch type {
-        // TODO: - 로그인 형식을 Realm에 저장해야하는가 고민
         case .kakao:
             return socialLoginService.kakaoLogout()
         case .apple:

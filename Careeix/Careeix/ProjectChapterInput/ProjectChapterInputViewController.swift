@@ -135,17 +135,21 @@ class ProjectChapterInputViewController: UIViewController {
         addNoteButtonView.isUserInteractionEnabled = canAddNote
     }
     func getTableViewHeight() -> CGFloat {
+        
         return noteTableView.visibleCells
             .map { cell in
             cell.frame.height
             }.reduce(0) { $0 + $1 }
     }
     
+    override func viewDidLayoutSubviews() {
+        viewModel.noteTableViewHeightRelay.accept(noteTableView.contentSize.height)
+    }
+    
     func addNoteCell() {
         view.endEditing(false)
         viewModel.noteCellViewModels.append(.init(inputStringRelay: BehaviorRelay<String>(value: "")))
-        viewModel.noteTableViewHeightRelay.accept(
-            getTableViewHeight())
+        viewModel.noteTableViewHeightRelay.accept(noteTableView.contentSize.height)
         guard let cell = noteTableView.cellForRow(at: IndexPath(row: viewModel.noteCellViewModels.count - 1, section: 0)) as? NoteCell else {
             return }
         cell.textView.becomeFirstResponder()
@@ -170,7 +174,7 @@ class ProjectChapterInputViewController: UIViewController {
         setUI()
         title = "\(viewModel.currentIndex)"
         completeButtonView.isUserInteractionEnabled = false
-        configureNavigationBar()
+        setupNavigationBackButton()
     }
     
     required init?(coder: NSCoder) {
@@ -192,7 +196,7 @@ class ProjectChapterInputViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         titleTextField.becomeFirstResponder()
-        viewModel.noteTableViewHeightRelay.accept(getTableViewHeight())
+//        viewModel.noteTableViewHeightRelay.accept(getTableViewHeight())
     }
     
     // MARK: - UIComponents
@@ -242,7 +246,7 @@ extension ProjectChapterInputViewController {
         noteTableView.snp.makeConstraints {
             $0.top.equalTo(contentTextView.snp.bottom)
             $0.leading.trailing.equalTo(titleTextField)
-            $0.height.equalTo(15)
+            $0.height.equalTo(10)
         }
         
         addNoteButtonView.snp.makeConstraints {
@@ -264,8 +268,7 @@ extension ProjectChapterInputViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         noteTableView.beginUpdates()
         noteTableView.endUpdates()
-        viewModel.noteTableViewHeightRelay.accept(
-            getTableViewHeight())
+        viewModel.noteTableViewHeightRelay.accept(getTableViewHeight())
     }
 }
 
@@ -273,8 +276,7 @@ extension ProjectChapterInputViewController: TwoButtonAlertViewDelegate {
     func didTapRightButton(type: TwoButtonAlertType) {
         dismiss(animated: true)
         viewModel.noteCellViewModels.remove(at: willDeletedIndex)
-        viewModel.noteTableViewHeightRelay.accept(
-            getTableViewHeight())
+        viewModel.noteTableViewHeightRelay.accept(getTableViewHeight())
     }
     
     func didTapLeftButton(type: TwoButtonAlertType) {

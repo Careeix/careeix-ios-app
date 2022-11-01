@@ -88,6 +88,15 @@ struct ProjectInputViewModel {
         introduceInputViewModel.baseTextViewModel.inputStringRelay.accept(remainigInput.indroduce)
     }
     
+    func initProject() {
+        if UserDefaultManager.shared.projectInput[projectId] == nil {
+            UserDefaultManager.shared.projectInput[projectId] = .init(title: "", division: "", indroduce: "")
+        }
+        if UserDefaultManager.shared.projectChapters[projectId] == nil {
+            UserDefaultManager.shared.projectChapters[projectId] = []
+        }
+    }
+    
     func initPersistenceData() {
         // TODO: 수정일 경우 서버에서 받아야 함
         if projectId == -1 {

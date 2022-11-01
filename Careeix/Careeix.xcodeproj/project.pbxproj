@@ -21,6 +21,7 @@
 		785AF53429054EFE00592F7F /* ProjectChapterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF53329054EFE00592F7F /* ProjectChapterCell.swift */; };
 		785AF53629054F2500592F7F /* ContentsAddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF53529054F2500592F7F /* ContentsAddButtonView.swift */; };
 		785AF5392905574A00592F7F /* ProjectChapterInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */; };
+		786E7039290FCF4400463E76 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E7038290FCF4400463E76 /* NavigationController.swift */; };
 		786F46922901443400215AF0 /* ProjectInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F46912901443400215AF0 /* ProjectInputViewController.swift */; };
 		786F469429018B2E00215AF0 /* BaseInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469329018B2E00215AF0 /* BaseInputView.swift */; };
 		786F469629018F5500215AF0 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469529018F5500215AF0 /* Date+.swift */; };
@@ -115,6 +116,7 @@
 		785AF53329054EFE00592F7F /* ProjectChapterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterCell.swift; sourceTree = "<group>"; };
 		785AF53529054F2500592F7F /* ContentsAddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentsAddButtonView.swift; sourceTree = "<group>"; };
 		785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterInputViewController.swift; sourceTree = "<group>"; };
+		786E7038290FCF4400463E76 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		786F46912901443400215AF0 /* ProjectInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInputViewController.swift; sourceTree = "<group>"; };
 		786F469329018B2E00215AF0 /* BaseInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseInputView.swift; sourceTree = "<group>"; };
 		786F469529018F5500215AF0 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 				784BD09828EDA23900CA86F0 /* AppDelegate.swift */,
 				784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */,
 				78E94A2E28EF0D7800DBBF5C /* TabBarController.swift */,
+				786E7038290FCF4400463E76 /* NavigationController.swift */,
 				78DC17B428FA75D300331A22 /* Onboard */,
 				78DC17BA28FA937400331A22 /* SignUp */,
 				7AFE501828FD90C600A72D65 /* Home */,
@@ -236,6 +239,7 @@
 				786F46902901441700215AF0 /* ProjectInput */,
 				785AF52E290512C200592F7F /* ProjectInputDetail */,
 				785AF5372905572900592F7F /* ProjectChapterInput */,
+				786E703D2911244D00463E76 /* Profile */,
 				7AFE501528FD8FB400A72D65 /* Extensions */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
@@ -279,6 +283,13 @@
 				789F27C12906EA4C00F634F0 /* Cells */,
 			);
 			path = ProjectChapterInput;
+			sourceTree = "<group>";
+		};
+		786E703D2911244D00463E76 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		786F46902901441700215AF0 /* ProjectInput */ = {
@@ -648,6 +659,7 @@
 				7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */,
 				786F46A22901A21B00215AF0 /* BaseCheckBoxView.swift in Sources */,
 				78C9099A2905918A00AA9AA3 /* ProjectChapter.swift in Sources */,
+				786E7039290FCF4400463E76 /* NavigationController.swift in Sources */,
 				786F4698290199EF00215AF0 /* BaseTextView.swift in Sources */,
 				78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */,
 				7AFE502428FD90C600A72D65 /* HomeAlertViewController.swift in Sources */,
