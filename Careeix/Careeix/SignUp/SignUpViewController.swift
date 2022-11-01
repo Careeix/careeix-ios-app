@@ -121,7 +121,7 @@ class SignUpViewController: UIViewController {
         annualInputView.delegate = self
         view.backgroundColor = .white
         
-        configureNavigationBar()
+        setupNavigationBackButton()
     }
     
     override func viewDidAppear(_ animated: Bool) {

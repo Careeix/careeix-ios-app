@@ -41,7 +41,7 @@ struct ProjectInputViewModel {
                                                                      periodInputViewModel.endDateViewModel.inputStringRelay,
                                                                      divisionInputViewModel.textfieldViewModel.inputStringRelay,
                                                                      introduceInputViewModel.baseTextViewModel.inputStringRelay,
-                                                                     periodInputViewModel.checkBoxViewModel.isSelectedRelay).skip(3).share()
+                                                                     periodInputViewModel.checkBoxViewModel.isSelectedRelay).skip(3).share().debug("모은 데이터")
         
         combinedDataDriver = combinedInputValuesObservable
             .map { inputs in
@@ -52,6 +52,7 @@ struct ProjectInputViewModel {
             .map { title, _, _, division, introduce, _ in
                 title != "" && division != "" && introduce != ""
             }.distinctUntilChanged()
+            .debug("버튼 상채")
             .share()
             .asDriver(onErrorJustReturn: false)
         
@@ -86,6 +87,15 @@ struct ProjectInputViewModel {
         periodInputViewModel.checkBoxViewModel.isSelectedRelay.accept(remainigInput.isProceed)
         periodInputViewModel.isSelectedProceedingRelay.accept(remainigInput.isProceed)
         introduceInputViewModel.baseTextViewModel.inputStringRelay.accept(remainigInput.indroduce)
+    }
+    
+    func initProject() {
+        if UserDefaultManager.shared.projectInput[projectId] == nil {
+            UserDefaultManager.shared.projectInput[projectId] = .init(title: "", division: "", indroduce: "")
+        }
+        if UserDefaultManager.shared.projectChapters[projectId] == nil {
+            UserDefaultManager.shared.projectChapters[projectId] = []
+        }
     }
     
     func initPersistenceData() {

@@ -24,14 +24,12 @@ class ProjectInputViewController: UIViewController {
         
         viewModel.nextButtonEnableDriver
             .drive(with: self) { owner, _ in
-                owner.completeButtonView.backgroundColor = .appColor(.next)
-                owner.completeButtonView.isUserInteractionEnabled = true
+                owner.updateCompleteButtonView(with: true)
             }.disposed(by: disposeBag)
 
         viewModel.nextButtonDisableDriver
             .drive(with: self) { owner, _ in
-                owner.completeButtonView.backgroundColor = .appColor(.disable)
-                owner.completeButtonView.isUserInteractionEnabled = false
+                owner.updateCompleteButtonView(with: false)
             }.disposed(by: disposeBag)
         
         viewModel.combinedDataDriver
@@ -62,21 +60,21 @@ class ProjectInputViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                owner.scrollView.setContentOffset(.init(x: 0, y: owner.titleInputView.frame.minY), animated: true)
+                owner.scrollTo(y: owner.titleInputView.frame.minY)
             }.disposed(by: disposeBag)
         
         divisionInputView.textField.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                owner.scrollView.setContentOffset(.init(x: 0, y: owner.periodInputView.frame.midY), animated: true)
+                owner.scrollTo(y: owner.periodInputView.frame.midY)
             }.disposed(by: disposeBag)
         
         introduceInputView.textView.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                owner.scrollView.setContentOffset(.init(x: 0, y: owner.periodInputView.frame.maxY), animated: true)
+                owner.scrollTo(y: owner.periodInputView.frame.maxY)
             }.disposed(by: disposeBag)
         
         
@@ -136,6 +134,15 @@ class ProjectInputViewController: UIViewController {
     }
     
     // MARK: - function
+    func scrollTo(y: CGFloat) {
+        scrollView.setContentOffset(.init(x: 0, y: y), animated: true)
+    }
+    
+    func updateCompleteButtonView(with state: Bool) {
+        completeButtonView.backgroundColor = .appColor(state ? .next : .disable)
+        completeButtonView.isUserInteractionEnabled = state
+    }
+    
     func updatePeriodView(isProceed: Bool) {
         viewModel.periodInputViewModel.endDateViewModel.inputStringRelay.accept(Date().toString())
         endDatePickerView.datePicker.setDate(Date(), animated: false)
@@ -202,11 +209,7 @@ class ProjectInputViewController: UIViewController {
         introduceInputView = .init(viewModel: viewModel.introduceInputViewModel)
         completeButtonView = .init(viewModel: .init(content: "다음", backgroundColor: .disable))
         super.init(nibName: nil, bundle: nil)
-        setUI()
         bind(to: viewModel)
-        configureNavigationBar()
-        view.backgroundColor = .appColor(.white)
-        completeButtonView.isUserInteractionEnabled = false
     }
     
     
@@ -217,18 +220,28 @@ class ProjectInputViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUI()
+        setupNavigationBackButton()
+        view.backgroundColor = .appColor(.white)
+        viewModel.initProject()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
+        if let navigationController = navigationController as? NavigationController {
+            navigationController.updateProgressBar(progress: 0.5)
+        }
     }
     override func viewWillDisappear(_ animated: Bool) {
+        if let navigationController = navigationController as? NavigationController {
+            navigationController.updateProgressBar(progress: 0)
+        }
         tabBarController?.tabBar.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         if !UserDefaultManager.shared.isWritingProject &&
             viewModel.checkRemainingData() {
             showAskingKeepWritingView()
@@ -236,8 +249,10 @@ class ProjectInputViewController: UIViewController {
         UserDefaultManager.shared.isWritingProject = true
         titleInputView.textField.becomeFirstResponder()
     }
+    
     deinit {
         UserDefaultManager.shared.isWritingProject = false
+
     }
     
     // MARK: - UIComponents

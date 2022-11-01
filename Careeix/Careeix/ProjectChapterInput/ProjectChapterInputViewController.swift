@@ -174,7 +174,7 @@ class ProjectChapterInputViewController: UIViewController {
         setUI()
         title = "\(viewModel.currentIndex)"
         completeButtonView.isUserInteractionEnabled = false
-        configureNavigationBar()
+        setupNavigationBackButton()
     }
     
     required init?(coder: NSCoder) {

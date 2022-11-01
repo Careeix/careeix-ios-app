@@ -10,8 +10,8 @@ import UIKit
 class TabBarController: UITabBarController {
     
     lazy var homeViewController: UIViewController = {
-        let vc = UINavigationController(rootViewController: HomeViewController())
-        
+        let vc = NavigationController(rootViewController: HomeViewController())
+        vc.updateProgressBar(progress: 0)
         vc.tabBarItem = UITabBarItem(title: "홈", image: UIImage(systemName: "house"), tag: 0)
         
         return vc
@@ -19,7 +19,6 @@ class TabBarController: UITabBarController {
     
     lazy var projectInputViewController: UIViewController = {
         let vc = UIViewController()
-        
         vc.tabBarItem = UITabBarItem(title: "등록", image: UIImage(systemName: "trash"), tag: 1)
         
         return vc
@@ -48,7 +47,8 @@ extension TabBarController: UITabBarControllerDelegate {
                                                       textFieldViewModel: .init(placeholder: "Ex. 개인활동/팀활동/(소속이름)")),
                         introduceInputViewModel: .init(title: "소개",
                                                        baseTextViewModel: .init(placeholder: "진행한 일을 2줄 이내로 소개해주세요."))
-                    ))
+                    )
+                )
                 if viewController.tabBarItem.tag == 1 {
                     fromVC.pushViewController(vc, animated: true)
                     return false

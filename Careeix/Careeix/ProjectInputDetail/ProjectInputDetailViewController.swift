@@ -18,6 +18,7 @@ class ProjectInputDetailViewController: UIViewController {
     func bind(to viewModel: ProjectInputDetailViewModel) {
         
         addButtonView.rx.tapGesture()
+            .debug("asa")
             .when(.recognized)
             .map { _ in () }
             .bind(to: viewModel.createTrigger)
@@ -46,6 +47,7 @@ class ProjectInputDetailViewController: UIViewController {
             .withUnretained(self)
             .bind { owner, _ in
                 viewModel.createProject()
+                owner.navigationController?.popToRootViewController(animated: true)
             }.disposed(by: disposeBag)
         
         viewModel.updateTableViewHeightDriver
@@ -70,10 +72,11 @@ class ProjectInputDetailViewController: UIViewController {
     init(viewModel: ProjectInputDetailViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        setupNavigationBackButton()
         setUI()
         bind(to: viewModel)
         view.backgroundColor = .appColor(.white)
-        configureNavigationBar()
+
         completeButtonView.isUserInteractionEnabled = false
     }
     required init?(coder: NSCoder) {
@@ -82,8 +85,6 @@ class ProjectInputDetailViewController: UIViewController {
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
-        // TODO: 주석 삭제
-        UserDefaultManager.shared.projectChapters[viewModel.projectId] = []
         super.viewDidLoad()
     }
     
@@ -93,7 +94,12 @@ class ProjectInputDetailViewController: UIViewController {
 
         updateCompleteButtonView()
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let navigationController = navigationController as? NavigationController {
+            navigationController.updateProgressBar(progress: 1)
+        }
+    }
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
     }

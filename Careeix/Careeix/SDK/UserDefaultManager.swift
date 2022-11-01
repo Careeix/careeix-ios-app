@@ -21,6 +21,7 @@ class UserDefaultManager {
     @UserDefault(key: CareeixKey.UserDefaultKey.kakaoAccessToken, defaultValue: "")
     public var kakaoAccessToken: String
     
+    // TODO: - Key로 옮기기
     @UserDefault(key: "projectChapters", defaultValue: [-1: []])
     public var projectChapters: [Int: [ProjectChapter]]
     
