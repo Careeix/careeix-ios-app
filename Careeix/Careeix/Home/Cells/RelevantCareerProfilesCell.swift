@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-import UIKit
 
 /**
  3. 내 직무와 관련된 커리어 프로필
@@ -64,22 +63,22 @@ class RelevantCareerProfilesCell: UICollectionViewCell {
         return label
     }()
     
-    func configure(_ info: RelevantCareerModel) {
+    func configure(_ info: CareerModel) {
         careerName.text = info.careerName
         careerGrade.text = info.careerGrade
-        firstDetailCareerName.text = "#" + info.detailCareerName[0]
+        firstDetailCareerName.text = "#" + info.detailCareerNames[0]
         
-        if info.detailCareerName.count == 2 {
-            firstDetailCareerName.text = "#" + info.detailCareerName[0]
-            secondDetailCareerName.text = "#" + info.detailCareerName[1]
+        if info.detailCareerNames.count == 2 {
+            firstDetailCareerName.text = "#" + info.detailCareerNames[0]
+            secondDetailCareerName.text = "#" + info.detailCareerNames[1]
         } else {
             secondDetailCareerName.text = ""
         }
         
-        if info.detailCareerName.count == 3 {
-            firstDetailCareerName.text = "#" + info.detailCareerName[0]
-            secondDetailCareerName.text = "#" + info.detailCareerName[1]
-            thirdDetailCareerName.text = "#" + info.detailCareerName[2]
+        if info.detailCareerNames.count == 3 {
+            firstDetailCareerName.text = "#" + info.detailCareerNames[0]
+            secondDetailCareerName.text = "#" + info.detailCareerNames[1]
+            thirdDetailCareerName.text = "#" + info.detailCareerNames[2]
         } else {
             thirdDetailCareerName.text = ""
         }

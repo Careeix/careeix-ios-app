@@ -25,6 +25,10 @@ class UserDefaultManager {
     @UserDefault(key: "projectChapters", defaultValue: [-1: []])
     public var projectChapters: [Int: [ProjectChapter]]
     
+    @UserDefault(key: "userId", defaultValue: 0)
+    public var userId: Int
+
+    
     @UserDefault(key: "projectInput", defaultValue: [-1: ProjectBaseInputValue.init(title: "", division: "", indroduce: "")])
     public var projectInput: [Int: ProjectBaseInputValue]
     

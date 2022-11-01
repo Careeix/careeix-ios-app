@@ -62,6 +62,7 @@ extension SocialLoginService {
     func callKakaoLoginApi(accessToken: String) -> Observable<LoginAPI.Response> {
         let c = API<LoginAPI.Response>(path: "users/check-login", method: .post, parameters: ["accessToken": accessToken], task: .requestParameters(encoding: JSONEncoding.default)).requestRX()
             .asObservable()
+        
         return c
     }
 

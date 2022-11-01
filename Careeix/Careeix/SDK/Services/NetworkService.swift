@@ -73,13 +73,16 @@ class API<T: Decodable> {
     func request(completion: @escaping (Result<APIResponse<T>, Error>) -> Void) {
         let endpoint = MultiTarget.target(api)
         provider.request(endpoint, completion: { result in
+            print("네트워크 통신 결과: ", result)
             switch result {
+                
             case .success(let response):
                 do {
                     try self.httpProcess(response: response)
                     let data = try response.map(APIResponse<T>.self)
                     completion(.success(data))
                 }  catch (let error) {
+                    
                     print("디폴트 에러: ", error.localizedDescription)
                     completion(.failure(error))
                 }
