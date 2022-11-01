@@ -191,6 +191,7 @@ class ProjectInputViewController: UIViewController {
         sender.snp.updateConstraints {
             $0.bottom.equalToSuperview()
         }
+        
         UIView.animate(withDuration: 0.4) {
             self.view.layoutIfNeeded()
         }
@@ -229,29 +230,26 @@ class ProjectInputViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
         if let navigationController = navigationController as? NavigationController {
-            navigationController.updateProgressBar(progress: 0.5)
+            navigationController.updateProgressBar(progress: 1 / 3.0)
         }
     }
     override func viewWillDisappear(_ animated: Bool) {
-        if let navigationController = navigationController as? NavigationController {
-            navigationController.updateProgressBar(progress: 0)
-        }
         tabBarController?.tabBar.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if !UserDefaultManager.shared.isWritingProject &&
+        if UserDefaultManager.shared.currentWritingProjectId != viewModel.projectId &&
             viewModel.checkRemainingData() {
             showAskingKeepWritingView()
         }
-        UserDefaultManager.shared.isWritingProject = true
+        UserDefaultManager.shared.currentWritingProjectId = viewModel.projectId
         titleInputView.textField.becomeFirstResponder()
     }
     
     deinit {
-        UserDefaultManager.shared.isWritingProject = false
+        UserDefaultManager.shared.currentWritingProjectId = -2
 
     }
     

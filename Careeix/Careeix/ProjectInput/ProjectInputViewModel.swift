@@ -41,7 +41,7 @@ struct ProjectInputViewModel {
                                                                      periodInputViewModel.endDateViewModel.inputStringRelay,
                                                                      divisionInputViewModel.textfieldViewModel.inputStringRelay,
                                                                      introduceInputViewModel.baseTextViewModel.inputStringRelay,
-                                                                     periodInputViewModel.checkBoxViewModel.isSelectedRelay).skip(3).share().debug("모은 데이터")
+                                                                     periodInputViewModel.checkBoxViewModel.isSelectedRelay).skip(3).share()
         
         combinedDataDriver = combinedInputValuesObservable
             .map { inputs in
@@ -52,7 +52,6 @@ struct ProjectInputViewModel {
             .map { title, _, _, division, introduce, _ in
                 title != "" && division != "" && introduce != ""
             }.distinctUntilChanged()
-            .debug("버튼 상채")
             .share()
             .asDriver(onErrorJustReturn: false)
         

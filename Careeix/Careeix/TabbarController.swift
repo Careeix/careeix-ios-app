@@ -12,21 +12,38 @@ class TabBarController: UITabBarController {
     lazy var homeViewController: UIViewController = {
         let vc = NavigationController(rootViewController: HomeViewController())
         vc.updateProgressBar(progress: 0)
-        vc.tabBarItem = UITabBarItem(title: "홈", image: UIImage(systemName: "house"), tag: 0)
+        vc.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "home"), tag: 0)
         
         return vc
     }()
     
     lazy var projectInputViewController: UIViewController = {
         let vc = UIViewController()
-        vc.tabBarItem = UITabBarItem(title: "등록", image: UIImage(systemName: "trash"), tag: 1)
+        vc.tabBarItem = UITabBarItem(title: "등록", image: UIImage(named: "add"), tag: 1)
+        
+        return vc
+    }()
+    
+    
+    lazy var careerViewController: UIViewController = {
+        let vc = NavigationController(rootViewController: UIViewController())
+        vc.updateProgressBar(progress: 0)
+        vc.tabBarItem = UITabBarItem(title: "커리어", image: UIImage(named: "career"), tag: 2)
+        
+        return vc
+    }()
+    
+    lazy var myPageViewController: UIViewController = {
+        let vc = NavigationController(rootViewController: MyPageViewController())
+        vc.updateProgressBar(progress: 0)
+        vc.tabBarItem = UITabBarItem(title: "My", image: UIImage(named: "profile"), tag: 3)
         
         return vc
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewControllers = [homeViewController, projectInputViewController]
+        viewControllers = [homeViewController, projectInputViewController, careerViewController, myPageViewController]
         delegate = self
         tabBar.tintColor = .black
     }
@@ -49,13 +66,10 @@ extension TabBarController: UITabBarControllerDelegate {
                                                        baseTextViewModel: .init(placeholder: "진행한 일을 2줄 이내로 소개해주세요."))
                     )
                 )
-                if viewController.tabBarItem.tag == 1 {
-                    fromVC.pushViewController(vc, animated: true)
-                    return false
-                }
+                fromVC.pushViewController(vc, animated: true)
+                return false
             }
-            return false
         }
-        return false
+        return true
     }
 }

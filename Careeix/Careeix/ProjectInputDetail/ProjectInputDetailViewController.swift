@@ -18,7 +18,6 @@ class ProjectInputDetailViewController: UIViewController {
     func bind(to viewModel: ProjectInputDetailViewModel) {
         
         addButtonView.rx.tapGesture()
-            .debug("asa")
             .when(.recognized)
             .map { _ in () }
             .bind(to: viewModel.createTrigger)
@@ -91,14 +90,13 @@ class ProjectInputDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
         viewModel.viewWillAppearRelay.accept(())
-
-        updateCompleteButtonView()
+        if let navigationController = navigationController as? NavigationController {
+            navigationController.updateProgressBar(progress: 2 / 3.0)
+        }
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let navigationController = navigationController as? NavigationController {
-            navigationController.updateProgressBar(progress: 1)
-        }
+
     }
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false

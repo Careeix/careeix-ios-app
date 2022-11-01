@@ -67,7 +67,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //      UserDefaultManager.shared.projectChapters[-1] = []
         // test end
         
-        UserDefaultManager.shared.isWritingProject = false
+        UserDefaultManager.shared.currentWritingProjectId = -2
         window?.rootViewController = UserDefaultManager.shared.jwtToken == ""
         ? UINavigationController(rootViewController: OnboardViewController())
         : TabBarController()

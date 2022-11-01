@@ -14,7 +14,8 @@ class NavigationController: UINavigationController {
         self.view.addSubview(progressBar)
         progressBar.backgroundColor = .appColor(.main)
         progressBar.snp.makeConstraints {
-            $0.center.equalToSuperview()
+            $0.leading.equalTo(navigationBar)
+            $0.top.equalTo(navigationBar.snp.bottom)
             $0.width.equalTo(view.frame.width)
             $0.height.equalTo(3)
         }
@@ -29,7 +30,6 @@ class NavigationController: UINavigationController {
         progressBar.snp.updateConstraints {
             $0.width.equalTo(view.frame.width * progress)
         }
-        print("🐿️🐿️🐿️프로그레스바 그릴께요🐿️🐿️", progress)
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
@@ -39,9 +39,10 @@ class NavigationController: UINavigationController {
 
 extension NavigationController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        if viewController is HomeViewController {
+        if !(viewController is ProjectInputViewController
+            || viewController is ProjectInputDetailViewController
+            || viewController is ProjectChapterInputViewController) {
             updateProgressBar(progress: 0)
         }
-        print(viewController,"🐶🐶🐶didshow🐶🐶🐶")
     }
 }

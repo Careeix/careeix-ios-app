@@ -28,8 +28,9 @@ class UserDefaultManager {
     @UserDefault(key: "projectInput", defaultValue: [-1: ProjectBaseInputValue.init(title: "", division: "", indroduce: "")])
     public var projectInput: [Int: ProjectBaseInputValue]
     
-    @UserDefault(key: "isWritingProject", defaultValue: false)
-    public var isWritingProject: Bool
+    /// 수정중인 프로젝트 ID를 저장합니다. -2: 없음, -1: 추가, 0 ~ 무한:  프로젝트 아이디
+    @UserDefault(key: "currentWritingProjectId", defaultValue: -2)
+    public var currentWritingProjectId: Int
 }
 
 @propertyWrapper

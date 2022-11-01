@@ -22,6 +22,8 @@
 		785AF53629054F2500592F7F /* ContentsAddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF53529054F2500592F7F /* ContentsAddButtonView.swift */; };
 		785AF5392905574A00592F7F /* ProjectChapterInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */; };
 		786E7039290FCF4400463E76 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E7038290FCF4400463E76 /* NavigationController.swift */; };
+		786E703C29111ABF00463E76 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E703B29111ABF00463E76 /* MyPageViewController.swift */; };
+		786E70402911248E00463E76 /* MyPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E703F2911248E00463E76 /* MyPageCell.swift */; };
 		786F46922901443400215AF0 /* ProjectInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F46912901443400215AF0 /* ProjectInputViewController.swift */; };
 		786F469429018B2E00215AF0 /* BaseInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469329018B2E00215AF0 /* BaseInputView.swift */; };
 		786F469629018F5500215AF0 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469529018F5500215AF0 /* Date+.swift */; };
@@ -114,6 +116,8 @@
 		785AF53529054F2500592F7F /* ContentsAddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentsAddButtonView.swift; sourceTree = "<group>"; };
 		785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterInputViewController.swift; sourceTree = "<group>"; };
 		786E7038290FCF4400463E76 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		786E703B29111ABF00463E76 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		786E703F2911248E00463E76 /* MyPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCell.swift; sourceTree = "<group>"; };
 		786F46912901443400215AF0 /* ProjectInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInputViewController.swift; sourceTree = "<group>"; };
 		786F469329018B2E00215AF0 /* BaseInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseInputView.swift; sourceTree = "<group>"; };
 		786F469529018F5500215AF0 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
@@ -231,6 +235,8 @@
 				786F46902901441700215AF0 /* ProjectInput */,
 				785AF52E290512C200592F7F /* ProjectInputDetail */,
 				785AF5372905572900592F7F /* ProjectChapterInput */,
+				786E703A29111AA200463E76 /* MyPage */,
+				786E703D2911244D00463E76 /* Profile */,
 				7AFE501528FD8FB400A72D65 /* Extensions */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
@@ -274,6 +280,30 @@
 				789F27C12906EA4C00F634F0 /* Cells */,
 			);
 			path = ProjectChapterInput;
+			sourceTree = "<group>";
+		};
+		786E703A29111AA200463E76 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				786E703B29111ABF00463E76 /* MyPageViewController.swift */,
+				786E703E2911247600463E76 /* Cells */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
+		786E703D2911244D00463E76 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		786E703E2911247600463E76 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				786E703F2911248E00463E76 /* MyPageCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		786F46902901441700215AF0 /* ProjectInput */ = {
@@ -607,6 +637,7 @@
 				78D52EA328FE5C3E001F5747 /* SocialLoginService.swift in Sources */,
 				78DC17CD28FAA4DB00331A22 /* MultiInputView.swift in Sources */,
 				785AF53629054F2500592F7F /* ContentsAddButtonView.swift in Sources */,
+				786E70402911248E00463E76 /* MyPageCell.swift in Sources */,
 				78C9099C2905A18800AA9AA3 /* UIViewController+.swift in Sources */,
 				78DC17D128FBE7E800331A22 /* SignUpViewModel.swift in Sources */,
 				78DC17D428FBEA0000331A22 /* RadioCell.swift in Sources */,
@@ -636,6 +667,7 @@
 				7A39BE5C29008F2B0067D2DC /* EmptyCareerProfileCell.swift in Sources */,
 				784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */,
 				7881F5522902D91D00111395 /* TwoButtonAlertViewController.swift in Sources */,
+				786E703C29111ABF00463E76 /* MyPageViewController.swift in Sources */,
 				78F4CE3E290045BB00284B86 /* UIFont+.swift in Sources */,
 				785AF53429054EFE00592F7F /* ProjectChapterCell.swift in Sources */,
 				786F46922901443400215AF0 /* ProjectInputViewController.swift in Sources */,
