@@ -15,24 +15,33 @@ struct ProjectInputViewModel {
     
     // MARK: Properties
     let projectId: Int
+    let fetchedSimpleInput: Observable<ProjectBaseInputValue>
+    let fetchedChapters: Observable<[ProjectChapter]>
     
     // MARK: SubViewModels
     let titleInputViewModel: SimpleInputViewModel
     let periodInputViewModel: PeriodInputViewModel
     let classificationInputViewModel: SimpleInputViewModel
     let introduceInputViewModel: ManyInputViewModel
-
+    
+    // MARK: Input
+    let viewDidAppearRelay = PublishRelay<Void>()
+    let fillFetchedDataTrigger = PublishRelay<Void>()
+    
     // MARK: Output
     let nextButtonEnableDriver: Driver<Void>
     let nextButtonDisableDriver: Driver<Void>
     let combinedDataDriver: Driver<ProjectBaseInputValue>
     let checkBoxIsSelctedDriver: Driver<Bool>
+    let askingKeepAlertDriver: Driver<Void>
+    let fillFetcedDataDriver: Driver<Void>
     
     init(titleInputViewModel: SimpleInputViewModel,
          periodInputViewModel: PeriodInputViewModel,
          classificationInputViewModel: SimpleInputViewModel,
          introduceInputViewModel: ManyInputViewModel, projectId: Int = -1) {
         self.projectId = projectId
+//        UserDefaultManager.shared.currentWritingProjectId = projectId
         self.titleInputViewModel = titleInputViewModel
         self.periodInputViewModel = periodInputViewModel
         self.classificationInputViewModel = classificationInputViewModel
@@ -66,6 +75,48 @@ struct ProjectInputViewModel {
         
         checkBoxIsSelctedDriver = periodInputViewModel.checkBoxViewModel.isSeclectedRelayShare
             .asDriver(onErrorJustReturn: false)
+        
+        let projectResult = callgetProjectAPI().share()
+        fetchedSimpleInput = projectId == -1
+        ? .just(.init(title: "", classification: "", introduce: ""))
+        : projectResult.map {
+            .init(title: $0.title,
+                  startDateString: $0.startDateString,
+                  endDateString: $0.endDateString,
+                  classification: $0.classification,
+                  introduce: $0.introduce, isProceed: $0.isProceed)
+        }
+        
+        fetchedChapters = projectId == -1
+        ? .just([])
+        : projectResult.map { $0.projectChapters }
+        
+        let initialFetchData = Observable.combineLatest(viewDidAppearRelay, fetchedSimpleInput, fetchedChapters)
+            .map { ($0.1, $0.2) }
+            .share()
+        // 이놈을 가지고 (유저디폴트에 값이 있으면) 이어서 수정하시겠습니까를 띄어야 하는지 판단 ->
+        // 이어서 수정하기 -> 유저디폴트 값유지
+        // 이어서 수정안하기 -> 새로운 데이터로 유저 디폴트 값 저장 -> (등록이면 초기화값, 수정이면 서버에서 패치해온값)
+        
+        askingKeepAlertDriver = initialFetchData
+            .filter { $0.0 != UserDefaultManager.shared.projectInput[projectId] || $0.1 != UserDefaultManager.shared.projectChapters[projectId] }
+            .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
+        
+        fillFetcedDataDriver = Observable.combineLatest(fillFetchedDataTrigger, fetchedSimpleInput, fetchedChapters)
+            .do {
+                UserDefaultManager.shared.projectInput[projectId] = $0.1
+                UserDefaultManager.shared.projectChapters[projectId] = $0.2
+            }
+            .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
+        
+        func callgetProjectAPI() -> Observable<Project> {
+            return Observable.create { observer in
+                observer.onNext(Project.init(title: "temp", startDateString: "temp", endDateString: "temp", classification: "temp", introduce: "temp", isProceed: false, projectChapters: [.init(title: "", content: "'", notes: [])]))
+                return Disposables.create()
+            }
+        }
     }
     
     func updatePersistanceData(_ sender :ProjectBaseInputValue) {
@@ -73,8 +124,9 @@ struct ProjectInputViewModel {
     }
     
     func checkRemainingData() -> Bool {
-        
-        return UserDefaultManager.shared.projectInput[projectId] != .init(title: "", classification: "", introduce: "") || UserDefaultManager.shared.projectChapters[projectId]?.count != 0
+        return projectId == -1 && (
+            UserDefaultManager.shared.projectInput[projectId] != .init(title: "", classification: "", introduce: "")
+            || UserDefaultManager.shared.projectChapters[projectId]?.count != 0)
     }
     
     func fillRemainingInput() {
@@ -91,7 +143,7 @@ struct ProjectInputViewModel {
     }
     
     func initProject() {
-        // TODO: 서버 통신 ... ?
+        // TODO: 서버 통신 … ?
         if UserDefaultManager.shared.projectInput[projectId] == nil {
             UserDefaultManager.shared.projectInput[projectId] = .init(title: "", classification: "", introduce: "")
         }
