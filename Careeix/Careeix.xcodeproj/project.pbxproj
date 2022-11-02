@@ -22,10 +22,11 @@
 		785AF53629054F2500592F7F /* ContentsAddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF53529054F2500592F7F /* ContentsAddButtonView.swift */; };
 		785AF5392905574A00592F7F /* ProjectChapterInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */; };
 		786E7039290FCF4400463E76 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E7038290FCF4400463E76 /* NavigationController.swift */; };
-		786E704629120C7300463E76 /* ProjectLookupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E704529120C7300463E76 /* ProjectLookupViewController.swift */; };
-		786E704C29122F0F00463E76 /* ProjectLookupHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E704B29122F0F00463E76 /* ProjectLookupHeaderView.swift */; };
-		786E704E29122FDE00463E76 /* ProjectChapterLookupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E704D29122FDE00463E76 /* ProjectChapterLookupCell.swift */; };
-		786E70512912339B00463E76 /* ProjectLookupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E70502912339B00463E76 /* ProjectLookupViewModel.swift */; };
+		786E705B2912583F00463E76 /* ProjectLookupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E70552912583F00463E76 /* ProjectLookupViewModel.swift */; };
+		786E705C2912583F00463E76 /* ProjectChapterLookupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E70572912583F00463E76 /* ProjectChapterLookupCell.swift */; };
+		786E705D2912583F00463E76 /* ProjectLookupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E70582912583F00463E76 /* ProjectLookupViewController.swift */; };
+		786E705E2912583F00463E76 /* ProjectLookupHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E705A2912583F00463E76 /* ProjectLookupHeaderView.swift */; };
+		786E70612912585900463E76 /* ProjectChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E70602912585800463E76 /* ProjectChapterViewController.swift */; };
 		786F46922901443400215AF0 /* ProjectInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F46912901443400215AF0 /* ProjectInputViewController.swift */; };
 		786F469429018B2E00215AF0 /* BaseInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469329018B2E00215AF0 /* BaseInputView.swift */; };
 		786F469629018F5500215AF0 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469529018F5500215AF0 /* Date+.swift */; };
@@ -83,7 +84,6 @@
 		7A84D46F2902C80900939D89 /* CardProfileDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A84D46E2902C80900939D89 /* CardProfileDetailViewController.swift */; };
 		7AB279AF2902D15F00ED3D97 /* CardProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB279AE2902D15F00ED3D97 /* CardProfileCell.swift */; };
 		7AC3A2142906BA3F001591CD /* IntroduceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC3A2132906BA3F001591CD /* IntroduceCell.swift */; };
-		7AC3A21729080392001591CD /* ProjectChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC3A21629080392001591CD /* ProjectChapterViewController.swift */; };
 		7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501628FD8FB400A72D65 /* UIColor+.swift */; };
 		7AFE502228FD90C600A72D65 /* RelevantHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501928FD90C600A72D65 /* RelevantHeaderView.swift */; };
 		7AFE502428FD90C600A72D65 /* HomeAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501B28FD90C600A72D65 /* HomeAlertViewController.swift */; };
@@ -121,10 +121,11 @@
 		785AF53529054F2500592F7F /* ContentsAddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentsAddButtonView.swift; sourceTree = "<group>"; };
 		785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterInputViewController.swift; sourceTree = "<group>"; };
 		786E7038290FCF4400463E76 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
-		786E704529120C7300463E76 /* ProjectLookupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectLookupViewController.swift; sourceTree = "<group>"; };
-		786E704B29122F0F00463E76 /* ProjectLookupHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectLookupHeaderView.swift; sourceTree = "<group>"; };
-		786E704D29122FDE00463E76 /* ProjectChapterLookupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterLookupCell.swift; sourceTree = "<group>"; };
-		786E70502912339B00463E76 /* ProjectLookupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectLookupViewModel.swift; sourceTree = "<group>"; };
+		786E70552912583F00463E76 /* ProjectLookupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectLookupViewModel.swift; sourceTree = "<group>"; };
+		786E70572912583F00463E76 /* ProjectChapterLookupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectChapterLookupCell.swift; sourceTree = "<group>"; };
+		786E70582912583F00463E76 /* ProjectLookupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectLookupViewController.swift; sourceTree = "<group>"; };
+		786E705A2912583F00463E76 /* ProjectLookupHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectLookupHeaderView.swift; sourceTree = "<group>"; };
+		786E70602912585800463E76 /* ProjectChapterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectChapterViewController.swift; sourceTree = "<group>"; };
 		786F46912901443400215AF0 /* ProjectInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInputViewController.swift; sourceTree = "<group>"; };
 		786F469329018B2E00215AF0 /* BaseInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseInputView.swift; sourceTree = "<group>"; };
 		786F469529018F5500215AF0 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
@@ -173,7 +174,6 @@
 		7A84D46E2902C80900939D89 /* CardProfileDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardProfileDetailViewController.swift; sourceTree = "<group>"; };
 		7AB279AE2902D15F00ED3D97 /* CardProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardProfileCell.swift; sourceTree = "<group>"; };
 		7AC3A2132906BA3F001591CD /* IntroduceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroduceCell.swift; sourceTree = "<group>"; };
-		7AC3A21629080392001591CD /* ProjectChapterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterViewController.swift; sourceTree = "<group>"; };
 		7AFE501628FD8FB400A72D65 /* UIColor+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		7AFE501928FD90C600A72D65 /* RelevantHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelevantHeaderView.swift; sourceTree = "<group>"; };
 		7AFE501B28FD90C600A72D65 /* HomeAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeAlertViewController.swift; sourceTree = "<group>"; };
@@ -246,8 +246,8 @@
 				786F46902901441700215AF0 /* ProjectInput */,
 				785AF52E290512C200592F7F /* ProjectInputDetail */,
 				785AF5372905572900592F7F /* ProjectChapterInput */,
-				786E704429120C4E00463E76 /* Project */,
-				7AC3A2152908033D001591CD /* ProjectChapter */,
+				786E70542912583F00463E76 /* Project */,
+				786E705F2912585800463E76 /* ProjectChapter */,
 				7AFE501528FD8FB400A72D65 /* Extensions */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
@@ -293,31 +293,39 @@
 			path = ProjectChapterInput;
 			sourceTree = "<group>";
 		};
-		786E704429120C4E00463E76 /* Project */ = {
+		786E70542912583F00463E76 /* Project */ = {
 			isa = PBXGroup;
 			children = (
-				786E704529120C7300463E76 /* ProjectLookupViewController.swift */,
-				786E70502912339B00463E76 /* ProjectLookupViewModel.swift */,
-				786E7048291226A400463E76 /* Cells */,
-				786E70472912269F00463E76 /* Views */,
+				786E70552912583F00463E76 /* ProjectLookupViewModel.swift */,
+				786E70562912583F00463E76 /* Cells */,
+				786E70582912583F00463E76 /* ProjectLookupViewController.swift */,
+				786E70592912583F00463E76 /* Views */,
 			);
 			path = Project;
 			sourceTree = "<group>";
 		};
-		786E70472912269F00463E76 /* Views */ = {
+		786E70562912583F00463E76 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				786E704B29122F0F00463E76 /* ProjectLookupHeaderView.swift */,
+				786E70572912583F00463E76 /* ProjectChapterLookupCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		786E70592912583F00463E76 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				786E705A2912583F00463E76 /* ProjectLookupHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		786E7048291226A400463E76 /* Cells */ = {
+		786E705F2912585800463E76 /* ProjectChapter */ = {
 			isa = PBXGroup;
 			children = (
-				786E704D29122FDE00463E76 /* ProjectChapterLookupCell.swift */,
+				786E70602912585800463E76 /* ProjectChapterViewController.swift */,
 			);
-			path = Cells;
+			path = ProjectChapter;
 			sourceTree = "<group>";
 		};
 		786F46902901441700215AF0 /* ProjectInput */ = {
@@ -501,14 +509,6 @@
 			path = CareerProfile;
 			sourceTree = "<group>";
 		};
-		7AC3A2152908033D001591CD /* ProjectChapter */ = {
-			isa = PBXGroup;
-			children = (
-				7AC3A21629080392001591CD /* ProjectChapterViewController.swift */,
-			);
-			path = ProjectChapter;
-			sourceTree = "<group>";
-		};
 		7AFE501528FD8FB400A72D65 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -664,7 +664,6 @@
 				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
 				7AFE502728FD90C600A72D65 /* RelevantCareerProfilesCell.swift in Sources */,
 				786F46A42901A24E00215AF0 /* PeriodInputView.swift in Sources */,
-				786E70512912339B00463E76 /* ProjectLookupViewModel.swift in Sources */,
 				78D52E5328FD3142001F5747 /* SocialLoginSDK.swift in Sources */,
 				78D52EA328FE5C3E001F5747 /* SocialLoginService.swift in Sources */,
 				78DC17CD28FAA4DB00331A22 /* MultiInputView.swift in Sources */,
@@ -672,7 +671,6 @@
 				78C9099C2905A18800AA9AA3 /* UIViewController+.swift in Sources */,
 				78DC17D128FBE7E800331A22 /* SignUpViewModel.swift in Sources */,
 				78DC17D428FBEA0000331A22 /* RadioCell.swift in Sources */,
-				786E704629120C7300463E76 /* ProjectLookupViewController.swift in Sources */,
 				7AFE502928FD90C600A72D65 /* CompositionalLayout.swift in Sources */,
 				78DC17D628FBEEA400331A22 /* MultiInputCell.swift in Sources */,
 				7AFE502828FD90C600A72D65 /* MinimalCareerProfileCell.swift in Sources */,
@@ -686,6 +684,9 @@
 				785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */,
 				788A09FF290A7BBD003EF027 /* ProjectChapterInputViewModel.swift in Sources */,
 				78E6F00A290C70F20026655D /* ProjectInputDetailViewModel.swift in Sources */,
+				786E705D2912583F00463E76 /* ProjectLookupViewController.swift in Sources */,
+				786E705C2912583F00463E76 /* ProjectChapterLookupCell.swift in Sources */,
+				786E70612912585900463E76 /* ProjectChapterViewController.swift in Sources */,
 				7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */,
 				786F46A22901A21B00215AF0 /* BaseCheckBoxView.swift in Sources */,
 				78C9099A2905918A00AA9AA3 /* Project.swift in Sources */,
@@ -693,14 +694,11 @@
 				786F4698290199EF00215AF0 /* BaseTextView.swift in Sources */,
 				78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */,
 				7AFE502428FD90C600A72D65 /* HomeAlertViewController.swift in Sources */,
-				786E704E29122FDE00463E76 /* ProjectChapterLookupCell.swift in Sources */,
 				78DC17CF28FAA58500331A22 /* CompleteButtonView.swift in Sources */,
-				786E704C29122F0F00463E76 /* ProjectLookupHeaderView.swift in Sources */,
 				786F469429018B2E00215AF0 /* BaseInputView.swift in Sources */,
 				784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */,
 				78D52E5128FD14FF001F5747 /* SignUpModel.swift in Sources */,
 				7A39BE5C29008F2B0067D2DC /* EmptyCareerProfileCell.swift in Sources */,
-				7AC3A21729080392001591CD /* ProjectChapterViewController.swift in Sources */,
 				784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */,
 				7881F5522902D91D00111395 /* TwoButtonAlertViewController.swift in Sources */,
 				7AC3A2142906BA3F001591CD /* IntroduceCell.swift in Sources */,
@@ -715,8 +713,10 @@
 				786F46A02901A1A400215AF0 /* ManyInputView.swift in Sources */,
 				78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */,
 				78DC17C728FA9E1C00331A22 /* SimpleInputView.swift in Sources */,
+				786E705E2912583F00463E76 /* ProjectLookupHeaderView.swift in Sources */,
 				7A84D46F2902C80900939D89 /* CardProfileDetailViewController.swift in Sources */,
 				789F27C029068C2200F634F0 /* DatePickerView.swift in Sources */,
+				786E705B2912583F00463E76 /* ProjectLookupViewModel.swift in Sources */,
 				789F27C32906ECA400F634F0 /* NoteCell.swift in Sources */,
 				7AFE502628FD90C600A72D65 /* HomeModel.swift in Sources */,
 				78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */,
