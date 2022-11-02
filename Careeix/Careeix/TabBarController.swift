@@ -60,7 +60,7 @@ extension TabBarController: UITabBarControllerDelegate {
                                                     description: "프로젝트 기간을 입력해주세요.",
                                                     checkBoxViewModel: .init()
                                                    ),
-                        divisionInputViewModel: .init(title: "구분",
+                        classificationInputViewModel: .init(title: "구분",
                                                       textFieldViewModel: .init(placeholder: "Ex. 개인활동/팀활동/(소속이름)")),
                         introduceInputViewModel: .init(title: "소개",
                                                        baseTextViewModel: .init(placeholder: "진행한 일을 2줄 이내로 소개해주세요."))

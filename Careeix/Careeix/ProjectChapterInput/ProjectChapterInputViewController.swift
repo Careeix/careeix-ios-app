@@ -48,7 +48,6 @@ class ProjectChapterInputViewController: UIViewController {
             }.disposed(by: disposeBag)
         
         viewModel.cellDataDriver
-//            .debug("🤬🤬🤬🤬")
             .drive(noteTableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: NoteCell.self.description(), for: IndexPath(row: row, section: 0)) as? NoteCell else { return UITableViewCell() }
                 cell.textView.delegate = self
@@ -196,7 +195,6 @@ class ProjectChapterInputViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         titleTextField.becomeFirstResponder()
-//        viewModel.noteTableViewHeightRelay.accept(getTableViewHeight())
     }
     
     // MARK: - UIComponents

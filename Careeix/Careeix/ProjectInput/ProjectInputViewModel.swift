@@ -13,13 +13,14 @@ import RxRelay
 
 struct ProjectInputViewModel {
     
+    // MARK: Properties
+    let projectId: Int
+    
+    // MARK: SubViewModels
     let titleInputViewModel: SimpleInputViewModel
     let periodInputViewModel: PeriodInputViewModel
-    let divisionInputViewModel: SimpleInputViewModel
+    let classificationInputViewModel: SimpleInputViewModel
     let introduceInputViewModel: ManyInputViewModel
-    
-    let projectId: Int
-    // MARK: Input
 
     // MARK: Output
     let nextButtonEnableDriver: Driver<Void>
@@ -29,28 +30,28 @@ struct ProjectInputViewModel {
     
     init(titleInputViewModel: SimpleInputViewModel,
          periodInputViewModel: PeriodInputViewModel,
-         divisionInputViewModel: SimpleInputViewModel,
+         classificationInputViewModel: SimpleInputViewModel,
          introduceInputViewModel: ManyInputViewModel, projectId: Int = -1) {
         self.projectId = projectId
         self.titleInputViewModel = titleInputViewModel
         self.periodInputViewModel = periodInputViewModel
-        self.divisionInputViewModel = divisionInputViewModel
+        self.classificationInputViewModel = classificationInputViewModel
         self.introduceInputViewModel = introduceInputViewModel
         let combinedInputValuesObservable = Observable.combineLatest(titleInputViewModel.textfieldViewModel.inputStringRelay,
                                                                      periodInputViewModel.startDateViewModel.inputStringRelay,
                                                                      periodInputViewModel.endDateViewModel.inputStringRelay,
-                                                                     divisionInputViewModel.textfieldViewModel.inputStringRelay,
+                                                                     classificationInputViewModel.textfieldViewModel.inputStringRelay,
                                                                      introduceInputViewModel.baseTextViewModel.inputStringRelay,
                                                                      periodInputViewModel.checkBoxViewModel.isSelectedRelay).skip(3).share()
         
         combinedDataDriver = combinedInputValuesObservable
             .map { inputs in
-                return ProjectBaseInputValue(title: inputs.0, startDateString: inputs.1, endDateString: inputs.2, division: inputs.3, indroduce: inputs.4, isProceed: inputs.5)
-            }.asDriver(onErrorJustReturn: .init(title: "", division: "", indroduce: ""))
+                return ProjectBaseInputValue(title: inputs.0, startDateString: inputs.1, endDateString: inputs.2, classification: inputs.3, introduce: inputs.4, isProceed: inputs.5)
+            }.asDriver(onErrorJustReturn: .init(title: "", classification: "", introduce: ""))
         
         let buttonStateDriver = combinedInputValuesObservable
-            .map { title, _, _, division, introduce, _ in
-                title != "" && division != "" && introduce != ""
+            .map { title, _, _, classification, introduce, _ in
+                title != "" && classification != "" && introduce != ""
             }.distinctUntilChanged()
             .share()
             .asDriver(onErrorJustReturn: false)
@@ -72,7 +73,8 @@ struct ProjectInputViewModel {
     }
     
     func checkRemainingData() -> Bool {
-        return UserDefaultManager.shared.projectInput[projectId] != .init(title: "", division: "", indroduce: "") || UserDefaultManager.shared.projectChapters[projectId]?.count != 0
+        
+        return UserDefaultManager.shared.projectInput[projectId] != .init(title: "", classification: "", introduce: "") || UserDefaultManager.shared.projectChapters[projectId]?.count != 0
     }
     
     func fillRemainingInput() {
@@ -80,17 +82,18 @@ struct ProjectInputViewModel {
         print("로컬에 저장된 데이터: ", remainigInput)
         
         titleInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.title)
-        divisionInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.division)
+        classificationInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.classification)
         periodInputViewModel.startDateViewModel.inputStringRelay.accept(remainigInput.startDateString)
         periodInputViewModel.endDateViewModel.inputStringRelay.accept(remainigInput.endDateString)
         periodInputViewModel.checkBoxViewModel.isSelectedRelay.accept(remainigInput.isProceed)
         periodInputViewModel.isSelectedProceedingRelay.accept(remainigInput.isProceed)
-        introduceInputViewModel.baseTextViewModel.inputStringRelay.accept(remainigInput.indroduce)
+        introduceInputViewModel.baseTextViewModel.inputStringRelay.accept(remainigInput.introduce)
     }
     
     func initProject() {
+        // TODO: 서버 통신 ... ?
         if UserDefaultManager.shared.projectInput[projectId] == nil {
-            UserDefaultManager.shared.projectInput[projectId] = .init(title: "", division: "", indroduce: "")
+            UserDefaultManager.shared.projectInput[projectId] = .init(title: "", classification: "", introduce: "")
         }
         if UserDefaultManager.shared.projectChapters[projectId] == nil {
             UserDefaultManager.shared.projectChapters[projectId] = []
@@ -98,12 +101,11 @@ struct ProjectInputViewModel {
     }
     
     func initPersistenceData() {
-        // TODO: 수정일 경우 서버에서 받아야 함
         if projectId == -1 {
-            UserDefaultManager.shared.projectInput[-1] = .init(title: "", division: "", indroduce: "")
+            UserDefaultManager.shared.projectInput[-1] = .init(title: "", classification: "", introduce: "")
             UserDefaultManager.shared.projectChapters[-1] = []
         } else {
-            // TODO: 서버 통신
+            // TODO: 서버 통신 (project ID로 Project 내용 get)
         }
 
     }

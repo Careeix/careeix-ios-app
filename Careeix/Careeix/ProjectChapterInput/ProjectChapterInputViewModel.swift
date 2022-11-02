@@ -38,8 +38,8 @@ class ProjectChapterInputViewModel {
     let completeButtonEnableDriver: Driver<Bool>
     
     // MARK: - Initializer
-    init(currentIndex: Int, projectId: Int = -1) {
-        self.projectId = projectId
+    init(currentIndex: Int) {
+        self.projectId = UserDefaultManager.shared.currentWritingProjectId
         self.currentIndex = currentIndex
         self.titleTextFieldViewModel = .init()
         self.contentViewModel = .init()
@@ -51,7 +51,7 @@ class ProjectChapterInputViewModel {
                 combinedInputValuesObservableShare,
                 Observable.combineLatest($0.map { $0.inputStringRelay })
             ) }
-            .map { ProjectChapter(title: $0.0, content: $0.1, notes: $1 ) }
+            .map { ProjectChapter(title: $0.0, content: $0.1, notes: $1.map { .init(content: $0)} ) }
             .share()
         
         updateProjectChapterDriver = combinedDataShare
@@ -85,7 +85,7 @@ class ProjectChapterInputViewModel {
             titleTextFieldViewModel.inputStringRelay.accept(needFillData.title)
             contentViewModel.inputStringRelay.accept(needFillData.content)
             noteCellViewModels = needFillData.notes
-                .map { .init(inputStringRelay: BehaviorRelay(value: $0)) }
+                .map { .init(inputStringRelay: BehaviorRelay(value: $0.content)) }
         }
     }
     
