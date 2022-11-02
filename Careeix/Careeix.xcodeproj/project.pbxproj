@@ -296,9 +296,9 @@
 		786E70542912583F00463E76 /* Project */ = {
 			isa = PBXGroup;
 			children = (
+				786E70582912583F00463E76 /* ProjectLookupViewController.swift */,
 				786E70552912583F00463E76 /* ProjectLookupViewModel.swift */,
 				786E70562912583F00463E76 /* Cells */,
-				786E70582912583F00463E76 /* ProjectLookupViewController.swift */,
 				786E70592912583F00463E76 /* Views */,
 			);
 			path = Project;
