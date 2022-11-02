@@ -28,8 +28,7 @@ class UserDefaultManager {
     @UserDefault(key: "userId", defaultValue: 0)
     public var userId: Int
 
-    
-    @UserDefault(key: "projectInput", defaultValue: [-1: ProjectBaseInputValue.init(title: "", division: "", indroduce: "")])
+    @UserDefault(key: "projectInput", defaultValue: [-1: ProjectBaseInputValue.init(title: "", classification: "", introduce: "")])
     public var projectInput: [Int: ProjectBaseInputValue]
     
     /// 수정중인 프로젝트 ID를 저장합니다. -2: 없음, -1: 추가, 0 ~ 무한:  프로젝트 아이디

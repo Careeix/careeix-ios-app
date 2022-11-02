@@ -32,75 +32,16 @@ enum ProjectViewType {
         }
     }
 }
-struct ProjectLookupViewModel {
-    let topInset: CGFloat
-    let projectId: Int
-    let completeButtonIsHidden: Bool
-    let lookUpCellDataDriver: Driver<[String]>
-    
-    init(type: ProjectViewType) {
-        self.projectId = UserDefaultManager.shared.currentWritingProjectId
-        self.topInset = type.inset()
-        lookUpCellDataDriver = .just(UserDefaultManager.shared.projectChapters[projectId]?.map { $0.title } ?? [])
-        completeButtonIsHidden = type.completeButtonIsHidden()
-    }
-    
-    func createProject() {
-        print("발행전 데이터 확인")
-        print(projectId)
-        print(UserDefaultManager.shared.jwtToken)
-        print(UserDefaultManager.shared.projectInput[projectId])
-        print(UserDefaultManager.shared.projectChapters[projectId])
-        //        // TODO: 서버 통신
-        deleteProject()
-    }
-    
-    func deleteProject() {
-        UserDefaultManager.shared.projectInput[projectId] = nil
-        UserDefaultManager.shared.projectChapters[projectId] = nil
-    }
-}
 
-struct ProjectChapterLookupCellViewModel {
-    let number: Int
-    let title: String
-}
-class ProjectChapterLookupCell: UITableViewCell {
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .none
-        setUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func bind(to viewModel: ProjectChapterLookupCellViewModel) {
-        numberLabel.text = "\(viewModel.number)"
-        titleLabel.text = viewModel.title
-    }
-    
-    // MARK: - UIComponents
-    let numberLabel = UILabel()
-    let titleLabel = UILabel()
-    
-    func setUI() {
-        [numberLabel, titleLabel].forEach { contentView.addSubview($0) }
-        numberLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(5)
-        }
-        titleLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(numberLabel.snp.trailing).offset(10)
-        }
-    }
-}
+
+
 class ProjectLookupViewController: UIViewController {
+    // MARK: - Properties
     var disposeBag = DisposeBag()
     let viewModel: ProjectLookupViewModel
     
+    
+    // MARK: - Binding
     func bind(to viewModel: ProjectLookupViewModel) {
         completeButtonView.rx.tapGesture()
             .when(.recognized)
@@ -114,6 +55,11 @@ class ProjectLookupViewController: UIViewController {
                 guard let cell = tv.dequeueReusableCell(withIdentifier: ProjectChapterLookupCell.self.description(), for: IndexPath(row: row, section: 0)) as? ProjectChapterLookupCell else { return UITableViewCell() }
                 cell.bind(to: .init(number: row + 1, title: data))
                 return cell
+            }.disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected
+            .bind { indexPath in
+                print(indexPath)
             }.disposed(by: disposeBag)
     }
     
@@ -131,9 +77,9 @@ class ProjectLookupViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .appColor(.white)
         setupNavigationBackButton()
         setUI()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -161,9 +107,7 @@ class ProjectLookupViewController: UIViewController {
 }
 
 extension ProjectLookupViewController {
-    
     func setUI() {
-        
         [tableView, completeButtonView].forEach { view.addSubview($0) }
         
         tableView.snp.makeConstraints {
@@ -178,64 +122,10 @@ extension ProjectLookupViewController {
         }
     }
 }
-struct ChapterHeaderViewModel {
-    let title: String
-    let division: String
-    let startDateString: String
-    let endDateString: String
-}
-class ChapterHeaderView: UIView {
-    let titleLabel: UILabel = {
-        let l = UILabel()
-        
-        return l
-    }()
-    let descriptionLabel: UILabel = {
-        let l = UILabel()
-        return l
-    }()
-    let chapterLabel: UILabel = {
-        let l = UILabel()
-        l.text = "목차"
-        l.textColor = .appColor(.gray300)
-        return l
-    }()
-    func bind(to viewModel: ChapterHeaderViewModel) {
-        titleLabel.text = viewModel.title
-        descriptionLabel.text = "\(viewModel.division) | \(viewModel.startDateString) ~ \(viewModel.endDateString)"
-    }
-    init(viewModel: ChapterHeaderViewModel) {
-        super.init(frame: .zero)
-        setUI()
-        bind(to: viewModel)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setUI() {
-        [titleLabel, descriptionLabel, chapterLabel].forEach { addSubview($0) }
-        
-        titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview()
-        }
-        
-        descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
-            $0.leading.equalTo(titleLabel)
-        }
-        
-        chapterLabel.snp.makeConstraints {
-            $0.top.equalTo(descriptionLabel.snp.bottom).offset(37)
-            $0.leading.equalTo(titleLabel)
-        }
-    }
-}
+
 extension ProjectLookupViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let v = ChapterHeaderView(viewModel: .init(title: "temp", division: "temp", startDateString: "temp", endDateString: "temp"))
+        let v = ProjectLookupHeaderView(viewModel: .init(title: "temp", division: "temp", startDateString: "temp", endDateString: "temp"))
         return v
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

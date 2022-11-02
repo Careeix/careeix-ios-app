@@ -63,7 +63,7 @@ class ProjectInputViewController: UIViewController {
                 owner.scrollTo(y: owner.titleInputView.frame.minY)
             }.disposed(by: disposeBag)
         
-        divisionInputView.textField.rx.tapGesture()
+        classificationInputView.textField.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
@@ -129,8 +129,6 @@ class ProjectInputViewController: UIViewController {
             .drive(with: self) { owner, isSelected in
                 owner.updatePeriodView(isProceed: isSelected)
             }.disposed(by: disposeBag)
-        
-        
     }
     
     // MARK: - function
@@ -206,13 +204,12 @@ class ProjectInputViewController: UIViewController {
         self.viewModel = viewModel
         titleInputView = .init(viewModel: viewModel.titleInputViewModel)
         periodInputView = .init(viewModel: viewModel.periodInputViewModel)
-        divisionInputView = .init(viewModel: viewModel.divisionInputViewModel)
+        classificationInputView = .init(viewModel: viewModel.classificationInputViewModel)
         introduceInputView = .init(viewModel: viewModel.introduceInputViewModel)
         completeButtonView = .init(viewModel: .init(content: "다음", backgroundColor: .disable))
         super.init(nibName: nil, bundle: nil)
         bind(to: viewModel)
     }
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -239,7 +236,7 @@ class ProjectInputViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        // TODO: 뷰모델로 넣기
         if UserDefaultManager.shared.currentWritingProjectId != viewModel.projectId &&
             viewModel.checkRemainingData() {
             showAskingKeepWritingView()
@@ -258,7 +255,7 @@ class ProjectInputViewController: UIViewController {
     let contentView = UIView()
     let titleInputView: SimpleInputView
     let periodInputView: PeriodInputView
-    let divisionInputView: SimpleInputView
+    let classificationInputView: SimpleInputView
     let introduceInputView: ManyInputView
     let completeButtonView: CompleteButtonView
     let startDatePickerView = DatePickerView(viewModel: .init(title: "시작 날짜"))
@@ -279,7 +276,7 @@ extension ProjectInputViewController {
             $0.width.equalToSuperview()
         }
         
-        [titleInputView, periodInputView, divisionInputView, introduceInputView].forEach { contentView.addSubview($0) }
+        [titleInputView, periodInputView, classificationInputView, introduceInputView].forEach { contentView.addSubview($0) }
         
         titleInputView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(20)
@@ -291,13 +288,13 @@ extension ProjectInputViewController {
             $0.leading.trailing.equalToSuperview().inset(16)
         }
         
-        divisionInputView.snp.makeConstraints {
+        classificationInputView.snp.makeConstraints {
             $0.top.equalTo(periodInputView.snp.bottom).offset(40)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
         
         introduceInputView.snp.makeConstraints {
-            $0.top.equalTo(divisionInputView.snp.bottom).offset(40)
+            $0.top.equalTo(classificationInputView.snp.bottom).offset(40)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().inset(90)
         }
@@ -311,8 +308,8 @@ extension ProjectInputViewController {
         }
         
         view.addSubview(startDatePickerView)
+        
         startDatePickerView.snp.makeConstraints {
-            
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview().offset(datePickerOffset)
         }

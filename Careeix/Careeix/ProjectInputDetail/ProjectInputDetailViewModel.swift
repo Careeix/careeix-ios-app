@@ -22,7 +22,8 @@ struct ProjectInputDetailViewModel {
     let createIndexDriver: Driver<Int>
     let updateTableViewHeightDriver: Driver<CGFloat>
     
-    init(projectId: Int = -1) {
+    init() {
+        let projectId = UserDefaultManager.shared.currentWritingProjectId
         self.projectId = projectId
         
         chaptersDriver = viewWillAppearRelay
