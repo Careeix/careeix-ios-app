@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
-struct Project: Codable {
+struct Project: Codable, Equatable {
     var title: String
     var startDateString: String
     var endDateString: String
@@ -45,7 +45,7 @@ struct ProjectChapter: Codable, Equatable {
     }
 }
 
-struct ProjectBaseInputValue: Codable, Equatable {
+struct ProjectBaseInfo: Codable, Equatable {
     var title: String
     var startDateString: String = Date().toString()
     var endDateString: String = Date().toString()

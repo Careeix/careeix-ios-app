@@ -21,7 +21,7 @@ class SocialLoginSDK {
     private let disposeBag = DisposeBag()
     private static let socialLoginService = SocialLoginService()
     
-    enum SocialLoginType {
+    enum SocialLoginType: Codable {
         case kakao
         case apple
     }

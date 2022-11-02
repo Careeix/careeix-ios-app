@@ -10,30 +10,33 @@ import CareeixKey
 import RxSwift
 import RxCocoa
 import RxRelay
-class UserDefaultManager {
-    static let shared = UserDefaultManager()
+struct UserDefaultManager {
+//    static let shared = UserDefaultManager()
 
-    private init() { }
+//    private init() { }
 
     @UserDefault(key: CareeixKey.UserDefaultKey.jwtToken, defaultValue: "")
-    public var jwtToken: String
+    public static var jwtToken: String
     
     @UserDefault(key: CareeixKey.UserDefaultKey.kakaoAccessToken, defaultValue: "")
-    public var kakaoAccessToken: String
+    public static var kakaoAccessToken: String
     
     // TODO: - Key로 옮기기
-    @UserDefault(key: "projectChapters", defaultValue: [-1: []])
-    public var projectChapters: [Int: [ProjectChapter]]
+    /// 수정중인 프로젝트 ID를 저장합니다. -2: 없음, -1: 추가, 0 ~ 무한:  프로젝트 아이디
+    @UserDefault(key: "writingProjectId", defaultValue: -2)
+    public static var writingProjectId: Int
+    
+    @UserDefault(key: "projectChaptersInputCache", defaultValue: [-1: []])
+    public static var projectChaptersInputCache: [Int: [ProjectChapter]]
+    
+    @UserDefault(key: "projectBaseInputCache", defaultValue: [-1: ProjectBaseInfo.init(title: "", classification: "", introduce: "")])
+    public static var projectBaseInputCache: [Int: ProjectBaseInfo]
     
     @UserDefault(key: "userId", defaultValue: 0)
-    public var userId: Int
-
-    @UserDefault(key: "projectInput", defaultValue: [-1: ProjectBaseInputValue.init(title: "", classification: "", introduce: "")])
-    public var projectInput: [Int: ProjectBaseInputValue]
+    public static var userId: Int
     
-    /// 수정중인 프로젝트 ID를 저장합니다. -2: 없음, -1: 추가, 0 ~ 무한:  프로젝트 아이디
-    @UserDefault(key: "currentWritingProjectId", defaultValue: -2)
-    public var currentWritingProjectId: Int
+    @UserDefault(key: "loginType", defaultValue: SocialLoginSDK.SocialLoginType.kakao)
+    public static var loginType: SocialLoginSDK.SocialLoginType
 }
 
 @propertyWrapper

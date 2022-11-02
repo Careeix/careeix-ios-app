@@ -11,16 +11,22 @@ import RxCocoa
 import RxRelay
 
 struct ProjectLookupViewModel {
-    let topInset: CGFloat
     let projectId: Int
-    let completeButtonIsHidden: Bool
+    let topInset: CGFloat
+//    let project: Project
+    
+//    let completeButtonIsHidden: Bool
     let lookUpCellDataDriver: Driver<[String]>
     
-    init(type: ProjectViewType) {
-        self.projectId = UserDefaultManager.shared.currentWritingProjectId
-        self.topInset = type.inset()
-        lookUpCellDataDriver = .just(UserDefaultManager.shared.projectChapters[projectId]?.map { $0.title } ?? [])
-        completeButtonIsHidden = type.completeButtonIsHidden()
+    init(projectId: Int) {
+        self.projectId = projectId
+        let isWriting = UserDefaultManager.writingProjectId != -2
+        self.topInset = isWriting ? 30 : 14
+        let projectBaseInput = UserDefaultManager.projectBaseInputCache[projectId] ?? .init(title: "", classification: "", introduce: "")
+        let projectChapterInput = UserDefaultManager.projectChaptersInputCache[projectId]
+        lookUpCellDataDriver = .just(UserDefaultManager.projectChaptersInputCache[projectId]?.map { $0.title } ?? [])
+//        completeButtonIsHidden = type.completeButtonIsHidden()
+        
     }
     
 //    func project() -> Project {
@@ -32,15 +38,15 @@ struct ProjectLookupViewModel {
     func createProject() {
         print("발행전 데이터 확인")
         print(projectId)
-        print(UserDefaultManager.shared.jwtToken)
-        print(UserDefaultManager.shared.projectInput[projectId])
-        print(UserDefaultManager.shared.projectChapters[projectId])
+        print(UserDefaultManager.jwtToken)
+        print(UserDefaultManager.projectBaseInputCache[projectId])
+        print(UserDefaultManager.projectChaptersInputCache[projectId])
         //        // TODO: 서버 통신 (프로젝트 post)
 //        deleteProject()
     }
     
     func deleteProject() {
-        UserDefaultManager.shared.projectInput[projectId] = nil
-        UserDefaultManager.shared.projectChapters[projectId] = nil
+        UserDefaultManager.projectBaseInputCache[projectId] = nil
+        UserDefaultManager.projectChaptersInputCache[projectId] = nil
     }
 }

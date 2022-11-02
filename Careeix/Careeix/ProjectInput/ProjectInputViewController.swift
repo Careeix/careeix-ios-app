@@ -246,16 +246,16 @@ class ProjectInputViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // TODO: 뷰모델로 넣기
-        if UserDefaultManager.shared.currentWritingProjectId != viewModel.projectId {
+        if UserDefaultManager.writingProjectId != viewModel.projectId {
             viewModel.viewDidAppearRelay.accept(())
         }
         
-        UserDefaultManager.shared.currentWritingProjectId = viewModel.projectId
+        UserDefaultManager.writingProjectId = viewModel.projectId
         titleInputView.textField.becomeFirstResponder()
     }
     
     deinit {
-        UserDefaultManager.shared.currentWritingProjectId = -2
+        UserDefaultManager.writingProjectId = -2
 
     }
     

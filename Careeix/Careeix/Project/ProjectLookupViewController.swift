@@ -10,36 +10,11 @@ import RxSwift
 import RxCocoa
 import RxRelay
 import RxGesture
-enum ProjectViewType {
-    case get
-    case post
-    
-    func inset() -> CGFloat {
-        switch self {
-        case .get:
-            return 14
-        case .post:
-            return 30
-        }
-    }
-    
-    func completeButtonIsHidden() -> Bool {
-        switch self {
-        case .get:
-            return true
-        case .post:
-            return false
-        }
-    }
-}
-
-
 
 class ProjectLookupViewController: UIViewController {
     // MARK: - Properties
     var disposeBag = DisposeBag()
     let viewModel: ProjectLookupViewModel
-    
     
     // MARK: - Binding
     func bind(to viewModel: ProjectLookupViewModel) {
@@ -85,9 +60,9 @@ class ProjectLookupViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
         tabBarController?.tabBar.isHidden = true
-        if let navigationController = navigationController as? NavigationController, !viewModel.completeButtonIsHidden {
-            navigationController.updateProgressBar(progress: 1)
-        }
+//        if let navigationController = navigationController as? NavigationController, !viewModel.completeButtonIsHidden {
+//            navigationController.updateProgressBar(progress: 1)
+//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -113,7 +88,7 @@ extension ProjectLookupViewController {
         tableView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(24)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(viewModel.topInset - 15)
+            $0.top.equalTo(view.safeAreaLayoutGuide).inset(15)
         }
         
         completeButtonView.snp.makeConstraints {

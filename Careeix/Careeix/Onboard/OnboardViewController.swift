@@ -73,7 +73,7 @@ class OnboardViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.showHomeViewDriver
-            .map { _ in "loginSuccess"}
+            .map { _ in "loginSuccess" }
             .drive (with: self) { owner, name in
                 NotificationCenter.default.post(name: Notification.Name(name), object: nil)
             }.disposed(by: disposeBag)

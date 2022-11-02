@@ -15,7 +15,7 @@ struct ProjectInputViewModel {
     
     // MARK: Properties
     let projectId: Int
-    let fetchedSimpleInput: Observable<ProjectBaseInputValue>
+    let fetchedSimpleInput: Observable<ProjectBaseInfo>
     let fetchedChapters: Observable<[ProjectChapter]>
     
     // MARK: SubViewModels
@@ -31,7 +31,7 @@ struct ProjectInputViewModel {
     // MARK: Output
     let nextButtonEnableDriver: Driver<Void>
     let nextButtonDisableDriver: Driver<Void>
-    let combinedDataDriver: Driver<ProjectBaseInputValue>
+    let combinedDataDriver: Driver<ProjectBaseInfo>
     let checkBoxIsSelctedDriver: Driver<Bool>
     let askingKeepAlertDriver: Driver<Void>
     let fillFetcedDataDriver: Driver<Void>
@@ -41,7 +41,6 @@ struct ProjectInputViewModel {
          classificationInputViewModel: SimpleInputViewModel,
          introduceInputViewModel: ManyInputViewModel, projectId: Int = -1) {
         self.projectId = projectId
-//        UserDefaultManager.shared.currentWritingProjectId = projectId
         self.titleInputViewModel = titleInputViewModel
         self.periodInputViewModel = periodInputViewModel
         self.classificationInputViewModel = classificationInputViewModel
@@ -55,7 +54,7 @@ struct ProjectInputViewModel {
         
         combinedDataDriver = combinedInputValuesObservable
             .map { inputs in
-                return ProjectBaseInputValue(title: inputs.0, startDateString: inputs.1, endDateString: inputs.2, classification: inputs.3, introduce: inputs.4, isProceed: inputs.5)
+                return ProjectBaseInfo(title: inputs.0, startDateString: inputs.1, endDateString: inputs.2, classification: inputs.3, introduce: inputs.4, isProceed: inputs.5)
             }.asDriver(onErrorJustReturn: .init(title: "", classification: "", introduce: ""))
         
         let buttonStateDriver = combinedInputValuesObservable
@@ -99,14 +98,14 @@ struct ProjectInputViewModel {
         // 이어서 수정안하기 -> 새로운 데이터로 유저 디폴트 값 저장 -> (등록이면 초기화값, 수정이면 서버에서 패치해온값)
         
         askingKeepAlertDriver = initialFetchData
-            .filter { $0.0 != UserDefaultManager.shared.projectInput[projectId] || $0.1 != UserDefaultManager.shared.projectChapters[projectId] }
+            .filter { $0.0 != UserDefaultManager.projectBaseInputCache[projectId] || $0.1 != UserDefaultManager.projectChaptersInputCache[projectId] }
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
         
         fillFetcedDataDriver = Observable.combineLatest(fillFetchedDataTrigger, fetchedSimpleInput, fetchedChapters)
             .do {
-                UserDefaultManager.shared.projectInput[projectId] = $0.1
-                UserDefaultManager.shared.projectChapters[projectId] = $0.2
+                UserDefaultManager.projectBaseInputCache[projectId] = $0.1
+                UserDefaultManager.projectChaptersInputCache[projectId] = $0.2
             }
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
@@ -119,18 +118,18 @@ struct ProjectInputViewModel {
         }
     }
     
-    func updatePersistanceData(_ sender :ProjectBaseInputValue) {
-        UserDefaultManager.shared.projectInput[projectId] = sender
+    func updatePersistanceData(_ sender :ProjectBaseInfo) {
+        UserDefaultManager.projectBaseInputCache[projectId] = sender
     }
     
     func checkRemainingData() -> Bool {
         return projectId == -1 && (
-            UserDefaultManager.shared.projectInput[projectId] != .init(title: "", classification: "", introduce: "")
-            || UserDefaultManager.shared.projectChapters[projectId]?.count != 0)
+            UserDefaultManager.projectBaseInputCache[projectId] != .init(title: "", classification: "", introduce: "")
+            || UserDefaultManager.projectChaptersInputCache[projectId]?.count != 0)
     }
     
     func fillRemainingInput() {
-        guard let remainigInput = UserDefaultManager.shared.projectInput[projectId] else { return }
+        guard let remainigInput = UserDefaultManager.projectBaseInputCache[projectId] else { return }
         print("로컬에 저장된 데이터: ", remainigInput)
         
         titleInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.title)
@@ -144,18 +143,18 @@ struct ProjectInputViewModel {
     
     func initProject() {
         // TODO: 서버 통신 … ?
-        if UserDefaultManager.shared.projectInput[projectId] == nil {
-            UserDefaultManager.shared.projectInput[projectId] = .init(title: "", classification: "", introduce: "")
+        if UserDefaultManager.projectBaseInputCache[projectId] == nil {
+            UserDefaultManager.projectBaseInputCache[projectId] = .init(title: "", classification: "", introduce: "")
         }
-        if UserDefaultManager.shared.projectChapters[projectId] == nil {
-            UserDefaultManager.shared.projectChapters[projectId] = []
+        if UserDefaultManager.projectChaptersInputCache[projectId] == nil {
+            UserDefaultManager.projectChaptersInputCache[projectId] = []
         }
     }
     
     func initPersistenceData() {
         if projectId == -1 {
-            UserDefaultManager.shared.projectInput[-1] = .init(title: "", classification: "", introduce: "")
-            UserDefaultManager.shared.projectChapters[-1] = []
+            UserDefaultManager.projectBaseInputCache[-1] = .init(title: "", classification: "", introduce: "")
+            UserDefaultManager.projectChaptersInputCache[-1] = []
         } else {
             // TODO: 서버 통신 (project ID로 Project 내용 get)
         }

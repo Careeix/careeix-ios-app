@@ -61,16 +61,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let projectInputDetailViewController = UINavigationController(rootViewController: ProjectInputDetailViewController(viewModel: .init()))
 ////        let chapterInputViewController = UINavigationController(rootViewController: ProjectChapterInputViewController(viewModel: .init(currentIndex: <#T##Int#>, titleTextFieldViewModel: <#T##BaseTextFieldViewModel#>, contentViewModel: <#T##BaseTextViewModel#>)))
 //        let onboardingViewController = UINavigationController(rootViewController: OnboardViewController())
-////        UserDefaultManager.shared.projectChapters = []
+////        UserDefaultManager.projectChapters = []
 
-        UserDefaultManager.shared.jwtToken = ""
-//      UserDefaultManager.shared.projectChapters[-1] = []
+        UserDefaultManager.jwtToken = ""
+//      UserDefaultManager.projectChapters[-1] = []
         // test end
         
 
-        UserDefaultManager.shared.currentWritingProjectId = -2
+        UserDefaultManager.writingProjectId = -2
 
-        window?.rootViewController = UserDefaultManager.shared.jwtToken == "a"
+        window?.rootViewController = UserDefaultManager.jwtToken == "a"
         ? UINavigationController(rootViewController: OnboardViewController())
         : TabBarController()
         

@@ -56,7 +56,7 @@ extension SocialLoginService {
             .debug("카카오 로그인 SDK")
             .map { $0.accessToken }
             .catch { _ in .just("토큰 에러") }
-            .do { UserDefaultManager.shared.kakaoAccessToken = $0 }
+            .do { UserDefaultManager.kakaoAccessToken = $0 }
     }
     
     func callKakaoLoginApi(accessToken: String) -> Observable<LoginAPI.Response> {
