@@ -77,6 +77,11 @@
 		7A2C4BBD290FD10E00833323 /* UserDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C4BBC290FD10E00833323 /* UserDataManager.swift */; };
 		7A39BE5C29008F2B0067D2DC /* EmptyCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A39BE5B29008F2B0067D2DC /* EmptyCareerProfileCell.swift */; };
 		7A84D46F2902C80900939D89 /* CardProfileDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A84D46E2902C80900939D89 /* CardProfileDetailViewController.swift */; };
+		7A96980B2911BCCC001CB1CF /* AccountInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A96980A2911BCCC001CB1CF /* AccountInfoViewController.swift */; };
+		7A96980D2911D075001CB1CF /* UpdatedNicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A96980C2911D075001CB1CF /* UpdatedNicknameViewController.swift */; };
+		7A9F194E2911881100234C9D /* MypageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9F194D2911881100234C9D /* MypageViewController.swift */; };
+		7A9F19512911953100234C9D /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9F19502911953000234C9D /* MyPageTableViewCell.swift */; };
+		7A9F195329119A3600234C9D /* MyPageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9F195229119A3600234C9D /* MyPageHeaderView.swift */; };
 		7AB279AF2902D15F00ED3D97 /* CardProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB279AE2902D15F00ED3D97 /* CardProfileCell.swift */; };
 		7AC3A2142906BA3F001591CD /* IntroduceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC3A2132906BA3F001591CD /* IntroduceCell.swift */; };
 		7AC3A21729080392001591CD /* ProjectChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC3A21629080392001591CD /* ProjectChapterViewController.swift */; };
@@ -163,6 +168,11 @@
 		7A2C4BBC290FD10E00833323 /* UserDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataManager.swift; sourceTree = "<group>"; };
 		7A39BE5B29008F2B0067D2DC /* EmptyCareerProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCareerProfileCell.swift; sourceTree = "<group>"; };
 		7A84D46E2902C80900939D89 /* CardProfileDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardProfileDetailViewController.swift; sourceTree = "<group>"; };
+		7A96980A2911BCCC001CB1CF /* AccountInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfoViewController.swift; sourceTree = "<group>"; };
+		7A96980C2911D075001CB1CF /* UpdatedNicknameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedNicknameViewController.swift; sourceTree = "<group>"; };
+		7A9F194D2911881100234C9D /* MypageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageViewController.swift; sourceTree = "<group>"; };
+		7A9F19502911953000234C9D /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
+		7A9F195229119A3600234C9D /* MyPageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageHeaderView.swift; sourceTree = "<group>"; };
 		7AB279AE2902D15F00ED3D97 /* CardProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardProfileCell.swift; sourceTree = "<group>"; };
 		7AC3A2132906BA3F001591CD /* IntroduceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroduceCell.swift; sourceTree = "<group>"; };
 		7AC3A21629080392001591CD /* ProjectChapterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterViewController.swift; sourceTree = "<group>"; };
@@ -239,7 +249,7 @@
 				786F46902901441700215AF0 /* ProjectInput */,
 				785AF52E290512C200592F7F /* ProjectInputDetail */,
 				785AF5372905572900592F7F /* ProjectChapterInput */,
-				786E703D2911244D00463E76 /* Profile */,
+				7A9F194C291187D400234C9D /* MyPage */,
 				7AFE501528FD8FB400A72D65 /* Extensions */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
@@ -283,13 +293,6 @@
 				789F27C12906EA4C00F634F0 /* Cells */,
 			);
 			path = ProjectChapterInput;
-			sourceTree = "<group>";
-		};
-		786E703D2911244D00463E76 /* Profile */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Profile;
 			sourceTree = "<group>";
 		};
 		786F46902901441700215AF0 /* ProjectInput */ = {
@@ -473,6 +476,27 @@
 			path = CareerProfile;
 			sourceTree = "<group>";
 		};
+		7A9F194C291187D400234C9D /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				7A9F194D2911881100234C9D /* MypageViewController.swift */,
+				7A96980A2911BCCC001CB1CF /* AccountInfoViewController.swift */,
+				7A96980C2911D075001CB1CF /* UpdatedNicknameViewController.swift */,
+				7A9F194F291194F200234C9D /* Cells */,
+			);
+			name = MyPage;
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		7A9F194F291194F200234C9D /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7A9F19502911953000234C9D /* MyPageTableViewCell.swift */,
+				7A9F195229119A3600234C9D /* MyPageHeaderView.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		7AC3A2152908033D001591CD /* ProjectChapter */ = {
 			isa = PBXGroup;
 			children = (
@@ -652,6 +676,7 @@
 				7AB279AF2902D15F00ED3D97 /* CardProfileCell.swift in Sources */,
 				7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */,
 				78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */,
+				7A9F19512911953100234C9D /* MyPageTableViewCell.swift in Sources */,
 				7A2C4BBD290FD10E00833323 /* UserDataManager.swift in Sources */,
 				785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */,
 				788A09FF290A7BBD003EF027 /* ProjectChapterInputViewModel.swift in Sources */,
@@ -660,6 +685,7 @@
 				786F46A22901A21B00215AF0 /* BaseCheckBoxView.swift in Sources */,
 				78C9099A2905918A00AA9AA3 /* ProjectChapter.swift in Sources */,
 				786E7039290FCF4400463E76 /* NavigationController.swift in Sources */,
+				7A96980D2911D075001CB1CF /* UpdatedNicknameViewController.swift in Sources */,
 				786F4698290199EF00215AF0 /* BaseTextView.swift in Sources */,
 				78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */,
 				7AFE502428FD90C600A72D65 /* HomeAlertViewController.swift in Sources */,
@@ -671,6 +697,7 @@
 				7AC3A21729080392001591CD /* ProjectChapterViewController.swift in Sources */,
 				784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */,
 				7881F5522902D91D00111395 /* TwoButtonAlertViewController.swift in Sources */,
+				7A9F194E2911881100234C9D /* MypageViewController.swift in Sources */,
 				7AC3A2142906BA3F001591CD /* IntroduceCell.swift in Sources */,
 				78F4CE3E290045BB00284B86 /* UIFont+.swift in Sources */,
 				785AF53429054EFE00592F7F /* ProjectChapterCell.swift in Sources */,
@@ -680,12 +707,14 @@
 				78DC17BF28FA943E00331A22 /* SignUpViewController.swift in Sources */,
 				785AF5392905574A00592F7F /* ProjectChapterInputViewController.swift in Sources */,
 				786F469629018F5500215AF0 /* Date+.swift in Sources */,
+				7A96980B2911BCCC001CB1CF /* AccountInfoViewController.swift in Sources */,
 				786F46A02901A1A400215AF0 /* ManyInputView.swift in Sources */,
 				78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */,
 				78DC17C728FA9E1C00331A22 /* SimpleInputView.swift in Sources */,
 				7A84D46F2902C80900939D89 /* CardProfileDetailViewController.swift in Sources */,
 				789F27C029068C2200F634F0 /* DatePickerView.swift in Sources */,
 				789F27C32906ECA400F634F0 /* NoteCell.swift in Sources */,
+				7A9F195329119A3600234C9D /* MyPageHeaderView.swift in Sources */,
 				7AFE502628FD90C600A72D65 /* HomeModel.swift in Sources */,
 				78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */,
 			);

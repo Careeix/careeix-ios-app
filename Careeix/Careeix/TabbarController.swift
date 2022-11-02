@@ -34,7 +34,7 @@ class TabBarController: UITabBarController {
     }()
     
     lazy var myPageViewController: UIViewController = {
-        let vc = NavigationController(rootViewController: UIViewController())
+        let vc = NavigationController(rootViewController: MypageViewController())
         vc.updateProgressBar(progress: 0)
         vc.tabBarItem = UITabBarItem(title: "My", image: UIImage(named: "profile"), tag: 3)
         
