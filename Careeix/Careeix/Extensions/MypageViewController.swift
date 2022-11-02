@@ -77,6 +77,7 @@ extension MypageViewController: UITableViewDataSource {
         let cell = myPageTableView.dequeueReusableCell(withIdentifier: "cell") as! MyPageTableViewCell
         cell.textLabel?.textColor = .appColor(.gray900)
         cell.textLabel?.font = .pretendardFont(size: 15, style: .light)
+        cell.selectionStyle = .none
         
         if indexPath.section == 0 {
             switch indexPath.item {
