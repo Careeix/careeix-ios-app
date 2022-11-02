@@ -41,7 +41,9 @@ extension NavigationController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if !(viewController is ProjectInputViewController
             || viewController is ProjectInputDetailViewController
-            || viewController is ProjectChapterInputViewController) {
+            || viewController is ProjectChapterInputViewController
+            || viewController is ProjectLookupViewController
+        ) {
             updateProgressBar(progress: 0)
         }
     }

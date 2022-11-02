@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "tabbar_write.png",
+      "filename" : "plus icon (9).png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "plus icon (10).png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "plus icon (11).png",
       "idiom" : "universal",
       "scale" : "3x"
     }

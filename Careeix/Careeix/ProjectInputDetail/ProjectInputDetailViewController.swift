@@ -45,8 +45,7 @@ class ProjectInputDetailViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                viewModel.createProject()
-                owner.navigationController?.popToRootViewController(animated: true)
+                owner.navigationController?.pushViewController(ProjectLookupViewController(viewModel: .init(type: .post)), animated: true)
             }.disposed(by: disposeBag)
         
         viewModel.updateTableViewHeightDriver
@@ -64,7 +63,7 @@ class ProjectInputDetailViewController: UIViewController {
     
     func updateCompleteButtonView() {
         completeButtonView.isUserInteractionEnabled = !(UserDefaultManager.shared.projectChapters.count == 0)
-        completeButtonView.backgroundColor = completeButtonView.isUserInteractionEnabled ? .appColor(.main) : .appColor(.disable)
+        completeButtonView.backgroundColor = completeButtonView.isUserInteractionEnabled ? .appColor(.next) : .appColor(.disable)
     }
     
     // MARK: Initializer
@@ -75,8 +74,7 @@ class ProjectInputDetailViewController: UIViewController {
         setUI()
         bind(to: viewModel)
         view.backgroundColor = .appColor(.white)
-
-        completeButtonView.isUserInteractionEnabled = false
+        updateCompleteButtonView()
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -120,7 +118,7 @@ class ProjectInputDetailViewController: UIViewController {
         return tv
     }()
     let addButtonView = ContentsAddButtonView()
-    let completeButtonView = CompleteButtonView(viewModel: .init(content: "발행하기", backgroundColor: .white))
+    let completeButtonView = CompleteButtonView(viewModel: .init(content: "미리보기", backgroundColor: .white))
 }
 
 extension ProjectInputDetailViewController {

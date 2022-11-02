@@ -39,19 +39,6 @@ struct ProjectInputDetailViewModel {
             .asDriver(onErrorJustReturn: 0)
     }
     
-    func createProject() {
-        
-        print("발행전 데이터 확인")
-        print(UserDefaultManager.shared.jwtToken)
-        print(UserDefaultManager.shared.projectInput[projectId])
-        print(UserDefaultManager.shared.projectChapters[projectId])
-        // TODO: 서버 통신
-    
-        deleteProject()
-    }
-    
-    func deleteProject() {
-        UserDefaultManager.shared.projectInput[projectId] = nil
-        UserDefaultManager.shared.projectChapters[projectId] = nil
-    }
+
+
 }
