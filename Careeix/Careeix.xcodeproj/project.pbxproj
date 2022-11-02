@@ -22,11 +22,6 @@
 		785AF53629054F2500592F7F /* ContentsAddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF53529054F2500592F7F /* ContentsAddButtonView.swift */; };
 		785AF5392905574A00592F7F /* ProjectChapterInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */; };
 		786E7039290FCF4400463E76 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E7038290FCF4400463E76 /* NavigationController.swift */; };
-		786E705B2912583F00463E76 /* ProjectLookupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E70552912583F00463E76 /* ProjectLookupViewModel.swift */; };
-		786E705C2912583F00463E76 /* ProjectChapterLookupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E70572912583F00463E76 /* ProjectChapterLookupCell.swift */; };
-		786E705D2912583F00463E76 /* ProjectLookupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E70582912583F00463E76 /* ProjectLookupViewController.swift */; };
-		786E705E2912583F00463E76 /* ProjectLookupHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E705A2912583F00463E76 /* ProjectLookupHeaderView.swift */; };
-		786E70612912585900463E76 /* ProjectChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786E70602912585800463E76 /* ProjectChapterViewController.swift */; };
 		786F46922901443400215AF0 /* ProjectInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F46912901443400215AF0 /* ProjectInputViewController.swift */; };
 		786F469429018B2E00215AF0 /* BaseInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469329018B2E00215AF0 /* BaseInputView.swift */; };
 		786F469629018F5500215AF0 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F469529018F5500215AF0 /* Date+.swift */; };
@@ -121,11 +116,6 @@
 		785AF53529054F2500592F7F /* ContentsAddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentsAddButtonView.swift; sourceTree = "<group>"; };
 		785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterInputViewController.swift; sourceTree = "<group>"; };
 		786E7038290FCF4400463E76 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
-		786E70552912583F00463E76 /* ProjectLookupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectLookupViewModel.swift; sourceTree = "<group>"; };
-		786E70572912583F00463E76 /* ProjectChapterLookupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectChapterLookupCell.swift; sourceTree = "<group>"; };
-		786E70582912583F00463E76 /* ProjectLookupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectLookupViewController.swift; sourceTree = "<group>"; };
-		786E705A2912583F00463E76 /* ProjectLookupHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectLookupHeaderView.swift; sourceTree = "<group>"; };
-		786E70602912585800463E76 /* ProjectChapterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectChapterViewController.swift; sourceTree = "<group>"; };
 		786F46912901443400215AF0 /* ProjectInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInputViewController.swift; sourceTree = "<group>"; };
 		786F469329018B2E00215AF0 /* BaseInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseInputView.swift; sourceTree = "<group>"; };
 		786F469529018F5500215AF0 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
@@ -243,8 +233,6 @@
 				78DC17BA28FA937400331A22 /* SignUp */,
 				7AFE501828FD90C600A72D65 /* Home */,
 				7A2C4BBE290FDC2D00833323 /* CareerProfile */,
-				786E70542912583F00463E76 /* Project */,
-				786E705F2912585800463E76 /* ProjectChapter */,
 				786F46902901441700215AF0 /* ProjectInput */,
 				785AF52E290512C200592F7F /* ProjectInputDetail */,
 				785AF5372905572900592F7F /* ProjectChapterInput */,
@@ -291,41 +279,6 @@
 				789F27C12906EA4C00F634F0 /* Cells */,
 			);
 			path = ProjectChapterInput;
-			sourceTree = "<group>";
-		};
-		786E70542912583F00463E76 /* Project */ = {
-			isa = PBXGroup;
-			children = (
-				786E70582912583F00463E76 /* ProjectLookupViewController.swift */,
-				786E70552912583F00463E76 /* ProjectLookupViewModel.swift */,
-				786E70562912583F00463E76 /* Cells */,
-				786E70592912583F00463E76 /* Views */,
-			);
-			path = Project;
-			sourceTree = "<group>";
-		};
-		786E70562912583F00463E76 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				786E70572912583F00463E76 /* ProjectChapterLookupCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		786E70592912583F00463E76 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				786E705A2912583F00463E76 /* ProjectLookupHeaderView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		786E705F2912585800463E76 /* ProjectChapter */ = {
-			isa = PBXGroup;
-			children = (
-				786E70602912585800463E76 /* ProjectChapterViewController.swift */,
-			);
-			path = ProjectChapter;
 			sourceTree = "<group>";
 		};
 		786F46902901441700215AF0 /* ProjectInput */ = {
@@ -684,9 +637,6 @@
 				785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */,
 				788A09FF290A7BBD003EF027 /* ProjectChapterInputViewModel.swift in Sources */,
 				78E6F00A290C70F20026655D /* ProjectInputDetailViewModel.swift in Sources */,
-				786E705D2912583F00463E76 /* ProjectLookupViewController.swift in Sources */,
-				786E705C2912583F00463E76 /* ProjectChapterLookupCell.swift in Sources */,
-				786E70612912585900463E76 /* ProjectChapterViewController.swift in Sources */,
 				7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */,
 				786F46A22901A21B00215AF0 /* BaseCheckBoxView.swift in Sources */,
 				78C9099A2905918A00AA9AA3 /* Project.swift in Sources */,
@@ -713,10 +663,8 @@
 				786F46A02901A1A400215AF0 /* ManyInputView.swift in Sources */,
 				78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */,
 				78DC17C728FA9E1C00331A22 /* SimpleInputView.swift in Sources */,
-				786E705E2912583F00463E76 /* ProjectLookupHeaderView.swift in Sources */,
 				7A84D46F2902C80900939D89 /* CardProfileDetailViewController.swift in Sources */,
 				789F27C029068C2200F634F0 /* DatePickerView.swift in Sources */,
-				786E705B2912583F00463E76 /* ProjectLookupViewModel.swift in Sources */,
 				789F27C32906ECA400F634F0 /* NoteCell.swift in Sources */,
 				7AFE502628FD90C600A72D65 /* HomeModel.swift in Sources */,
 				78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */,
