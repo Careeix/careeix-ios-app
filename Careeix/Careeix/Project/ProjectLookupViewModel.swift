@@ -10,30 +10,44 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
-struct ProjectLookupViewModel {
+class ProjectLookupViewModel {
     let projectId: Int
-    let topInset: CGFloat
-//    let project: Project
+    var title: String = ""
+    let isWriting: Bool
     
-//    let completeButtonIsHidden: Bool
-    let lookUpCellDataDriver: Driver<[String]>
+    let projectBaseInfo: Observable<ProjectBaseInfo>
+    let projectChapters: Observable<[ProjectChapter]>
+    
+    // MARK: Output
+    let headerViewDataDriver: Driver<ProjectBaseInfo>
+    let lookupCellDataDriver: Driver<[ProjectChapter]>
     
     init(projectId: Int) {
         self.projectId = projectId
-        let isWriting = UserDefaultManager.writingProjectId != -2
-        self.topInset = isWriting ? 30 : 14
-        let projectBaseInput = UserDefaultManager.projectBaseInputCache[projectId] ?? .init(title: "", classification: "", introduce: "")
-        let projectChapterInput = UserDefaultManager.projectChaptersInputCache[projectId]
-        lookUpCellDataDriver = .just(UserDefaultManager.projectChaptersInputCache[projectId]?.map { $0.title } ?? [])
-//        completeButtonIsHidden = type.completeButtonIsHidden()
+        isWriting = UserDefaultManager.writingProjectId != -2
         
+        if isWriting {
+            projectBaseInfo = .just(UserDefaultManager.projectBaseInputCache[projectId]!)
+            projectChapters = .just(UserDefaultManager.projectChaptersInputCache[projectId]!)
+        } else {
+            let fetchedProject = ProjectNetworkManager.fetchProject(with: projectId).share()
+            projectBaseInfo = fetchedProject.map {
+                .init(title: $0.title,
+                      startDateString: $0.startDateString,
+                      endDateString: $0.endDateString,
+                      classification: $0.classification,
+                      introduce: $0.introduce,
+                      isProceed: $0.isProceed)
+            }
+            projectChapters = fetchedProject.map { $0.projectChapters }
+        }
+        
+        lookupCellDataDriver = projectChapters
+            .asDriver(onErrorJustReturn: [])
+        
+        headerViewDataDriver = projectBaseInfo
+            .asDriver(onErrorJustReturn: .init(title: "", classification: "", introduce: ""))
     }
-    
-//    func project() -> Project {
-//        if projectId == -1 {
-//            
-//        }
-//    }
     
     func createProject() {
         print("발행전 데이터 확인")
@@ -42,7 +56,7 @@ struct ProjectLookupViewModel {
         print(UserDefaultManager.projectBaseInputCache[projectId])
         print(UserDefaultManager.projectChaptersInputCache[projectId])
         //        // TODO: 서버 통신 (프로젝트 post)
-//        deleteProject()
+        //        deleteProject()
     }
     
     func deleteProject() {

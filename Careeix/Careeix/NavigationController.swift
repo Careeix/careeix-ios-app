@@ -43,6 +43,7 @@ extension NavigationController: UINavigationControllerDelegate {
             || viewController is ProjectInputDetailViewController
             || viewController is ProjectChapterInputViewController
             || viewController is ProjectLookupViewController
+            || viewController is ProjectChapterViewController
         ) {
             updateProgressBar(progress: 0)
         }

@@ -11,6 +11,15 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
+struct ProjectNetworkManager {
+    static func fetchProject(with id: Int) -> Observable<Project> {
+        return Observable.create { observer in
+            observer.onNext(Project.init(title: "temp", startDateString: "temp", endDateString: "temp", classification: "temp", introduce: "temp", isProceed: false, projectChapters: [.init(title: "", content: "'", notes: [])]))
+            return Disposables.create()
+        }
+    }
+}
+
 struct ProjectInputViewModel {
     
     // MARK: Properties
@@ -75,7 +84,7 @@ struct ProjectInputViewModel {
         checkBoxIsSelctedDriver = periodInputViewModel.checkBoxViewModel.isSeclectedRelayShare
             .asDriver(onErrorJustReturn: false)
         
-        let projectResult = callgetProjectAPI().share()
+        let projectResult = ProjectNetworkManager.fetchProject(with: projectId).share()
         fetchedSimpleInput = projectId == -1
         ? .just(.init(title: "", classification: "", introduce: ""))
         : projectResult.map {
@@ -109,13 +118,6 @@ struct ProjectInputViewModel {
             }
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
-        
-        func callgetProjectAPI() -> Observable<Project> {
-            return Observable.create { observer in
-                observer.onNext(Project.init(title: "temp", startDateString: "temp", endDateString: "temp", classification: "temp", introduce: "temp", isProceed: false, projectChapters: [.init(title: "", content: "'", notes: [])]))
-                return Disposables.create()
-            }
-        }
     }
     
     func updatePersistanceData(_ sender :ProjectBaseInfo) {

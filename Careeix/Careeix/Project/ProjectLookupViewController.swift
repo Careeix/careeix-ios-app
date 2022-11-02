@@ -14,7 +14,7 @@ import RxGesture
 class ProjectLookupViewController: UIViewController {
     // MARK: - Properties
     var disposeBag = DisposeBag()
-    let viewModel: ProjectLookupViewModel
+    var viewModel: ProjectLookupViewModel
     
     // MARK: - Binding
     func bind(to viewModel: ProjectLookupViewModel) {
@@ -25,16 +25,32 @@ class ProjectLookupViewController: UIViewController {
                 viewModel.createProject()
             }.disposed(by: disposeBag)
         
-        viewModel.lookUpCellDataDriver
+        viewModel.lookupCellDataDriver
             .drive(tableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: ProjectChapterLookupCell.self.description(), for: IndexPath(row: row, section: 0)) as? ProjectChapterLookupCell else { return UITableViewCell() }
-                cell.bind(to: .init(number: row + 1, title: data))
+                cell.bind(to: .init(row: row + 1, projectChapter: data))
                 return cell
             }.disposed(by: disposeBag)
         
+        viewModel.projectBaseInfo
+            .map { $0.title }
+            .bind { title in
+                viewModel.title = title
+            }.disposed(by: disposeBag)
+        
+        viewModel.headerViewDataDriver
+            .drive(with: self) { owner, projectBaseInfo in
+                owner.headerView.bind(to: .init(projectBaseInfo: projectBaseInfo))
+            }.disposed(by: disposeBag)
+            
         tableView.rx.itemSelected
-            .bind { indexPath in
-                print(indexPath)
+            .compactMap(tableView.cellForRow)
+            .asDriver(onErrorJustReturn: UITableViewCell() )
+            .compactMap { $0 as? ProjectChapterLookupCell}
+            .map { $0.viewModel.projectChapter }
+            .debug("셀 선택 됐어 ~~🐷")
+            .drive(with: self) { owner, projectChapter in
+                owner.navigationController?.pushViewController(ProjectChapterViewController(viewModel: .init(title: viewModel.title, projectChapter: projectChapter)), animated: true)
             }.disposed(by: disposeBag)
     }
     
@@ -43,6 +59,7 @@ class ProjectLookupViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         bind(to: viewModel)
+        completeButtonView.isHidden = !viewModel.isWriting
     }
     
     required init?(coder: NSCoder) {
@@ -60,9 +77,9 @@ class ProjectLookupViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
         tabBarController?.tabBar.isHidden = true
-//        if let navigationController = navigationController as? NavigationController, !viewModel.completeButtonIsHidden {
-//            navigationController.updateProgressBar(progress: 1)
-//        }
+        if let navigationController = navigationController as? NavigationController, viewModel.isWriting {
+            navigationController.updateProgressBar(progress: 1)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -79,6 +96,7 @@ class ProjectLookupViewController: UIViewController {
         return v
     }()
     let completeButtonView = CompleteButtonView(viewModel: .init(content: "발행하기", backgroundColor: .next))
+    let headerView = ProjectLookupHeaderView()
 }
 
 extension ProjectLookupViewController {
@@ -100,8 +118,7 @@ extension ProjectLookupViewController {
 
 extension ProjectLookupViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let v = ProjectLookupHeaderView(viewModel: .init(title: "temp", division: "temp", startDateString: "temp", endDateString: "temp"))
-        return v
+        return headerView
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 108
