@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		78345E0129126F0700EB9621 /* ProjectLookupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345DFB29126F0700EB9621 /* ProjectLookupViewModel.swift */; };
+		78345E0229126F0700EB9621 /* ProjectChapterLookupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345DFD29126F0700EB9621 /* ProjectChapterLookupCell.swift */; };
+		78345E0329126F0700EB9621 /* ProjectLookupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345DFE29126F0700EB9621 /* ProjectLookupViewController.swift */; };
+		78345E0429126F0700EB9621 /* ProjectLookupHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E0029126F0700EB9621 /* ProjectLookupHeaderView.swift */; };
+		78345E0729126F1100EB9621 /* ProjectChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E0629126F1100EB9621 /* ProjectChapterViewController.swift */; };
+		78345E0F29126F1B00EB9621 /* MyPageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E0A29126F1B00EB9621 /* MyPageHeaderView.swift */; };
+		78345E1029126F1B00EB9621 /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E0B29126F1B00EB9621 /* MyPageTableViewCell.swift */; };
+		78345E1129126F1B00EB9621 /* AccountInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E0C29126F1B00EB9621 /* AccountInfoViewController.swift */; };
+		78345E1229126F1B00EB9621 /* UpdatedNicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E0D29126F1B00EB9621 /* UpdatedNicknameViewController.swift */; };
+		78345E1329126F1B00EB9621 /* MypageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E0E29126F1B00EB9621 /* MypageViewController.swift */; };
 		784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD09828EDA23900CA86F0 /* AppDelegate.swift */; };
 		784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */; };
 		784BD0A228EDA23A00CA86F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 784BD0A128EDA23A00CA86F0 /* Assets.xcassets */; };
@@ -104,6 +114,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		78345DFB29126F0700EB9621 /* ProjectLookupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectLookupViewModel.swift; sourceTree = "<group>"; };
+		78345DFD29126F0700EB9621 /* ProjectChapterLookupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectChapterLookupCell.swift; sourceTree = "<group>"; };
+		78345DFE29126F0700EB9621 /* ProjectLookupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectLookupViewController.swift; sourceTree = "<group>"; };
+		78345E0029126F0700EB9621 /* ProjectLookupHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectLookupHeaderView.swift; sourceTree = "<group>"; };
+		78345E0629126F1100EB9621 /* ProjectChapterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectChapterViewController.swift; sourceTree = "<group>"; };
+		78345E0A29126F1B00EB9621 /* MyPageHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageHeaderView.swift; sourceTree = "<group>"; };
+		78345E0B29126F1B00EB9621 /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
+		78345E0C29126F1B00EB9621 /* AccountInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountInfoViewController.swift; sourceTree = "<group>"; };
+		78345E0D29126F1B00EB9621 /* UpdatedNicknameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatedNicknameViewController.swift; sourceTree = "<group>"; };
+		78345E0E29126F1B00EB9621 /* MypageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MypageViewController.swift; sourceTree = "<group>"; };
 		784BD09528EDA23900CA86F0 /* Careeix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Careeix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		784BD09828EDA23900CA86F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -201,6 +221,61 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		78345DFA29126F0700EB9621 /* Project */ = {
+			isa = PBXGroup;
+			children = (
+				78345DFB29126F0700EB9621 /* ProjectLookupViewModel.swift */,
+				78345DFC29126F0700EB9621 /* Cells */,
+				78345DFE29126F0700EB9621 /* ProjectLookupViewController.swift */,
+				78345DFF29126F0700EB9621 /* Views */,
+			);
+			path = Project;
+			sourceTree = "<group>";
+		};
+		78345DFC29126F0700EB9621 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				78345DFD29126F0700EB9621 /* ProjectChapterLookupCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		78345DFF29126F0700EB9621 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				78345E0029126F0700EB9621 /* ProjectLookupHeaderView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		78345E0529126F1100EB9621 /* ProjectChapter */ = {
+			isa = PBXGroup;
+			children = (
+				78345E0629126F1100EB9621 /* ProjectChapterViewController.swift */,
+			);
+			path = ProjectChapter;
+			sourceTree = "<group>";
+		};
+		78345E0829126F1B00EB9621 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				78345E0929126F1B00EB9621 /* Cells */,
+				78345E0C29126F1B00EB9621 /* AccountInfoViewController.swift */,
+				78345E0D29126F1B00EB9621 /* UpdatedNicknameViewController.swift */,
+				78345E0E29126F1B00EB9621 /* MypageViewController.swift */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
+		78345E0929126F1B00EB9621 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				78345E0A29126F1B00EB9621 /* MyPageHeaderView.swift */,
+				78345E0B29126F1B00EB9621 /* MyPageTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		784BD08C28EDA23900CA86F0 = {
 			isa = PBXGroup;
 			children = (
@@ -236,6 +311,9 @@
 				786F46902901441700215AF0 /* ProjectInput */,
 				785AF52E290512C200592F7F /* ProjectInputDetail */,
 				785AF5372905572900592F7F /* ProjectChapterInput */,
+				78345DFA29126F0700EB9621 /* Project */,
+				78345E0529126F1100EB9621 /* ProjectChapter */,
+				78345E0829126F1B00EB9621 /* MyPage */,
 				7AFE501528FD8FB400A72D65 /* Extensions */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
 				784BD0A328EDA23A00CA86F0 /* LaunchScreen.storyboard */,
@@ -637,9 +715,13 @@
 				785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */,
 				788A09FF290A7BBD003EF027 /* ProjectChapterInputViewModel.swift in Sources */,
 				78E6F00A290C70F20026655D /* ProjectInputDetailViewModel.swift in Sources */,
+				78345E0329126F0700EB9621 /* ProjectLookupViewController.swift in Sources */,
+				78345E0229126F0700EB9621 /* ProjectChapterLookupCell.swift in Sources */,
+				78345E0729126F1100EB9621 /* ProjectChapterViewController.swift in Sources */,
 				7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */,
 				786F46A22901A21B00215AF0 /* BaseCheckBoxView.swift in Sources */,
 				78C9099A2905918A00AA9AA3 /* Project.swift in Sources */,
+				78345E1029126F1B00EB9621 /* MyPageTableViewCell.swift in Sources */,
 				786E7039290FCF4400463E76 /* NavigationController.swift in Sources */,
 				786F4698290199EF00215AF0 /* BaseTextView.swift in Sources */,
 				78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */,
@@ -647,6 +729,7 @@
 				78DC17CF28FAA58500331A22 /* CompleteButtonView.swift in Sources */,
 				786F469429018B2E00215AF0 /* BaseInputView.swift in Sources */,
 				784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */,
+				78345E1129126F1B00EB9621 /* AccountInfoViewController.swift in Sources */,
 				78D52E5128FD14FF001F5747 /* SignUpModel.swift in Sources */,
 				7A39BE5C29008F2B0067D2DC /* EmptyCareerProfileCell.swift in Sources */,
 				784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */,
@@ -663,9 +746,14 @@
 				786F46A02901A1A400215AF0 /* ManyInputView.swift in Sources */,
 				78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */,
 				78DC17C728FA9E1C00331A22 /* SimpleInputView.swift in Sources */,
+				78345E1329126F1B00EB9621 /* MypageViewController.swift in Sources */,
+				78345E0429126F0700EB9621 /* ProjectLookupHeaderView.swift in Sources */,
 				7A84D46F2902C80900939D89 /* CardProfileDetailViewController.swift in Sources */,
 				789F27C029068C2200F634F0 /* DatePickerView.swift in Sources */,
+				78345E1229126F1B00EB9621 /* UpdatedNicknameViewController.swift in Sources */,
+				78345E0129126F0700EB9621 /* ProjectLookupViewModel.swift in Sources */,
 				789F27C32906ECA400F634F0 /* NoteCell.swift in Sources */,
+				78345E0F29126F1B00EB9621 /* MyPageHeaderView.swift in Sources */,
 				7AFE502628FD90C600A72D65 /* HomeModel.swift in Sources */,
 				78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */,
 			);
