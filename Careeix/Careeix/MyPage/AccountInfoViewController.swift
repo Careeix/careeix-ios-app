@@ -9,13 +9,103 @@ import Foundation
 import UIKit
 import SnapKit
 
+enum UserSocialProvider {
+    case kakao, apple
+    
+    var socialProvider: String {
+        switch self {
+        case .kakao:
+            return "카카오 로그인"
+        case .apple:
+            return "애플 로그인"
+        }
+    }
+}
+
 class AccountInfoViewController: UIViewController {
+    let infoLabel: UILabel = {
+        let label = UILabel()
+        label.text = "계정 정보"
+        label.textColor = .appColor(.gray900)
+        label.font = .pretendardFont(size: 18, style: .medium)
+        return label
+    }()
+    
+    let loginImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    let kindOfLoginLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appColor(.gray400)
+        label.font = .pretendardFont(size: 15, style: .regular)
+        label.text = "카카오 로그인"
+        return label
+    }()
+    
+    let profileLabel: UILabel = {
+        let label = UILabel()
+        label.text = "프로필 관리"
+        label.textColor = .appColor(.gray900)
+        label.font = .pretendardFont(size: 18, style: .medium)
+        return label
+    }()
+    
+    let profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "basicProfile")
+        return imageView
+    }()
+    
+    let filterImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "halfBlackCamera")
+        return imageView
+    }()
+    
+    let nickNameTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "닉네임 변경"
+        label.textColor = .appColor(.gray900)
+        label.font = .pretendardFont(size: 15, style: .light)
+        return label
+    }()
+    
+    let nickNameButtonView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    let nickNameLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appColor(.gray900)
+        label.font = .pretendardFont(size: 15, style: .medium)
+        label.text = "삐용"
+        return label
+    }()
+    
+    let rightButtonImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "Vector")
+        return imageView
+    }()
+    
+    let withdrawalButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("회원탈퇴", for: .normal)
+        button.titleLabel?.font = .pretendardFont(size: 15, style: .medium)
+        button.setTitleColor(.appColor(.gray300), for: .normal)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBackButton()
         setUI()
-//        print("view.frame.width: \(view.frame.width)")
-        
+        tapNickNameButton()
+//        getUserData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -28,92 +118,52 @@ class AccountInfoViewController: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
-    @objc func moveToUpdatedNicknameVC() {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        getUserData()
+    }
+    
+    func tapNickNameButton() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(moveToUpdatedNickNameVC))
+        nickNameButtonView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    @objc func moveToUpdatedNickNameVC() {
         let updatedNicknameVC = UpdatedNicknameViewController()
         self.navigationController?.pushViewController(updatedNicknameVC, animated: true)
+    }
+    
+    func getUserData() {
+        API<UserModel>(path: "users/profile/1", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
+            switch result {
+            case .success(let response):
+                // data:
+                let userNickName = response.data?.userNickname
+                let socialProvider = response.data?.userSocialProvider
+                if socialProvider == 0 {
+                    let kakaoLogin = UserSocialProvider.kakao
+                    self?.kindOfLoginLabel.text = kakaoLogin.socialProvider
+                    self?.loginImageView.image = UIImage(named: "smallKakao")
+                } else {
+                    let appleLogin = UserSocialProvider.apple
+                    self?.kindOfLoginLabel.text = appleLogin.socialProvider
+                    self?.loginImageView.image = UIImage(named: "smallApple")
+                }
+                self?.nickNameLabel.text = userNickName
+                
+//                self?.profileImageView.image = response.data?.userProfileImg
+                print(response.code, response.message)
+                print(response.data!)
+            case .failure(let error):
+                // alert
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 
 extension AccountInfoViewController {
     func setUI() {
-        let infoLabel: UILabel = {
-            let label = UILabel()
-            label.text = "계정 정보"
-            label.textColor = .appColor(.gray900)
-            label.font = .pretendardFont(size: 18, style: .medium)
-            return label
-        }()
-        
-        let loginImageView: UIImageView = {
-            let imageView = UIImageView()
-            imageView.image = UIImage(named: "smallKakao")
-            imageView.contentMode = .scaleAspectFit
-            return imageView
-        }()
-        
-        let kindOfLoginLabel: UILabel = {
-            let label = UILabel()
-            label.textColor = .appColor(.gray400)
-            label.font = .pretendardFont(size: 15, style: .regular)
-            label.text = "카카오 로그인"
-            return label
-        }()
-        
-        let profileLabel: UILabel = {
-            let label = UILabel()
-            label.text = "프로필 관리"
-            label.textColor = .appColor(.gray900)
-            label.font = .pretendardFont(size: 18, style: .medium)
-            return label
-        }()
-        
-        let profileImageView: UIImageView = {
-            let imageView = UIImageView()
-            imageView.image = UIImage(named: "basicProfile")
-            return imageView
-        }()
-        
-        let filterImageView: UIImageView = {
-            let imageView = UIImageView()
-            imageView.image = UIImage(named: "halfBlackCamera")
-            return imageView
-        }()
-        
-        let nickNameTitleLabel: UILabel = {
-            let label = UILabel()
-            label.text = "닉네임 변경"
-            label.textColor = .appColor(.gray900)
-            label.font = .pretendardFont(size: 15, style: .light)
-            return label
-        }()
-        
-        let nickNameButtonView: UIView = {
-            let view = UIView()
-            return view
-        }()
-        
-        let nickNameLabel: UILabel = {
-            let label = UILabel()
-            label.textColor = .appColor(.gray900)
-            label.font = .pretendardFont(size: 15, style: .medium)
-            label.text = "삐용"
-            return label
-        }()
-        
-        let rightButtonImageView: UIImageView = {
-            let imageView = UIImageView()
-            imageView.image = UIImage(named: "Vector")
-            return imageView
-        }()
-        
-        let withdrawalButton: UIButton = {
-            let button = UIButton()
-            button.setTitle("회원탈퇴", for: .normal)
-            button.titleLabel?.font = .pretendardFont(size: 15, style: .medium)
-            button.setTitleColor(.appColor(.gray300), for: .normal)
-            return button
-        }()
-        
         [nickNameLabel, rightButtonImageView].forEach { nickNameButtonView.addSubview($0) }
         
         nickNameLabel.snp.makeConstraints {
@@ -125,9 +175,6 @@ extension AccountInfoViewController {
             $0.trailing.equalToSuperview().inset(18)
             $0.centerY.equalToSuperview()
         }
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(moveToUpdatedNicknameVC))
-        nickNameButtonView.addGestureRecognizer(tapGestureRecognizer)
         
         [infoLabel, loginImageView, kindOfLoginLabel, profileLabel, profileImageView, filterImageView, nickNameTitleLabel, nickNameButtonView, withdrawalButton]
             .forEach { view.addSubview($0) }
