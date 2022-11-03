@@ -17,8 +17,8 @@ class MypageViewController: UIViewController {
         myPageTableView.isScrollEnabled = false
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         configureTableView()
     }
     
@@ -48,10 +48,10 @@ extension MypageViewController: UITableViewDelegate {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as! MyPageHeaderView
         switch section {
         case 0:
-            header.title.text = "설정"
+            header.titleLabel.text = "설정"
             return header
         case 1:
-            header.title.text = "서비스 정보"
+            header.titleLabel.text = "서비스 정보"
             return header
         default:
             return header
