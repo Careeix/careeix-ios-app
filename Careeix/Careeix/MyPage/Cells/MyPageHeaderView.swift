@@ -30,8 +30,8 @@ class MyPageHeaderView: UITableViewHeaderFooterView {
         contentView.addSubview(title)
         
         title.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(20)
-            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(10)
+            $0.bottom.equalToSuperview()
         }
     }
 }
