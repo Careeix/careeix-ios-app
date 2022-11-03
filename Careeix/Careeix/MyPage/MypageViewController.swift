@@ -12,10 +12,16 @@ import SnapKit
 class MypageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureTableView()
         registedTableViewCell()
         configureDelegate()
+        myPageTableView.isScrollEnabled = false
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureTableView()
+    }
+    
     let myPageTableView = UITableView(frame: .zero, style: .insetGrouped)
     
     func configureTableView() {
