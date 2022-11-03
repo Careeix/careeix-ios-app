@@ -19,14 +19,14 @@ struct User: Codable {
     struct Response: Codable {
         let jwt: String?
         let message: String
-        let userDetailJobs: [String]?
-        let userId: Int?
-        let userIntro: String?
-        let userJob: String?
-        let userNickname: String?
-        let userProfileColor: String?
+        let userId: Int
+        let userJob: String
+        let userDetailJobs: [String]
+        let userWork: Int
+        let userNickname: String
         let userProfileImg: String?
-        let userSocialProvider: Int?
-        let userWork: Int?
+        let userProfileColor: String
+        let userIntro: String?
+        let userSocialProvider: Int
     }
 }

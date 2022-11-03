@@ -42,7 +42,7 @@ struct OnboardViewModel {
             .flatMap(SocialLoginSDK.socialLogin)
             .catch { error in
                 print(error)
-                return .just(.init(jwt: nil, message: "로그인 실패", userDetailJobs: nil, userId: nil, userIntro: nil, userJob: nil, userNickname: nil, userProfileColor: nil, userProfileImg: nil, userSocialProvider: nil, userWork: nil))
+                return .just(.init(jwt: nil, message: "로그인 실패", userId: -999, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "'", userProfileColor: "'", userIntro: nil, userSocialProvider: 0))
             }
         
         let needMoreInfoObservableShare = loginResponseObservable

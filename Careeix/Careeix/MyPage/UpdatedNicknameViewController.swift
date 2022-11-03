@@ -18,6 +18,7 @@ class UpdatedNicknameViewController: UIViewController {
         setupNavigationBackButton()
         setUI()
         tapConfirmButton()
+        view.backgroundColor = .appColor(.white)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,7 +44,7 @@ class UpdatedNicknameViewController: UIViewController {
     
     func updateUserData() {
         guard let userNickName = self.textFieldView.textField.text else { return }
-        API<UserModel>(path: "users/update-profile", method: .post, parameters: ["X-ACCESS-TOKEN": UserDefaultManager.shared.jwtToken, "userNickname": userNickName], task: .requestPlain).request { [weak self] result in
+        API<UserModel>(path: "users/update-profile", method: .post, parameters: ["X-ACCESS-TOKEN": UserDefaultManager.jwtToken, "userNickname": userNickName], task: .requestPlain).request { result in
             print("result: \(result)")
             switch result {
             case .success(let response):

@@ -9,15 +9,16 @@ import Foundation
 import UIKit
 import SnapKit
 
-enum UserSocialProvider {
-    case kakao, apple
+enum UserSocialProvider: String {
+    case kakao = "카카오 로그인"
+    case apple = "애플 로그인"
     
-    var socialProvider: String {
+    func imageName() -> String {
         switch self {
         case .kakao:
-            return "카카오 로그인"
+            return "smallKakao"
         case .apple:
-            return "애플 로그인"
+            return "smallApple"
         }
     }
 }
@@ -106,6 +107,7 @@ class AccountInfoViewController: UIViewController {
         setUI()
         tapNickNameButton()
 //        getUserData()
+        view.backgroundColor = .appColor(.white)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -134,24 +136,17 @@ class AccountInfoViewController: UIViewController {
     }
     
     func getUserData() {
-        API<UserModel>(path: "users/profile/1", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
+        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
             switch result {
             case .success(let response):
                 // data:
                 let userNickName = response.data?.userNickname
                 let socialProvider = response.data?.userSocialProvider
-                if socialProvider == 0 {
-                    let kakaoLogin = UserSocialProvider.kakao
-                    self?.kindOfLoginLabel.text = kakaoLogin.socialProvider
-                    self?.loginImageView.image = UIImage(named: "smallKakao")
-                } else {
-                    let appleLogin = UserSocialProvider.apple
-                    self?.kindOfLoginLabel.text = appleLogin.socialProvider
-                    self?.loginImageView.image = UIImage(named: "smallApple")
-                }
+                let type: UserSocialProvider = socialProvider == 0 ? .kakao : .apple
+                self?.kindOfLoginLabel.text = type.rawValue
+                self?.loginImageView.image = UIImage(named: type.imageName())
                 self?.nickNameLabel.text = userNickName
                 
-//                self?.profileImageView.image = response.data?.userProfileImg
                 print(response.code, response.message)
                 print(response.data!)
             case .failure(let error):
