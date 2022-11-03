@@ -12,11 +12,17 @@ import SnapKit
 class MypageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureTableView()
         registedTableViewCell()
         configureDelegate()
+        myPageTableView.isScrollEnabled = false
     }
-    let myPageTableView = UITableView(frame: .zero, style: .grouped)
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        configureTableView()
+    }
+    
+    let myPageTableView = UITableView(frame: .zero, style: .insetGrouped)
     
     func configureTableView() {
         view.addSubview(myPageTableView)
@@ -42,10 +48,10 @@ extension MypageViewController: UITableViewDelegate {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as! MyPageHeaderView
         switch section {
         case 0:
-            header.title.text = "설정"
+            header.titleLabel.text = "설정"
             return header
         case 1:
-            header.title.text = "서비스 정보"
+            header.titleLabel.text = "서비스 정보"
             return header
         default:
             return header
@@ -53,7 +59,14 @@ extension MypageViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 1 {
+            return 60
+        }
         return 30
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 53
     }
 }
 

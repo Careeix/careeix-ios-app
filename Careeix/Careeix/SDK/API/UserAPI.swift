@@ -19,7 +19,8 @@ struct UserAPI {
     
     static func appleLogin(identifyToken: Data) -> Observable<User.Response> {
         Single.create { single in
-            single(.success(User.Response.init(jwt: nil, message: "", userDetailJobs: nil, userId: nil, userIntro: nil, userJob: nil, userNickname: nil, userProfileColor: nil, userProfileImg: nil, userSocialProvider: nil, userWork: nil)))
+            single(.failure(NSError(domain: "aa", code: 0)))
+//            single(.success(User.Response(jwt: nil, message: "", userId: -999, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "'", userIntro: "", userSocialProvider: 0)))
             return Disposables.create()
         }.asObservable()
     }

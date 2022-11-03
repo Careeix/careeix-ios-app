@@ -30,6 +30,12 @@ struct CareerModel: Hashable, Codable {
 //  "userSocialProvider": 0,
 //  "userWork": 0
 //}
+
+
+
+
+
+
 struct UserModel: Hashable, Codable {
     let userId: Int
     let userJob: String
