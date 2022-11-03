@@ -99,6 +99,7 @@ class OnboardViewController: UIViewController {
                         completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable)
                     )
                 )
+                
                 owner.navigationController?.pushViewController(vc, animated: true)
             }.disposed(by: disposeBag)
         

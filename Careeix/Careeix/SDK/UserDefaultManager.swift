@@ -11,10 +11,6 @@ import RxSwift
 import RxCocoa
 import RxRelay
 struct UserDefaultManager {
-//    static let shared = UserDefaultManager()
-
-//    private init() { }
-
     @UserDefault(key: CareeixKey.UserDefaultKey.jwtToken, defaultValue: "")
     public static var jwtToken: String
     
@@ -32,11 +28,15 @@ struct UserDefaultManager {
     @UserDefault(key: "projectBaseInputCache", defaultValue: [-1: ProjectBaseInfo.init(title: "", classification: "", introduce: "")])
     public static var projectBaseInputCache: [Int: ProjectBaseInfo]
     
-    @UserDefault(key: "userId", defaultValue: 0)
-    public static var userId: Int
+    @UserDefault(key: "user", defaultValue: User.Response(jwt: nil, message: "", userDetailJobs: nil, userId: nil, userIntro: nil, userJob: nil, userNickname: nil, userProfileColor: nil, userProfileImg: nil, userSocialProvider: nil, userWork: nil))
+    public static var user: User.Response
     
     @UserDefault(key: "loginType", defaultValue: SocialLoginSDK.SocialLoginType.kakao)
     public static var loginType: SocialLoginSDK.SocialLoginType
+    
+    // TODO: UserId와 jwt 모두 user로 통합 
+    @UserDefault(key: "userId", defaultValue: 0)
+    public static var userId: Int
 }
 
 @propertyWrapper

@@ -10,12 +10,6 @@ import Foundation
 import RxSwift
 
 typealias needMoreInfo = Bool
-struct LoginAPI {
-    struct Response: Decodable {
-        let jwt: String?
-        let message: String
-    }
-}
 
 class SocialLoginSDK {
     private let disposeBag = DisposeBag()
@@ -33,7 +27,6 @@ class SocialLoginSDK {
     public static func initSDK(type: SocialLoginType) {
         switch type {
         case .kakao:
-            // TODO: Key 프로젝트에 따로 넣기
             socialLoginService.initKakaoSDK()
         default:
             break
@@ -41,7 +34,7 @@ class SocialLoginSDK {
     
     }
     
-    public static func socialLogin(type: SocialLoginType) -> Observable<LoginAPI.Response> {
+    public static func socialLogin(type: SocialLoginType) -> Observable<User.Response> {
         switch type {
         case .kakao:
             return socialLoginService.kakaoLogin()
@@ -57,5 +50,9 @@ class SocialLoginSDK {
         case .apple:
             return .just(true)
         }
+    }
+    
+    public static func socialSignUp(with info: User.Request) -> Observable<User.Response> {
+        return socialLoginService.socialSignUp(with: info)
     }
 }

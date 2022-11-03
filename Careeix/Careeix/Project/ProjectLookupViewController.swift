@@ -42,15 +42,16 @@ class ProjectLookupViewController: UIViewController {
             .drive(with: self) { owner, projectBaseInfo in
                 owner.headerView.bind(to: .init(projectBaseInfo: projectBaseInfo))
             }.disposed(by: disposeBag)
-            
+        
         tableView.rx.itemSelected
-            .compactMap(tableView.cellForRow)
-            .asDriver(onErrorJustReturn: UITableViewCell() )
-            .compactMap { $0 as? ProjectChapterLookupCell}
-            .map { $0.viewModel.projectChapter }
+            .withUnretained(self)
+            .map { owner, indexPath -> (Int, ProjectChapter) in
+                guard let cell = owner.tableView.cellForRow(at: indexPath) as? ProjectChapterLookupCell else { return (0, .init(title: "", content: "'", notes: []))}
+                return (indexPath.row, cell.viewModel.projectChapter)
+            }.asDriver(onErrorJustReturn: (0, .init(title: "", content: "", notes: [])))
             .debug("셀 선택 됐어 ~~🐷")
-            .drive(with: self) { owner, projectChapter in
-                owner.navigationController?.pushViewController(ProjectChapterViewController(viewModel: .init(title: viewModel.title, projectChapter: projectChapter)), animated: true)
+            .drive(with: self) { owner, info in
+                owner.navigationController?.pushViewController(ProjectChapterViewController(viewModel: .init(title: viewModel.title, number: info.0 + 1, projectChapter: info.1)), animated: true)
             }.disposed(by: disposeBag)
     }
     

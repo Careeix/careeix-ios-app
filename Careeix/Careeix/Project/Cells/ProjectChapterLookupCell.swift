@@ -27,8 +27,7 @@ class ProjectChapterLookupCell: UITableViewCell {
     
     func bind(to viewModel: ProjectChapterLookupCellViewModel) {
         self.viewModel = viewModel
-        // TODO: 숫자 앞에 0 채워넣기
-        numberLabel.text = "\(viewModel.row)"
+        numberLabel.text = viewModel.row.zeroFillTenDigits()
         titleLabel.text = viewModel.projectChapter.title
     }
     

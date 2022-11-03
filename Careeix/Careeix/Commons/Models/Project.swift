@@ -30,8 +30,13 @@ struct Project: Codable, Equatable {
     }
 }
 
-struct Note: Codable, Equatable {
-    let content: String
+struct ProjectBaseInfo: Codable, Equatable {
+    var title: String
+    var startDateString: String = Date().toString()
+    var endDateString: String = Date().toString()
+    var classification: String
+    var introduce: String
+    var isProceed: Bool = false
 }
 
 struct ProjectChapter: Codable, Equatable {
@@ -45,11 +50,6 @@ struct ProjectChapter: Codable, Equatable {
     }
 }
 
-struct ProjectBaseInfo: Codable, Equatable {
-    var title: String
-    var startDateString: String = Date().toString()
-    var endDateString: String = Date().toString()
-    var classification: String
-    var introduce: String
-    var isProceed: Bool = false
+struct Note: Codable, Equatable {
+    let content: String
 }

@@ -30,7 +30,7 @@ class ProjectLookupViewModel {
             projectBaseInfo = .just(UserDefaultManager.projectBaseInputCache[projectId]!)
             projectChapters = .just(UserDefaultManager.projectChaptersInputCache[projectId]!)
         } else {
-            let fetchedProject = ProjectNetworkManager.fetchProject(with: projectId).share()
+            let fetchedProject = ProjectAPI.fetchProject(with: projectId).share()
             projectBaseInfo = fetchedProject.map {
                 .init(title: $0.title,
                       startDateString: $0.startDateString,

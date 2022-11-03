@@ -17,10 +17,10 @@ struct ProjectChapterViewModel {
     let descriptionDriver: Driver<String>
     let noteDriver: Driver<[Note]>
     
-    init(title: String, projectChapter: ProjectChapter) {
+    init(title: String, number: Int, projectChapter: ProjectChapter) {
         // TODO: 서버통신해서 project가져오기
         titleDriver = .just(title)
-        chapterTitleDriver = .just(projectChapter.title)
+        chapterTitleDriver = .just("\(number.zeroFillTenDigits())  \(projectChapter.title)")
         descriptionDriver = .just(projectChapter.content)
         noteDriver = .just(projectChapter.notes)
     }
@@ -36,6 +36,23 @@ class ProjectChapterViewController: UIViewController {
         viewModel.titleDriver
             .drive(rx.title)
             .disposed(by: disposeBag)
+        
+        viewModel.chapterTitleDriver
+            .drive(titleLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.descriptionDriver
+            .drive(contentLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.noteDriver
+            .drive(noteTableView.rx.items) { tableView, row, data in
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: NoteCell.self.description(), for: IndexPath(row: row, section: 0)) as? NoteCell else { return UITableViewCell() }
+                cell.changeLookupMode()
+                cell.setColor(row: row)
+                cell.bind(to: .init(inputString: data.content))
+                return cell
+            }.disposed(by: disposeBag)
         
     }
     
@@ -65,9 +82,72 @@ class ProjectChapterViewController: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
-    
-    //
+    override func viewDidLayoutSubviews() {
+        view.layoutIfNeeded()
+        print("뷰디드", noteTableView.contentSize.height)
+        noteTableView.snp.updateConstraints {
+            $0.height.equalTo(noteTableView.contentSize.height)
+        }
+        view.layoutIfNeeded()
+    }
+    // MARK: - UIComponents
+    let scrollView = UIScrollView()
+    let contentView = UIView()
+    let titleLabel: UILabel = {
+        let l = UILabel()
+        l.font = .pretendardFont(size: 18, style: .bold)
+        l.textColor = .appColor(.gray700)
+        return l
+    }()
+    let contentLabel: UILabel = {
+        let l = UILabel()
+        l.font = .pretendardFont(size: 13, style: .light)
+        l.numberOfLines = 0
+        return l
+    }()
+    let noteTableView: UITableView = {
+        let v = UITableView()
+        v.estimatedRowHeight = 178
+        v.register(NoteCell.self, forCellReuseIdentifier: NoteCell.self.description())
+        v.separatorStyle = .none
+        v.isScrollEnabled = false
+        return v
+    }()
+}
+
+extension ProjectChapterViewController {
     func setUI() {
-//        view.addSubview(<#T##view: UIView##UIView#>)
+        view.addSubview(scrollView)
+        
+        scrollView.snp.makeConstraints {
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        scrollView.addSubview(contentView)
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalToSuperview()
+        }
+        
+        [titleLabel, contentLabel, noteTableView].forEach { contentView.addSubview($0) }
+        
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview().inset(24)
+        }
+        
+        contentLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(18)
+            $0.leading.trailing.equalToSuperview().inset(28)
+        }
+        
+        noteTableView.snp.makeConstraints {
+            $0.top.equalTo(contentLabel.snp.bottom)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            // TODO: 조정
+            $0.height.equalTo(0)
+            $0.bottom.equalToSuperview()
+        }
     }
 }

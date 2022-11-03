@@ -9,15 +9,13 @@ import Foundation
 import RxSwift
 import RxCocoa
 import RxRelay
-import RxKakaoSDKAuth
+
 struct OnboardViewModel {
     typealias contentOffsetX = CGFloat
     typealias screenWidth = CGFloat
     
     // MARK: - Input
     let endDraggingRelay = BehaviorRelay<(contentOffsetX, screenWidth)>(value: (0, 1))
-//    let kakaoLoginTrigger = PublishRelay<Void>()
-//    let appleLoginTrigger = PublishRelay<Void>()
     let socialLoginTrigger = PublishRelay<SocialLoginSDK.SocialLoginType>()
     
     // MARK: - Output
@@ -28,6 +26,7 @@ struct OnboardViewModel {
     let currentPageDriver: Driver<Int>
     let showHomeViewDriver: Driver<Void>
     let showSignUpViewDriver: Driver<Void>
+    
     init() {
         logoImageNameDriver = .just("logo")
         kakaoLoginButtonImageNameDriver = .just("kakaoLogin")
@@ -43,7 +42,7 @@ struct OnboardViewModel {
             .flatMap(SocialLoginSDK.socialLogin)
             .catch { error in
                 print(error)
-                return .just(.init(jwt: nil, message: "로그인 실패"))
+                return .just(.init(jwt: nil, message: "로그인 실패", userDetailJobs: nil, userId: nil, userIntro: nil, userJob: nil, userNickname: nil, userProfileColor: nil, userProfileImg: nil, userSocialProvider: nil, userWork: nil))
             }
         
         let needMoreInfoObservableShare = loginResponseObservable

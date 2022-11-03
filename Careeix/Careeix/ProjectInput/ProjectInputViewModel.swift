@@ -11,15 +11,6 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
-struct ProjectNetworkManager {
-    static func fetchProject(with id: Int) -> Observable<Project> {
-        return Observable.create { observer in
-            observer.onNext(Project.init(title: "temp", startDateString: "temp", endDateString: "temp", classification: "temp", introduce: "temp", isProceed: false, projectChapters: [.init(title: "", content: "'", notes: [])]))
-            return Disposables.create()
-        }
-    }
-}
-
 struct ProjectInputViewModel {
     
     // MARK: Properties
@@ -84,7 +75,7 @@ struct ProjectInputViewModel {
         checkBoxIsSelctedDriver = periodInputViewModel.checkBoxViewModel.isSeclectedRelayShare
             .asDriver(onErrorJustReturn: false)
         
-        let projectResult = ProjectNetworkManager.fetchProject(with: projectId).share()
+        let projectResult = ProjectAPI.fetchProject(with: projectId).share()
         fetchedSimpleInput = projectId == -1
         ? .just(.init(title: "", classification: "", introduce: ""))
         : projectResult.map {
@@ -132,8 +123,6 @@ struct ProjectInputViewModel {
     
     func fillRemainingInput() {
         guard let remainigInput = UserDefaultManager.projectBaseInputCache[projectId] else { return }
-        print("로컬에 저장된 데이터: ", remainigInput)
-        
         titleInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.title)
         classificationInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.classification)
         periodInputViewModel.startDateViewModel.inputStringRelay.accept(remainigInput.startDateString)
