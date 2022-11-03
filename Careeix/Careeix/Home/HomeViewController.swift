@@ -139,7 +139,6 @@ class HomeViewController: UIViewController {
     }
     
     func changeDatasource(data: UserModel? = nil) {
-        print("🙂😂😂😂😂", data)
         var snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>()
         snapshot.appendSections([.minimalCareerProfileDummy])
         snapshot.appendItems([.minimalCareerProfileDummy(data ?? .init(userId: 0, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "'", userIntro: "", userSocialProvider: 0))])

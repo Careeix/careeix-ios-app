@@ -134,11 +134,8 @@ class ProjectChapterInputViewController: UIViewController {
         addNoteButtonView.isUserInteractionEnabled = canAddNote
     }
     func getTableViewHeight() -> CGFloat {
-        
         return noteTableView.visibleCells
-            .map { cell in
-            cell.frame.height
-            }.reduce(0) { $0 + $1 }
+            .map { cell in cell.frame.height }.reduce(0) { $0 + $1 }
     }
     
     override func viewDidLayoutSubviews() {

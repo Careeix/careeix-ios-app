@@ -17,6 +17,10 @@
 		78345E1129126F1B00EB9621 /* AccountInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E0C29126F1B00EB9621 /* AccountInfoViewController.swift */; };
 		78345E1229126F1B00EB9621 /* UpdatedNicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E0D29126F1B00EB9621 /* UpdatedNicknameViewController.swift */; };
 		78345E1329126F1B00EB9621 /* MypageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E0E29126F1B00EB9621 /* MypageViewController.swift */; };
+		78345E152913854F00EB9621 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E142913854F00EB9621 /* Int+.swift */; };
+		78345E17291391FA00EB9621 /* ProjectAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E16291391FA00EB9621 /* ProjectAPI.swift */; };
+		78345E1A2913935100EB9621 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E192913935100EB9621 /* User.swift */; };
+		78345E1D2913942100EB9621 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E1C2913942100EB9621 /* UserAPI.swift */; };
 		784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD09828EDA23900CA86F0 /* AppDelegate.swift */; };
 		784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */; };
 		784BD0A228EDA23A00CA86F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 784BD0A128EDA23A00CA86F0 /* Assets.xcassets */; };
@@ -124,6 +128,10 @@
 		78345E0C29126F1B00EB9621 /* AccountInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountInfoViewController.swift; sourceTree = "<group>"; };
 		78345E0D29126F1B00EB9621 /* UpdatedNicknameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatedNicknameViewController.swift; sourceTree = "<group>"; };
 		78345E0E29126F1B00EB9621 /* MypageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MypageViewController.swift; sourceTree = "<group>"; };
+		78345E142913854F00EB9621 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
+		78345E16291391FA00EB9621 /* ProjectAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAPI.swift; sourceTree = "<group>"; };
+		78345E192913935100EB9621 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		78345E1C2913942100EB9621 /* UserAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
 		784BD09528EDA23900CA86F0 /* Careeix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Careeix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		784BD09828EDA23900CA86F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -224,9 +232,9 @@
 		78345DFA29126F0700EB9621 /* Project */ = {
 			isa = PBXGroup;
 			children = (
+				78345DFE29126F0700EB9621 /* ProjectLookupViewController.swift */,
 				78345DFB29126F0700EB9621 /* ProjectLookupViewModel.swift */,
 				78345DFC29126F0700EB9621 /* Cells */,
-				78345DFE29126F0700EB9621 /* ProjectLookupViewController.swift */,
 				78345DFF29126F0700EB9621 /* Views */,
 			);
 			path = Project;
@@ -272,6 +280,23 @@
 			children = (
 				78345E0A29126F1B00EB9621 /* MyPageHeaderView.swift */,
 				78345E0B29126F1B00EB9621 /* MyPageTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		78345E1B2913940000EB9621 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				78345E1C2913942100EB9621 /* UserAPI.swift */,
+				78345E16291391FA00EB9621 /* ProjectAPI.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		78345E1E29139F3200EB9621 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				789F27C22906ECA400F634F0 /* NoteCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -354,7 +379,6 @@
 			children = (
 				785AF5382905574A00592F7F /* ProjectChapterInputViewController.swift */,
 				788A09FE290A7BBD003EF027 /* ProjectChapterInputViewModel.swift */,
-				789F27C12906EA4C00F634F0 /* Cells */,
 			);
 			path = ProjectChapterInput;
 			sourceTree = "<group>";
@@ -416,17 +440,10 @@
 			path = StaticFunction;
 			sourceTree = "<group>";
 		};
-		789F27C12906EA4C00F634F0 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				789F27C22906ECA400F634F0 /* NoteCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
 		78C909972905914100AA9AA3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				78345E192913935100EB9621 /* User.swift */,
 				78C909992905918A00AA9AA3 /* Project.swift */,
 			);
 			path = Models;
@@ -490,6 +507,7 @@
 		78E94A2928EF069E00DBBF5C /* SDK */ = {
 			isa = PBXGroup;
 			children = (
+				78345E1B2913940000EB9621 /* API */,
 				78D52EA128FE5BE0001F5747 /* Services */,
 				78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */,
 				78D52E5228FD3142001F5747 /* SocialLoginSDK.swift */,
@@ -504,6 +522,7 @@
 				78F4CE3F2900467300284B86 /* Resource */,
 				7881F5542902D94A00111395 /* ViewControllers */,
 				78E94A2D28EF0D4900DBBF5C /* Views */,
+				78345E1E29139F3200EB9621 /* Cells */,
 				78C909972905914100AA9AA3 /* Models */,
 			);
 			path = Commons;
@@ -548,6 +567,7 @@
 				78F4CE4C290049D400284B86 /* UITextField+.swift */,
 				786F469529018F5500215AF0 /* Date+.swift */,
 				78C9099B2905A18800AA9AA3 /* UIViewController+.swift */,
+				78345E142913854F00EB9621 /* Int+.swift */,
 			);
 			name = Extensions;
 			path = Careeix/Extensions;
@@ -715,13 +735,16 @@
 				785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */,
 				788A09FF290A7BBD003EF027 /* ProjectChapterInputViewModel.swift in Sources */,
 				78E6F00A290C70F20026655D /* ProjectInputDetailViewModel.swift in Sources */,
+				78345E1A2913935100EB9621 /* User.swift in Sources */,
 				78345E0329126F0700EB9621 /* ProjectLookupViewController.swift in Sources */,
+				78345E1D2913942100EB9621 /* UserAPI.swift in Sources */,
 				78345E0229126F0700EB9621 /* ProjectChapterLookupCell.swift in Sources */,
 				78345E0729126F1100EB9621 /* ProjectChapterViewController.swift in Sources */,
 				7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */,
 				786F46A22901A21B00215AF0 /* BaseCheckBoxView.swift in Sources */,
 				78C9099A2905918A00AA9AA3 /* Project.swift in Sources */,
 				78345E1029126F1B00EB9621 /* MyPageTableViewCell.swift in Sources */,
+				78345E17291391FA00EB9621 /* ProjectAPI.swift in Sources */,
 				786E7039290FCF4400463E76 /* NavigationController.swift in Sources */,
 				786F4698290199EF00215AF0 /* BaseTextView.swift in Sources */,
 				78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */,
@@ -750,6 +773,7 @@
 				78345E0429126F0700EB9621 /* ProjectLookupHeaderView.swift in Sources */,
 				7A84D46F2902C80900939D89 /* CardProfileDetailViewController.swift in Sources */,
 				789F27C029068C2200F634F0 /* DatePickerView.swift in Sources */,
+				78345E152913854F00EB9621 /* Int+.swift in Sources */,
 				78345E1229126F1B00EB9621 /* UpdatedNicknameViewController.swift in Sources */,
 				78345E0129126F0700EB9621 /* ProjectLookupViewModel.swift in Sources */,
 				789F27C32906ECA400F634F0 /* NoteCell.swift in Sources */,

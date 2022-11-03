@@ -56,21 +56,14 @@ extension SocialLoginService {
             .debug("카카오 로그인 SDK")
             .map { $0.accessToken }
             .catch { _ in .just("토큰 에러") }
-            .do { UserDefaultManager.shared.kakaoAccessToken = $0 }
-    }
-    
-    func callKakaoLoginApi(accessToken: String) -> Observable<LoginAPI.Response> {
-        let c = API<LoginAPI.Response>(path: "users/check-login", method: .post, parameters: ["accessToken": accessToken], task: .requestParameters(encoding: JSONEncoding.default)).requestRX()
-            .asObservable()
-        
-        return c
+            .do { UserDefaultManager.kakaoAccessToken = $0 }
     }
 
-    func kakaoLogin() -> Observable<LoginAPI.Response> {
+    func kakaoLogin() -> Observable<User.Response> {
         return readAccessToken()
             .debug("🤪🤪🤪🤪🤪")
             .filter { $0 != "토큰 에러" }
-            .flatMap(callKakaoLoginApi)
+            .flatMap(UserAPI.kakaoLogin)
     }
     
     func kakaoLogout() -> Observable<Bool> {
@@ -79,17 +72,8 @@ extension SocialLoginService {
         }
         return .just(true)
     }
-
-    func callAppleLoginApi(identityToken: Data) -> Single<LoginAPI.Response> {
-        // test
-        let a = Single.create { single in
-            single(.success(LoginAPI.Response.init(jwt: nil, message: "추가정보 입력!")))
-            return Disposables.create()
-        }.debug("😡AppleApi!😡")
-        return a
-    }
     
-    func appleLogin() -> Observable<LoginAPI.Response> {
+    func appleLogin() -> Observable<User.Response> {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
             let request = appleIDProvider.createRequest()
                 
@@ -99,7 +83,12 @@ extension SocialLoginService {
             authorizationController.presentationContextProvider = self
             authorizationController.performRequests()
         return appleIdentityTokenSubject
-            .flatMap(callAppleLoginApi)
+            .flatMap(UserAPI.appleLogin)
+    }
+    
+    
+    func socialSignUp(with info: User.Request) -> Observable<User.Response> {
+        return UserAPI.kakaoSignUp(with: info)
     }
 }
 
