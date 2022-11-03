@@ -44,8 +44,11 @@ class IntroduceCell: UICollectionViewCell {
         return view
     }()
     
-    func configure(_ info: String) {
-        descriptionLabel.text = info.description
+    var userId = 0
+    
+    func configure(_ info: UserModel) {
+        userId = info.userId
+        descriptionLabel.text = info.userIntro
 
         setUI()
     }
