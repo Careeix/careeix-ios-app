@@ -30,7 +30,7 @@ class NavigationController: UINavigationController {
         progressBar.snp.updateConstraints {
             $0.width.equalTo(view.frame.width * progress)
         }
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
     }
@@ -38,7 +38,7 @@ class NavigationController: UINavigationController {
 }
 
 extension NavigationController: UINavigationControllerDelegate {
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         if !(viewController is ProjectInputViewController
             || viewController is ProjectInputDetailViewController
             || viewController is ProjectChapterInputViewController

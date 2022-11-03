@@ -84,12 +84,11 @@ class ProjectChapterViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         view.layoutIfNeeded()
-        print("뷰디드", noteTableView.contentSize.height)
         noteTableView.snp.updateConstraints {
             $0.height.equalTo(noteTableView.contentSize.height)
         }
-        view.layoutIfNeeded()
     }
+    
     // MARK: - UIComponents
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -146,7 +145,7 @@ extension ProjectChapterViewController {
             $0.top.equalTo(contentLabel.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(16)
             // TODO: 조정
-            $0.height.equalTo(0)
+            $0.height.equalTo(5000)
             $0.bottom.equalToSuperview()
         }
     }

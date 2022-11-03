@@ -49,7 +49,6 @@ class ProjectLookupViewController: UIViewController {
                 guard let cell = owner.tableView.cellForRow(at: indexPath) as? ProjectChapterLookupCell else { return (0, .init(title: "", content: "'", notes: []))}
                 return (indexPath.row, cell.viewModel.projectChapter)
             }.asDriver(onErrorJustReturn: (0, .init(title: "", content: "", notes: [])))
-            .debug("셀 선택 됐어 ~~🐷")
             .drive(with: self) { owner, info in
                 owner.navigationController?.pushViewController(ProjectChapterViewController(viewModel: .init(title: viewModel.title, number: info.0 + 1, projectChapter: info.1)), animated: true)
             }.disposed(by: disposeBag)

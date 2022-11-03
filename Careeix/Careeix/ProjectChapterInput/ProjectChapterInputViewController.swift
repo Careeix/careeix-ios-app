@@ -139,7 +139,6 @@ class ProjectChapterInputViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        print("뷰디드", noteTableView.contentSize.height)
         viewModel.noteTableViewHeightRelay.accept(noteTableView.contentSize.height)
     }
     
