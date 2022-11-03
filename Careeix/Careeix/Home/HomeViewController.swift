@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-import Moya
 
 /**
  1. navigationBaritem Image
@@ -27,8 +26,6 @@ import Moya
  */
 
 class HomeViewController: UIViewController {
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
@@ -36,12 +33,10 @@ class HomeViewController: UIViewController {
         createNavigationBarItem()
         homeCollectionView.delegate = self
         showModalView()
-        
-        getUserData()
-        
     }
+    
     func getUserData() {
-        API<UserModel>(path: "users/profile/1", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
+        API<UserModel>(path: "users/profile/2", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
             switch result {
             case .success(let response):
                 // data:
@@ -60,6 +55,7 @@ class HomeViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 //        showModalView()
+        getUserData()
     }
     
     func createNavigationBarItem() {
@@ -81,11 +77,11 @@ class HomeViewController: UIViewController {
     private let homeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     enum HomeSection: Hashable {
-        case minimalCareerProfileDummy, RelevantCareerProfilesDummy
+        case myCareerProfile, cardCareerProfiles
     }
     
     enum HomeItem: Hashable {
-        case minimalCareerProfileDummy(UserModel), RelevantCareerProfilesDummy(CareerModel)
+        case myCareerProfile(UserModel), cardCareerProfiles(UserModel)
     }
     
     var datasource: UICollectionViewDiffableDataSource<HomeSection, HomeItem>!
@@ -93,12 +89,12 @@ class HomeViewController: UIViewController {
     func setupCollectionView() {
         view.addSubview(homeCollectionView)
         homeCollectionView.collectionViewLayout = createLayout()
-        homeCollectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+        homeCollectionView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
-    let colorSet: [UIColor] = [.appColor(.next), .appColor(.date), .appColor(.progressBar), .appColor(.deep), .appColor(.main), .appColor(.name)]
+    var profileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
+    
+    let colorSet: [UIColor] = [.appColor(.skyblueFill), .appColor(.pinkFill), .appColor(.purpleFill), .appColor(.greenFill), .appColor(.yellowFill), .appColor(.orangeFill)]
     
     func itemColor(cell: RelevantCareerProfilesCell, indexPath: Int) {
         for i in 0...indexPath {
@@ -109,19 +105,19 @@ class HomeViewController: UIViewController {
     }
     
     func configurationDatasource() {
-        let minimalCareerProfileDummyRegistraion = UICollectionView.CellRegistration<MinimalCareerProfileCell, HomeItem> { _, _, _ in }
-        let relevantCareerProfilesRegistraion = UICollectionView.CellRegistration<RelevantCareerProfilesCell, HomeItem> { _, _, _ in }
+        let myCareerProfileRegistraion = UICollectionView.CellRegistration<MinimalCareerProfileCell, HomeItem> { _, _, _ in }
+        let cardCareerProfilesRegistraion = UICollectionView.CellRegistration<RelevantCareerProfilesCell, HomeItem> { _, _, _ in }
         let relevantHeaderRegistraion = UICollectionView.SupplementaryRegistration<RelevantHeaderView>(elementKind: RelevantHeaderView.identifier) { _, _, _ in }
         
         datasource = UICollectionViewDiffableDataSource<HomeSection, HomeItem>(collectionView: homeCollectionView, cellProvider: {
             collectionView, indexPath, itemIdentifier in
             switch itemIdentifier {
-            case .minimalCareerProfileDummy(let item):
-                let cell = collectionView.dequeueConfiguredReusableCell(using: minimalCareerProfileDummyRegistraion, for: indexPath, item: itemIdentifier)
+            case .myCareerProfile(let item):
+                let cell = collectionView.dequeueConfiguredReusableCell(using: myCareerProfileRegistraion, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
                 return cell
-            case .RelevantCareerProfilesDummy(let item):
-                let cell = collectionView.dequeueConfiguredReusableCell(using: relevantCareerProfilesRegistraion, for: indexPath, item: itemIdentifier)
+            case .cardCareerProfiles(let item):
+                let cell = collectionView.dequeueConfiguredReusableCell(using: cardCareerProfilesRegistraion, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
                 cell.layer.cornerRadius = 10
                 self.itemColor(cell: cell, indexPath: indexPath.item)
@@ -140,11 +136,11 @@ class HomeViewController: UIViewController {
     
     func changeDatasource(data: UserModel? = nil) {
         var snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>()
-        snapshot.appendSections([.minimalCareerProfileDummy])
-        snapshot.appendItems([.minimalCareerProfileDummy(data ?? .init(userId: 0, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "'", userIntro: "", userSocialProvider: 0))])
+        snapshot.appendSections([.myCareerProfile])
+        snapshot.appendItems([.myCareerProfile(data ?? profileModel)])
 
-        snapshot.appendSections([.RelevantCareerProfilesDummy])
-        snapshot.appendItems(CareerModel.releventCareerProfilesDummy.map { .RelevantCareerProfilesDummy($0) })
+        snapshot.appendSections([.cardCareerProfiles])
+        snapshot.appendItems([.cardCareerProfiles(data ?? profileModel)])
         datasource.apply(snapshot)
     }
 }
@@ -152,16 +148,15 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-
         if indexPath.section == 1 {
             // TODO: 화면전환
             
-//           guard let cell = collectionView.cellForItem(at: indexPath) as? CardProfileCell else { return }
-//            let vc = CardProfileDetailViewController(userId: cell.userId)
-//            self.navigationController?.pushViewController(vc, animated: true)
+           guard let cell = collectionView.cellForItem(at: indexPath) as? RelevantCareerProfilesCell else { return }
+            let vc = CardProfileDetailViewController()
+            vc.userId = cell.userId
+            self.navigationController?.pushViewController(vc, animated: true)
 //
-//            print(cell.userId)
+            print("cell's userId: \(cell.userId)")
 //
         }
     }
