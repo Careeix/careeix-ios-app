@@ -18,8 +18,6 @@ import SnapKit
  */
 
 class RelevantCareerProfilesCell: UICollectionViewCell {
-    var userId = 0
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -65,23 +63,22 @@ class RelevantCareerProfilesCell: UICollectionViewCell {
         return label
     }()
     
-    func configure(_ info: UserModel) {
-        userId = info.userId
-        careerName.text = info.userJob
-        careerGrade.text = String(info.userWork)
-        firstDetailCareerName.text = "#" + info.userDetailJobs[0]
+    func configure(_ info: CareerModel) {
+        careerName.text = info.careerName
+        careerGrade.text = info.careerGrade
+        firstDetailCareerName.text = "#" + info.detailCareerNames[0]
         
-        if info.userDetailJobs.count == 2 {
-            firstDetailCareerName.text = "#" + info.userDetailJobs[0]
-            secondDetailCareerName.text = "#" + info.userDetailJobs[1]
+        if info.detailCareerNames.count == 2 {
+            firstDetailCareerName.text = "#" + info.detailCareerNames[0]
+            secondDetailCareerName.text = "#" + info.detailCareerNames[1]
         } else {
             secondDetailCareerName.text = ""
         }
         
-        if info.userDetailJobs.count == 3 {
-            firstDetailCareerName.text = "#" + info.userDetailJobs[0]
-            secondDetailCareerName.text = "#" + info.userDetailJobs[1]
-            thirdDetailCareerName.text = "#" + info.userDetailJobs[2]
+        if info.detailCareerNames.count == 3 {
+            firstDetailCareerName.text = "#" + info.detailCareerNames[0]
+            secondDetailCareerName.text = "#" + info.detailCareerNames[1]
+            thirdDetailCareerName.text = "#" + info.detailCareerNames[2]
         } else {
             thirdDetailCareerName.text = ""
         }
