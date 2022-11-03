@@ -16,7 +16,7 @@ class MypageViewController: UIViewController {
         registedTableViewCell()
         configureDelegate()
     }
-    let myPageTableView = UITableView(frame: .zero, style: .grouped)
+    let myPageTableView = UITableView(frame: .zero, style: .insetGrouped)
     
     func configureTableView() {
         view.addSubview(myPageTableView)
@@ -53,7 +53,14 @@ extension MypageViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 1 {
+            return 60
+        }
         return 30
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 53
     }
 }
 
