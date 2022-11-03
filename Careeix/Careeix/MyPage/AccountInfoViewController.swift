@@ -15,6 +15,7 @@ class AccountInfoViewController: UIViewController {
         setupNavigationBackButton()
         setUI()
 //        print("view.frame.width: \(view.frame.width)")
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -86,20 +87,23 @@ extension AccountInfoViewController {
             return label
         }()
         
-        let updatedNickNameButton: UIButton = {
-            let button = UIButton()
-            let rightMoveImageView = UIImage(named: "vector")
-            button.setTitle("삐용", for: .normal)
-            button.titleLabel?.font = .pretendardFont(size: 15, style: .medium)
-            button.setTitleColor(.appColor(.gray900), for: .normal)
-            button.setImage(rightMoveImageView, for: .normal)
-            button.imageView?.contentMode = .scaleAspectFit
-            button.titleEdgeInsets.right = 290
-            button.contentEdgeInsets.right = 10
-            button.semanticContentAttribute = .forceRightToLeft
-            button.contentHorizontalAlignment = .leading
-            button.contentVerticalAlignment = .center
-            return button
+        let nickNameButtonView: UIView = {
+            let view = UIView()
+            return view
+        }()
+        
+        let nickNameLabel: UILabel = {
+            let label = UILabel()
+            label.textColor = .appColor(.gray900)
+            label.font = .pretendardFont(size: 15, style: .medium)
+            label.text = "삐용"
+            return label
+        }()
+        
+        let rightButtonImageView: UIImageView = {
+            let imageView = UIImageView()
+            imageView.image = UIImage(named: "Vector")
+            return imageView
         }()
         
         let withdrawalButton: UIButton = {
@@ -110,9 +114,22 @@ extension AccountInfoViewController {
             return button
         }()
         
-        updatedNickNameButton.addTarget(self, action: #selector(moveToUpdatedNicknameVC), for: .touchUpInside)
+        [nickNameLabel, rightButtonImageView].forEach { nickNameButtonView.addSubview($0) }
         
-        [infoLabel, loginImageView, kindOfLoginLabel, profileLabel, profileImageView, filterImageView, nickNameTitleLabel, updatedNickNameButton, withdrawalButton]
+        nickNameLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.centerY.equalToSuperview()
+        }
+        
+        rightButtonImageView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(18)
+            $0.centerY.equalToSuperview()
+        }
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(moveToUpdatedNicknameVC))
+        nickNameButtonView.addGestureRecognizer(tapGestureRecognizer)
+        
+        [infoLabel, loginImageView, kindOfLoginLabel, profileLabel, profileImageView, filterImageView, nickNameTitleLabel, nickNameButtonView, withdrawalButton]
             .forEach { view.addSubview($0) }
         
         infoLabel.snp.makeConstraints {
@@ -151,7 +168,7 @@ extension AccountInfoViewController {
             $0.leading.equalToSuperview().offset(27)
         }
         
-        updatedNickNameButton.snp.makeConstraints {
+        nickNameButtonView.snp.makeConstraints {
             $0.top.equalTo(nickNameTitleLabel.snp.bottom).offset(5)
             $0.leading.equalTo(nickNameTitleLabel.snp.leading)
             $0.width.equalTo(335)
