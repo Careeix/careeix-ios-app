@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SnapKit
+import Kingfisher
 
 class CardProfileCell: UICollectionViewCell {
     override init(frame: CGRect) {
@@ -72,24 +73,25 @@ class CardProfileCell: UICollectionViewCell {
         return label
     }()
     
-    func configure(_ info: CareerModel) {
-        profileImageView.image = UIImage(systemName: "person")
-        nickName.text = info.nickname
-        careerName.text = info.careerName
-        careerGrade.text = info.careerGrade
-        firstDetailCareerName.text = "#" + info.detailCareerNames[0]
+    func configure(_ info: UserModel) {
+        let url = URL(string: info.userProfileImg)
+        profileImageView.kf.setImage(with: url)
+        nickName.text = info.userNickname
+        careerName.text = info.userJob
+        careerGrade.text = String(info.userWork)
+        firstDetailCareerName.text = "#" + info.userDetailJobs[0]
         
-        if info.detailCareerNames.count == 2 {
-            firstDetailCareerName.text = "#" + info.detailCareerNames[0]
-            secondDetailCareerName.text = "#" + info.detailCareerNames[1]
+        if info.userDetailJobs.count == 2 {
+            firstDetailCareerName.text = "#" + info.userDetailJobs[0]
+            secondDetailCareerName.text = "#" + info.userDetailJobs[1]
         } else {
             secondDetailCareerName.text = ""
         }
         
-        if info.detailCareerNames.count == 3 {
-            firstDetailCareerName.text = "#" + info.detailCareerNames[0]
-            secondDetailCareerName.text = "#" + info.detailCareerNames[1]
-            thirdDetailCareerName.text = "#" + info.detailCareerNames[2]
+        if info.userDetailJobs.count == 3 {
+            firstDetailCareerName.text = "#" + info.userDetailJobs[0]
+            secondDetailCareerName.text = "#" + info.userDetailJobs[1]
+            thirdDetailCareerName.text = "#" + info.userDetailJobs[2]
         } else {
             thirdDetailCareerName.text = ""
         }
