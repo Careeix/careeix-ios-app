@@ -895,7 +895,7 @@
 				CODE_SIGN_ENTITLEMENTS = Careeix/CareeixDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3AQ2WDVH35;
+				DEVELOPMENT_TEAM = QHVQWS4LSN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Careeix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -923,7 +923,7 @@
 				CODE_SIGN_ENTITLEMENTS = Careeix/Careeix.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3AQ2WDVH35;
+				DEVELOPMENT_TEAM = QHVQWS4LSN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Careeix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
