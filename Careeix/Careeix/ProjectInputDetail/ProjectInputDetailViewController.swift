@@ -45,7 +45,7 @@ class ProjectInputDetailViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                owner.navigationController?.pushViewController(ProjectLookupViewController(viewModel: .init(type: .post)), animated: true)
+                owner.navigationController?.pushViewController(ProjectLookupViewController(viewModel: .init(projectId: viewModel.projectId)), animated: true)
             }.disposed(by: disposeBag)
         
         viewModel.updateTableViewHeightDriver
@@ -62,7 +62,7 @@ class ProjectInputDetailViewController: UIViewController {
     }
     
     func updateCompleteButtonView() {
-        completeButtonView.isUserInteractionEnabled = !(UserDefaultManager.shared.projectChapters.count == 0)
+        completeButtonView.isUserInteractionEnabled = !(UserDefaultManager.projectChaptersInputCache.count == 0)
         completeButtonView.backgroundColor = completeButtonView.isUserInteractionEnabled ? .appColor(.next) : .appColor(.disable)
     }
     

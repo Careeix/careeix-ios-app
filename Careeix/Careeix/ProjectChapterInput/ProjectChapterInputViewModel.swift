@@ -39,7 +39,7 @@ class ProjectChapterInputViewModel {
     
     // MARK: - Initializer
     init(currentIndex: Int) {
-        self.projectId = UserDefaultManager.shared.currentWritingProjectId
+        self.projectId = UserDefaultManager.writingProjectId
         self.currentIndex = currentIndex
         self.titleTextFieldViewModel = .init()
         self.contentViewModel = .init()
@@ -81,7 +81,7 @@ class ProjectChapterInputViewModel {
     
     func fillInputs() {
         if checkProjectChaptersRange() {
-            guard let needFillData = UserDefaultManager.shared.projectChapters[projectId]?[currentIndex] else { return }
+            guard let needFillData = UserDefaultManager.projectChaptersInputCache[projectId]?[currentIndex] else { return }
             titleTextFieldViewModel.inputStringRelay.accept(needFillData.title)
             contentViewModel.inputStringRelay.accept(needFillData.content)
             noteCellViewModels = needFillData.notes
@@ -91,28 +91,28 @@ class ProjectChapterInputViewModel {
     
     func updateProjectChapter(data: ProjectChapter) {
         checkProjectChaptersRange()
-        ? UserDefaultManager.shared.projectChapters[projectId]?[currentIndex] = data
+        ? UserDefaultManager.projectChaptersInputCache[projectId]?[currentIndex] = data
         : nil
     }
     
     func updateProjectChapter() {
         checkProjectChaptersRange()
         ? nil
-        : UserDefaultManager.shared.projectChapters[projectId]?.append(.init(title: "", content: "", notes: []))
+        : UserDefaultManager.projectChaptersInputCache[projectId]?.append(.init(title: "", content: "", notes: []))
     }
     
     func checkProjectChaptersRange() -> Bool {
-        guard let data = UserDefaultManager.shared.projectChapters[projectId] else { return false }
+        guard let data = UserDefaultManager.projectChaptersInputCache[projectId] else { return false }
         return data.count > currentIndex
     }
     
     func checkAndRemove() {
         if checkProjectChaptersRange() {
-            guard let currentChapter = UserDefaultManager.shared.projectChapters[projectId]?[currentIndex] else { return }
+            guard let currentChapter = UserDefaultManager.projectChaptersInputCache[projectId]?[currentIndex] else { return }
             if currentChapter.content == ""
                 && currentChapter.title == ""
                 && currentChapter.notes.isEmpty {
-                UserDefaultManager.shared.projectChapters[projectId]?.remove(at: currentIndex)
+                UserDefaultManager.projectChaptersInputCache[projectId]?.remove(at: currentIndex)
             }
         }
     }

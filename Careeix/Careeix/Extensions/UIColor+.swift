@@ -15,6 +15,7 @@ enum AssetsColor {
     case skyblueFill, pinkFill, yellowFill, purpleFill, orangeFill, greenFill
     case skyblueGradientSP, pinkGradientSP, yellowGradientSP, purpleGradientSP, orangeGradientSP, greenGradientSP
     case skyblueGradientEP, pinkGradientEP, yellowGradientEP, purpleGradientEP, orangeGradientEP, greenGradientEP
+    case notePurple, noteGreen, noteYellow
 }
 extension UIColor {
     static func appColor(_ name: AssetsColor) -> UIColor {
@@ -74,41 +75,47 @@ extension UIColor {
         case .iphone_bule:
             return UIColor(red: 46/255.0, green: 204/255.0, blue: 113/255.0, alpha: 1)
         case .skyblueFill:
-            return UIColor(red: 141/255, green: 184/255, blue: 223/225, alpha: 1)
+            return UIColor(red: 141/255, green: 184/255, blue: 223/255, alpha: 1)
         case .pinkFill:
-            return UIColor(red: 220/255, green: 99/255, blue: 157/225, alpha: 1)
+            return UIColor(red: 220/255, green: 99/255, blue: 157/255, alpha: 1)
         case .yellowFill:
-            return UIColor(red: 182/255, green: 154/255, blue: 13/225, alpha: 1)
+            return UIColor(red: 182/255, green: 154/255, blue: 13/255, alpha: 1)
         case .purpleFill:
-            return UIColor(red: 165/255, green: 173/255, blue: 245/225, alpha: 1)
+            return UIColor(red: 165/255, green: 173/255, blue: 245/255, alpha: 1)
         case .orangeFill:
-            return UIColor(red: 240/255, green: 183/255, blue: 130/225, alpha: 1)
+            return UIColor(red: 240/255, green: 183/255, blue: 130/255, alpha: 1)
         case .greenFill:
-            return UIColor(red: 105/255, green: 157/255, blue: 132/225, alpha: 1)
+            return UIColor(red: 105/255, green: 157/255, blue: 132/255, alpha: 1)
         case .skyblueGradientSP:
-            return UIColor(red: 53/255, green: 120/255, blue: 181/225, alpha: 0.9)
+            return UIColor(red: 53/255, green: 120/255, blue: 181/255, alpha: 0.9)
         case .pinkGradientSP:
-            return UIColor(red: 233/255, green: 166/255, blue: 198/225, alpha: 0.9)
+            return UIColor(red: 233/255, green: 166/255, blue: 198/255, alpha: 0.9)
         case .yellowGradientSP:
-            return UIColor(red: 232/255, green: 205/255, blue: 68/225, alpha: 0.9)
+            return UIColor(red: 232/255, green: 205/255, blue: 68/255, alpha: 0.9)
         case .purpleGradientSP:
-            return UIColor(red: 46/255, green: 59/255, blue: 171/225, alpha: 0.9)
+            return UIColor(red: 46/255, green: 59/255, blue: 171/255, alpha: 0.9)
         case .orangeGradientSP:
-            return UIColor(red: 252/255, green: 143/255, blue: 42/225, alpha: 0.9)
+            return UIColor(red: 252/255, green: 143/255, blue: 42/255, alpha: 0.9)
         case .greenGradientSP:
-            return UIColor(red: 34/255, green: 91/255, blue: 64/225, alpha: 0.9)
+            return UIColor(red: 34/255, green: 91/255, blue: 64/255, alpha: 0.9)
         case .skyblueGradientEP:
-            return UIColor(red: 105/255, green: 175/255, blue: 239/225, alpha: 0.45)
+            return UIColor(red: 105/255, green: 175/255, blue: 239/255, alpha: 0.45)
         case .pinkGradientEP:
-            return UIColor(red: 229/255, green: 135/255, blue: 180/225, alpha: 0.45)
+            return UIColor(red: 229/255, green: 135/255, blue: 180/255, alpha: 0.45)
         case .yellowGradientEP:
-            return UIColor(red: 234/255, green: 205/255, blue: 61/225, alpha: 0.45)
+            return UIColor(red: 234/255, green: 205/255, blue: 61/255, alpha: 0.45)
         case .purpleGradientEP:
-            return UIColor(red: 107/255, green: 106/255, blue: 195/225, alpha: 0.45)
+            return UIColor(red: 107/255, green: 106/255, blue: 195/255, alpha: 0.45)
         case .orangeGradientEP:
-            return UIColor(red: 246/255, green: 155/255, blue: 70/225, alpha: 0.45)
+            return UIColor(red: 246/255, green: 155/255, blue: 70/255, alpha: 0.45)
         case .greenGradientEP:
-            return UIColor(red: 100/255, green: 146/255, blue: 124/225, alpha: 0.45)
+            return UIColor(red: 100/255, green: 146/255, blue: 124/255, alpha: 0.45)
+        case .notePurple:
+            return UIColor(red: 234/255, green: 232/255, blue: 245/255, alpha: 1)
+        case .noteGreen:
+            return UIColor(red: 232/255, green: 245/255, blue: 232/255, alpha: 1)
+        case .noteYellow:
+            return UIColor(red: 252/255, green: 245/255, blue: 221/255, alpha: 1)
         }
         
     }

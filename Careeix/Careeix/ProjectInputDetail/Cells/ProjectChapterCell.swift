@@ -24,6 +24,16 @@ class ProjectChapterCellViewModel {
 class ProjectChapterCell: UITableViewCell {
     var disposeBag = DisposeBag()
     
+    func bind(viewModel: ProjectChapterCellViewModel) {
+        viewModel.indexDriver
+            .drive(numberLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.titleDriver
+            .drive(titleLabel.rx.text)
+            .disposed(by: disposeBag)
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
@@ -38,20 +48,42 @@ class ProjectChapterCell: UITableViewCell {
         disposeBag = DisposeBag()
     }
     
-    let indexLabel = UILabel()
-    
-    func bind(viewModel: ProjectChapterCellViewModel) {
-        viewModel.indexDriver
-            .drive(indexLabel.rx.text)
-            .disposed(by: disposeBag)
-    }
+    let numberLabel: UILabel = {
+        let l = UILabel()
+        l.font = .pretendardFont(size: 16, style: .regular)
+        l.textColor = .appColor(.gray900)
+        return l
+    }()
+    let titleLabel: UILabel = {
+        let l = UILabel()
+        l.font = .pretendardFont(size: 16, style: .regular)
+        l.textColor = .appColor(.gray900)
+        return l
+    }()
+    let modifyLabel: UILabel = {
+        let l = UILabel()
+        l.font = .pretendardFont(size: 14, style: .medium)
+        l.text = "수정"
+        l.textColor = .appColor(.point)
+        return l
+    }()
     
     func setUI() {
-        [indexLabel].forEach { contentView.addSubview($0) }
+        [numberLabel, titleLabel, modifyLabel].forEach { contentView.addSubview($0) }
         
-        indexLabel.snp.makeConstraints {
+        numberLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview()
+            $0.leading.equalToSuperview().inset(8)
+        }
+        
+        titleLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(numberLabel.snp.trailing).offset(23)
+        }
+        
+        modifyLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(5)
         }
     }
 }

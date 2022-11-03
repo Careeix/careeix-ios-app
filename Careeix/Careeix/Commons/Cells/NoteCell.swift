@@ -14,8 +14,12 @@ class NoteCellViewModel {
     // output
     var inputStringDriver: Driver<String>
     
-    init(inputStringRelay: BehaviorRelay<String> = BehaviorRelay<String>(value: "")) {
+    init(inputStringRelay: BehaviorRelay<String> = BehaviorRelay<String>(value: ""), inputString: String = "") {
+        
         self.inputStringRelay = inputStringRelay
+        if inputString != "" {
+            inputStringRelay.accept(inputString)
+        }
         inputStringDriver = inputStringRelay
             .asDriver(onErrorJustReturn: "")
     }
@@ -51,6 +55,26 @@ class NoteCell: UITableViewCell {
     
     required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func changeLookupMode() {
+        deleteButtonImageView.isHidden = true
+        textView.placeholerLabel.isHidden = true
+    }
+    
+    func setColor(row: Int) {
+        var color: AssetsColor
+        switch row {
+        case 0:
+            color = .notePurple
+        case 1:
+            color = .noteGreen
+        default:
+            color = .noteYellow
+        }
+        noteView.backgroundColor = .appColor(color)
+        noteView.layer.borderWidth = 0
+        textView.isEditable = false
     }
     
     // MARK: UIComponents

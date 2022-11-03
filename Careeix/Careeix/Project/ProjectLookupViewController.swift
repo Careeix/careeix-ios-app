@@ -10,36 +10,11 @@ import RxSwift
 import RxCocoa
 import RxRelay
 import RxGesture
-enum ProjectViewType {
-    case get
-    case post
-    
-    func inset() -> CGFloat {
-        switch self {
-        case .get:
-            return 14
-        case .post:
-            return 30
-        }
-    }
-    
-    func completeButtonIsHidden() -> Bool {
-        switch self {
-        case .get:
-            return true
-        case .post:
-            return false
-        }
-    }
-}
-
-
 
 class ProjectLookupViewController: UIViewController {
     // MARK: - Properties
     var disposeBag = DisposeBag()
-    let viewModel: ProjectLookupViewModel
-    
+    var viewModel: ProjectLookupViewModel
     
     // MARK: - Binding
     func bind(to viewModel: ProjectLookupViewModel) {
@@ -50,16 +25,32 @@ class ProjectLookupViewController: UIViewController {
                 viewModel.createProject()
             }.disposed(by: disposeBag)
         
-        viewModel.lookUpCellDataDriver
+        viewModel.lookupCellDataDriver
             .drive(tableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: ProjectChapterLookupCell.self.description(), for: IndexPath(row: row, section: 0)) as? ProjectChapterLookupCell else { return UITableViewCell() }
-                cell.bind(to: .init(number: row + 1, title: data))
+                cell.bind(to: .init(row: row + 1, projectChapter: data))
                 return cell
             }.disposed(by: disposeBag)
         
+        viewModel.projectBaseInfo
+            .map { $0.title }
+            .bind { title in
+                viewModel.title = title
+            }.disposed(by: disposeBag)
+        
+        viewModel.headerViewDataDriver
+            .drive(with: self) { owner, projectBaseInfo in
+                owner.headerView.bind(to: .init(projectBaseInfo: projectBaseInfo))
+            }.disposed(by: disposeBag)
+        
         tableView.rx.itemSelected
-            .bind { indexPath in
-                print(indexPath)
+            .withUnretained(self)
+            .map { owner, indexPath -> (Int, ProjectChapter) in
+                guard let cell = owner.tableView.cellForRow(at: indexPath) as? ProjectChapterLookupCell else { return (0, .init(title: "", content: "'", notes: []))}
+                return (indexPath.row, cell.viewModel.projectChapter)
+            }.asDriver(onErrorJustReturn: (0, .init(title: "", content: "", notes: [])))
+            .drive(with: self) { owner, info in
+                owner.navigationController?.pushViewController(ProjectChapterViewController(viewModel: .init(title: viewModel.title, number: info.0 + 1, projectChapter: info.1)), animated: true)
             }.disposed(by: disposeBag)
     }
     
@@ -68,6 +59,7 @@ class ProjectLookupViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         bind(to: viewModel)
+        completeButtonView.isHidden = !viewModel.isWriting
     }
     
     required init?(coder: NSCoder) {
@@ -85,7 +77,7 @@ class ProjectLookupViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
         tabBarController?.tabBar.isHidden = true
-        if let navigationController = navigationController as? NavigationController, !viewModel.completeButtonIsHidden {
+        if let navigationController = navigationController as? NavigationController, viewModel.isWriting {
             navigationController.updateProgressBar(progress: 1)
         }
     }
@@ -104,6 +96,7 @@ class ProjectLookupViewController: UIViewController {
         return v
     }()
     let completeButtonView = CompleteButtonView(viewModel: .init(content: "발행하기", backgroundColor: .next))
+    let headerView = ProjectLookupHeaderView()
 }
 
 extension ProjectLookupViewController {
@@ -113,7 +106,7 @@ extension ProjectLookupViewController {
         tableView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(24)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(viewModel.topInset - 15)
+            $0.top.equalTo(view.safeAreaLayoutGuide).inset(15)
         }
         
         completeButtonView.snp.makeConstraints {
@@ -125,8 +118,7 @@ extension ProjectLookupViewController {
 
 extension ProjectLookupViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let v = ProjectLookupHeaderView(viewModel: .init(title: "temp", division: "temp", startDateString: "temp", endDateString: "temp"))
-        return v
+        return headerView
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 108

@@ -23,19 +23,19 @@ struct ProjectInputDetailViewModel {
     let updateTableViewHeightDriver: Driver<CGFloat>
     
     init() {
-        let projectId = UserDefaultManager.shared.currentWritingProjectId
+        let projectId = UserDefaultManager.writingProjectId
         self.projectId = projectId
         
         chaptersDriver = viewWillAppearRelay
-            .compactMap { _ in UserDefaultManager.shared.projectChapters[projectId] }
+            .compactMap { _ in UserDefaultManager.projectChaptersInputCache[projectId] }
             .asDriver(onErrorJustReturn: [])
         
         createIndexDriver = createTrigger
-            .compactMap { _ in UserDefaultManager.shared.projectChapters[projectId]?.count }
+            .compactMap { _ in UserDefaultManager.projectChaptersInputCache[projectId]?.count }
             .asDriver(onErrorJustReturn: 0)
         
         updateTableViewHeightDriver = viewWillAppearRelay
-            .compactMap { _ in UserDefaultManager.shared.projectChapters[projectId]?.count }
+            .compactMap { _ in UserDefaultManager.projectChaptersInputCache[projectId]?.count }
             .map { CGFloat($0) }
             .asDriver(onErrorJustReturn: 0)
     }

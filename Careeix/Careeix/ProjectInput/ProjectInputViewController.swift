@@ -129,6 +129,15 @@ class ProjectInputViewController: UIViewController {
             .drive(with: self) { owner, isSelected in
                 owner.updatePeriodView(isProceed: isSelected)
             }.disposed(by: disposeBag)
+        
+        viewModel.askingKeepAlertDriver
+            .drive(with: self) { owner, _ in
+                owner.showAskingKeepWritingView()
+            }.disposed(by: disposeBag)
+        
+        viewModel.fillFetcedDataDriver
+            .drive()
+            .disposed(by: disposeBag)
     }
     
     // MARK: - function
@@ -237,16 +246,16 @@ class ProjectInputViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // TODO: 뷰모델로 넣기
-        if UserDefaultManager.shared.currentWritingProjectId != viewModel.projectId &&
-            viewModel.checkRemainingData() {
-            showAskingKeepWritingView()
+        if UserDefaultManager.writingProjectId != viewModel.projectId {
+            viewModel.viewDidAppearRelay.accept(())
         }
-        UserDefaultManager.shared.currentWritingProjectId = viewModel.projectId
+        
+        UserDefaultManager.writingProjectId = viewModel.projectId
         titleInputView.textField.becomeFirstResponder()
     }
     
     deinit {
-        UserDefaultManager.shared.currentWritingProjectId = -2
+        UserDefaultManager.writingProjectId = -2
 
     }
     
@@ -342,7 +351,8 @@ extension ProjectInputViewController: TwoButtonAlertViewDelegate {
         switch type {
         case .askingKeepWriting:
             viewModel.initPersistenceData()
-            viewModel.fillRemainingInput()
+            viewModel.fillFetchedDataTrigger.accept(())
+            
         default:
             break
         }

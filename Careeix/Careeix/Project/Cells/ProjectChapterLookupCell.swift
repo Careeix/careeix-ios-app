@@ -8,10 +8,13 @@
 import UIKit
 
 struct ProjectChapterLookupCellViewModel {
-    let number: Int
-    let title: String
+    let row: Int
+    let projectChapter: ProjectChapter
 }
 class ProjectChapterLookupCell: UITableViewCell {
+    
+    var viewModel: ProjectChapterLookupCellViewModel!
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
@@ -23,14 +26,25 @@ class ProjectChapterLookupCell: UITableViewCell {
     }
     
     func bind(to viewModel: ProjectChapterLookupCellViewModel) {
-        numberLabel.text = "\(viewModel.number)"
-        titleLabel.text = viewModel.title
+        self.viewModel = viewModel
+        numberLabel.text = viewModel.row.zeroFillTenDigits()
+        titleLabel.text = viewModel.projectChapter.title
     }
     
+    override func prepareForReuse() {
+        viewModel = nil
+    }
     // MARK: - UIComponents
-    let numberLabel = UILabel()
-    let titleLabel = UILabel()
-    
+    let numberLabel: UILabel = {
+        let l = UILabel()
+        l.font = .pretendardFont(size: 16, style: .regular)
+        return l
+    }()
+    let titleLabel: UILabel = {
+        let l = UILabel()
+        l.font = .pretendardFont(size: 16, style: .light)
+        return l
+    }()
     func setUI() {
         [numberLabel, titleLabel].forEach { contentView.addSubview($0) }
         numberLabel.snp.makeConstraints {

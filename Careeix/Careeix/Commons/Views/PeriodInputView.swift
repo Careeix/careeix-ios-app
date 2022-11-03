@@ -33,8 +33,8 @@ struct PeriodInputViewModel {
         self.projectId = projectId
         titleDriver = .just(title)
         descriptionDriver = .just(description)
-        startDateViewModel = .init(content: UserDefaultManager.shared.projectInput[projectId]?.startDateString ?? Date().toString())
-        endDateViewModel = .init(content: UserDefaultManager.shared.projectInput[projectId]?.endDateString ?? Date().toString())
+        startDateViewModel = .init(content: UserDefaultManager.projectBaseInputCache[projectId]?.startDateString ?? Date().toString())
+        endDateViewModel = .init(content: UserDefaultManager.projectBaseInputCache[projectId]?.endDateString ?? Date().toString())
         checkBoxIsSelectedDriver = checkBoxViewModel.isSeclectedRelayShare
             .asDriver(onErrorJustReturn: false)
     }
@@ -63,7 +63,7 @@ class PeriodInputView: UIView {
         : .appColor(.white)
         
         endDateView.contentLabel.text = Date().toString()
-        UserDefaultManager.shared.projectInput[viewModel.projectId]?.endDateString = Date().toString()
+        UserDefaultManager.projectBaseInputCache[viewModel.projectId]?.endDateString = Date().toString()
         endDateView.contentLabel.textColor = isProceed
         ? .appColor(.gray100)
         : .appColor(.black)

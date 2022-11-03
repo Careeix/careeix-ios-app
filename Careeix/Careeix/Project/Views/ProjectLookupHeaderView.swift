@@ -8,22 +8,31 @@
 import UIKit
 
 struct ProjectLookupHeaderViewModel {
-    let title: String
-    let division: String
-    let startDateString: String
-    let endDateString: String
+    let projectBaseInfo: ProjectBaseInfo
 }
 
 class ProjectLookupHeaderView: UIView {
     func bind(to viewModel: ProjectLookupHeaderViewModel) {
-        titleLabel.text = viewModel.title
-        descriptionLabel.text = "\(viewModel.division) | \(viewModel.startDateString) ~ \(viewModel.endDateString)"
+        let projectBaseInfo = viewModel.projectBaseInfo
+        titleLabel.text = projectBaseInfo.title
+        descriptionLabel.text = description(classification: projectBaseInfo.classification,
+                                            startDateString: projectBaseInfo.startDateString,
+                                            endDateString: projectBaseInfo.endDateString,
+                                            isProceed: projectBaseInfo.isProceed)
     }
     
-    init(viewModel: ProjectLookupHeaderViewModel) {
+    func description(
+        classification: String,
+        startDateString: String,
+        endDateString: String,
+        isProceed: Bool
+    ) -> String {
+        return "\(classification) | \(startDateString)~\(isProceed ? "진행중" : endDateString)"
+    }
+    
+    init() {
         super.init(frame: .zero)
         setUI()
-        bind(to: viewModel)
     }
     
     required init?(coder: NSCoder) {
@@ -33,16 +42,19 @@ class ProjectLookupHeaderView: UIView {
     // MARK: UIComponents
     let titleLabel: UILabel = {
         let l = UILabel()
-        
+        l.font = .pretendardFont(size: 20, style: .bold)
         return l
     }()
     let descriptionLabel: UILabel = {
         let l = UILabel()
+        l.font = .pretendardFont(size: 13, style: .regular)
+        l.textColor = .appColor(.gray250)
         return l
     }()
     let chapterLabel: UILabel = {
         let l = UILabel()
         l.text = "목차"
+        l.font = .pretendardFont(size: 17, style: .semiBold)
         l.textColor = .appColor(.gray300)
         return l
     }()
