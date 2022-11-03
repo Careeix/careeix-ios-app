@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class MyPageHeaderView: UITableViewHeaderFooterView {
-    let title: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appColor(.gray900)
         label.font = .pretendardFont(size: 18, style: .medium)
@@ -27,11 +27,11 @@ class MyPageHeaderView: UITableViewHeaderFooterView {
     }
     
     func setUI() {
-        contentView.addSubview(title)
+        contentView.addSubview(titleLabel)
         
-        title.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(20)
-            $0.centerY.equalToSuperview()
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(10)
+            $0.bottom.equalToSuperview()
         }
     }
 }

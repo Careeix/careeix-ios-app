@@ -15,6 +15,26 @@ struct CareerModel: Hashable, Codable {
     let careerGrade: String
     let detailCareerNames: [String]
 }
+//{
+//  "jwt": "string",
+//  "message": "string",
+//  "userDetailJobs": [
+//    "string"
+//  ],
+//  "userId": 0,
+//  "userIntro": "string",
+//  "userJob": "string",
+//  "userNickname": "string",
+//  "userProfileColor": "string",
+//  "userProfileImg": "string",
+//  "userSocialProvider": 0,
+//  "userWork": 0
+//}
+
+
+
+
+
 
 struct UserModel: Hashable, Codable {
     let userId: Int
