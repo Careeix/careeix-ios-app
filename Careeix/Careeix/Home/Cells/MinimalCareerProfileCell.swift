@@ -19,12 +19,34 @@ import Kingfisher
     - Snapshot
 */
 
+enum GradientColor: String {
+    case skyblue = "#8DB8DF"
+    case pink = "#E9A6C6"
+    case yellow = "#E8CD44"
+    case purple = "#A5ADF5"
+    case orange = "#F0B782"
+    case green = "#699D84"
+    
+    static func setGradient(contentView: UIView, startColor: UIColor, endColor: UIColor) {
+        var gradientLayer: CAGradientLayer!
+        gradientLayer = CAGradientLayer()
+        gradientLayer.frame = contentView.bounds
+        let startPoint: UIColor = startColor
+        let endPoint: UIColor = endColor
+        gradientLayer.colors = [startPoint.cgColor, endPoint.cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0.7)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 0.2)
+        gradientLayer.cornerRadius = 10
+        
+        contentView.layer.addSublayer(gradientLayer)
+    }
+}
+
 class MinimalCareerProfileCell: UICollectionViewCell {
     var userId: Int = -1
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupGradient()
     }
     
     required init?(coder: NSCoder) {
@@ -36,8 +58,6 @@ class MinimalCareerProfileCell: UICollectionViewCell {
         image.contentMode = .scaleToFill
         image.layer.cornerRadius = 75 / 2
         image.clipsToBounds = true
-        image.backgroundColor = .systemBlue
-        image.tintColor = .label
         return image
     }()
     
@@ -63,13 +83,38 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     }()
 
     func configure(_ info: UserModel) {
-        let url = URL(string: info.userProfileImg)
-        profileImageView.kf.setImage(with: url)
+        setImageURL(url: info.userProfileImg)
         nickName.text = info.userNickname
         careerName.text = info.userJob
-        careerGrade.text = String(info.userWork)
+        careerGrade.text = UserWorkYear.chooseUserWorkYear(grade: info.userWork)
         userId = info.userId
+        chooseProfileColor(fillColor: info.userProfileColor)
         setup()
+    }
+    
+    func setImageURL(url: String) {
+        let url = URL(string: url)
+        if url == nil {
+            profileImageView.image = UIImage(named: "basicProfile")
+        } else {
+            profileImageView.kf.setImage(with: url)
+        }
+    }
+    
+    func chooseProfileColor(fillColor: String) {
+        if GradientColor.skyblue.rawValue == fillColor {
+            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.skyblueGradientSP), endColor: .appColor(.skyblueGradientEP))
+        } else if GradientColor.yellow.rawValue == fillColor {
+            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.yellowGradientSP), endColor: .appColor(.yellowGradientEP))
+        } else if GradientColor.purple.rawValue == fillColor {
+            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.purpleGradientSP), endColor: .appColor(.purpleGradientEP))
+        } else if GradientColor.green.rawValue == fillColor {
+            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.greenGradientSP), endColor: .appColor(.greenGradientEP))
+        } else if GradientColor.pink.rawValue == fillColor {
+            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.pinkGradientSP), endColor: .appColor(.pinkGradientEP))
+        } else {
+            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.orangeGradientSP), endColor: .appColor(.orangeGradientEP))
+        }
     }
     
     override func prepareForReuse() {
@@ -100,20 +145,5 @@ class MinimalCareerProfileCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(24)
             $0.top.equalTo(careerName.snp.bottom).offset(6)
         }
-    }
-    
-    func setupGradient() {
-        var gradientLayer: CAGradientLayer!
-        gradientLayer = CAGradientLayer()
-        gradientLayer.frame = self.contentView.bounds
-        let startPoint: UIColor = .appColor(.purpleGradientSP)
-        let endPoint: UIColor = .appColor(.purpleGradientEP)
-        gradientLayer.colors = [startPoint.cgColor, endPoint.cgColor]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0.7)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 0.2)
-        gradientLayer.cornerRadius = 10
-        
-        contentView.layer.addSublayer(gradientLayer)
-        
     }
 }

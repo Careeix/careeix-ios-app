@@ -33,10 +33,24 @@ class HomeViewController: UIViewController {
         createNavigationBarItem()
         homeCollectionView.delegate = self
         showModalView()
+        getUserData()
+        recommandUserData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        showModalView()
+    }
+    
+    // MARK: MyCareerProfile API Call
+    
     func getUserData() {
-        API<UserModel>(path: "users/profile/2", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
+        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
             switch result {
             case .success(let response):
                 // data:
@@ -47,16 +61,22 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = false
+    
+    // MARK: RecommandCareerProfile API Call
+    
+    func recommandUserData() {
+        API<UserModel>(path: "users/recommend/profile", method: .get, parameters: ["X-ACCESS-TOKEN": UserDefaultManager.jwtToken], task: .requestPlain).request { [weak self] result in
+            switch result {
+            case .success(let response):
+                // data:
+                self?.changeDatasource(data: response.data)
+            case .failure(let error):
+                // alert
+                print(error.localizedDescription)
+            }
+        }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        showModalView()
-        getUserData()
-    }
     
     func createNavigationBarItem() {
         let logoImageView = UIImage(named: "logo")
@@ -94,16 +114,6 @@ class HomeViewController: UIViewController {
     
     var profileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
     
-    let colorSet: [UIColor] = [.appColor(.skyblueFill), .appColor(.pinkFill), .appColor(.purpleFill), .appColor(.greenFill), .appColor(.yellowFill), .appColor(.orangeFill)]
-    
-    func itemColor(cell: RelevantCareerProfilesCell, indexPath: Int) {
-        for i in 0...indexPath {
-            if indexPath == i {
-                cell.backgroundColor = colorSet.randomElement()
-            }
-        }
-    }
-    
     func configurationDatasource() {
         let myCareerProfileRegistraion = UICollectionView.CellRegistration<MinimalCareerProfileCell, HomeItem> { _, _, _ in }
         let cardCareerProfilesRegistraion = UICollectionView.CellRegistration<RelevantCareerProfilesCell, HomeItem> { _, _, _ in }
@@ -119,8 +129,6 @@ class HomeViewController: UIViewController {
             case .cardCareerProfiles(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: cardCareerProfilesRegistraion, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
-                cell.layer.cornerRadius = 10
-                self.itemColor(cell: cell, indexPath: indexPath.item)
                 return cell
             }
         })
@@ -138,7 +146,6 @@ class HomeViewController: UIViewController {
         var snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>()
         snapshot.appendSections([.myCareerProfile])
         snapshot.appendItems([.myCareerProfile(data ?? profileModel)])
-
         snapshot.appendSections([.cardCareerProfiles])
         snapshot.appendItems([.cardCareerProfiles(data ?? profileModel)])
         datasource.apply(snapshot)

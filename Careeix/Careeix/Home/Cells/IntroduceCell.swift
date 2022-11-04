@@ -29,7 +29,6 @@ class IntroduceCell: UICollectionViewCell {
     
     let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .appColor(.gray250)
         label.font = .pretendardFont(size: 13, style: .regular)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -48,8 +47,7 @@ class IntroduceCell: UICollectionViewCell {
     
     func configure(_ info: UserModel) {
         userId = info.userId
-        descriptionLabel.text = info.userIntro
-
+        (descriptionLabel.text, descriptionLabel.textColor) = info.userIntro == nil ? ("소개글이 없습니다.", .appColor(.gray250)) : (info.userIntro, .appColor(.gray900))
         setUI()
     }
     

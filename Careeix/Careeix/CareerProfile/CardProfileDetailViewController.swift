@@ -119,6 +119,11 @@ extension CardProfileDetailViewController {
                 let group = CompositionalLayout.createGroup(alignment: .vertical, width: .fractionalWidth(1), height: .fractionalWidth(0.4), subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
                 return section
+            case 3:
+                let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.4))
+                let group = CompositionalLayout.createGroup(alignment: .vertical, width: .fractionalWidth(1), height: .fractionalWidth(0.4), subitems: [item])
+                let section = NSCollectionLayoutSection(group: group)
+                return section
             default:
                 return nil
             }
