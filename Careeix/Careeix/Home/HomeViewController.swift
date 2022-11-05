@@ -38,7 +38,7 @@ class HomeViewController: UIViewController {
         showModalView()
         
         getUserData()
-        
+        print(UserDefaultManager.user)
     }
     func getUserData() {
         API<UserModel>(path: "users/profile/1", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in

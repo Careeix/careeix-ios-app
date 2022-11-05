@@ -34,7 +34,7 @@ class SocialLoginSDK {
     
     }
     
-    public static func socialLogin(type: SocialLoginType) -> Observable<User.Response> {
+    public static func socialLogin(type: SocialLoginType) -> Observable<DTO.User.Response> {
         switch type {
         case .kakao:
             return socialLoginService.kakaoLogin()
@@ -52,7 +52,7 @@ class SocialLoginSDK {
         }
     }
     
-    public static func socialSignUp(with info: User.Request) -> Observable<User.Response> {
+    public static func socialSignUp(with info: DTO.User.Request) -> Observable<DTO.User.Response> {
         return socialLoginService.socialSignUp(with: info)
     }
 }

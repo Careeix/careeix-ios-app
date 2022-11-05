@@ -45,8 +45,10 @@ struct OnboardViewModel {
                 return .just(.init(jwt: nil, message: "로그인 실패", userId: -999, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "'", userProfileColor: "'", userIntro: nil, userSocialProvider: 0))
             }
         
+        // TODO: 모델 하나로 통일 (jwt삭제)
         let needMoreInfoObservableShare = loginResponseObservable
             .filter { $0.message != "로그인 실패" }
+            .do { UserDefaultManager.user = convertUserDTO(user: $0) }
             .do { UserDefaultManager.jwtToken = $0.jwt ?? "" }
             .map { $0.jwt == nil }
             .do { _ in print("jwt Token: ", UserDefaultManager.jwtToken) }
@@ -61,5 +63,9 @@ struct OnboardViewModel {
             .filter { $0 }
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
+        
+        func convertUserDTO(user: DTO.User.Response) -> User {
+            return .init(jwt: user.jwt ?? "", message: user.message, userId: user.userId, userJob: user.userJob, userDetailJobs: user.userDetailJobs, userWork: user.userWork, userNickname: user.userNickname, userProfileImg: user.userProfileImg, userProfileColor: user.userProfileColor, userIntro: user.userIntro, userSocialProvider: user.userSocialProvider)
+        }
     }
 }

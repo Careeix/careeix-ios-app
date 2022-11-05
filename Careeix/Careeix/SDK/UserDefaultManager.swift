@@ -28,8 +28,8 @@ struct UserDefaultManager {
     @UserDefault(key: "projectBaseInputCache", defaultValue: [-1: ProjectBaseInfo.init(title: "", classification: "", introduce: "")])
     public static var projectBaseInputCache: [Int: ProjectBaseInfo]
     
-    @UserDefault(key: "user", defaultValue: User.Response(jwt: nil, message: "", userId: 0, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0))
-    public static var user: User.Response
+    @UserDefault(key: "user", defaultValue: User(jwt: "", message: "", userId: 0, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: nil, userProfileColor: "", userIntro: "", userSocialProvider: 0))
+    public static var user: User
     
     @UserDefault(key: "loginType", defaultValue: SocialLoginSDK.SocialLoginType.kakao)
     public static var loginType: SocialLoginSDK.SocialLoginType
