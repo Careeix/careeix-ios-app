@@ -63,7 +63,7 @@ extension SocialLoginService {
         return readAccessToken()
             .debug("🤪🤪🤪🤪🤪")
             .filter { $0 != "토큰 에러" }
-            .flatMap(UserAPI.kakaoLogin)
+            .flatMap(UserRepository.kakaoLogin)
     }
     
     func kakaoLogout() -> Observable<Bool> {
@@ -83,12 +83,12 @@ extension SocialLoginService {
             authorizationController.presentationContextProvider = self
             authorizationController.performRequests()
         return appleIdentityTokenSubject
-            .flatMap(UserAPI.appleLogin)
+            .flatMap(UserRepository.appleLogin)
     }
     
     
     func socialSignUp(with info: DTO.User.Request) -> Observable<DTO.User.Response> {
-        return UserAPI.kakaoSignUp(with: info)
+        return UserRepository.kakaoSignUp(with: info)
     }
 }
 

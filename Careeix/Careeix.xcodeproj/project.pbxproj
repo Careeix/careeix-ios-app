@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		780CB8BC29175C7D00D4B06E /* UserDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780CB8BB29175C7D00D4B06E /* UserDTO.swift */; };
+		780CB8BE29175D5C00D4B06E /* ProjectDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780CB8BD29175D5C00D4B06E /* ProjectDTO.swift */; };
 		78345E0129126F0700EB9621 /* ProjectLookupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345DFB29126F0700EB9621 /* ProjectLookupViewModel.swift */; };
 		78345E0229126F0700EB9621 /* ProjectChapterLookupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345DFD29126F0700EB9621 /* ProjectChapterLookupCell.swift */; };
 		78345E0329126F0700EB9621 /* ProjectLookupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345DFE29126F0700EB9621 /* ProjectLookupViewController.swift */; };
@@ -18,9 +20,9 @@
 		78345E1229126F1B00EB9621 /* UpdatedNicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E0D29126F1B00EB9621 /* UpdatedNicknameViewController.swift */; };
 		78345E1329126F1B00EB9621 /* MypageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E0E29126F1B00EB9621 /* MypageViewController.swift */; };
 		78345E152913854F00EB9621 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E142913854F00EB9621 /* Int+.swift */; };
-		78345E17291391FA00EB9621 /* ProjectAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E16291391FA00EB9621 /* ProjectAPI.swift */; };
+		78345E17291391FA00EB9621 /* ProjectRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E16291391FA00EB9621 /* ProjectRepository.swift */; };
 		78345E1A2913935100EB9621 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E192913935100EB9621 /* User.swift */; };
-		78345E1D2913942100EB9621 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E1C2913942100EB9621 /* UserAPI.swift */; };
+		78345E1D2913942100EB9621 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E1C2913942100EB9621 /* UserRepository.swift */; };
 		784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD09828EDA23900CA86F0 /* AppDelegate.swift */; };
 		784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */; };
 		784BD0A228EDA23A00CA86F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 784BD0A128EDA23A00CA86F0 /* Assets.xcassets */; };
@@ -118,6 +120,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		780CB8BB29175C7D00D4B06E /* UserDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDTO.swift; sourceTree = "<group>"; };
+		780CB8BD29175D5C00D4B06E /* ProjectDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDTO.swift; sourceTree = "<group>"; };
 		78345DFB29126F0700EB9621 /* ProjectLookupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectLookupViewModel.swift; sourceTree = "<group>"; };
 		78345DFD29126F0700EB9621 /* ProjectChapterLookupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectChapterLookupCell.swift; sourceTree = "<group>"; };
 		78345DFE29126F0700EB9621 /* ProjectLookupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectLookupViewController.swift; sourceTree = "<group>"; };
@@ -129,9 +133,9 @@
 		78345E0D29126F1B00EB9621 /* UpdatedNicknameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatedNicknameViewController.swift; sourceTree = "<group>"; };
 		78345E0E29126F1B00EB9621 /* MypageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MypageViewController.swift; sourceTree = "<group>"; };
 		78345E142913854F00EB9621 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
-		78345E16291391FA00EB9621 /* ProjectAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAPI.swift; sourceTree = "<group>"; };
+		78345E16291391FA00EB9621 /* ProjectRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRepository.swift; sourceTree = "<group>"; };
 		78345E192913935100EB9621 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		78345E1C2913942100EB9621 /* UserAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
+		78345E1C2913942100EB9621 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		784BD09528EDA23900CA86F0 /* Careeix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Careeix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		784BD09828EDA23900CA86F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -229,6 +233,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		780CB8B929175ACE00D4B06E /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				78345E1C2913942100EB9621 /* UserRepository.swift */,
+				78345E16291391FA00EB9621 /* ProjectRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		780CB8BA29175C6E00D4B06E /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				780CB8BB29175C7D00D4B06E /* UserDTO.swift */,
+				780CB8BD29175D5C00D4B06E /* ProjectDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
 		78345DFA29126F0700EB9621 /* Project */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,15 +304,6 @@
 				78345E0B29126F1B00EB9621 /* MyPageTableViewCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		78345E1B2913940000EB9621 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				78345E1C2913942100EB9621 /* UserAPI.swift */,
-				78345E16291391FA00EB9621 /* ProjectAPI.swift */,
-			);
-			path = API;
 			sourceTree = "<group>";
 		};
 		78345E1E29139F3200EB9621 /* Cells */ = {
@@ -507,7 +520,8 @@
 		78E94A2928EF069E00DBBF5C /* SDK */ = {
 			isa = PBXGroup;
 			children = (
-				78345E1B2913940000EB9621 /* API */,
+				780CB8BA29175C6E00D4B06E /* DTO */,
+				780CB8B929175ACE00D4B06E /* Repositories */,
 				78D52EA128FE5BE0001F5747 /* Services */,
 				78E94A2628EEE90700DBBF5C /* UserDefaultManager.swift */,
 				78D52E5228FD3142001F5747 /* SocialLoginSDK.swift */,
@@ -724,6 +738,7 @@
 				78DC17D428FBEA0000331A22 /* RadioCell.swift in Sources */,
 				7AFE502928FD90C600A72D65 /* CompositionalLayout.swift in Sources */,
 				78DC17D628FBEEA400331A22 /* MultiInputCell.swift in Sources */,
+				780CB8BE29175D5C00D4B06E /* ProjectDTO.swift in Sources */,
 				7AFE502828FD90C600A72D65 /* MinimalCareerProfileCell.swift in Sources */,
 				78DC17B828FA8C2600331A22 /* OnboardCell.swift in Sources */,
 				78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */,
@@ -737,14 +752,14 @@
 				78E6F00A290C70F20026655D /* ProjectInputDetailViewModel.swift in Sources */,
 				78345E1A2913935100EB9621 /* User.swift in Sources */,
 				78345E0329126F0700EB9621 /* ProjectLookupViewController.swift in Sources */,
-				78345E1D2913942100EB9621 /* UserAPI.swift in Sources */,
+				78345E1D2913942100EB9621 /* UserRepository.swift in Sources */,
 				78345E0229126F0700EB9621 /* ProjectChapterLookupCell.swift in Sources */,
 				78345E0729126F1100EB9621 /* ProjectChapterViewController.swift in Sources */,
 				7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */,
 				786F46A22901A21B00215AF0 /* BaseCheckBoxView.swift in Sources */,
 				78C9099A2905918A00AA9AA3 /* Project.swift in Sources */,
 				78345E1029126F1B00EB9621 /* MyPageTableViewCell.swift in Sources */,
-				78345E17291391FA00EB9621 /* ProjectAPI.swift in Sources */,
+				78345E17291391FA00EB9621 /* ProjectRepository.swift in Sources */,
 				786E7039290FCF4400463E76 /* NavigationController.swift in Sources */,
 				786F4698290199EF00215AF0 /* BaseTextView.swift in Sources */,
 				78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */,
@@ -779,6 +794,7 @@
 				789F27C32906ECA400F634F0 /* NoteCell.swift in Sources */,
 				78345E0F29126F1B00EB9621 /* MyPageHeaderView.swift in Sources */,
 				7AFE502628FD90C600A72D65 /* HomeModel.swift in Sources */,
+				780CB8BC29175C7D00D4B06E /* UserDTO.swift in Sources */,
 				78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

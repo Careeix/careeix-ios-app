@@ -75,7 +75,7 @@ struct ProjectInputViewModel {
         checkBoxIsSelctedDriver = periodInputViewModel.checkBoxViewModel.isSeclectedRelayShare
             .asDriver(onErrorJustReturn: false)
         
-        let projectResult = ProjectAPI.fetchProject(with: projectId).share()
+        let projectResult = ProjectRepository.fetchProject(with: projectId).share()
         fetchedSimpleInput = projectId == -1
         ? .just(.init(title: "", classification: "", introduce: ""))
         : projectResult.map {
