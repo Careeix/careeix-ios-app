@@ -63,7 +63,6 @@ extension SocialLoginService {
 
     func kakaoLogin() -> Observable<User> {
         return readAccessToken()
-            .debug("🤪🤪🤪🤪🤪")
             .filter { $0 != "토큰 에러" }
             .flatMap(userRepository.kakaoLogin)
 
@@ -87,6 +86,7 @@ extension SocialLoginService {
             authorizationController.performRequests()
         return appleIdentityTokenSubject
             .flatMap(userRepository.appleLogin)
+            .catch { _ in .just(.init(jwt: "", message: "애플로그인이 취소되었습니다")) }
     }
     
     
@@ -106,6 +106,11 @@ extension SocialLoginService: ASAuthorizationControllerDelegate,   ASAuthorizati
             case let appleIDCredential as ASAuthorizationAppleIDCredential:
                 // 계정 정보 가져오기
             guard let identityToken = appleIDCredential.identityToken else { return }
+            guard let authorizationCode = appleIDCredential.authorizationCode else { return }
+            let accessToken = String(data: identityToken, encoding: .ascii)!
+            let authCode = String(data: authorizationCode, encoding: .ascii)!
+            print("accessToken:\n", accessToken)
+            print("authorizationCode:\n", authCode)
             appleIdentityTokenSubject.onNext(identityToken)
             appleIdentityTokenSubject.onCompleted()
             default:
@@ -114,7 +119,7 @@ extension SocialLoginService: ASAuthorizationControllerDelegate,   ASAuthorizati
     }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        print("애플로그인 실패 !: ", error)
+        appleIdentityTokenSubject.onError(error)
         appleIdentityTokenSubject.onCompleted()
         appleIdentityTokenSubject = PublishSubject<Data>()
     }

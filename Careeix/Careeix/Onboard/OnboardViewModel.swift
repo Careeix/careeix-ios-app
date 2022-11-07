@@ -26,7 +26,7 @@ struct OnboardViewModel {
     let currentPageDriver: Driver<Int>
     let showHomeViewDriver: Driver<Void>
     let showSignUpViewDriver: Driver<Void>
-    
+    let showAlertViewDriver: Driver<Void>
     init() {
         logoImageNameDriver = .just("logo")
         kakaoLoginButtonImageNameDriver = .just("kakaoLogin")
@@ -41,16 +41,21 @@ struct OnboardViewModel {
             .do { UserDefaultManager.loginType = $0 }
             .flatMap(SocialLoginSDK.socialLogin)
             .do { UserDefaultManager.user = $0 }
-            .debug("🌳🌳 로그인 결과 🌳🌳")
             .share()
         
         let needMoreInfoObservableShare = loginResponseObservable
-            .map { $0.jwt == "" }
+            .map { $0.jwt == "1" }
             .do { _ in print("jwt Token: ", UserDefaultManager.user.jwt) }
+            .debug("😡")
             .share()
             
         showHomeViewDriver = needMoreInfoObservableShare
-            .filter { !$0 }
+            .filter { !$0 && UserDefaultManager.user.jwt != "" }
+            .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
+        
+        showAlertViewDriver = needMoreInfoObservableShare
+            .filter { !$0 && UserDefaultManager.user.jwt == "" }
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
         

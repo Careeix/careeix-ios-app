@@ -18,7 +18,6 @@ struct ProjectChapterViewModel {
     let noteDriver: Driver<[Note]>
     
     init(title: String, number: Int, projectChapter: ProjectChapter) {
-        // TODO: 서버통신해서 project가져오기
         titleDriver = .just(title)
         chapterTitleDriver = .just("\(number.zeroFillTenDigits())  \(projectChapter.title)")
         descriptionDriver = .just(projectChapter.content)

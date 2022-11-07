@@ -26,7 +26,7 @@ struct ProjectInputViewModel {
     
     // MARK: Input
     let viewDidAppearRelay = PublishRelay<Void>()
-    let fillFetchedDataTrigger = PublishRelay<Void>()
+//    let fillFetchedDataTrigger = PublishRelay<Void>()
     
     // MARK: Output
     let nextButtonEnableDriver: Driver<Void>
@@ -34,7 +34,7 @@ struct ProjectInputViewModel {
     let combinedDataDriver: Driver<ProjectBaseInfo>
     let checkBoxIsSelctedDriver: Driver<Bool>
     let askingKeepAlertDriver: Driver<Void>
-    let fillFetcedDataDriver: Driver<Void>
+//    let fillFetcedDataDriver: Driver<Void>
     
     init(titleInputViewModel: SimpleInputViewModel,
          periodInputViewModel: PeriodInputViewModel,
@@ -92,23 +92,33 @@ struct ProjectInputViewModel {
         
         let initialFetchData = Observable.combineLatest(viewDidAppearRelay, fetchedSimpleInput, fetchedChapters)
             .map { ($0.1, $0.2) }
+            .do {
+                if  UserDefaultManager.projectBaseInputCache[projectId] == nil &&
+                        UserDefaultManager.projectChaptersInputCache[projectId] == nil {
+                    UserDefaultManager.projectBaseInputCache[projectId] = $0.0
+                    UserDefaultManager.projectChaptersInputCache[projectId] = $0.1
+                }
+            }
             .share()
+        
+        let isNotSameData = initialFetchData
+            .filter { $0.0 != UserDefaultManager.projectBaseInputCache[projectId] || $0.1 != UserDefaultManager.projectChaptersInputCache[projectId] }
+        
         // 이놈을 가지고 (유저디폴트에 값이 있으면) 이어서 수정하시겠습니까를 띄어야 하는지 판단 ->
         // 이어서 수정하기 -> 유저디폴트 값유지
         // 이어서 수정안하기 -> 새로운 데이터로 유저 디폴트 값 저장 -> (등록이면 초기화값, 수정이면 서버에서 패치해온값)
         
-        askingKeepAlertDriver = initialFetchData
-            .filter { $0.0 != UserDefaultManager.projectBaseInputCache[projectId] || $0.1 != UserDefaultManager.projectChaptersInputCache[projectId] }
+        askingKeepAlertDriver = isNotSameData
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
         
-        fillFetcedDataDriver = Observable.combineLatest(fillFetchedDataTrigger, fetchedSimpleInput, fetchedChapters)
-            .do {
-                UserDefaultManager.projectBaseInputCache[projectId] = $0.1
-                UserDefaultManager.projectChaptersInputCache[projectId] = $0.2
-            }
-            .map { _ in () }
-            .asDriver(onErrorJustReturn: ())
+//        fillFetcedDataDriver = Observable.combineLatest(fillFetchedDataTrigger, fetchedSimpleInput, fetchedChapters)
+//            .do {
+//                UserDefaultManager.projectBaseInputCache[projectId] = $0.1
+//                UserDefaultManager.projectChaptersInputCache[projectId] = $0.2
+//            }
+//            .map { _ in () }
+//            .asDriver(onErrorJustReturn: ())
     }
     
     func updatePersistanceData(_ sender :ProjectBaseInfo) {
@@ -133,12 +143,13 @@ struct ProjectInputViewModel {
     }
     
     func initProject() {
-        // TODO: 서버 통신 … ?
-        if UserDefaultManager.projectBaseInputCache[projectId] == nil {
-            UserDefaultManager.projectBaseInputCache[projectId] = .init(title: "", classification: "", introduce: "")
-        }
-        if UserDefaultManager.projectChaptersInputCache[projectId] == nil {
-            UserDefaultManager.projectChaptersInputCache[projectId] = []
+        if projectId == -1 {
+            if UserDefaultManager.projectBaseInputCache[projectId] == nil {
+                UserDefaultManager.projectBaseInputCache[projectId] = .init(title: "", classification: "", introduce: "")
+            }
+            if UserDefaultManager.projectChaptersInputCache[projectId] == nil {
+                UserDefaultManager.projectChaptersInputCache[projectId] = []
+            }
         }
     }
     
@@ -147,7 +158,8 @@ struct ProjectInputViewModel {
             UserDefaultManager.projectBaseInputCache[-1] = .init(title: "", classification: "", introduce: "")
             UserDefaultManager.projectChaptersInputCache[-1] = []
         } else {
-            // TODO: 서버 통신 (project ID로 Project 내용 get)
+            // TODO: 서버 통신 (project ID로 Project 내용 get) 후 유저디폴트에 넣기 -> 값 뿌리기 fillRemainingInput()
+            
         }
 
     }

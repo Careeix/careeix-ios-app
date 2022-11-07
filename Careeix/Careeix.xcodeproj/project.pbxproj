@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		780CB8BC29175C7D00D4B06E /* UserDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780CB8BB29175C7D00D4B06E /* UserDTO.swift */; };
 		780CB8BE29175D5C00D4B06E /* ProjectDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780CB8BD29175D5C00D4B06E /* ProjectDTO.swift */; };
-		7823470F2918D04300E648DF /* DTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7823470E2918D04300E648DF /* DTO.swift */; };
 		782347132918D0C200E648DF /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782347122918D0C200E648DF /* Entity.swift */; };
 		782347152918D0D700E648DF /* UserEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782347142918D0D700E648DF /* UserEntity.swift */; };
 		782347172918D1E300E648DF /* ProjectEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782347162918D1E300E648DF /* ProjectEntity.swift */; };
@@ -52,6 +51,7 @@
 		786F46A42901A24E00215AF0 /* PeriodInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F46A32901A24E00215AF0 /* PeriodInputView.swift */; };
 		786F46A729028DE900215AF0 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 786F46A629028DE900215AF0 /* Moya */; };
 		786F46A929028DE900215AF0 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 786F46A829028DE900215AF0 /* RxMoya */; };
+		787448EE29197BAF00214381 /* OneButtonAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787448ED29197BAF00214381 /* OneButtonAlertViewController.swift */; };
 		7881F5522902D91D00111395 /* TwoButtonAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */; };
 		788A09FF290A7BBD003EF027 /* ProjectChapterInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788A09FE290A7BBD003EF027 /* ProjectChapterInputViewModel.swift */; };
 		789F27C029068C2200F634F0 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F27BF29068C2200F634F0 /* DatePickerView.swift */; };
@@ -126,7 +126,6 @@
 /* Begin PBXFileReference section */
 		780CB8BB29175C7D00D4B06E /* UserDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDTO.swift; sourceTree = "<group>"; };
 		780CB8BD29175D5C00D4B06E /* ProjectDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDTO.swift; sourceTree = "<group>"; };
-		7823470E2918D04300E648DF /* DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTO.swift; sourceTree = "<group>"; };
 		782347122918D0C200E648DF /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		782347142918D0D700E648DF /* UserEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEntity.swift; sourceTree = "<group>"; };
 		782347162918D1E300E648DF /* ProjectEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEntity.swift; sourceTree = "<group>"; };
@@ -164,6 +163,7 @@
 		786F469F2901A1A400215AF0 /* ManyInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManyInputView.swift; sourceTree = "<group>"; };
 		786F46A12901A21B00215AF0 /* BaseCheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCheckBoxView.swift; sourceTree = "<group>"; };
 		786F46A32901A24E00215AF0 /* PeriodInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodInputView.swift; sourceTree = "<group>"; };
+		787448ED29197BAF00214381 /* OneButtonAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneButtonAlertViewController.swift; sourceTree = "<group>"; };
 		7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoButtonAlertViewController.swift; sourceTree = "<group>"; };
 		788A09FE290A7BBD003EF027 /* ProjectChapterInputViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterInputViewModel.swift; sourceTree = "<group>"; };
 		789F27BF29068C2200F634F0 /* DatePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
@@ -253,7 +253,6 @@
 		780CB8BA29175C6E00D4B06E /* DTO */ = {
 			isa = PBXGroup;
 			children = (
-				7823470E2918D04300E648DF /* DTO.swift */,
 				780CB8BB29175C7D00D4B06E /* UserDTO.swift */,
 				780CB8BD29175D5C00D4B06E /* ProjectDTO.swift */,
 			);
@@ -460,6 +459,7 @@
 			isa = PBXGroup;
 			children = (
 				7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */,
+				787448ED29197BAF00214381 /* OneButtonAlertViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -749,7 +749,6 @@
 				782347152918D0D700E648DF /* UserEntity.swift in Sources */,
 				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
 				7AFE502728FD90C600A72D65 /* RelevantCareerProfilesCell.swift in Sources */,
-				7823470F2918D04300E648DF /* DTO.swift in Sources */,
 				786F46A42901A24E00215AF0 /* PeriodInputView.swift in Sources */,
 				78D52E5328FD3142001F5747 /* SocialLoginSDK.swift in Sources */,
 				78D52EA328FE5C3E001F5747 /* SocialLoginService.swift in Sources */,
@@ -807,6 +806,7 @@
 				786F469629018F5500215AF0 /* Date+.swift in Sources */,
 				786F46A02901A1A400215AF0 /* ManyInputView.swift in Sources */,
 				78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */,
+				787448EE29197BAF00214381 /* OneButtonAlertViewController.swift in Sources */,
 				78DC17C728FA9E1C00331A22 /* SimpleInputView.swift in Sources */,
 				78345E1329126F1B00EB9621 /* MypageViewController.swift in Sources */,
 				78345E0429126F0700EB9621 /* ProjectLookupHeaderView.swift in Sources */,
@@ -959,7 +959,7 @@
 				CODE_SIGN_ENTITLEMENTS = Careeix/CareeixDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = QHVQWS4LSN;
+				DEVELOPMENT_TEAM = 3AQ2WDVH35;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Careeix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -987,7 +987,7 @@
 				CODE_SIGN_ENTITLEMENTS = Careeix/Careeix.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = QHVQWS4LSN;
+				DEVELOPMENT_TEAM = 3AQ2WDVH35;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Careeix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

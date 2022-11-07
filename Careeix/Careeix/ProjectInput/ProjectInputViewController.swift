@@ -135,9 +135,9 @@ class ProjectInputViewController: UIViewController {
                 owner.showAskingKeepWritingView()
             }.disposed(by: disposeBag)
         
-        viewModel.fillFetcedDataDriver
-            .drive()
-            .disposed(by: disposeBag)
+//        viewModel.fillFetcedDataDriver
+//            .drive()
+//            .disposed(by: disposeBag)
     }
     
     // MARK: - function
@@ -351,7 +351,7 @@ extension ProjectInputViewController: TwoButtonAlertViewDelegate {
         switch type {
         case .askingKeepWriting:
             viewModel.initPersistenceData()
-            viewModel.fillFetchedDataTrigger.accept(())
+//            viewModel.fillFetchedDataTrigger.accept(())
             
         default:
             break

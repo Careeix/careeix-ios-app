@@ -18,4 +18,16 @@ struct ProjectRepository {
             return Disposables.create()
         }
     }
+    
+    static func updateProject(with id: Int, project: Project) -> Observable<ProjectDTO.Update.Response> {
+        return id == -1
+        ? Observable.create { observer in
+            observer.onNext(.init(code: "asd", message: "등록"))
+            return Disposables.create()
+        }
+        : Observable.create { observer in
+            observer.onNext(.init(code: "asd", message: "수정"))
+            return Disposables.create()
+        }
+    }
 }

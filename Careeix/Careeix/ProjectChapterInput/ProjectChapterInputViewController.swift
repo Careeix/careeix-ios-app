@@ -228,6 +228,7 @@ extension ProjectChapterInputViewController {
         }
         
         [titleTextField, contentTextView, noteTableView, addNoteButtonView].forEach { contentView.addSubview($0) }
+        
         titleTextField.snp.makeConstraints {
             $0.top.equalToSuperview().inset(13)
             $0.leading.trailing.equalToSuperview().inset(16)
