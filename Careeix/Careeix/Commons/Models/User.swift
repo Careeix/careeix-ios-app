@@ -8,8 +8,8 @@
 import Foundation
 
 struct User: Codable {
-    let jwt: String
-    let message: String
+    var jwt: String
+    var message: String
     let userId: Int
     let userJob: String
     let userDetailJobs: [String]

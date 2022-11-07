@@ -15,7 +15,6 @@ struct UserRepository {
     func kakaoLogin(accessToken: String) -> Observable<Entity.LoginUser.Response> {
         API<DTO.User.Response>(path: "users/check-login", method: .post, parameters: ["accessToken": accessToken], task: .requestParameters(encoding: JSONEncoding.default)).requestRX()
             .map(convertLoginResponseDTO)
-            .asObservable()
     }
     
     func appleLogin(identifyToken: Data) -> Observable<Entity.LoginUser.Response> {
@@ -26,14 +25,21 @@ struct UserRepository {
     }
     
     func kakaoSignUp(with info: Entity.SignUpUser.Request) -> Observable<Entity.SignUpUser.Response> {
-        API<DTO.User.Response>(path: "users/kakao-login", method: .post, parameters: [:], task: .requestJSONEncodable(conerSignUpRequestDTO(info))).requestRX()
+        print(UserDefaultManager.kakaoAccessToken)
+        return API<DTO.User.Response>(path: "users/kakao-login", method: .post, parameters: [:], task: .requestJSONEncodable(convertSignUpRequestDTO(info))).requestRX()
             .map(converSignUpResponseDTO)
-            .asObservable()
+            .catch { error in
+                if let error = error as? ErrorResponse {
+                    UserDefaultManager.user.message = error.message
+                    UserDefaultManager.user.jwt = ""
+                }
+                return .just(.init(jwt: "", message: "", userId: 0, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0))
+            }
     }
     // KAKAO
     // TODO: 카카오와 애플 어떻게 할껀지 ..
 
-    func conerSignUpRequestDTO(_ entity: Entity.SignUpUser.Request) -> DTO.User.Request {
+    func convertSignUpRequestDTO(_ entity: Entity.SignUpUser.Request) -> DTO.User.Request {
         .init(token: UserDefaultManager.kakaoAccessToken, job: entity.job, nickname: entity.nickname, userDetailJob: entity.detailJobs, userWork: entity.annual)
     }
     

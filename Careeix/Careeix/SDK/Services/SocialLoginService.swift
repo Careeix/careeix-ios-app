@@ -56,8 +56,9 @@ extension SocialLoginService {
             .take(1)
             .debug("카카오 로그인 SDK")
             .map { $0.accessToken }
-            .catch { _ in .just("토큰 에러") }
             .do { UserDefaultManager.kakaoAccessToken = $0 }
+            .catch { _ in .just("토큰 에러") }
+            
     }
 
     func kakaoLogin() -> Observable<Entity.LoginUser.Response> {

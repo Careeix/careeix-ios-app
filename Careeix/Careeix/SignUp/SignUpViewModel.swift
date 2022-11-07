@@ -10,12 +10,16 @@ import RxCocoa
 import RxSwift
 import RxRelay
 class SignUpViewModel {
+    
+    
     // MARK: SubViewModels
     let nickNameInputViewModel: SimpleInputViewModel
     let jobInputViewModel: SimpleInputViewModel
     let annualInputViewModel: RadioInputViewModel
     let detailJobsInputViewModel: MultiInputViewModel
     let completeButtonViewModel: CompleteButtonViewModel
+    
+//    let signUpResultObservable: Observable<User>
     
     // MARK: - Input
     let createUserTrigger =  PublishRelay<Void>()
@@ -24,7 +28,7 @@ class SignUpViewModel {
     let completeButtonEnableDriver: Driver<Void>
     let completeButtonDisableDriver: Driver<Void>
     let showTabbarCotrollerDriver: Driver<Void>
-    
+    let showAlertViewDriver: Driver<Void>
     
     // MARK: - Initializer
     init(nickNameInputViewModel: SimpleInputViewModel, jobInputViewModel: SimpleInputViewModel, annualInputViewModel: RadioInputViewModel, detailJobsInputViewModel: MultiInputViewModel, completeButtonViewModel: CompleteButtonViewModel) {
@@ -48,15 +52,20 @@ class SignUpViewModel {
             .map { nickname, job, annual, detailJobs in
                 Entity.SignUpUser.Request(nickname: nickname, job: job, annual: annual.row, detailJobs: detailJobs)
             }.flatMap(SocialLoginSDK.socialSignUp)
+//            .map(convertSignUpEntityToModel)
+            .map { $0.jwt != "" }
             .share()
         
-        let success = result
-            .debug("\(UserDefaultManager.user)")
-            .take(0)
-        
-        showTabbarCotrollerDriver = success
+        showTabbarCotrollerDriver = result
+            .filter{ $0 }
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
+        
+        showAlertViewDriver = result
+            .filter { !$0 }
+            .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
+        
         
         let buttonStateDriver = combinedInputValuesObservable
             .map { nickName, job, annualIndex, detailJobs in
@@ -67,9 +76,9 @@ class SignUpViewModel {
         completeButtonEnableDriver = buttonStateDriver.filter { $0 }.map { _ in () }
         completeButtonDisableDriver = buttonStateDriver.filter { !$0 }.map { _ in () }
         
-//        func convertSignUpEntityToModel(_ entity: Entity.SignUpUser.Response) -> User. {
-//
-//        }
+        func convertSignUpEntityToModel(_ entity: Entity.SignUpUser.Response) -> User {
+            return .init(jwt: entity.jwt , message: entity.message, userId: entity.userId, userJob: entity.userJob, userDetailJobs: entity.userDetailJobs, userWork: entity.userWork, userNickname: entity.userNickname, userProfileImg: entity.userProfileImg, userProfileColor: entity.userProfileColor, userIntro: entity.userIntro, userSocialProvider: entity.userSocialProvider ?? 0)
+        }
     }
 
 }
