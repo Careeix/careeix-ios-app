@@ -12,38 +12,37 @@ import RxRelay
 import Moya
 
 struct UserRepository {
-    func kakaoLogin(accessToken: String) -> Observable<Entity.LoginUser.Response> {
+    func kakaoLogin(accessToken: String) -> Observable<User> {
         API<DTO.User.Response>(path: "users/check-login", method: .post, parameters: ["accessToken": accessToken], task: .requestParameters(encoding: JSONEncoding.default)).requestRX()
-            .map(convertLoginResponseDTO)
+            .map(convertUserResponseDTO)
     }
     
-    func appleLogin(identifyToken: Data) -> Observable<Entity.LoginUser.Response> {
+    func appleLogin(identifyToken: Data) -> Observable<User> {
         Single.create { single in
             single(.failure(NSError(domain: "aa", code: 0)))
             return Disposables.create()
         }.asObservable()
     }
     
-    func kakaoSignUp(with info: Entity.SignUpUser.Request) -> Observable<Entity.SignUpUser.Response> {
-        print(UserDefaultManager.kakaoAccessToken)
+    func kakaoSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
         return API<DTO.User.Response>(path: "users/kakao-login", method: .post, parameters: [:], task: .requestJSONEncodable(convertSignUpRequestDTO(info))).requestRX()
-            .map(converSignUpResponseDTO)
+            .map(convertUserResponseDTO)
             .catch { error in
                 if let error = error as? ErrorResponse {
-                    UserDefaultManager.user.message = error.message
-                    UserDefaultManager.user.jwt = ""
+                    return .just(.init(jwt: "", message: error.message, userId: 0, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0))
+                } else {
+                    return .just(.init(jwt: "", message: "네트워크 환경을 확인해주세요.", userId: 0, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "'", userProfileColor: "'", userIntro: "'", userSocialProvider: 0))
                 }
-                return .just(.init(jwt: "", message: "", userId: 0, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0))
+
             }
     }
     // KAKAO
-    // TODO: 카카오와 애플 어떻게 할껀지 ..
-
+    // TODO: 카카오와 애플 어떻게 할껀지 .. (카카오는 String, 애플은 Data)
     func convertSignUpRequestDTO(_ entity: Entity.SignUpUser.Request) -> DTO.User.Request {
-        .init(token: UserDefaultManager.kakaoAccessToken, job: entity.job, nickname: entity.nickname, userDetailJob: entity.detailJobs, userWork: entity.annual)
+        .init(accessToken: UserDefaultManager.kakaoAccessToken, job: entity.job, nickname: entity.nickname, userDetailJob: entity.detailJobs, userWork: entity.annual)
     }
     
-    func convertLoginResponseDTO(_ dto: DTO.User.Response) -> Entity.LoginUser.Response {
+    func convertUserResponseDTO(_ dto: DTO.User.Response) -> User {
         .init(jwt: dto.jwt ?? "" ,
               message: dto.message ?? "",
               userId: dto.userId ?? 0,
@@ -57,17 +56,5 @@ struct UserRepository {
               userSocialProvider: dto.userSocialProvider ?? 0)
     }
     
-    func converSignUpResponseDTO(_ dto: DTO.User.Response) -> Entity.SignUpUser.Response {
-        .init(jwt: dto.jwt ?? "" ,
-              message: dto.message ?? "",
-              userId: dto.userId ?? 0,
-              userJob: dto.userJob ?? "",
-              userDetailJobs: dto.userDetailJobs ?? [],
-              userWork: dto.userWork ?? 0,
-              userNickname: dto.userNickname ?? "",
-              userProfileImg: dto.userProfileImg ?? "",
-              userProfileColor: dto.userProfileColor ?? "",
-              userIntro: dto.userIntro ?? "",
-              userSocialProvider: dto.userSocialProvider ?? 0)
-    }
+
 }

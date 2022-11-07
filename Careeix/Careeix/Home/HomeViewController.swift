@@ -41,7 +41,9 @@ class HomeViewController: UIViewController {
         print(UserDefaultManager.user)
     }
     func getUserData() {
-        API<UserModel>(path: "users/profile/1", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
+        print("🐯", UserDefaultManager.user.userId)
+    
+        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
             switch result {
             case .success(let response):
                 // data:

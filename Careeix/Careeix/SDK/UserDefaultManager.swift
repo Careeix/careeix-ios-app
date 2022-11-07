@@ -12,8 +12,6 @@ import RxCocoa
 import RxRelay
 
 struct UserDefaultManager {
-    @UserDefault(key: CareeixKey.UserDefaultKey.jwtToken, defaultValue: "")
-    public static var jwtToken: String
     
     @UserDefault(key: CareeixKey.UserDefaultKey.kakaoAccessToken, defaultValue: "")
     public static var kakaoAccessToken: String
@@ -37,10 +35,7 @@ struct UserDefaultManager {
     
     @UserDefault(key: "loginType", defaultValue: SocialLoginSDK.SocialLoginType.kakao)
     public static var loginType: SocialLoginSDK.SocialLoginType
-    
-    // TODO: UserId와 jwt 모두 user로 통합 
-    @UserDefault(key: "userId", defaultValue: 0)
-    public static var userId: Int
+
 }
 
 @propertyWrapper

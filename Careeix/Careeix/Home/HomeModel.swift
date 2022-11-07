@@ -42,7 +42,7 @@ struct UserModel: Hashable, Codable {
     let userDetailJobs: [String]
     let userWork: Int
     let userNickname: String
-    let userProfileImg: String
+    let userProfileImg: String?
     let userProfileColor: String
     let userIntro: String?
     let userSocialProvider: Int

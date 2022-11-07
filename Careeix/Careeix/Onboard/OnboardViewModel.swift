@@ -40,7 +40,6 @@ struct OnboardViewModel {
         let loginResponseObservable = socialLoginTrigger
             .do { UserDefaultManager.loginType = $0 }
             .flatMap(SocialLoginSDK.socialLogin)
-            .map(convertUserEntity)
             .do { UserDefaultManager.user = $0 }
             .debug("🌳🌳 로그인 결과 🌳🌳")
             .share()
@@ -59,9 +58,6 @@ struct OnboardViewModel {
             .filter { $0 }
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
-        
-        func convertUserEntity(user: Entity.LoginUser.Response) -> User {
-            return .init(jwt: user.jwt , message: user.message, userId: user.userId, userJob: user.userJob, userDetailJobs: user.userDetailJobs, userWork: user.userWork, userNickname: user.userNickname, userProfileImg: user.userProfileImg, userProfileColor: user.userProfileColor, userIntro: user.userIntro, userSocialProvider: user.userSocialProvider)
-        }
+
     }
 }

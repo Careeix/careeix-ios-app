@@ -52,7 +52,7 @@ class ProjectLookupViewModel {
     func createProject() {
         print("발행전 데이터 확인")
         print(projectId)
-        print(UserDefaultManager.jwtToken)
+        print(UserDefaultManager.user)
         print(UserDefaultManager.projectBaseInputCache[projectId])
         print(UserDefaultManager.projectChaptersInputCache[projectId])
         //        // TODO: 서버 통신 (프로젝트 post)

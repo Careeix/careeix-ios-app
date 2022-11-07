@@ -61,7 +61,7 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     }()
 
     func configure(_ info: UserModel) {
-        profileImageView.image = UIImage(named: info.userProfileImg)
+        profileImageView.image = UIImage(named: info.userProfileImg ?? "")
         nickName.text = info.userNickname
         careerName.text = info.userJob
         careerGrade.text = String(info.userWork)

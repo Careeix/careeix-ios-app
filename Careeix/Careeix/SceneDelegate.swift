@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         SocialLoginSDK.initSDK(type: .kakao)
         window = UIWindow(windowScene: windowScene)
         
-        UserDefaultManager.jwtToken = ""
+        UserDefaultManager.user.jwt = ""
         UserDefaultManager.writingProjectId = -2
 
         NotificationCenter.default.addObserver(self,
@@ -36,7 +36,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                name: Notification.Name("logoutSuccess"),
                                                object: nil)
         
-        window?.rootViewController = UserDefaultManager.jwtToken == ""
+        window?.rootViewController = UserDefaultManager.user.jwt == ""
         ? UINavigationController(rootViewController: OnboardViewController())
         : TabBarController()
         

@@ -61,7 +61,7 @@ extension SocialLoginService {
             
     }
 
-    func kakaoLogin() -> Observable<Entity.LoginUser.Response> {
+    func kakaoLogin() -> Observable<User> {
         return readAccessToken()
             .debug("🤪🤪🤪🤪🤪")
             .filter { $0 != "토큰 에러" }
@@ -76,7 +76,7 @@ extension SocialLoginService {
         return .just(true)
     }
     
-    func appleLogin() -> Observable<Entity.LoginUser.Response> {
+    func appleLogin() -> Observable<User> {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
             let request = appleIDProvider.createRequest()
                 
@@ -90,7 +90,7 @@ extension SocialLoginService {
     }
     
     
-    func socialSignUp(with info: Entity.SignUpUser.Request) -> Observable<Entity.SignUpUser.Response> {
+    func socialSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
         return userRepository.kakaoSignUp(with: info)
     }
 }

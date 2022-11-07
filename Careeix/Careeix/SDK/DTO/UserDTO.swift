@@ -10,7 +10,7 @@ import Foundation
 extension DTO {
     enum User {
         struct Request: Encodable {
-            var token: String
+            var accessToken: String
             var job: String
             var nickname: String
             var userDetailJob: [String]
