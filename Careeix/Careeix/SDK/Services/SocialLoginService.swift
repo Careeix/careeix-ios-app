@@ -30,6 +30,7 @@ protocol KakaoLoginService {
 
 final class SocialLoginService: NSObject {
     let disposeBag = DisposeBag()
+    let userRepository = UserRepository()
     
     var appleIdentityTokenSubject = PublishSubject<Data>()
     
@@ -59,13 +60,14 @@ extension SocialLoginService {
             .do { UserDefaultManager.kakaoAccessToken = $0 }
     }
 
-    func kakaoLogin() -> Observable<DTO.User.Response> {
+    func kakaoLogin() -> Observable<Entity.LoginUser.Response> {
         return readAccessToken()
             .debug("🤪🤪🤪🤪🤪")
             .filter { $0 != "토큰 에러" }
-            .flatMap(UserRepository.kakaoLogin)
+            .flatMap(userRepository.kakaoLogin)
+
     }
-    
+
     func kakaoLogout() -> Observable<Bool> {
         UserApi.shared.logout { error in
             print(error ?? "error is nil")
@@ -73,7 +75,7 @@ extension SocialLoginService {
         return .just(true)
     }
     
-    func appleLogin() -> Observable<DTO.User.Response> {
+    func appleLogin() -> Observable<Entity.LoginUser.Response> {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
             let request = appleIDProvider.createRequest()
                 
@@ -83,12 +85,12 @@ extension SocialLoginService {
             authorizationController.presentationContextProvider = self
             authorizationController.performRequests()
         return appleIdentityTokenSubject
-            .flatMap(UserRepository.appleLogin)
+            .flatMap(userRepository.appleLogin)
     }
     
     
-    func socialSignUp(with info: DTO.User.Request) -> Observable<DTO.User.Response> {
-        return UserRepository.kakaoSignUp(with: info)
+    func socialSignUp(with info: Entity.SignUpUser.Request) -> Observable<Entity.SignUpUser.Response> {
+        return userRepository.kakaoSignUp(with: info)
     }
 }
 

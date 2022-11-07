@@ -10,12 +10,16 @@ import CareeixKey
 import RxSwift
 import RxCocoa
 import RxRelay
+
 struct UserDefaultManager {
     @UserDefault(key: CareeixKey.UserDefaultKey.jwtToken, defaultValue: "")
     public static var jwtToken: String
     
     @UserDefault(key: CareeixKey.UserDefaultKey.kakaoAccessToken, defaultValue: "")
     public static var kakaoAccessToken: String
+    
+    @UserDefault(key: "appleIdentityToken", defaultValue: Data())
+    public static var appleIdentityToken: Data
     
     // TODO: - Key로 옮기기
     /// 수정중인 프로젝트 ID를 저장합니다. -2: 없음, -1: 추가, 0 ~ 무한:  프로젝트 아이디

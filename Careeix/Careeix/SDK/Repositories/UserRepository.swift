@@ -12,21 +12,56 @@ import RxRelay
 import Moya
 
 struct UserRepository {
-    static func kakaoLogin(accessToken: String) -> Observable<DTO.User.Response> {
+    func kakaoLogin(accessToken: String) -> Observable<Entity.LoginUser.Response> {
         API<DTO.User.Response>(path: "users/check-login", method: .post, parameters: ["accessToken": accessToken], task: .requestParameters(encoding: JSONEncoding.default)).requestRX()
+            .map(convertLoginResponseDTO)
             .asObservable()
     }
     
-    static func appleLogin(identifyToken: Data) -> Observable<DTO.User.Response> {
+    func appleLogin(identifyToken: Data) -> Observable<Entity.LoginUser.Response> {
         Single.create { single in
             single(.failure(NSError(domain: "aa", code: 0)))
-//            single(.success(User.Response(jwt: nil, message: "", userId: -999, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)))
             return Disposables.create()
         }.asObservable()
     }
     
-    static func kakaoSignUp(with info: DTO.User.Request) -> Observable<DTO.User.Response> {
-        API<DTO.User.Response>(path: "users/kakao-login", method: .post, parameters: [:], task: .requestJSONEncodable(info)).requestRX()
+    func kakaoSignUp(with info: Entity.SignUpUser.Request) -> Observable<Entity.SignUpUser.Response> {
+        API<DTO.User.Response>(path: "users/kakao-login", method: .post, parameters: [:], task: .requestJSONEncodable(conerSignUpRequestDTO(info))).requestRX()
+            .map(converSignUpResponseDTO)
             .asObservable()
+    }
+    // KAKAO
+    // TODO: 카카오와 애플 어떻게 할껀지 ..
+
+    func conerSignUpRequestDTO(_ entity: Entity.SignUpUser.Request) -> DTO.User.Request {
+        .init(token: UserDefaultManager.kakaoAccessToken, job: entity.job, nickname: entity.nickname, userDetailJob: entity.detailJobs, userWork: entity.annual)
+    }
+    
+    func convertLoginResponseDTO(_ dto: DTO.User.Response) -> Entity.LoginUser.Response {
+        .init(jwt: dto.jwt ?? "" ,
+              message: dto.message ?? "",
+              userId: dto.userId ?? 0,
+              userJob: dto.userJob ?? "",
+              userDetailJobs: dto.userDetailJobs ?? [],
+              userWork: dto.userWork ?? 0,
+              userNickname: dto.userNickname ?? "",
+              userProfileImg: dto.userProfileImg ?? "",
+              userProfileColor: dto.userProfileColor ?? "",
+              userIntro: dto.userIntro ?? "",
+              userSocialProvider: dto.userSocialProvider ?? 0)
+    }
+    
+    func converSignUpResponseDTO(_ dto: DTO.User.Response) -> Entity.SignUpUser.Response {
+        .init(jwt: dto.jwt ?? "" ,
+              message: dto.message ?? "",
+              userId: dto.userId ?? 0,
+              userJob: dto.userJob ?? "",
+              userDetailJobs: dto.userDetailJobs ?? [],
+              userWork: dto.userWork ?? 0,
+              userNickname: dto.userNickname ?? "",
+              userProfileImg: dto.userProfileImg ?? "",
+              userProfileColor: dto.userProfileColor ?? "",
+              userIntro: dto.userIntro ?? "",
+              userSocialProvider: dto.userSocialProvider ?? 0)
     }
 }

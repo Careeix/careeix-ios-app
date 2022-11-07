@@ -43,9 +43,18 @@ class SignUpViewModel {
         ).share()
         
         // TODO: 카카오와 애플 로그인 어떤식으로 할껀지 -> 서버가 먼저 나와야함 (현재는 무조건 성공)
-        showTabbarCotrollerDriver = createUserTrigger
+        let result = createUserTrigger
             .withLatestFrom(combinedInputValuesObservable) { $1 }
-            .do { print("post: ", $0) }
+            .map { nickname, job, annual, detailJobs in
+                Entity.SignUpUser.Request(nickname: nickname, job: job, annual: annual.row, detailJobs: detailJobs)
+            }.flatMap(SocialLoginSDK.socialSignUp)
+            .share()
+        
+        let success = result
+            .debug("\(UserDefaultManager.user)")
+            .take(0)
+        
+        showTabbarCotrollerDriver = success
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
         
@@ -57,6 +66,10 @@ class SignUpViewModel {
         
         completeButtonEnableDriver = buttonStateDriver.filter { $0 }.map { _ in () }
         completeButtonDisableDriver = buttonStateDriver.filter { !$0 }.map { _ in () }
+        
+//        func convertSignUpEntityToModel(_ entity: Entity.SignUpUser.Response) -> User. {
+//
+//        }
     }
 
 }

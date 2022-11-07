@@ -37,7 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                object: nil)
         
         window?.rootViewController = UserDefaultManager.jwtToken == ""
-        ? UINavigationController(rootViewController: ProjectChapterInputViewController(viewModel: .init(currentIndex: 0)))
+        ? UINavigationController(rootViewController: OnboardViewController())
         : TabBarController()
         
         window?.backgroundColor = .appColor(.white)

@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		780CB8BC29175C7D00D4B06E /* UserDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780CB8BB29175C7D00D4B06E /* UserDTO.swift */; };
 		780CB8BE29175D5C00D4B06E /* ProjectDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780CB8BD29175D5C00D4B06E /* ProjectDTO.swift */; };
+		7823470F2918D04300E648DF /* DTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7823470E2918D04300E648DF /* DTO.swift */; };
+		782347132918D0C200E648DF /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782347122918D0C200E648DF /* Entity.swift */; };
+		782347152918D0D700E648DF /* UserEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782347142918D0D700E648DF /* UserEntity.swift */; };
+		782347172918D1E300E648DF /* ProjectEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782347162918D1E300E648DF /* ProjectEntity.swift */; };
 		78345E0129126F0700EB9621 /* ProjectLookupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345DFB29126F0700EB9621 /* ProjectLookupViewModel.swift */; };
 		78345E0229126F0700EB9621 /* ProjectChapterLookupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345DFD29126F0700EB9621 /* ProjectChapterLookupCell.swift */; };
 		78345E0329126F0700EB9621 /* ProjectLookupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345DFE29126F0700EB9621 /* ProjectLookupViewController.swift */; };
@@ -122,6 +126,10 @@
 /* Begin PBXFileReference section */
 		780CB8BB29175C7D00D4B06E /* UserDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDTO.swift; sourceTree = "<group>"; };
 		780CB8BD29175D5C00D4B06E /* ProjectDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDTO.swift; sourceTree = "<group>"; };
+		7823470E2918D04300E648DF /* DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTO.swift; sourceTree = "<group>"; };
+		782347122918D0C200E648DF /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
+		782347142918D0D700E648DF /* UserEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEntity.swift; sourceTree = "<group>"; };
+		782347162918D1E300E648DF /* ProjectEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEntity.swift; sourceTree = "<group>"; };
 		78345DFB29126F0700EB9621 /* ProjectLookupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectLookupViewModel.swift; sourceTree = "<group>"; };
 		78345DFD29126F0700EB9621 /* ProjectChapterLookupCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectChapterLookupCell.swift; sourceTree = "<group>"; };
 		78345DFE29126F0700EB9621 /* ProjectLookupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectLookupViewController.swift; sourceTree = "<group>"; };
@@ -245,10 +253,21 @@
 		780CB8BA29175C6E00D4B06E /* DTO */ = {
 			isa = PBXGroup;
 			children = (
+				7823470E2918D04300E648DF /* DTO.swift */,
 				780CB8BB29175C7D00D4B06E /* UserDTO.swift */,
 				780CB8BD29175D5C00D4B06E /* ProjectDTO.swift */,
 			);
 			path = DTO;
+			sourceTree = "<group>";
+		};
+		782347112918D0A300E648DF /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				782347122918D0C200E648DF /* Entity.swift */,
+				782347142918D0D700E648DF /* UserEntity.swift */,
+				782347162918D1E300E648DF /* ProjectEntity.swift */,
+			);
+			path = Entities;
 			sourceTree = "<group>";
 		};
 		78345DFA29126F0700EB9621 /* Project */ = {
@@ -537,6 +556,7 @@
 				7881F5542902D94A00111395 /* ViewControllers */,
 				78E94A2D28EF0D4900DBBF5C /* Views */,
 				78345E1E29139F3200EB9621 /* Cells */,
+				782347112918D0A300E648DF /* Entities */,
 				78C909972905914100AA9AA3 /* Models */,
 			);
 			path = Commons;
@@ -726,8 +746,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				786F469B29019BDE00215AF0 /* ProjectInputViewModel.swift in Sources */,
+				782347152918D0D700E648DF /* UserEntity.swift in Sources */,
 				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
 				7AFE502728FD90C600A72D65 /* RelevantCareerProfilesCell.swift in Sources */,
+				7823470F2918D04300E648DF /* DTO.swift in Sources */,
 				786F46A42901A24E00215AF0 /* PeriodInputView.swift in Sources */,
 				78D52E5328FD3142001F5747 /* SocialLoginSDK.swift in Sources */,
 				78D52EA328FE5C3E001F5747 /* SocialLoginService.swift in Sources */,
@@ -738,6 +760,7 @@
 				78DC17D428FBEA0000331A22 /* RadioCell.swift in Sources */,
 				7AFE502928FD90C600A72D65 /* CompositionalLayout.swift in Sources */,
 				78DC17D628FBEEA400331A22 /* MultiInputCell.swift in Sources */,
+				782347172918D1E300E648DF /* ProjectEntity.swift in Sources */,
 				780CB8BE29175D5C00D4B06E /* ProjectDTO.swift in Sources */,
 				7AFE502828FD90C600A72D65 /* MinimalCareerProfileCell.swift in Sources */,
 				78DC17B828FA8C2600331A22 /* OnboardCell.swift in Sources */,
@@ -748,6 +771,7 @@
 				78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */,
 				7A2C4BBD290FD10E00833323 /* UserDataManager.swift in Sources */,
 				785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */,
+				782347132918D0C200E648DF /* Entity.swift in Sources */,
 				788A09FF290A7BBD003EF027 /* ProjectChapterInputViewModel.swift in Sources */,
 				78E6F00A290C70F20026655D /* ProjectInputDetailViewModel.swift in Sources */,
 				78345E1A2913935100EB9621 /* User.swift in Sources */,
