@@ -11,7 +11,6 @@ import SnapKit
 import Moya
 
 class CardProfileDetailViewController: UIViewController {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setCollectionView()
@@ -19,6 +18,7 @@ class CardProfileDetailViewController: UIViewController {
         setupNavigationBackButton()
         getUserData()
         getProjectData()
+        cardProfileCollectionView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,7 +38,7 @@ class CardProfileDetailViewController: UIViewController {
             switch result {
             case .success(let response):
                 // data:
-                self?.changeDatasource(userData: response.data)
+                self?.updateUserSection(userData: response.data)
             case .failure(let error):
                 // alert
                 print("userAPISuccess: \(error.localizedDescription)")
@@ -47,13 +47,13 @@ class CardProfileDetailViewController: UIViewController {
     }
     
     func getProjectData() {
-        let parameters = ["id": UserDefaultManager.user.userId]
+        let parameters = ["id": userId]
         API<[ProjectModel]>(path: "project/by-user", method: .get, parameters: parameters, task: .requestParameters(encoding: URLEncoding(destination: .queryString)))
             .request { [weak self] result in
             switch result {
             case .success(let response):
                 // data
-                self?.changeDatasource(projectData: response.data)
+                self?.updateProjectSection(projectData: response.data ?? [])
             case .failure(let error):
                 // alert
                 print("projectAPIError: \(error.localizedDescription)")
@@ -61,7 +61,7 @@ class CardProfileDetailViewController: UIViewController {
         }
     }
     
-    var cardProfileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
+    var cardProfileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: nil, userSocialProvider: 0)
     
     var projectModel: ProjectModel = ProjectModel(project_id: 0, title: "", start_date: "", end_date: "", is_proceed: 0, classification: "", introduction: "")
     
@@ -118,15 +118,31 @@ class CardProfileDetailViewController: UIViewController {
         changeDatasource()
     }
     
-    func changeDatasource(userData: UserModel? = nil, projectData: [ProjectModel]? = nil) {
+    func changeDatasource(userData: UserModel? = nil, projectData: [ProjectModel] = []) {
+        
+    
         var snapshot = NSDiffableDataSourceSnapshot<CardProfileSection, CardProfileItem>()
         snapshot.appendSections([.userProfile])
         snapshot.appendItems([.userProfile(userData ?? cardProfileModel)])
         snapshot.appendSections([.introduce])
         snapshot.appendItems([.introduce(userData ?? cardProfileModel)])
         snapshot.appendSections([.project])
-        snapshot.appendItems([.project(projectData?[0] ?? projectModel)])
+        snapshot.appendItems( projectData.compactMap { .project($0)})
         datasource.apply(snapshot)
+    }
+    
+    func updateProjectSection(projectData: [ProjectModel] = []) {
+        var snapshot = datasource.snapshot(for: .project)
+        snapshot.deleteAll()
+        print(projectData)
+        snapshot.append(projectData.compactMap { .project($0)})
+        datasource.apply(snapshot, to: .project)
+    }
+    func updateUserSection(userData: UserModel? = nil) {
+        var snapshot = datasource.snapshot(for: .userProfile)
+        snapshot.deleteAll()
+        snapshot.append([.userProfile(userData ?? cardProfileModel)])
+        datasource.apply(snapshot, to: .userProfile)
     }
 }
 

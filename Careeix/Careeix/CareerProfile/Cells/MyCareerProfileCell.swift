@@ -12,6 +12,8 @@ import SnapKit
 class MyCareerProfileCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setUI()
+        updateCareerProfileImageView.isUserInteractionEnabled = true
         let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapUpdateProfileImageView))
         updateCareerProfileImageView.addGestureRecognizer(gesture)
         print("init")
@@ -93,7 +95,9 @@ class MyCareerProfileCell: UICollectionViewCell {
         careerNameLabel.text = info.userJob
         careerGradeLabel.text = UserWork.setUserWork(grade: info.userWork)
         setUserDetailJobs(detailJobs: info.userDetailJobs)
-        setUI()
+        print("🐯🐯🐯COLOR\(info.userProfileColor)🐯🐯🐯🐯")
+        setProfileColor(fillColor: info.userProfileColor)
+        
     }
     
     func setUserDetailJobs(detailJobs: [String]) {
@@ -123,19 +127,7 @@ class MyCareerProfileCell: UICollectionViewCell {
     }
     
     func setProfileColor(fillColor: String) {
-        if GradientColor.skyblue.rawValue == fillColor {
-            GradientColor.setGradient(contentView: gradientView, startColor: .appColor(.skyblueGradientSP), endColor: .appColor(.skyblueGradientEP), cornerRadius: 0)
-        } else if GradientColor.yellow.rawValue == fillColor {
-            GradientColor.setGradient(contentView: gradientView, startColor: .appColor(.yellowGradientSP), endColor: .appColor(.yellowGradientEP), cornerRadius: 0)
-        } else if GradientColor.purple.rawValue == fillColor {
-            GradientColor.setGradient(contentView: gradientView, startColor: .appColor(.purpleGradientSP), endColor: .appColor(.purpleGradientEP), cornerRadius: 0)
-        } else if GradientColor.green.rawValue == fillColor {
-            GradientColor.setGradient(contentView: gradientView, startColor: .appColor(.greenGradientSP), endColor: .appColor(.greenGradientEP), cornerRadius: 0)
-        } else if GradientColor.pink.rawValue == fillColor {
-            GradientColor.setGradient(contentView: gradientView, startColor: .appColor(.pinkGradientSP), endColor: .appColor(.pinkGradientEP), cornerRadius: 0)
-        } else {
-            GradientColor.setGradient(contentView: gradientView, startColor: .appColor(.orangeGradientSP), endColor: .appColor(.orangeGradientEP), cornerRadius: 0)
-        }
+        GradientColor(rawValue: fillColor)?.setGradient(contentView: gradientView)
     }
     
     func setUI() {

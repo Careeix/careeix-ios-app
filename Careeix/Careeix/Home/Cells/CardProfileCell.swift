@@ -127,21 +127,9 @@ class CardProfileCell: UICollectionViewCell {
             profileImageView.kf.setImage(with: url)
         }
     }
-    
+
     func setProfileColor(fillColor: String) {
-        if GradientColor.skyblue.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.skyblueGradientSP), endColor: .appColor(.skyblueGradientEP), cornerRadius: 0)
-        } else if GradientColor.yellow.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.yellowGradientSP), endColor: .appColor(.yellowGradientEP), cornerRadius: 0)
-        } else if GradientColor.purple.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.purpleGradientSP), endColor: .appColor(.purpleGradientEP), cornerRadius: 0)
-        } else if GradientColor.green.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.greenGradientSP), endColor: .appColor(.greenGradientEP), cornerRadius: 0)
-        } else if GradientColor.pink.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.pinkGradientSP), endColor: .appColor(.pinkGradientEP), cornerRadius: 0)
-        } else {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.orangeGradientSP), endColor: .appColor(.orangeGradientEP), cornerRadius: 0)
-        }
+        GradientColor(rawValue: fillColor)?.setGradient(contentView: contentView)
     }
     
     func setUI() {

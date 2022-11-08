@@ -19,29 +19,6 @@ import Kingfisher
     - Snapshot
 */
 
-enum GradientColor: String {
-    case skyblue = "#8DB8DF"
-    case pink = "#E9A6C6"
-    case yellow = "#E8CD44"
-    case purple = "#A5ADF5"
-    case orange = "#F0B782"
-    case green = "#699D84"
-    
-    static func setGradient(contentView: UIView, startColor: UIColor, endColor: UIColor, cornerRadius: CGFloat) {
-        var gradientLayer: CAGradientLayer!
-        gradientLayer = CAGradientLayer()
-        gradientLayer.frame = contentView.bounds
-        let startPoint: UIColor = startColor
-        let endPoint: UIColor = endColor
-        gradientLayer.colors = [startPoint.cgColor, endPoint.cgColor]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0.7)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 0.2)
-        gradientLayer.cornerRadius = cornerRadius
-        
-        contentView.layer.addSublayer(gradientLayer)
-    }
-}
-
 class MinimalCareerProfileCell: UICollectionViewCell {
     var userId: Int = -1
     
@@ -102,19 +79,7 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     }
     
     func setProfileColor(fillColor: String) {
-        if GradientColor.skyblue.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.skyblueGradientSP), endColor: .appColor(.skyblueGradientEP), cornerRadius: 10)
-        } else if GradientColor.yellow.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.yellowGradientSP), endColor: .appColor(.yellowGradientEP), cornerRadius: 10)
-        } else if GradientColor.purple.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.purpleGradientSP), endColor: .appColor(.purpleGradientEP), cornerRadius: 10)
-        } else if GradientColor.green.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.greenGradientSP), endColor: .appColor(.greenGradientEP), cornerRadius: 10)
-        } else if GradientColor.pink.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.pinkGradientSP), endColor: .appColor(.pinkGradientEP), cornerRadius: 10)
-        } else {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.orangeGradientSP), endColor: .appColor(.orangeGradientEP), cornerRadius: 10)
-        }
+        GradientColor(rawValue: fillColor)?.setGradient(contentView: contentView, cornerRadius: 10)
     }
     
     override func prepareForReuse() {

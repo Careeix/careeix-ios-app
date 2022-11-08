@@ -24,7 +24,61 @@ import SnapKit
         - 직무, 연차, 상세 직무 태그
     - Snapshot
  */
+enum GradientColor: String {
+    case skyblue = "#8DB8DF"
+    case pink = "#E9A6C6"
+    case yellow = "#E8CD44"
+    case purple = "#A5ADF5"
+    case orange = "#F0B782"
+    case green = "#699D84"
 
+    func startColor() -> AssetsColor {
+        switch self {
+        case .skyblue:
+            return .skyblueGradientSP
+        case .pink:
+            return .pinkGradientSP
+        case .yellow:
+            return .yellowGradientSP
+        case .purple:
+            return .purpleGradientSP
+        case .orange:
+            return .orangeGradientSP
+        case .green:
+            return .greenGradientSP
+        }
+    }
+    func endColor() -> AssetsColor {
+        switch self {
+        case .skyblue:
+            return .skyblueGradientEP
+        case .pink:
+            return .pinkGradientEP
+        case .yellow:
+            return .yellowGradientEP
+        case .purple:
+            return .purpleGradientEP
+        case .orange:
+            return .orangeGradientEP
+        case .green:
+            return .greenGradientEP
+        }
+    }
+
+    func setGradient(contentView: UIView, cornerRadius: CGFloat = 0) {
+        var gradientLayer = CAGradientLayer()
+        gradientLayer.frame = contentView.bounds
+        let startPoint: UIColor = .appColor(startColor())
+        let endPoint: UIColor = .appColor(endColor())
+        gradientLayer.colors = [startPoint.cgColor, endPoint.cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.7)
+        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.2)
+        gradientLayer.cornerRadius = cornerRadius
+        contentView.layer.addSublayer(gradientLayer)
+    }
+    
+    
+}
 enum HomeSection: Hashable {
     case myCareerProfile, cardCareerProfiles
 }

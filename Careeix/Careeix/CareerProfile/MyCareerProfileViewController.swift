@@ -11,18 +11,18 @@ import SnapKit
 import Moya
 
 class MyCareerProfileViewController: UIViewController {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setCollectionView()
         configurationDatasource()
         NotificationCenter.default.addObserver(self, selector: #selector(showProfileInputView), name: Notification.Name(rawValue: "didTapUpdateProfileImageView"), object: nil)
+        myCareerProfileCollectionView.delegate = self
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getMyProjectData()
     }
-    
+
     @objc func showProfileInputView() {
         let vc = UpdatedNicknameViewController()
         navigationController?.pushViewController(vc, animated: true)
@@ -60,12 +60,6 @@ class MyCareerProfileViewController: UIViewController {
             $0.edges.equalToSuperview()
         }
     }
-    
-//    func tapUpdateVC() {
-//        let profileCell = MyCareerProfileCell()
-//
-//        profileCell.updateCareerProfileImageView.addGestureRecognizer(tapGesture)
-//    }
     
     @objc func moveToUpdatedProfileVC() {
         let vc = UpdatedNicknameViewController()
@@ -125,7 +119,7 @@ class MyCareerProfileViewController: UIViewController {
         snapshot.appendItems([.introduce(userData ?? profileModel)])
         snapshot.appendSections([.project])
         snapshot.appendItems(projectData.compactMap { .project($0)} )
-        datasource.apply(snapshot, animatingDifferences: true)
+        datasource.apply(snapshot, animatingDifferences: false)
     }
     
 
@@ -157,10 +151,10 @@ extension MyCareerProfileViewController {
                 section.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0)
                 return section
             case 1:
-                let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.1))
-                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.1), subitem: item, count: 1)
+                let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.2))
+                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.2), subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 30, trailing: 0)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 15, trailing: 0)
                 return section
             case 2:
                 let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.4))
@@ -177,4 +171,3 @@ extension MyCareerProfileViewController {
         }
     }
 }
-
