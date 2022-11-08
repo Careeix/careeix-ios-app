@@ -8,22 +8,6 @@
 import Foundation
 
 extension Entity {
-    enum LoginUser {
-//        struct Response: Codable {
-//            let jwt: String
-//            let message: String
-//            let userId: Int
-//            let userJob: String
-//            let userDetailJobs: [String]
-//            let userWork: Int
-//            let userNickname: String
-//            let userProfileImg: String
-//            let userProfileColor: String
-//            let userIntro: String
-//            let userSocialProvider: Int
-//        }
-    }
-    
     enum SignUpUser {
         struct Request {
             let nickname: String
@@ -31,18 +15,6 @@ extension Entity {
             let annual: Int
             let detailJobs: [String]
         }
-//        struct Response {
-//            let jwt: String
-//            let message: String
-//            let userId: Int
-//            let userJob: String
-//            let userDetailJobs: [String]
-//            let userWork: Int
-//            let userNickname: String
-//            let userProfileImg: String?
-//            let userProfileColor: String
-//            let userIntro: String
-//            let userSocialProvider: Int?
-//        }
+
     }
 }

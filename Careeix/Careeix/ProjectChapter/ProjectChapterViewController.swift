@@ -62,6 +62,7 @@ class ProjectChapterViewController: UIViewController {
         setUI()
         bind(to: viewModel)
         view.backgroundColor = .appColor(.white)
+        hidesBottomBarWhenPushed = true
     }
     
     required init?(coder: NSCoder) {
@@ -71,14 +72,6 @@ class ProjectChapterViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(false)
-        tabBarController?.tabBar.isHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        tabBarController?.tabBar.isHidden = false
     }
     
     override func viewDidLayoutSubviews() {

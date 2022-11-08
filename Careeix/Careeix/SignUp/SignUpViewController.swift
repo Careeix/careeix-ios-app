@@ -50,7 +50,7 @@ class SignUpViewController: UIViewController {
             .drive(with: self) { owner, _ in
                 NotificationCenter.default.post(name: Notification.Name("loginSuccess"), object: nil)
             }.disposed(by: disposeBag)
-//
+
         nickNameInputView.textField.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)

@@ -9,9 +9,9 @@ import Foundation
 
 enum ProjectDTO {
     enum Update {
-        struct Response {
-            let code: String
-            let message: String
+        struct Response: Decodable {
+            let code: String?
+            let message: String?
         }
     }
 }

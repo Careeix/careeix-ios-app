@@ -36,9 +36,6 @@ class NoteCell: UITableViewCell {
             .drive(textView.rx.text)
             .disposed(by: disposeBag)
         
-//        textView.rx.text.orEmpty
-//            .bind(to: viewModel.inputStringRelay)
-        
         textView.viewModel.inputStringShare
             .bind(to: viewModel.inputStringRelay)
             .disposed(by: disposeBag)

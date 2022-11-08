@@ -26,7 +26,6 @@ struct ProjectInputViewModel {
     
     // MARK: Input
     let viewDidAppearRelay = PublishRelay<Void>()
-//    let fillFetchedDataTrigger = PublishRelay<Void>()
     
     // MARK: Output
     let nextButtonEnableDriver: Driver<Void>
@@ -34,12 +33,13 @@ struct ProjectInputViewModel {
     let combinedDataDriver: Driver<ProjectBaseInfo>
     let checkBoxIsSelctedDriver: Driver<Bool>
     let askingKeepAlertDriver: Driver<Void>
-//    let fillFetcedDataDriver: Driver<Void>
     
     init(titleInputViewModel: SimpleInputViewModel,
          periodInputViewModel: PeriodInputViewModel,
          classificationInputViewModel: SimpleInputViewModel,
-         introduceInputViewModel: ManyInputViewModel, projectId: Int = -1) {
+         introduceInputViewModel: ManyInputViewModel, projectId: Int = -1,
+         projectRepository: ProjectRepository = ProjectRepository()
+    ) {
         self.projectId = projectId
         self.titleInputViewModel = titleInputViewModel
         self.periodInputViewModel = periodInputViewModel
@@ -75,7 +75,7 @@ struct ProjectInputViewModel {
         checkBoxIsSelctedDriver = periodInputViewModel.checkBoxViewModel.isSeclectedRelayShare
             .asDriver(onErrorJustReturn: false)
         
-        let projectResult = ProjectRepository.fetchProject(with: projectId).share()
+        let projectResult = projectRepository.fetchProject(with: projectId).share()
         fetchedSimpleInput = projectId == -1
         ? .just(.init(title: "", classification: "", introduce: ""))
         : projectResult.map {
@@ -83,14 +83,25 @@ struct ProjectInputViewModel {
                   startDateString: $0.startDateString,
                   endDateString: $0.endDateString,
                   classification: $0.classification,
-                  introduce: $0.introduce, isProceed: $0.isProceed)
+                  introduce: $0.introduce, isProceed: $0.isProceed == 1 ? true : false)
         }
         
         fetchedChapters = projectId == -1
         ? .just([])
         : projectResult.map { $0.projectChapters }
         
-        let initialFetchData = Observable.combineLatest(viewDidAppearRelay, fetchedSimpleInput, fetchedChapters)
+        let performViewDidAppear = viewDidAppearRelay
+            .filter { UserDefaultManager.writingProjectId != projectId }
+            .do { _ in UserDefaultManager.writingProjectId = projectId }
+        
+        let initialFetchData = Observable.combineLatest(performViewDidAppear, fetchedSimpleInput, fetchedChapters)
+            .catch { error in
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "projectFetchError"), object: nil)
+                return Observable.create { observer in
+                    observer.onCompleted()
+                    return Disposables.create()
+                }
+            }
             .map { ($0.1, $0.2) }
             .do {
                 if  UserDefaultManager.projectBaseInputCache[projectId] == nil &&
@@ -103,6 +114,10 @@ struct ProjectInputViewModel {
         
         let isNotSameData = initialFetchData
             .filter { $0.0 != UserDefaultManager.projectBaseInputCache[projectId] || $0.1 != UserDefaultManager.projectChaptersInputCache[projectId] }
+            .do {
+                UserDefaultManager.projectBaseInputCache[-2] = $0.0
+                UserDefaultManager.projectChaptersInputCache[-2] = $0.1
+            }
         
         // 이놈을 가지고 (유저디폴트에 값이 있으면) 이어서 수정하시겠습니까를 띄어야 하는지 판단 ->
         // 이어서 수정하기 -> 유저디폴트 값유지
@@ -111,14 +126,6 @@ struct ProjectInputViewModel {
         askingKeepAlertDriver = isNotSameData
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
-        
-//        fillFetcedDataDriver = Observable.combineLatest(fillFetchedDataTrigger, fetchedSimpleInput, fetchedChapters)
-//            .do {
-//                UserDefaultManager.projectBaseInputCache[projectId] = $0.1
-//                UserDefaultManager.projectChaptersInputCache[projectId] = $0.2
-//            }
-//            .map { _ in () }
-//            .asDriver(onErrorJustReturn: ())
     }
     
     func updatePersistanceData(_ sender :ProjectBaseInfo) {
@@ -136,7 +143,7 @@ struct ProjectInputViewModel {
         titleInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.title)
         classificationInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.classification)
         periodInputViewModel.startDateViewModel.inputStringRelay.accept(remainigInput.startDateString)
-        periodInputViewModel.endDateViewModel.inputStringRelay.accept(remainigInput.endDateString)
+        periodInputViewModel.endDateViewModel.inputStringRelay.accept(remainigInput.endDateString ?? Date().toString())
         periodInputViewModel.checkBoxViewModel.isSelectedRelay.accept(remainigInput.isProceed)
         periodInputViewModel.isSelectedProceedingRelay.accept(remainigInput.isProceed)
         introduceInputViewModel.baseTextViewModel.inputStringRelay.accept(remainigInput.introduce)
@@ -158,9 +165,15 @@ struct ProjectInputViewModel {
             UserDefaultManager.projectBaseInputCache[-1] = .init(title: "", classification: "", introduce: "")
             UserDefaultManager.projectChaptersInputCache[-1] = []
         } else {
-            // TODO: 서버 통신 (project ID로 Project 내용 get) 후 유저디폴트에 넣기 -> 값 뿌리기 fillRemainingInput()
-            
+            UserDefaultManager.projectBaseInputCache[projectId] = UserDefaultManager.projectBaseInputCache[-2]
+            UserDefaultManager.projectChaptersInputCache[projectId] = UserDefaultManager.projectChaptersInputCache[-2]
+            fillRemainingInput()
         }
-
+    }
+    
+    func deinitVC() {
+        UserDefaultManager.writingProjectId = -2
+        UserDefaultManager.projectBaseInputCache[-2] = nil
+        UserDefaultManager.projectChaptersInputCache[-2] = nil
     }
 }

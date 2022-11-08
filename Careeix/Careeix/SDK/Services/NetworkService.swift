@@ -41,7 +41,7 @@ class API<T: Decodable> {
         method: Moya.Method,
         parameters: [String: Any],
         task: CustomTask,
-        headers: [String: String]? = nil
+        headers: [String: String]? = ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt]
     ) {
         var newTask: Moya.Task = .requestPlain
         switch task {
