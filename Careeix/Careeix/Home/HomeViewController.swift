@@ -36,7 +36,7 @@ class HomeViewController: UIViewController {
     }
     
     func getUserData() {
-        API<UserModel>(path: "users/profile/2", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
+        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
             switch result {
             case .success(let response):
                 // data:

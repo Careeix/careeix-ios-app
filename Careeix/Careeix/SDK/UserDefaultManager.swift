@@ -10,12 +10,14 @@ import CareeixKey
 import RxSwift
 import RxCocoa
 import RxRelay
+
 struct UserDefaultManager {
-    @UserDefault(key: CareeixKey.UserDefaultKey.jwtToken, defaultValue: "")
-    public static var jwtToken: String
     
     @UserDefault(key: CareeixKey.UserDefaultKey.kakaoAccessToken, defaultValue: "")
     public static var kakaoAccessToken: String
+    
+    @UserDefault(key: "appleIdentityToken", defaultValue: Data())
+    public static var appleIdentityToken: Data
     
     // TODO: - Key로 옮기기
     /// 수정중인 프로젝트 ID를 저장합니다. -2: 없음, -1: 추가, 0 ~ 무한:  프로젝트 아이디
@@ -28,15 +30,12 @@ struct UserDefaultManager {
     @UserDefault(key: "projectBaseInputCache", defaultValue: [-1: ProjectBaseInfo.init(title: "", classification: "", introduce: "")])
     public static var projectBaseInputCache: [Int: ProjectBaseInfo]
     
-    @UserDefault(key: "user", defaultValue: User.Response(jwt: nil, message: "", userId: 0, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0))
-    public static var user: User.Response
+    @UserDefault(key: "user", defaultValue: User(jwt: "", message: "", userId: 0, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: nil, userProfileColor: "", userIntro: "", userSocialProvider: 0))
+    public static var user: User
     
     @UserDefault(key: "loginType", defaultValue: SocialLoginSDK.SocialLoginType.kakao)
     public static var loginType: SocialLoginSDK.SocialLoginType
-    
-    // TODO: UserId와 jwt 모두 user로 통합 
-    @UserDefault(key: "userId", defaultValue: 0)
-    public static var userId: Int
+
 }
 
 @propertyWrapper

@@ -40,6 +40,7 @@ class NoteCell: UITableViewCell {
             .bind(to: viewModel.inputStringRelay)
             .disposed(by: disposeBag)
         
+        
     }
     
     override func prepareForReuse() {

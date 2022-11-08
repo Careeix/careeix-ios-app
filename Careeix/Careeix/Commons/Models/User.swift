@@ -8,25 +8,39 @@
 import Foundation
 
 struct User: Codable {
-    struct Request: Encodable {
-        var token: String
-        var job: String
-        var nickname: String
-        var userDetailJob: String
-        var userWork: String
-    }
+    var jwt: String
+    var message: String
+    let userId: Int
+    let userJob: String
+    let userDetailJobs: [String]
+    let userWork: Int
+    let userNickname: String
+    let userProfileImg: String?
+    let userProfileColor: String
+    let userIntro: String?
+    let userSocialProvider: Int
     
-    struct Response: Codable {
-        let jwt: String?
-        let message: String
-        let userId: Int
-        let userJob: String
-        let userDetailJobs: [String]
-        let userWork: Int
-        let userNickname: String
-        let userProfileImg: String?
-        let userProfileColor: String
-        let userIntro: String?
-        let userSocialProvider: Int
+    init(jwt: String,
+         message: String,
+         userId: Int = 0,
+         userJob: String = "",
+         userDetailJobs: [String] = [],
+         userWork: Int = 0,
+         userNickname: String = "",
+         userProfileImg: String? = nil,
+         userProfileColor: String = "",
+         userIntro: String? = nil,
+         userSocialProvider: Int = 0) {
+        self.jwt = jwt
+        self.message = message
+        self.userId = userId
+        self.userJob = userJob
+        self.userDetailJobs = userDetailJobs
+        self.userWork = userWork
+        self.userNickname = userNickname
+        self.userProfileImg = userProfileImg
+        self.userProfileColor = userProfileColor
+        self.userIntro = userIntro
+        self.userSocialProvider = userSocialProvider
     }
 }
