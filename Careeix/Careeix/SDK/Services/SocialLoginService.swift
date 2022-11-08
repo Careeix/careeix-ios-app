@@ -32,7 +32,7 @@ final class SocialLoginService: NSObject {
     let disposeBag = DisposeBag()
     let userRepository = UserRepository()
     
-    var appleIdentityTokenSubject = PublishSubject<Data>()
+    var appleIdentityTokenSubject = PublishSubject<String>()
     
     enum SocialLoginError: Error {
         case kakaoTalkNotFound
@@ -90,7 +90,14 @@ extension SocialLoginService {
     }
     
     func socialSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
-        return userRepository.kakaoSignUp(with: info)
+        let type = UserDefaultManager.loginType
+        switch type {
+        case .kakao:
+            return userRepository.kakaoSignUp(with: info)
+        case .apple:
+            return userRepository.appleSignUp(with: info)
+        }
+        
     }
 }
 
@@ -110,7 +117,7 @@ extension SocialLoginService: ASAuthorizationControllerDelegate,   ASAuthorizati
             let authCode = String(data: authorizationCode, encoding: .ascii)!
             print("accessToken:\n", accessToken)
             print("authorizationCode:\n", authCode)
-            appleIdentityTokenSubject.onNext(identityToken)
+            appleIdentityTokenSubject.onNext(accessToken)
             appleIdentityTokenSubject.onCompleted()
             default:
                 break
@@ -120,6 +127,6 @@ extension SocialLoginService: ASAuthorizationControllerDelegate,   ASAuthorizati
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         appleIdentityTokenSubject.onError(error)
         appleIdentityTokenSubject.onCompleted()
-        appleIdentityTokenSubject = PublishSubject<Data>()
+        appleIdentityTokenSubject = PublishSubject<String>()
     }
 }

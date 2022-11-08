@@ -8,26 +8,52 @@
 import Foundation
 
 enum UserDTO {
-    struct Request: Encodable {
-        var accessToken: String
-        var job: String
-        var nickname: String
-        var userDetailJob: [String]
-        var userWork: Int
+    enum KakaoLogin {
+        struct Request: Encodable {
+            var accessToken: String
+            var job: String
+            var nickname: String
+            var userDetailJob: [String]
+            var userWork: Int
+        }
+        
+        struct Response: Codable {
+            let jwt: String?
+            let message: String?
+            let userId: Int?
+            let userJob: String?
+            let userDetailJobs: [String]?
+            let userWork: Int?
+            let userNickname: String?
+            let userProfileImg: String?
+            let userProfileColor: String?
+            let userIntro: String?
+            let userSocialProvider: Int?
+        }
     }
-    
-    struct Response: Codable {
-        let jwt: String?
-        let message: String?
-        let userId: Int?
-        let userJob: String?
-        let userDetailJobs: [String]?
-        let userWork: Int?
-        let userNickname: String?
-        let userProfileImg: String?
-        let userProfileColor: String?
-        let userIntro: String?
-        let userSocialProvider: Int?
+ 
+    enum AppleLogin {
+        struct Request: Encodable {
+            var accessToken: String
+            var job: String
+            var nickname: String
+            var userDetailJob: [String]
+            var userWork: Int
+        }
+        
+        struct Response: Codable {
+            let jwt: String?
+            let message: String?
+            let userId: Int?
+            let userJob: String?
+            let userDetailJobs: [String]?
+            let userWork: Int?
+            let userNickname: String?
+            let userProfileImg: String?
+            let userProfileColor: String?
+            let userIntro: String?
+            let userSocialProvider: Int?
+        }
     }
 }
 

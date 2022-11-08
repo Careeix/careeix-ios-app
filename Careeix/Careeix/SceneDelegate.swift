@@ -37,7 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                object: nil)
         
         window?.rootViewController = UserDefaultManager.user.jwt == ""
-        ? UINavigationController(rootViewController: WebViewController(linkString: "https://www.naver.com" ))
+        ? UINavigationController(rootViewController: OnboardViewController())
         : TabBarController()
         
         window?.backgroundColor = .appColor(.white)

@@ -35,12 +35,17 @@ class WebViewController: UIViewController, WKUIDelegate {
     }
     
     func loadWebView() {
-        guard  let url = URL(string: linkString) else {
-            self.navigationController?.popViewController(animated: true)
-            return
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard  let url = URL(string: self?.linkString ?? "") else {
+                self?.navigationController?.popViewController(animated: true)
+                return
+            }
+            let request = URLRequest(url: url)
+            
+            DispatchQueue.main.async {
+                self?.webView.load(request)
+            }
         }
-        let request = URLRequest(url: url)
-        webView.load(request)
     }
     
     // MARK: - UIComponents
