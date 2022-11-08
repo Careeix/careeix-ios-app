@@ -26,7 +26,7 @@ class TabBarController: UITabBarController {
     
     
     lazy var careerViewController: UIViewController = {
-        let vc = NavigationController(rootViewController: MyCareerProfileViewController())
+        let vc = NavigationController(rootViewController: UIViewController())
         vc.updateProgressBar(progress: 0)
         vc.tabBarItem = UITabBarItem(title: "커리어", image: UIImage(named: "career"), tag: 2)
         
@@ -46,6 +46,14 @@ class TabBarController: UITabBarController {
         viewControllers = [homeViewController, projectInputViewController, careerViewController, myPageViewController]
         delegate = self
         tabBar.tintColor = .black
+        NotificationCenter.default.addObserver(self, selector: #selector(showCareerView), name: Notification.Name(rawValue: "updateProject"), object: nil)
+    }
+    
+    @objc
+    func showCareerView() {
+        selectedIndex = 2
+        let vc = OneButtonAlertViewController(viewModel: .init(content: "프로젝트가 정상적으로 업데이트 되었습니다", buttonText: "확인", textColor: .black))
+        present(vc, animated: true)
     }
 }
 extension TabBarController: UITabBarControllerDelegate {

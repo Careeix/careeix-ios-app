@@ -14,7 +14,7 @@ enum TwoButtonAlertType: String {
     case askingKeepWriting = "계속해서 등록하시겠습니까?"
     case warningDeleteNote = "NOTE를 삭제하시겠습니까?"
     case askingPublishProject = "발행하시겠습니까?"
-    case wraningCancelWriting = "나갈때 뭐라물어봐야 하나 ~"
+    case wraningCancelWriting = "정말로 나가시겠습니까?"
     func getLeftButtonString() -> String {
         switch self {
         default:
@@ -104,6 +104,7 @@ class TwoButtonAlertViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
+                owner.contentLabel.text = "처리중..."
                 owner.delegate?.didTapLeftButton(type: viewModel.type)
             }.disposed(by: disposeBag)
         
@@ -111,6 +112,7 @@ class TwoButtonAlertViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
+                owner.contentLabel.text = "처리중..."
                 owner.delegate?.didTapRightButton(type: viewModel.type)
             }.disposed(by: disposeBag)
     }

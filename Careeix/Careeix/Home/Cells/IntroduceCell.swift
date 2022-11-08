@@ -29,6 +29,7 @@ class IntroduceCell: UICollectionViewCell {
     
     let descriptionLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .appColor(.gray250)
         label.font = .pretendardFont(size: 13, style: .regular)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -42,9 +43,13 @@ class IntroduceCell: UICollectionViewCell {
         view.layer.borderColor = lineColor.cgColor
         return view
     }()
-
+    
+    var userId = 0
+    
     func configure(_ info: UserModel) {
-        (descriptionLabel.text, descriptionLabel.textColor) = info.userIntro == nil ? ("소개글이 없습니다.", .appColor(.gray250)) : (info.userIntro, .appColor(.gray900))
+        userId = info.userId
+        descriptionLabel.text = info.userIntro
+
         setUI()
     }
     
@@ -58,7 +63,7 @@ class IntroduceCell: UICollectionViewCell {
         
         descriptionLabel.snp.makeConstraints {
             $0.leading.equalTo(headerLabel.snp.leading)
-            $0.top.equalTo(headerLabel.snp.bottom).offset(5)
+            $0.top.equalTo(headerLabel.snp.bottom).offset(4)
             $0.width.equalTo(331)
         }
         

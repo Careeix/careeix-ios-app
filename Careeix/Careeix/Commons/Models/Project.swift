@@ -13,10 +13,10 @@ import RxRelay
 struct Project: Codable, Equatable {
     var title: String
     var startDateString: String
-    var endDateString: String
+    var endDateString: String?
     var classification: String
     var introduce: String
-    var isProceed: Bool
+    var isProceed: Int
     var projectChapters: [ProjectChapter]
     
     enum CodingKeys: String, CodingKey {
@@ -28,12 +28,29 @@ struct Project: Codable, Equatable {
         case isProceed = "is_proceed"
         case projectChapters = "projectDetails"
     }
+    
+    init(title: String = "",
+         startDateString: String = "",
+         endDateString: String? = "",
+         classification: String = "",
+         introduce: String = "",
+         isProceed: Int = 0,
+         projectChapters: [ProjectChapter] = []
+    ) {
+        self.title = title
+        self.startDateString = startDateString
+        self.endDateString = endDateString
+        self.classification = classification
+        self.introduce = introduce
+        self.isProceed = isProceed
+        self.projectChapters = projectChapters
+    }
 }
 
 struct ProjectBaseInfo: Codable, Equatable {
     var title: String
     var startDateString: String = Date().toString()
-    var endDateString: String = Date().toString()
+    var endDateString: String? = Date().toString()
     var classification: String
     var introduce: String
     var isProceed: Bool = false

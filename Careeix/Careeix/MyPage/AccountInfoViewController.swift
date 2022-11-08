@@ -106,7 +106,7 @@ class AccountInfoViewController: UIViewController {
         setupNavigationBackButton()
         setUI()
         tapNickNameButton()
-        getUserData()
+//        getUserData()
         view.backgroundColor = .appColor(.white)
     }
     
@@ -122,7 +122,7 @@ class AccountInfoViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        getUserData()
+        getUserData()
     }
     
     func tapNickNameButton() {

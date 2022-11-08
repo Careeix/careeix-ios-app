@@ -75,6 +75,7 @@ class ProjectInputDetailViewController: UIViewController {
         bind(to: viewModel)
         view.backgroundColor = .appColor(.white)
         updateCompleteButtonView()
+        hidesBottomBarWhenPushed = true
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -86,19 +87,17 @@ class ProjectInputDetailViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tabBarController?.tabBar.isHidden = true
         viewModel.viewWillAppearRelay.accept(())
         if let navigationController = navigationController as? NavigationController {
             navigationController.updateProgressBar(progress: 2 / 3.0)
         }
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
     }
-    override func viewWillDisappear(_ animated: Bool) {
-        tabBarController?.tabBar.isHidden = false
-    }
+    
     // MARK: UIComponents
     let titleLabel: UILabel = {
        let l = UILabel()

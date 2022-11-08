@@ -18,7 +18,6 @@ class HomeAlertViewController: UIViewController {
         view.layoutIfNeeded()
         buttonAction()
         view.backgroundColor = .appColor(.black).withAlphaComponent(0.5)
-        getUserData()
     }
     
     let containerView: UIView = {
@@ -30,6 +29,8 @@ class HomeAlertViewController: UIViewController {
     
     let titleLabel: UILabel = {
         let label = UILabel()
+        let name = CareerModel.minimalCareerProfileDummy.map { $0.nickname }
+        label.text = "\(name[0])님, 반가워요!"
         label.font = .pretendardFont(size: 18, style: .medium)
         label.textColor = .appColor(.gray900)
         return label
@@ -68,20 +69,6 @@ class HomeAlertViewController: UIViewController {
     
     @objc func dismissView() {
         dismiss(animated: true)
-    }
-    
-    func getUserData() {
-        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
-            switch result {
-            case .success(let response):
-                // data:
-                guard let name = response.data?.userNickname else { return }
-                self?.titleLabel.text = "\(name)님, 반가워요!"
-            case .failure(let error):
-                // alert
-                print("HomeAlert: \(error.localizedDescription)")
-            }
-        }
     }
     
     func setup() {

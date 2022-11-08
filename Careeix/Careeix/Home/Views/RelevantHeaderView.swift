@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 
 class RelevantHeaderView: UICollectionReusableView {
+    
     static let identifier = "RelevantHeaderView"
     
     override init(frame: CGRect) {
