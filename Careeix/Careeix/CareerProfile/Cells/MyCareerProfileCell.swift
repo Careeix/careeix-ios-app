@@ -87,7 +87,7 @@ class MyCareerProfileCell: UICollectionViewCell {
     
     func configure(_ info: UserModel) {
         setProfileColor(fillColor: info.userProfileColor)
-        setImageURL(url: info.userProfileImg)
+        setImageURL(url: info.userProfileImg ?? "")
         nickNameLabel.text = info.userNickname
         careerNameLabel.text = info.userJob
         careerGradeLabel.text = UserWork.setUserWork(grade: info.userWork)

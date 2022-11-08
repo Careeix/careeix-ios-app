@@ -32,7 +32,6 @@ class HomeViewController: UIViewController {
         configurationDatasource()
         createNavigationBarItem()
         homeCollectionView.delegate = self
-//        showModalView()
         getUserData()
         recommandUserData()
     }
@@ -44,7 +43,8 @@ class HomeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showModalView()
+        !UserDefaultManager.firstLoginFlag ? showModalView() : nil
+        UserDefaultManager.firstLoginFlag = true
     }
     
     // MARK: MyCareerProfile API Call
@@ -67,7 +67,7 @@ class HomeViewController: UIViewController {
     // MARK: RecommandCareerProfile API Call
     
     func recommandUserData() {
-        API<[UserModel]>(path: "users/recommend/profile", method: .get, parameters: [:], task: .requestPlain, headers: ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt])
+        API<[UserModel]>(path: "users/recommend/profile", method: .get, parameters: [:], task: .requestPlain)
             .request { [weak self] result in
             switch result {
             case .success(let response):

@@ -12,14 +12,13 @@ import RxCocoa
 import RxRelay
 
 struct UserDefaultManager {
-    
     @UserDefault(key: CareeixKey.UserDefaultKey.kakaoAccessToken, defaultValue: "")
     public static var kakaoAccessToken: String
     
+    // TODO: - Key로 옮기기
     @UserDefault(key: "appleIdentityToken", defaultValue: Data())
     public static var appleIdentityToken: Data
     
-    // TODO: - Key로 옮기기
     /// 수정중인 프로젝트 ID를 저장합니다. -2: 없음, -1: 추가, 0 ~ 무한:  프로젝트 아이디
     @UserDefault(key: "writingProjectId", defaultValue: -2)
     public static var writingProjectId: Int
@@ -35,8 +34,12 @@ struct UserDefaultManager {
     
     @UserDefault(key: "loginType", defaultValue: SocialLoginSDK.SocialLoginType.kakao)
     public static var loginType: SocialLoginSDK.SocialLoginType
-
+    
+    @UserDefault(key: "firstLoginFlag", defaultValue: false)
+    public static var firstLoginFlag: Bool
 }
+    
+
 
 @propertyWrapper
 struct UserDefault<T: Codable> {

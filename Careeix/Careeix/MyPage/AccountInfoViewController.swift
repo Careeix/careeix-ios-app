@@ -89,7 +89,7 @@ class AccountInfoViewController: UIViewController {
     
     let rightButtonImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "Vector")
+        imageView.image = UIImage(named: "right")
         return imageView
     }()
     

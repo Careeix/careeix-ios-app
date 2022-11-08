@@ -83,7 +83,7 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     }()
 
     func configure(_ info: UserModel) {
-        setImageURL(url: info.userProfileImg)
+        setImageURL(url: info.userProfileImg ?? "")
         nickName.text = info.userNickname
         careerName.text = info.userJob
         careerGrade.text = UserWork.setUserWork(grade: info.userWork)
