@@ -131,6 +131,8 @@ class HomeViewController: UIViewController {
             .request { [weak self] result in
             switch result {
             case .success(let response):
+                // 데이터가 비어있고, 데이터가 nil이고
+//                guard let response.data?.isEmpty, isHidden = false else isHidden = true
                 // data:
                 self?.updateCardCareerSection(cardProfileData: response.data ?? [])
             case .failure(let error):
@@ -165,6 +167,9 @@ class HomeViewController: UIViewController {
         view.addSubview(homeCollectionView)
         homeCollectionView.collectionViewLayout = createLayout()
         homeCollectionView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        
+//        view.addSubview(a)
+//        a.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
     var profileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)

@@ -77,7 +77,6 @@ class SignUpViewController: UIViewController {
     }
     
     // MARK: - Function
-    
     func updateView(with keyboardHeight: CGFloat) {
         contentView.snp.updateConstraints {
             $0.bottom.equalToSuperview().inset(keyboardHeight)

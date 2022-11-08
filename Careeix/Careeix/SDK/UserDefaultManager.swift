@@ -32,11 +32,13 @@ struct UserDefaultManager {
     @UserDefault(key: "user", defaultValue: User(jwt: "", message: "", userId: 0, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: nil, userProfileColor: "", userIntro: "", userSocialProvider: 0))
     public static var user: User
     
-    @UserDefault(key: "loginType", defaultValue: SocialLoginSDK.SocialLoginType.kakao)
-    public static var loginType: SocialLoginSDK.SocialLoginType
-    
     @UserDefault(key: "firstLoginFlag", defaultValue: false)
     public static var firstLoginFlag: Bool
+    
+    // TODO: 삭제
+    @UserDefault(key: "loginType", defaultValue: SocialLoginSDK.SocialLoginType.kakao)
+    public static var loginType: SocialLoginSDK.SocialLoginType
+
 }
     
 
