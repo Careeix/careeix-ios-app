@@ -31,7 +31,6 @@ class SocialLoginSDK {
         default:
             break
         }
-    
     }
     
     public static func socialLogin(type: SocialLoginType) -> Observable<User> {
@@ -43,6 +42,10 @@ class SocialLoginSDK {
         }
     }
     
+    public static func socialSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
+        return socialLoginService.socialSignUp(with: info)
+    }
+    
     public static func socialLogout(type: SocialLoginType) -> Observable<Bool> {
         switch type {
         case .kakao:
@@ -52,7 +55,5 @@ class SocialLoginSDK {
         }
     }
     
-    public static func socialSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
-        return socialLoginService.socialSignUp(with: info)
-    }
+
 }

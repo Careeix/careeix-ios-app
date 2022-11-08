@@ -89,7 +89,6 @@ extension SocialLoginService {
             .catch { _ in .just(.init(jwt: "", message: "애플로그인이 취소되었습니다")) }
     }
     
-    
     func socialSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
         return userRepository.kakaoSignUp(with: info)
     }
