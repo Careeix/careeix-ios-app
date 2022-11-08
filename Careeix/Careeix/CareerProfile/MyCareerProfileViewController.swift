@@ -16,28 +16,31 @@ class MyCareerProfileViewController: UIViewController {
         super.viewDidLoad()
         setCollectionView()
         configurationDatasource()
-        getMyData()
-        getMyProjectData()
+        let user = UserDefaultManager.user
+        changeDatasource(userData: .init(userId: user.userId, userJob: user.userJob, userDetailJobs: user.userDetailJobs, userWork: user.userId, userNickname: user.userNickname, userProfileImg: user.userProfileImg, userProfileColor: user.userProfileColor, userIntro: user.userIntro, userSocialProvider: user.userSocialProvider))
         NotificationCenter.default.addObserver(self, selector: #selector(showProfileInputView), name: Notification.Name(rawValue: "didTapUpdateProfileImageView"), object: nil)
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getMyProjectData()
+    }
     @objc func showProfileInputView() {
         let vc = UpdatedNicknameViewController()
         navigationController?.pushViewController(vc, animated: true)
         print("showProfileInputView")
     }
 
-    func getMyData() {
-        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain)
-            .request { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.changeDatasource(userData: response.data)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
+//    func getMyData() {
+//        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain)
+//            .request { [weak self] result in
+//            switch result {
+//            case .success(let response):
+//                self?.changeDatasource(userData: response.data)
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
     
     func getMyProjectData() {
         let parameters = ["id": UserDefaultManager.user.userId]
@@ -46,7 +49,9 @@ class MyCareerProfileViewController: UIViewController {
             switch result {
             case .success(let response):
                 // data
-                self?.changeDatasource(projectData: response.data)
+                print("🌈🌈🌈🌈🌈🌈🌈")
+                print(response)
+                self?.changeDatasource(projectData: response.data ?? [])
             case .failure(let error):
                 // alert
                 print("projectAPIError: \(error.localizedDescription)")
@@ -125,16 +130,18 @@ class MyCareerProfileViewController: UIViewController {
         changeDatasource()
     }
     
-    func changeDatasource(userData: UserModel? = nil, projectData: [ProjectModel]? = nil) {
+    func changeDatasource(userData: UserModel? = nil, projectData: [ProjectModel] = []) {
         var snapshot = NSDiffableDataSourceSnapshot<MyCareerProfileSection, MyCareerProfileItem>()
         snapshot.appendSections([.userProfile])
         snapshot.appendItems([.userProfile(userData ?? profileModel)])
         snapshot.appendSections([.introduce])
         snapshot.appendItems([.introduce(userData ?? profileModel)])
         snapshot.appendSections([.project])
-        snapshot.appendItems([.project(projectData?[0] ?? projectModel)])
+        snapshot.appendItems( projectData.compactMap { .project($0)} )
         datasource.apply(snapshot)
     }
+    
+
 }
 
 extension MyCareerProfileViewController: UICollectionViewDelegate {
