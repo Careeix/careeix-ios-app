@@ -132,24 +132,27 @@ extension MypageViewController: UITableViewDataSource {
             case 0:
                 let accountInfoVC = AccountInfoViewController()
                 self.navigationController?.pushViewController(accountInfoVC, animated: true)
-                return print("계정 관리")
+                print("계정 관리")
             default:
                 return
             }
         } else {
             switch indexPath.item {
             case 0:
-                return print("앱 버전 정보")
+                let vc = OneButtonAlertViewController(viewModel: .init(content: "앱 버전 정보: 0.0.1", buttonText: "확인", textColor: .black))
+                present(vc, animated: true)
             case 1:
-                return print("이용약관")
+                let vc = WebViewController(linkString: "https://makeus-challenge.notion.site/66c59a11e5c843148d276cfa1fad90dc")
+                navigationController?.pushViewController(vc, animated: true)
             case 2:
-                return print("개인정보처리방침")
+                let vc = WebViewController(linkString: "https://naver.com")
+                navigationController?.pushViewController(vc, animated: true)
             case 3:
-                return print("Makers")
+                print("Makers")
             case 4:
-                return print("문의하기")
+                print("문의하기")
             case 5:
-                return print("로그아웃")
+                print("로그아웃")
             default:
                 return
             }

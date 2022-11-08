@@ -155,6 +155,7 @@ class SignUpViewController: UIViewController {
         l.textColor = .appColor(.gray400)
         return l
     }()
+    // TODO: - 서버에서 중복된 닉네임 내려왔을 경우
     let nicknameCheckLabel: UILabel = {
         let l = UILabel()
         l.text = "*중복된 닉네임입니다."

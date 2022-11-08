@@ -119,8 +119,6 @@ class CardProfileDetailViewController: UIViewController {
     }
     
     func changeDatasource(userData: UserModel? = nil, projectData: [ProjectModel] = []) {
-        
-    
         var snapshot = NSDiffableDataSourceSnapshot<CardProfileSection, CardProfileItem>()
         snapshot.appendSections([.userProfile])
         snapshot.appendItems([.userProfile(userData ?? cardProfileModel)])
@@ -134,10 +132,10 @@ class CardProfileDetailViewController: UIViewController {
     func updateProjectSection(projectData: [ProjectModel] = []) {
         var snapshot = datasource.snapshot(for: .project)
         snapshot.deleteAll()
-        print(projectData)
         snapshot.append(projectData.compactMap { .project($0)})
         datasource.apply(snapshot, to: .project)
     }
+    
     func updateUserSection(userData: UserModel? = nil) {
         var snapshot = datasource.snapshot(for: .userProfile)
         snapshot.deleteAll()
@@ -154,10 +152,11 @@ extension CardProfileDetailViewController: UICollectionViewDelegate {
         guard let cell = collectionView.cellForItem(at: indexPath) as? ProjectListCell else { return }
         
         if indexPath.section == 2 {
-            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: cell.projectId))
-            self.navigationController?.pushViewController(vc, animated: true)
+            //            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: cell.projectId))
+            //            self.navigationController?.pushViewController(vc, animated: true)
+            print(cell.projectId)
         }
-        print(cell.projectId)
+        
     }
 }
 

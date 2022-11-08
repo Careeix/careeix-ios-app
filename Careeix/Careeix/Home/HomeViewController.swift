@@ -66,8 +66,12 @@ enum GradientColor: String {
     }
 
     func setGradient(contentView: UIView, cornerRadius: CGFloat = 0) {
-        var gradientLayer = CAGradientLayer()
+        contentView.layer.sublayers?.compactMap { $0 as? CAGradientLayer }.forEach {
+            $0.removeFromSuperlayer()
+        }
+        let gradientLayer = CAGradientLayer()
         gradientLayer.frame = contentView.bounds
+        print("😡😡😡😡", contentView.bounds)
         let startPoint: UIColor = .appColor(startColor())
         let endPoint: UIColor = .appColor(endColor())
         gradientLayer.colors = [startPoint.cgColor, endPoint.cgColor]
@@ -108,34 +112,27 @@ class HomeViewController: UIViewController {
         !UserDefaultManager.firstLoginFlag ? showModalView() : nil
         UserDefaultManager.firstLoginFlag = true
     }
-    
-    // MARK: MyCareerProfile API Call
-    
-    func getUserData() {
-        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain)
-            .request { [weak self] result in
-                print(result)
-            switch result {
-            case .success(let response):
-                // data:
-                self?.changeDatasource(myProfileData: response.data)
-            case .failure(let error):
-                // alert
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
     // MARK: RecommandCareerProfile API Call
-    
+    func getUserData() {
+        let user = UserDefaultManager.user
+        updateMyCareerProfileSection(myProfileData: .init(userId: user.userId,
+                                                          userJob: user.userJob,
+                                                          userDetailJobs: user.userDetailJobs,
+                                                          userWork: user.userWork,
+                                                          userNickname: user.userNickname,
+                                                          userProfileImg: user.userProfileImg,
+                                                          userProfileColor: user.userProfileColor,
+                                                          userIntro: user.userIntro,
+                                                          userSocialProvider: user.userSocialProvider))
+
+    }
     func recommandUserData() {
         API<[RecommandUserModel]>(path: "users/recommend/profile", method: .get, parameters: [:], task: .requestPlain)
             .request { [weak self] result in
             switch result {
             case .success(let response):
                 // data:
-                let user = UserDefaultManager.user
-                self?.changeDatasource(myProfileData: .init(userId: user.userId, userJob: user.userJob, userDetailJobs: user.userDetailJobs, userWork: user.userWork, userNickname: user.userNickname, userProfileImg: user.userProfileImg, userProfileColor: user.userProfileColor, userIntro: user.userIntro, userSocialProvider: user.userSocialProvider), cardProfileData: response.data ?? [])
+                self?.updateCardCareerSection(cardProfileData: response.data ?? [])
             case .failure(let error):
                 // alert
                 print("recommandUserData: \(error.localizedDescription)")
@@ -209,6 +206,22 @@ class HomeViewController: UIViewController {
         snapshot.appendSections([.cardCareerProfiles])
         snapshot.appendItems(cardProfileData.map { .cardCareerProfiles($0) })
         datasource.apply(snapshot)
+    }
+    
+
+    
+    func updateMyCareerProfileSection(myProfileData: UserModel? = nil) {
+        var snapshot = datasource.snapshot(for: .myCareerProfile)
+        snapshot.deleteAll()
+        snapshot.append([.myCareerProfile(myProfileData ?? profileModel)])
+        print(myProfileData, "🧶🧶🧶")
+        datasource.apply(snapshot, to: .myCareerProfile)
+    }
+    func updateCardCareerSection(cardProfileData: [RecommandUserModel] = []) {
+        var snapshot = datasource.snapshot(for: .cardCareerProfiles)
+        snapshot.deleteAll()
+        snapshot.append(cardProfileData.map { .cardCareerProfiles($0) })
+        datasource.apply(snapshot, to: .cardCareerProfiles)
     }
 }
 

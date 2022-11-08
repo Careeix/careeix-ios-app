@@ -97,7 +97,7 @@ class OnboardViewController: UIViewController {
         let vc = SignUpViewController(
             viewModel: .init(
                 nickNameInputViewModel: .init(title: "닉네임",
-                                              textFieldViewModel: .init(placeholder: "10자 이내로 한글, 영문, 숫자를 입력해주세요.")),
+                                              textFieldViewModel: .init(placeholder: "2자 ~ 10자 이내로 한글, 영어 및 숫자를 포함하여 입력해주세요")),
                 jobInputViewModel: .init(title: "직무",
                                          textFieldViewModel: .init(placeholder: "직무를 입력해주세요.(Ex. 서버 개발자)")),
                 annualInputViewModel: .init(title: "연차",

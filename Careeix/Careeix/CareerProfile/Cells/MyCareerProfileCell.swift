@@ -13,6 +13,7 @@ class MyCareerProfileCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUI()
+        layoutIfNeeded()
         updateCareerProfileImageView.isUserInteractionEnabled = true
         let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapUpdateProfileImageView))
         updateCareerProfileImageView.addGestureRecognizer(gesture)
@@ -128,12 +129,11 @@ class MyCareerProfileCell: UICollectionViewCell {
     
     func setProfileColor(fillColor: String) {
         GradientColor(rawValue: fillColor)?.setGradient(contentView: gradientView)
+
     }
     
     func setUI() {
         contentView.addSubview(gradientView)
-        contentView.layer.borderWidth = 1
-        gradientView.layer.borderWidth = 1
        
         gradientView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(60)

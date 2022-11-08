@@ -13,38 +13,55 @@ import Moya
 class MyCareerProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        setCollectionView()
+        myCareerProfileCollectionView.collectionViewLayout = createLayout()
+        
         configurationDatasource()
         NotificationCenter.default.addObserver(self, selector: #selector(showProfileInputView), name: Notification.Name(rawValue: "didTapUpdateProfileImageView"), object: nil)
         myCareerProfileCollectionView.delegate = self
+        setCollectionView()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        getMyUserData()
         getMyProjectData()
     }
-
+    
     @objc func showProfileInputView() {
         let vc = UpdatedNicknameViewController()
         navigationController?.pushViewController(vc, animated: true)
         print("showProfileInputView")
     }
-
+    
+    
+    
+    func getMyUserData() {
+        let user = UserDefaultManager.user
+        updateUserSection(userData: .init(userId: user.userId,
+                                          userJob: user.userJob,
+                                          userDetailJobs: user.userDetailJobs,
+                                          userWork: user.userWork,
+                                          userNickname: user.userNickname,
+                                          userProfileImg: user.userProfileImg,
+                                          userProfileColor: user.userProfileColor,
+                                          userIntro: user.userIntro,
+                                          userSocialProvider: user.userSocialProvider))
+    }
+    
     func getMyProjectData() {
         let parameters = ["id": UserDefaultManager.user.userId]
         API<[ProjectModel]>(path: "project/by-user", method: .get, parameters: parameters, task: .requestParameters(encoding: URLEncoding(destination: .queryString)))
             .request { [weak self] result in
-            switch result {
-            case .success(let response):
-                // data
-                let user = UserDefaultManager.user
-                self?.changeDatasource(userData: .init(
-                    userId: user.userId, userJob: user.userJob, userDetailJobs: user.userDetailJobs, userWork: user.userId, userNickname: user.userNickname, userProfileImg: user.userProfileImg, userProfileColor: user.userProfileColor, userIntro: user.userIntro, userSocialProvider: user.userSocialProvider
-                ), projectData: response.data ?? [])
-            case .failure(let error):
-                // alert
-                print("projectAPIError: \(error.localizedDescription)")
+                switch result {
+                case .success(let response):
+                    // data
+                    self?.updateProjectSection(projectData: response.data ?? [])
+                    
+                case .failure(let error):
+                    // alert
+                    print("projectAPIError: \(error.localizedDescription)")
+                }
             }
-        }
     }
     
     var profileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
@@ -55,7 +72,7 @@ class MyCareerProfileViewController: UIViewController {
     
     func setCollectionView() {
         view.addSubview(myCareerProfileCollectionView)
-        myCareerProfileCollectionView.collectionViewLayout = createLayout()
+        
         myCareerProfileCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -67,7 +84,7 @@ class MyCareerProfileViewController: UIViewController {
         vc.modalTransitionStyle = .coverVertical
         vc.modalPresentationStyle = .fullScreen
     }
- 
+    
     enum MyCareerProfileSection: Hashable {
         case userProfile, introduce, project
     }
@@ -122,7 +139,20 @@ class MyCareerProfileViewController: UIViewController {
         datasource.apply(snapshot, animatingDifferences: false)
     }
     
-
+    func updateProjectSection(projectData: [ProjectModel] = []) {
+        var snapshot = datasource.snapshot(for: .project)
+        snapshot.deleteAll()
+        snapshot.append(projectData.compactMap { .project($0)})
+        datasource.apply(snapshot, to: .project)
+    }
+    
+    func updateUserSection(userData: UserModel? = nil) {
+        var snapshot = datasource.snapshot(for: .userProfile)
+        snapshot.deleteAll()
+        snapshot.append([.userProfile(userData ?? profileModel)])
+        datasource.apply(snapshot, to: .userProfile)
+    }
+    
 }
 
 extension MyCareerProfileViewController: UICollectionViewDelegate {
@@ -130,12 +160,13 @@ extension MyCareerProfileViewController: UICollectionViewDelegate {
         
         // TODO: 화면 전환
         guard let projectCell = collectionView.cellForItem(at: indexPath) as? ProjectListCell else { return }
-
+        
         if indexPath.section == 2 {
-            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: projectCell.projectId))
-            self.navigationController?.pushViewController(vc, animated: true)
+            //            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: projectCell.projectId))
+            //            self.navigationController?.pushViewController(vc, animated: true)
+            print("projectId = \(projectCell.projectId)")
         }
-        print("projectId = \(projectCell.projectId)")
+        
     }
     
 }
