@@ -1,16 +1,16 @@
 //
-//  RelevantHeaderView.swift
+//  ProjectListHeaderView.swift
 //  Careeix
 //
-//  Created by mingmac on 2022/10/17.
+//  Created by mingmac on 2022/11/05.
 //
 
 import Foundation
 import UIKit
 import SnapKit
 
-class RelevantHeaderView: UICollectionReusableView {
-    static let identifier = "RelevantHeaderView"
+class ProjectListHeaderView: UICollectionReusableView {
+    static let identifier = "ProjectListHeaderView"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,18 +23,17 @@ class RelevantHeaderView: UICollectionReusableView {
     
     let header: UILabel = {
         let label = UILabel()
-        label.text = "내 직무와 관련된 커리어 프로필"
+        label.text = "프로젝트"
         label.font = .pretendardFont(size: 18, style: .bold)
-        label.textColor = .appColor(.gray700)
+        label.textColor = .appColor(.deep)
         return label
     }()
     
     func setup() {
         addSubview(header)
-        
         header.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(13)
+            $0.leading.equalToSuperview().offset(5)
+            $0.bottom.equalToSuperview()
         }
     }
 }

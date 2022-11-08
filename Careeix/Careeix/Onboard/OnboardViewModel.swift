@@ -26,7 +26,7 @@ struct OnboardViewModel {
     let currentPageDriver: Driver<Int>
     let showHomeViewDriver: Driver<Void>
     let showSignUpViewDriver: Driver<Void>
-    let showAlertViewDriver: Driver<Void>
+    
     init() {
         logoImageNameDriver = .just("logo")
         kakaoLoginButtonImageNameDriver = .just("kakaoLogin")
@@ -38,24 +38,22 @@ struct OnboardViewModel {
             .asDriver(onErrorJustReturn: 0)
         
         let loginResponseObservable = socialLoginTrigger
-            .do { UserDefaultManager.loginType = $0 }
+            .do {UserDefaultManager.loginType = $0 }
             .flatMap(SocialLoginSDK.socialLogin)
-            .do { UserDefaultManager.user = $0 }
-            .share()
+            .catch { error in
+                print(error)
+                return .just(.init(jwt: nil, message: "로그인 실패", userId: -999, userJob: "", userDetailJobs: [], userWork: 0, userNickname: "", userProfileImg: "'", userProfileColor: "'", userIntro: nil, userSocialProvider: 0))
+            }
         
         let needMoreInfoObservableShare = loginResponseObservable
-            .map { $0.jwt == "1" }
-            .do { _ in print("jwt Token: ", UserDefaultManager.user.jwt) }
-            .debug("😡")
+            .filter { $0.message != "로그인 실패" }
+            .do { UserDefaultManager.jwtToken = $0.jwt ?? "" }
+            .map { $0.jwt == nil }
+            .do { _ in print("jwt Token: ", UserDefaultManager.jwtToken) }
             .share()
             
         showHomeViewDriver = needMoreInfoObservableShare
-            .filter { !$0 && UserDefaultManager.user.jwt != "" }
-            .map { _ in () }
-            .asDriver(onErrorJustReturn: ())
-        
-        showAlertViewDriver = needMoreInfoObservableShare
-            .filter { !$0 && UserDefaultManager.user.jwt == "" }
+            .filter { !$0 }
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
         
@@ -63,6 +61,5 @@ struct OnboardViewModel {
             .filter { $0 }
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
-
     }
 }

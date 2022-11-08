@@ -22,7 +22,15 @@ class ProjectChapterInputViewController: UIViewController {
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
             .drive(with: self) { owner, keyboardVisibleHeight in
-                owner.updateView(with: keyboardVisibleHeight)
+                owner.contentView.snp.updateConstraints {
+                    $0.bottom.equalToSuperview().inset(keyboardVisibleHeight)
+                }
+                owner.completeButtonView.snp.updateConstraints {
+                    $0.bottom.equalToSuperview().inset(keyboardVisibleHeight)
+                }
+                UIView.animate(withDuration: 0.4) {
+                    owner.view.layoutIfNeeded()
+                }
             }.disposed(by: disposeBag)
 
         addNoteButtonView.rx.tapGesture()
@@ -147,18 +155,7 @@ class ProjectChapterInputViewController: UIViewController {
     func didTapCompleteButtonView() {
         view.endEditing(true)
     }
-    
-    func updateView(with keyboardHeight: CGFloat) {
-        contentView.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(keyboardHeight)
-        }
-        completeButtonView.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(keyboardHeight)
-        }
-        UIView.animate(withDuration: 0.4) {
-            self.view.layoutIfNeeded()
-        }
-    }
+
 
     // MARK: - Initializer
     init(viewModel: ProjectChapterInputViewModel) {
@@ -174,7 +171,6 @@ class ProjectChapterInputViewController: UIViewController {
         title = "\(viewModel.currentIndex)"
         completeButtonView.isUserInteractionEnabled = false
         setupNavigationBackButton()
-        hidesBottomBarWhenPushed = true
     }
     
     required init?(coder: NSCoder) {
@@ -187,9 +183,11 @@ class ProjectChapterInputViewController: UIViewController {
         super.viewDidLoad()
     }
     override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
         bind(to: viewModel)
     }
     override func viewWillDisappear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
         viewModel.checkAndRemove()
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -230,7 +228,6 @@ extension ProjectChapterInputViewController {
         }
         
         [titleTextField, contentTextView, noteTableView, addNoteButtonView].forEach { contentView.addSubview($0) }
-        
         titleTextField.snp.makeConstraints {
             $0.top.equalToSuperview().inset(13)
             $0.leading.trailing.equalToSuperview().inset(16)

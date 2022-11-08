@@ -40,17 +40,11 @@ class SignUpViewController: UIViewController {
                 owner.updateCompleteButtonView(with: true)
             }.disposed(by: disposeBag)
         
-        viewModel.showAlertViewDriver
-            .drive(with: self) {
-                owner, _ in
-                print(UserDefaultManager.user.message)
-            }.disposed(by: disposeBag)
-        
         viewModel.showTabbarCotrollerDriver
             .drive(with: self) { owner, _ in
                 NotificationCenter.default.post(name: Notification.Name("loginSuccess"), object: nil)
             }.disposed(by: disposeBag)
-
+        
         nickNameInputView.textField.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)

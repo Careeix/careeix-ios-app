@@ -44,7 +44,7 @@ class UpdatedNicknameViewController: UIViewController {
     
     func updateUserData() {
         guard let userNickName = self.textFieldView.textField.text else { return }
-        API<UserModel>(path: "users/update-profile", method: .post, parameters: ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt, "userNickname": userNickName], task: .requestPlain).request { result in
+        API<UserModel>(path: "users/update-profile", method: .post, parameters: ["X-ACCESS-TOKEN": UserDefaultManager.jwtToken, "userNickname": userNickName], task: .requestPlain).request { result in
             print("result: \(result)")
             switch result {
             case .success(let response):

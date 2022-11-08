@@ -31,19 +31,16 @@ class SocialLoginSDK {
         default:
             break
         }
+    
     }
     
-    public static func socialLogin(type: SocialLoginType) -> Observable<User> {
+    public static func socialLogin(type: SocialLoginType) -> Observable<User.Response> {
         switch type {
         case .kakao:
             return socialLoginService.kakaoLogin()
         case .apple:
             return socialLoginService.appleLogin()
         }
-    }
-    
-    public static func socialSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
-        return socialLoginService.socialSignUp(with: info)
     }
     
     public static func socialLogout(type: SocialLoginType) -> Observable<Bool> {
@@ -55,5 +52,7 @@ class SocialLoginSDK {
         }
     }
     
-
+    public static func socialSignUp(with info: User.Request) -> Observable<User.Response> {
+        return socialLoginService.socialSignUp(with: info)
+    }
 }

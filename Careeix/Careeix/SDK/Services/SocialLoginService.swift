@@ -30,9 +30,8 @@ protocol KakaoLoginService {
 
 final class SocialLoginService: NSObject {
     let disposeBag = DisposeBag()
-    let userRepository = UserRepository()
     
-    var appleIdentityTokenSubject = PublishSubject<String>()
+    var appleIdentityTokenSubject = PublishSubject<Data>()
     
     enum SocialLoginError: Error {
         case kakaoTalkNotFound
@@ -56,18 +55,17 @@ extension SocialLoginService {
             .take(1)
             .debug("카카오 로그인 SDK")
             .map { $0.accessToken }
-            .do { UserDefaultManager.kakaoAccessToken = $0 }
             .catch { _ in .just("토큰 에러") }
-            
+            .do { UserDefaultManager.kakaoAccessToken = $0 }
     }
 
-    func kakaoLogin() -> Observable<User> {
+    func kakaoLogin() -> Observable<User.Response> {
         return readAccessToken()
+            .debug("🤪🤪🤪🤪🤪")
             .filter { $0 != "토큰 에러" }
-            .flatMap(userRepository.kakaoLogin)
-
+            .flatMap(UserAPI.kakaoLogin)
     }
-
+    
     func kakaoLogout() -> Observable<Bool> {
         UserApi.shared.logout { error in
             print(error ?? "error is nil")
@@ -75,7 +73,7 @@ extension SocialLoginService {
         return .just(true)
     }
     
-    func appleLogin() -> Observable<User> {
+    func appleLogin() -> Observable<User.Response> {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
             let request = appleIDProvider.createRequest()
                 
@@ -85,19 +83,12 @@ extension SocialLoginService {
             authorizationController.presentationContextProvider = self
             authorizationController.performRequests()
         return appleIdentityTokenSubject
-            .flatMap(userRepository.appleLogin)
-            .catch { _ in .just(.init(jwt: "", message: "애플로그인이 취소되었습니다")) }
+            .flatMap(UserAPI.appleLogin)
     }
     
-    func socialSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
-        let type = UserDefaultManager.loginType
-        switch type {
-        case .kakao:
-            return userRepository.kakaoSignUp(with: info)
-        case .apple:
-            return userRepository.appleSignUp(with: info)
-        }
-        
+    
+    func socialSignUp(with info: User.Request) -> Observable<User.Response> {
+        return UserAPI.kakaoSignUp(with: info)
     }
 }
 
@@ -112,12 +103,7 @@ extension SocialLoginService: ASAuthorizationControllerDelegate,   ASAuthorizati
             case let appleIDCredential as ASAuthorizationAppleIDCredential:
                 // 계정 정보 가져오기
             guard let identityToken = appleIDCredential.identityToken else { return }
-            guard let authorizationCode = appleIDCredential.authorizationCode else { return }
-            let accessToken = String(data: identityToken, encoding: .ascii)!
-            let authCode = String(data: authorizationCode, encoding: .ascii)!
-            print("accessToken:\n", accessToken)
-            print("authorizationCode:\n", authCode)
-            appleIdentityTokenSubject.onNext(accessToken)
+            appleIdentityTokenSubject.onNext(identityToken)
             appleIdentityTokenSubject.onCompleted()
             default:
                 break
@@ -125,8 +111,8 @@ extension SocialLoginService: ASAuthorizationControllerDelegate,   ASAuthorizati
     }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        appleIdentityTokenSubject.onError(error)
+        print("애플로그인 실패 !: ", error)
         appleIdentityTokenSubject.onCompleted()
-        appleIdentityTokenSubject = PublishSubject<String>()
+        appleIdentityTokenSubject = PublishSubject<Data>()
     }
 }

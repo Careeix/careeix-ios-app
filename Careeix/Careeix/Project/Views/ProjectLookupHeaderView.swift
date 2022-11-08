@@ -17,7 +17,7 @@ class ProjectLookupHeaderView: UIView {
         titleLabel.text = projectBaseInfo.title
         descriptionLabel.text = description(classification: projectBaseInfo.classification,
                                             startDateString: projectBaseInfo.startDateString,
-                                            endDateString: projectBaseInfo.endDateString ?? "진행중",
+                                            endDateString: projectBaseInfo.endDateString,
                                             isProceed: projectBaseInfo.isProceed)
     }
     

@@ -22,7 +22,7 @@ class ProjectLookupViewController: UIViewController {
             .when(.recognized)
             .withUnretained(self)
             .bind { owner, _ in
-                owner.showAlert(.askingPublishProject)
+                viewModel.createProject()
             }.disposed(by: disposeBag)
         
         viewModel.lookupCellDataDriver
@@ -52,30 +52,6 @@ class ProjectLookupViewController: UIViewController {
             .drive(with: self) { owner, info in
                 owner.navigationController?.pushViewController(ProjectChapterViewController(viewModel: .init(title: viewModel.title, number: info.0 + 1, projectChapter: info.1)), animated: true)
             }.disposed(by: disposeBag)
-        
-        viewModel.showPrevViewDriver
-            .drive(with: self) { owner, response in
-                owner.dismiss(animated: false)
-                owner.navigationController?.popToRootViewController(animated: true)
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "updateProject"), object: nil)
-            }.disposed(by: disposeBag)
-        
-        viewModel.showErrorAlertViewDriver
-            .drive(with: self) { owner, message in
-                owner.dismiss(animated: false)
-                owner.showWarnningAlert(message)
-            }.disposed(by: disposeBag)
-    }
-    
-    func showWarnningAlert(_ message: String) {
-        let vc = OneButtonAlertViewController(viewModel: .init(content: message, buttonText: "확인", textColor: .black))
-        present(vc, animated: true)
-    }
-    
-    func showAlert(_ type: TwoButtonAlertType) {
-        let vc = TwoButtonAlertViewController(viewModel: .init(type: type))
-        vc.delegate = self
-        present(vc, animated: true)
     }
     
     // MARK: - Initializer
@@ -84,7 +60,6 @@ class ProjectLookupViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         bind(to: viewModel)
         completeButtonView.isHidden = !viewModel.isWriting
-        hidesBottomBarWhenPushed = true
     }
     
     required init?(coder: NSCoder) {
@@ -101,9 +76,14 @@ class ProjectLookupViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
+        tabBarController?.tabBar.isHidden = true
         if let navigationController = navigationController as? NavigationController, viewModel.isWriting {
             navigationController.updateProgressBar(progress: 1)
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - UIComponents
@@ -143,16 +123,4 @@ extension ProjectLookupViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 108
     }
-}
-
-extension ProjectLookupViewController: TwoButtonAlertViewDelegate {
-    func didTapRightButton(type: TwoButtonAlertType) {
-        viewModel.updateTrigger.accept(())
-    }
-    
-    func didTapLeftButton(type: TwoButtonAlertType) {
-        dismiss(animated: true)
-    }
-    
-    
 }

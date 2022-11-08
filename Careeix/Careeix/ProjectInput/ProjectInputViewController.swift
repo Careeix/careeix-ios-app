@@ -40,9 +40,22 @@ class ProjectInputViewController: UIViewController {
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
             .drive(with: self) { owner, keyboardVisibleHeight in
-                owner.updateView(with: keyboardVisibleHeight)
+                owner.contentView.snp.updateConstraints {
+                    $0.bottom.equalToSuperview().inset(keyboardVisibleHeight)
+                }
+                owner.completeButtonView.snp.updateConstraints {
+                    $0.bottom.equalToSuperview().inset(keyboardVisibleHeight)
+                }
+                if keyboardVisibleHeight != 0 {
+                    owner.hideBottomUpView(owner.startDatePickerView)
+                    owner.hideBottomUpView(owner.endDatePickerView)
+                }
+                
+                UIView.animate(withDuration: 0.4) {
+                    owner.view.layoutIfNeeded()
+                }
             }.disposed(by: disposeBag)
-
+        
         titleInputView.textField.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
@@ -122,6 +135,9 @@ class ProjectInputViewController: UIViewController {
                 owner.showAskingKeepWritingView()
             }.disposed(by: disposeBag)
         
+        viewModel.fillFetcedDataDriver
+            .drive()
+            .disposed(by: disposeBag)
     }
     
     // MARK: - function
@@ -192,23 +208,6 @@ class ProjectInputViewController: UIViewController {
         }
     }
     
-    func updateView(with keyboardHeight: CGFloat) {
-        contentView.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(keyboardHeight)
-        }
-        completeButtonView.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(keyboardHeight)
-        }
-        if keyboardHeight != 0 {
-            hideBottomUpView(startDatePickerView)
-            hideBottomUpView(endDatePickerView)
-        }
-        
-        UIView.animate(withDuration: 0.4) {
-            self.view.layoutIfNeeded()
-        }
-    }
-    
     // MARK: - Initializer
     init(viewModel: ProjectInputViewModel) {
         self.viewModel = viewModel
@@ -219,7 +218,6 @@ class ProjectInputViewController: UIViewController {
         completeButtonView = .init(viewModel: .init(content: "다음", backgroundColor: .disable))
         super.init(nibName: nil, bundle: nil)
         bind(to: viewModel)
-        hidesBottomBarWhenPushed = true
     }
     
     required init?(coder: NSCoder) {
@@ -233,30 +231,32 @@ class ProjectInputViewController: UIViewController {
         setupNavigationBackButton()
         view.backgroundColor = .appColor(.white)
         viewModel.initProject()
-        NotificationCenter.default.addObserver(self, selector: #selector(occurNetworkError), name: Notification.Name(rawValue: "projectFetchError"), object: nil)
-        
-    }
-    
-    @objc
-    func occurNetworkError() {
-        dismiss(animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
         if let navigationController = navigationController as? NavigationController {
             navigationController.updateProgressBar(progress: 1 / 3.0)
         }
     }
-
+    override func viewWillDisappear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // TODO: 뷰모델로 넣기
-        viewModel.viewDidAppearRelay.accept(())
+        if UserDefaultManager.writingProjectId != viewModel.projectId {
+            viewModel.viewDidAppearRelay.accept(())
+        }
+        
+        UserDefaultManager.writingProjectId = viewModel.projectId
         titleInputView.textField.becomeFirstResponder()
     }
     
     deinit {
-        viewModel.deinitVC()
+        UserDefaultManager.writingProjectId = -2
+
     }
     
     // MARK: - UIComponents
@@ -351,6 +351,7 @@ extension ProjectInputViewController: TwoButtonAlertViewDelegate {
         switch type {
         case .askingKeepWriting:
             viewModel.initPersistenceData()
+            viewModel.fillFetchedDataTrigger.accept(())
             
         default:
             break

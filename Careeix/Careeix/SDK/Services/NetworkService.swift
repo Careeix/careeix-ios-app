@@ -41,7 +41,7 @@ class API<T: Decodable> {
         method: Moya.Method,
         parameters: [String: Any],
         task: CustomTask,
-        headers: [String: String]? = ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt]
+        headers: [String: String]? = nil
     ) {
         var newTask: Moya.Task = .requestPlain
         switch task {
@@ -81,9 +81,8 @@ class API<T: Decodable> {
                     let data = try response.map(APIResponse<T>.self)
                     print("🌈🌈🌈 디코딩 결과: ", data)
                     completion(.success(data))
-                } catch NetworkError.httpStatus(let errorResponse) {
-                    completion(.failure(errorResponse))
-                } catch (let error) {
+                }  catch (let error) {
+                    
                     print("디폴트 에러: ", error.localizedDescription)
                     completion(.failure(error))
                 }
@@ -96,18 +95,12 @@ class API<T: Decodable> {
     
     private func httpProcess(response: Response) throws {
         guard 200...299 ~= response.statusCode else {
-            let errorResponse = try response.map(ErrorResponse.self)
-
-            
-            throw NetworkError.httpStatus(errorResponse)
+            throw NetworkError.httpStatus(response.statusCode)
         }
     }
 }
-public struct ErrorResponse: Codable, Error {
-    let code: String
-    let message: String
-}
+
 public enum NetworkError: Error {
     case objectMapping // 데이터 파싱 오류
-    case httpStatus(ErrorResponse) // statusCode 200...299 이 아님
+    case httpStatus(Int) // statusCode 200...299 이 아님
 }
