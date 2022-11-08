@@ -68,28 +68,32 @@ class RelevantCareerProfilesCell: UICollectionViewCell {
     func configure(_ info: UserModel) {
         userId = info.userId
         careerName.text = info.userJob
-        careerGrade.text = String(info.userWork)
-        firstDetailCareerName.text = "#" + info.userDetailJobs[0]
-        
-        if info.userDetailJobs.count == 2 {
-            firstDetailCareerName.text = "#" + info.userDetailJobs[0]
-            secondDetailCareerName.text = "#" + info.userDetailJobs[1]
+        careerGrade.text = UserWork.setUserWork(grade: info.userWork)
+        contentView.layer.backgroundColor = UIColor(hexString: info.userProfileColor, alpha: 1).cgColor
+        setUserDetailJobs(detailJobs: info.userDetailJobs)
+        setUI()
+    }
+    
+    func setUserDetailJobs(detailJobs: [String]) {
+        firstDetailCareerName.text = "#" + detailJobs[0]
+        if detailJobs.count == 2 {
+            firstDetailCareerName.text = "#" + detailJobs[0]
+            secondDetailCareerName.text = "#" + detailJobs[1]
         } else {
             secondDetailCareerName.text = ""
         }
-        
-        if info.userDetailJobs.count == 3 {
-            firstDetailCareerName.text = "#" + info.userDetailJobs[0]
-            secondDetailCareerName.text = "#" + info.userDetailJobs[1]
-            thirdDetailCareerName.text = "#" + info.userDetailJobs[2]
+        if detailJobs.count == 3 {
+            firstDetailCareerName.text = "#" + detailJobs[0]
+            secondDetailCareerName.text = "#" + detailJobs[1]
+            thirdDetailCareerName.text = "#" + detailJobs[2]
         } else {
             thirdDetailCareerName.text = ""
         }
-
-        setup()
     }
     
-    func setup() {
+    func setUI() {
+        contentView.layer.cornerRadius = 10
+        
         [careerName, careerGrade, firstDetailCareerName, secondDetailCareerName, thirdDetailCareerName]
             .forEach { contentView.addSubview($0) }
         

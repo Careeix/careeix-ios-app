@@ -26,7 +26,7 @@ class TabBarController: UITabBarController {
     
     
     lazy var careerViewController: UIViewController = {
-        let vc = NavigationController(rootViewController: UIViewController())
+        let vc = NavigationController(rootViewController: MyCareerProfileViewController())
         vc.updateProgressBar(progress: 0)
         vc.tabBarItem = UITabBarItem(title: "커리어", image: UIImage(named: "career"), tag: 2)
         

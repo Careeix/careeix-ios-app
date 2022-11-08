@@ -1,8 +1,8 @@
 //
-//  CardProfileDetailViewController.swift
+//  MyCareerProfileViewController.swift
 //  Careeix
 //
-//  Created by mingmac on 2022/10/21.
+//  Created by mingmac on 2022/11/07.
 //
 
 import Foundation
@@ -10,43 +10,36 @@ import UIKit
 import SnapKit
 import Moya
 
-class CardProfileDetailViewController: UIViewController {
+class MyCareerProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setCollectionView()
         configurationDatasource()
-        setupNavigationBackButton()
-        getUserData()
-        getProjectData()
+        getMyData()
+        getMyProjectData()
+        NotificationCenter.default.addObserver(self, selector: #selector(showProfileInputView), name: Notification.Name(rawValue: "didTapUpdateProfileImageView"), object: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
+    @objc func showProfileInputView() {
+        let vc = UpdatedNicknameViewController()
+        navigationController?.pushViewController(vc, animated: true)
+        print("showProfileInputView")
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        tabBarController?.tabBar.isHidden = false
-    }
-    
-    var userId = 0
-    
-    func getUserData() {
-        API<UserModel>(path: "users/profile/\(userId)", method: .get, parameters: [:], task: .requestPlain)
+
+    func getMyData() {
+        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain)
             .request { [weak self] result in
             switch result {
             case .success(let response):
-                // data:
                 self?.changeDatasource(userData: response.data)
             case .failure(let error):
-                // alert
-                print("userAPISuccess: \(error.localizedDescription)")
+                print(error.localizedDescription)
             }
         }
     }
     
-    func getProjectData() {
+    func getMyProjectData() {
         let parameters = ["id": UserDefaultManager.user.userId]
         API<[ProjectModel]>(path: "project/by-user", method: .get, parameters: parameters, task: .requestParameters(encoding: URLEncoding(destination: .queryString)))
             .request { [weak self] result in
@@ -61,42 +54,56 @@ class CardProfileDetailViewController: UIViewController {
         }
     }
     
-    var cardProfileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
+    var profileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
     
     var projectModel: ProjectModel = ProjectModel(project_id: 0, title: "", start_date: "", end_date: "", is_proceed: 0, classification: "", introduction: "")
     
-    private let cardProfileCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    private let myCareerProfileCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
     func setCollectionView() {
-        view.addSubview(cardProfileCollectionView)
-        cardProfileCollectionView.collectionViewLayout = createLayout()
-        cardProfileCollectionView.snp.makeConstraints {
+        view.addSubview(myCareerProfileCollectionView)
+        myCareerProfileCollectionView.collectionViewLayout = createLayout()
+        myCareerProfileCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
     
-    enum CardProfileSection: Hashable {
+//    func tapUpdateVC() {
+//        let profileCell = MyCareerProfileCell()
+//
+//        profileCell.updateCareerProfileImageView.addGestureRecognizer(tapGesture)
+//    }
+    
+    @objc func moveToUpdatedProfileVC() {
+        let vc = UpdatedNicknameViewController()
+        present(vc, animated: true)
+        vc.modalTransitionStyle = .coverVertical
+        vc.modalPresentationStyle = .fullScreen
+    }
+ 
+    enum MyCareerProfileSection: Hashable {
         case userProfile, introduce, project
     }
     
-    enum CardProfileItem: Hashable {
+    enum MyCareerProfileItem: Hashable {
         case userProfile(UserModel), introduce(UserModel), project(ProjectModel)
     }
     
-    var datasource: UICollectionViewDiffableDataSource<CardProfileSection, CardProfileItem>!
+    var datasource: UICollectionViewDiffableDataSource<MyCareerProfileSection, MyCareerProfileItem>!
     
     func configurationDatasource() {
-        let cardProfileRegistraion = UICollectionView.CellRegistration<CardProfileCell, CardProfileItem> { _, _, _ in }
-        let introduceRegistration = UICollectionView.CellRegistration<IntroduceCell, CardProfileItem> { _, _, _ in }
-        let projectListRegistration = UICollectionView.CellRegistration<ProjectListCell, CardProfileItem> { _, _, _ in }
+        let myProfileRegistraion = UICollectionView.CellRegistration<MyCareerProfileCell, MyCareerProfileItem> { _, _, _ in }
+        let introduceRegistration = UICollectionView.CellRegistration<MyIntroduceCell, MyCareerProfileItem> { _, _, _ in }
+        let projectListRegistration = UICollectionView.CellRegistration<ProjectListCell, MyCareerProfileItem> { _, _, _ in }
         let projectListHeaderRegistraion = UICollectionView.SupplementaryRegistration<ProjectListHeaderView>(elementKind: ProjectListHeaderView.identifier) { _, _, _ in }
         
-        datasource = UICollectionViewDiffableDataSource<CardProfileSection, CardProfileItem>(collectionView: cardProfileCollectionView, cellProvider: {
+        datasource = UICollectionViewDiffableDataSource<MyCareerProfileSection, MyCareerProfileItem>(collectionView: myCareerProfileCollectionView, cellProvider: {
             collectionView, indexPath, itemIdentifier in
             switch itemIdentifier {
             case .userProfile(let item):
-                let cell = collectionView.dequeueConfiguredReusableCell(using: cardProfileRegistraion, for: indexPath, item: itemIdentifier)
+                let cell = collectionView.dequeueConfiguredReusableCell(using: myProfileRegistraion, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
+                
                 return cell
             case .introduce(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: introduceRegistration, for: indexPath, item: itemIdentifier)
@@ -109,8 +116,8 @@ class CardProfileDetailViewController: UIViewController {
             }
         })
         
-        datasource.supplementaryViewProvider = { cardProfileCollectionView, kind, indexPath in
-            let header = self.cardProfileCollectionView.dequeueConfiguredReusableSupplementary(
+        datasource.supplementaryViewProvider = { myProfileRegistraion, kind, indexPath in
+            let header = self.myCareerProfileCollectionView.dequeueConfiguredReusableSupplementary(
                 using: projectListHeaderRegistraion, for: indexPath)
             return header
         }
@@ -119,33 +126,33 @@ class CardProfileDetailViewController: UIViewController {
     }
     
     func changeDatasource(userData: UserModel? = nil, projectData: [ProjectModel]? = nil) {
-        var snapshot = NSDiffableDataSourceSnapshot<CardProfileSection, CardProfileItem>()
+        var snapshot = NSDiffableDataSourceSnapshot<MyCareerProfileSection, MyCareerProfileItem>()
         snapshot.appendSections([.userProfile])
-        snapshot.appendItems([.userProfile(userData ?? cardProfileModel)])
+        snapshot.appendItems([.userProfile(userData ?? profileModel)])
         snapshot.appendSections([.introduce])
-        snapshot.appendItems([.introduce(userData ?? cardProfileModel)])
+        snapshot.appendItems([.introduce(userData ?? profileModel)])
         snapshot.appendSections([.project])
         snapshot.appendItems([.project(projectData?[0] ?? projectModel)])
         datasource.apply(snapshot)
     }
 }
 
-extension CardProfileDetailViewController: UICollectionViewDelegate {
+extension MyCareerProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         // TODO: 화면 전환
-        
-        guard let cell = collectionView.cellForItem(at: indexPath) as? ProjectListCell else { return }
-        
+        guard let projectCell = collectionView.cellForItem(at: indexPath) as? ProjectListCell else { return }
+
         if indexPath.section == 2 {
-            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: cell.projectId))
+            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: projectCell.projectId))
             self.navigationController?.pushViewController(vc, animated: true)
         }
-        print(cell.projectId)
+        print("projectId = \(projectCell.projectId)")
     }
+    
 }
 
-extension CardProfileDetailViewController {
+extension MyCareerProfileViewController {
     func createLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, env) -> NSCollectionLayoutSection? in
             switch sectionIndex {
@@ -175,3 +182,4 @@ extension CardProfileDetailViewController {
         }
     }
 }
+

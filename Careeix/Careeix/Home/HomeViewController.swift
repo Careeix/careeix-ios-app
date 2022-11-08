@@ -32,21 +32,11 @@ class HomeViewController: UIViewController {
         configurationDatasource()
         createNavigationBarItem()
         homeCollectionView.delegate = self
-        showModalView()
+//        showModalView()
+        getUserData()
+        recommandUserData()
     }
     
-    func getUserData() {
-        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
-            switch result {
-            case .success(let response):
-                // data:
-                self?.changeDatasource(data: response.data)
-            case .failure(let error):
-                // alert
-                print(error.localizedDescription)
-            }
-        }
-    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = false
@@ -54,9 +44,42 @@ class HomeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        showModalView()
-        getUserData()
+        showModalView()
     }
+    
+    // MARK: MyCareerProfile API Call
+    
+    func getUserData() {
+        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain)
+            .request { [weak self] result in
+                print(result)
+            switch result {
+            case .success(let response):
+                // data:
+                self?.changeDatasource(myProfileData: response.data)
+            case .failure(let error):
+                // alert
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    // MARK: RecommandCareerProfile API Call
+    
+    func recommandUserData() {
+        API<[UserModel]>(path: "users/recommend/profile", method: .get, parameters: [:], task: .requestPlain, headers: ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt])
+            .request { [weak self] result in
+            switch result {
+            case .success(let response):
+                // data:
+                self?.changeDatasource(cardProfileData: response.data)
+            case .failure(let error):
+                // alert
+                print("recommandUserData: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     
     func createNavigationBarItem() {
         let logoImageView = UIImage(named: "logo")
@@ -94,15 +117,7 @@ class HomeViewController: UIViewController {
     
     var profileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
     
-    let colorSet: [UIColor] = [.appColor(.skyblueFill), .appColor(.pinkFill), .appColor(.purpleFill), .appColor(.greenFill), .appColor(.yellowFill), .appColor(.orangeFill)]
-    
-    func itemColor(cell: RelevantCareerProfilesCell, indexPath: Int) {
-        for i in 0...indexPath {
-            if indexPath == i {
-                cell.backgroundColor = colorSet.randomElement()
-            }
-        }
-    }
+    var recommandProfileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
     
     func configurationDatasource() {
         let myCareerProfileRegistraion = UICollectionView.CellRegistration<MinimalCareerProfileCell, HomeItem> { _, _, _ in }
@@ -119,8 +134,6 @@ class HomeViewController: UIViewController {
             case .cardCareerProfiles(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: cardCareerProfilesRegistraion, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
-                cell.layer.cornerRadius = 10
-                self.itemColor(cell: cell, indexPath: indexPath.item)
                 return cell
             }
         })
@@ -134,13 +147,12 @@ class HomeViewController: UIViewController {
         changeDatasource()
     }
     
-    func changeDatasource(data: UserModel? = nil) {
+    func changeDatasource(myProfileData: UserModel? = nil, cardProfileData: [UserModel]? = nil) {
         var snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>()
         snapshot.appendSections([.myCareerProfile])
-        snapshot.appendItems([.myCareerProfile(data ?? profileModel)])
-
+        snapshot.appendItems([.myCareerProfile(myProfileData ?? profileModel)])
         snapshot.appendSections([.cardCareerProfiles])
-        snapshot.appendItems([.cardCareerProfiles(data ?? profileModel)])
+        snapshot.appendItems([.cardCareerProfiles(cardProfileData?[0] ?? recommandProfileModel)])
         datasource.apply(snapshot)
     }
 }
@@ -155,9 +167,7 @@ extension HomeViewController: UICollectionViewDelegate {
             let vc = CardProfileDetailViewController()
             vc.userId = cell.userId
             self.navigationController?.pushViewController(vc, animated: true)
-//
             print("cell's userId: \(cell.userId)")
-//
         }
     }
 }
