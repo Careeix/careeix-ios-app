@@ -74,7 +74,7 @@ class CardProfileCell: UICollectionViewCell {
     }()
     
     func configure(_ info: UserModel) {
-        let url = URL(string: info.userProfileImg)
+        let url = URL(string: info.userProfileImg ?? "")
         profileImageView.kf.setImage(with: url)
         nickName.text = info.userNickname
         careerName.text = info.userJob
