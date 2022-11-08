@@ -8,6 +8,7 @@
 import Foundation
 import SnapKit
 import UIKit
+import Kingfisher
 
 /**
  2. 간편 커리어 프로필
@@ -20,6 +21,7 @@ import UIKit
 
 class MinimalCareerProfileCell: UICollectionViewCell {
     var userId: Int = -1
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupGradient()
@@ -68,9 +70,11 @@ class MinimalCareerProfileCell: UICollectionViewCell {
         userId = info.userId
         setup()
     }
+    
     override func prepareForReuse() {
         userId = -1
     }
+    
     func setup() {
         [profileImageView, nickName, careerName, careerGrade]
             .forEach { contentView.addSubview($0) }

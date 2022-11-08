@@ -95,7 +95,6 @@
 		78F4CE4A290046A800284B86 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78F4CE44290046A800284B86 /* Pretendard-Bold.otf */; };
 		78F4CE4B290046A800284B86 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78F4CE45290046A800284B86 /* Pretendard-Medium.otf */; };
 		78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F4CE4C290049D400284B86 /* UITextField+.swift */; };
-		7A2C4BBD290FD10E00833323 /* UserDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2C4BBC290FD10E00833323 /* UserDataManager.swift */; };
 		7A39BE5C29008F2B0067D2DC /* EmptyCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A39BE5B29008F2B0067D2DC /* EmptyCareerProfileCell.swift */; };
 		7A84D46F2902C80900939D89 /* CardProfileDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A84D46E2902C80900939D89 /* CardProfileDetailViewController.swift */; };
 		7AB279AF2902D15F00ED3D97 /* CardProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB279AE2902D15F00ED3D97 /* CardProfileCell.swift */; };
@@ -201,7 +200,6 @@
 		78F4CE44290046A800284B86 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		78F4CE45290046A800284B86 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		78F4CE4C290049D400284B86 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
-		7A2C4BBC290FD10E00833323 /* UserDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataManager.swift; sourceTree = "<group>"; };
 		7A39BE5B29008F2B0067D2DC /* EmptyCareerProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCareerProfileCell.swift; sourceTree = "<group>"; };
 		7A84D46E2902C80900939D89 /* CardProfileDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardProfileDetailViewController.swift; sourceTree = "<group>"; };
 		7AB279AE2902D15F00ED3D97 /* CardProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardProfileCell.swift; sourceTree = "<group>"; };
@@ -616,7 +614,6 @@
 				7AFE501B28FD90C600A72D65 /* HomeAlertViewController.swift */,
 				7AFE501C28FD90C600A72D65 /* HomeViewController.swift */,
 				7AFE501D28FD90C600A72D65 /* HomeModel.swift */,
-				7A2C4BBC290FD10E00833323 /* UserDataManager.swift */,
 				7AFE502A28FD911100A72D65 /* Cells */,
 				7AFE502C28FD915600A72D65 /* Views */,
 			);
@@ -772,7 +769,6 @@
 				7AB279AF2902D15F00ED3D97 /* CardProfileCell.swift in Sources */,
 				7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */,
 				78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */,
-				7A2C4BBD290FD10E00833323 /* UserDataManager.swift in Sources */,
 				785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */,
 				782347132918D0C200E648DF /* Entity.swift in Sources */,
 				788A09FF290A7BBD003EF027 /* ProjectChapterInputViewModel.swift in Sources */,

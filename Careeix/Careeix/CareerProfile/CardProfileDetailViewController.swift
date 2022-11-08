@@ -16,8 +16,14 @@ class CardProfileDetailViewController: UIViewController {
         setCollectionView()
         configurationDatasource()
         setupNavigationBackButton()
+        getUserData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = true
     }
@@ -25,7 +31,23 @@ class CardProfileDetailViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
     }
-    var cardProfileModel: CareerModel = CareerModel(profileImage: "", nickname: "", careerName: "", careerGrade: "", detailCareerNames: [])
+    
+    var userId = 0
+    
+    func getUserData() {
+        API<UserModel>(path: "users/profile/\(userId)", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
+            switch result {
+            case .success(let response):
+                // data:
+                self?.changeDatasource(data: response.data)
+            case .failure(let error):
+                // alert
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    var cardProfileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
     
     private let cardProfileCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
@@ -38,11 +60,11 @@ class CardProfileDetailViewController: UIViewController {
     }
     
     enum CardProfileSection: Hashable {
-        case userProfile, introduce//, project
+        case userProfile, introduce
     }
     
     enum CardProfileItem: Hashable {
-        case userProfile(CareerModel), introduce(String)//, project(CareerModel)
+        case userProfile(UserModel), introduce(UserModel)
     }
     
     var datasource: UICollectionViewDiffableDataSource<CardProfileSection, CardProfileItem>!
@@ -67,12 +89,12 @@ class CardProfileDetailViewController: UIViewController {
         changeDatasource()
     }
     
-    func changeDatasource() {
+    func changeDatasource(data: UserModel? = nil) {
         var snapshot = NSDiffableDataSourceSnapshot<CardProfileSection, CardProfileItem>()
         snapshot.appendSections([.userProfile])
-        snapshot.appendItems([.userProfile(cardProfileModel)])
+        snapshot.appendItems([.userProfile(data ?? cardProfileModel)])
         snapshot.appendSections([.introduce])
-        snapshot.appendItems([.introduce("소개글이 없습니다.")])
+        snapshot.appendItems([.introduce(data ?? cardProfileModel)])
         datasource.apply(snapshot)
     }
 }
