@@ -13,7 +13,6 @@ class MyCareerProfileCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapUpdateProfileImageView))
-    
         updateCareerProfileImageView.addGestureRecognizer(gesture)
         print("init")
     }
@@ -26,6 +25,8 @@ class MyCareerProfileCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    let gradientView = UIView()
     
     let profileImageView: UIImageView = {
         let image = UIImageView()
@@ -123,39 +124,47 @@ class MyCareerProfileCell: UICollectionViewCell {
     
     func setProfileColor(fillColor: String) {
         if GradientColor.skyblue.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.skyblueGradientSP), endColor: .appColor(.skyblueGradientEP), cornerRadius: 0)
+            GradientColor.setGradient(contentView: gradientView, startColor: .appColor(.skyblueGradientSP), endColor: .appColor(.skyblueGradientEP), cornerRadius: 0)
         } else if GradientColor.yellow.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.yellowGradientSP), endColor: .appColor(.yellowGradientEP), cornerRadius: 0)
+            GradientColor.setGradient(contentView: gradientView, startColor: .appColor(.yellowGradientSP), endColor: .appColor(.yellowGradientEP), cornerRadius: 0)
         } else if GradientColor.purple.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.purpleGradientSP), endColor: .appColor(.purpleGradientEP), cornerRadius: 0)
+            GradientColor.setGradient(contentView: gradientView, startColor: .appColor(.purpleGradientSP), endColor: .appColor(.purpleGradientEP), cornerRadius: 0)
         } else if GradientColor.green.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.greenGradientSP), endColor: .appColor(.greenGradientEP), cornerRadius: 0)
+            GradientColor.setGradient(contentView: gradientView, startColor: .appColor(.greenGradientSP), endColor: .appColor(.greenGradientEP), cornerRadius: 0)
         } else if GradientColor.pink.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.pinkGradientSP), endColor: .appColor(.pinkGradientEP), cornerRadius: 0)
+            GradientColor.setGradient(contentView: gradientView, startColor: .appColor(.pinkGradientSP), endColor: .appColor(.pinkGradientEP), cornerRadius: 0)
         } else {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.orangeGradientSP), endColor: .appColor(.orangeGradientEP), cornerRadius: 0)
+            GradientColor.setGradient(contentView: gradientView, startColor: .appColor(.orangeGradientSP), endColor: .appColor(.orangeGradientEP), cornerRadius: 0)
         }
     }
     
     func setUI() {
+        contentView.addSubview(gradientView)
+        contentView.layer.borderWidth = 1
+        gradientView.layer.borderWidth = 1
+       
+        gradientView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(60)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
         [profileImageView, nickNameLabel, updateCareerProfileImageView, careerNameLabel, careerGradeLabel, firstDetailCareerNameLabel, secondDetailCareerNameLabel, thirdDetailCareerNameLabel]
             .forEach { contentView.addSubview($0) }
         
         profileImageView.snp.makeConstraints {
             $0.leading.equalTo(19)
-            $0.top.equalToSuperview().offset(-60)
+            $0.top.equalToSuperview()
             $0.width.height.equalTo(89)
         }
         
         nickNameLabel.snp.makeConstraints {
             $0.leading.equalTo(profileImageView.snp.trailing).offset(13)
-            $0.top.equalToSuperview().offset(-30)
+            $0.bottom.equalTo(gradientView.snp.top).offset(-5)
         }
         
         updateCareerProfileImageView.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(16)
             $0.top.equalTo(nickNameLabel.snp.top)
-//            $0.width.height.equalTo(50)
         }
         
         careerNameLabel.snp.makeConstraints {

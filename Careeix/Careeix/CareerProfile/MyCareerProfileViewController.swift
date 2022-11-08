@@ -16,32 +16,19 @@ class MyCareerProfileViewController: UIViewController {
         super.viewDidLoad()
         setCollectionView()
         configurationDatasource()
-        let user = UserDefaultManager.user
-        changeDatasource(userData: .init(userId: user.userId, userJob: user.userJob, userDetailJobs: user.userDetailJobs, userWork: user.userId, userNickname: user.userNickname, userProfileImg: user.userProfileImg, userProfileColor: user.userProfileColor, userIntro: user.userIntro, userSocialProvider: user.userSocialProvider))
         NotificationCenter.default.addObserver(self, selector: #selector(showProfileInputView), name: Notification.Name(rawValue: "didTapUpdateProfileImageView"), object: nil)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getMyProjectData()
     }
+    
     @objc func showProfileInputView() {
         let vc = UpdatedNicknameViewController()
         navigationController?.pushViewController(vc, animated: true)
         print("showProfileInputView")
     }
 
-//    func getMyData() {
-//        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain)
-//            .request { [weak self] result in
-//            switch result {
-//            case .success(let response):
-//                self?.changeDatasource(userData: response.data)
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
-    
     func getMyProjectData() {
         let parameters = ["id": UserDefaultManager.user.userId]
         API<[ProjectModel]>(path: "project/by-user", method: .get, parameters: parameters, task: .requestParameters(encoding: URLEncoding(destination: .queryString)))
@@ -49,9 +36,10 @@ class MyCareerProfileViewController: UIViewController {
             switch result {
             case .success(let response):
                 // data
-                print("🌈🌈🌈🌈🌈🌈🌈")
-                print(response)
-                self?.changeDatasource(projectData: response.data ?? [])
+                let user = UserDefaultManager.user
+                self?.changeDatasource(userData: .init(
+                    userId: user.userId, userJob: user.userJob, userDetailJobs: user.userDetailJobs, userWork: user.userId, userNickname: user.userNickname, userProfileImg: user.userProfileImg, userProfileColor: user.userProfileColor, userIntro: user.userIntro, userSocialProvider: user.userSocialProvider
+                ), projectData: response.data ?? [])
             case .failure(let error):
                 // alert
                 print("projectAPIError: \(error.localizedDescription)")
@@ -108,7 +96,6 @@ class MyCareerProfileViewController: UIViewController {
             case .userProfile(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: myProfileRegistraion, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
-                
                 return cell
             case .introduce(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: introduceRegistration, for: indexPath, item: itemIdentifier)
@@ -137,8 +124,8 @@ class MyCareerProfileViewController: UIViewController {
         snapshot.appendSections([.introduce])
         snapshot.appendItems([.introduce(userData ?? profileModel)])
         snapshot.appendSections([.project])
-        snapshot.appendItems( projectData.compactMap { .project($0)} )
-        datasource.apply(snapshot)
+        snapshot.appendItems(projectData.compactMap { .project($0)} )
+        datasource.apply(snapshot, animatingDifferences: true)
     }
     
 
@@ -164,10 +151,10 @@ extension MyCareerProfileViewController {
         return UICollectionViewCompositionalLayout { (sectionIndex, env) -> NSCollectionLayoutSection? in
             switch sectionIndex {
             case 0:
-                let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.4))
-                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.4), subitem: item, count: 1)
+                let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.6))
+                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.6), subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 62, leading: 0, bottom: 0, trailing: 0)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0)
                 return section
             case 1:
                 let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.1))
@@ -182,6 +169,7 @@ extension MyCareerProfileViewController {
                 let headerText = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.2)), elementKind: ProjectListHeaderView.identifier, alignment: .topLeading)
                 section.boundarySupplementaryItems = [headerText]
                 section.contentInsets = NSDirectionalEdgeInsets(top: 11, leading: 16, bottom: 10, trailing: 16)
+                section.interGroupSpacing = 10
                 return section
             default:
                 return nil

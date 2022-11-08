@@ -96,7 +96,7 @@ class ProjectListCell: UICollectionViewCell {
         }
         
         kebabImageView.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(30)
+            $0.trailing.equalToSuperview().inset(17)
             $0.top.equalTo(endDateLabel.snp.top)
         }
         

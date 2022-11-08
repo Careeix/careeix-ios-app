@@ -40,20 +40,21 @@ class UpdatedNicknameViewController: UIViewController {
         print("nickName Value: \(textFieldView.textField.text!)")
         navigationController?.popViewController(animated: true)
         updateUserData()
+        dismiss(animated: true)
     }
     
     func updateUserData() {
         guard let userNickName = self.textFieldView.textField.text else { return }
-        API<UserModel>(path: "users/update-profile", method: .post, parameters: ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt, "userNickname": userNickName], task: .requestPlain).request { result in
+        API<UserDataUpdateModel>(path: "users/update-profile", method: .post, parameters: ["userNickname": userNickName], task: .requestJSONEncodable(userNickName), headers: ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt]).request { result in
             print("result: \(result)")
             switch result {
             case .success(let response):
                 // data:
-                print(response.code, response.message)
+                print("😀😀😀😀유저닉네임 업데이트: \(response.code), \(response.message)😀😀😀😀")
                 print(response.data!)
             case .failure(let error):
                 // alert
-                print("error: \(error.localizedDescription)")
+                print("😀😀😀😀유저닉네임 업데이트 실패: \(error.localizedDescription)😀😀😀😀")
             }
         }
     }

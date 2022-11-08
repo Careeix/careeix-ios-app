@@ -25,6 +25,14 @@ import SnapKit
     - Snapshot
  */
 
+enum HomeSection: Hashable {
+    case myCareerProfile, cardCareerProfiles
+}
+
+enum HomeItem: Hashable {
+    case myCareerProfile(UserModel), cardCareerProfiles(RecommandUserModel)
+}
+
 class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,12 +75,13 @@ class HomeViewController: UIViewController {
     // MARK: RecommandCareerProfile API Call
     
     func recommandUserData() {
-        API<[UserModel]>(path: "users/recommend/profile", method: .get, parameters: [:], task: .requestPlain)
+        API<[RecommandUserModel]>(path: "users/recommend/profile", method: .get, parameters: [:], task: .requestPlain)
             .request { [weak self] result in
             switch result {
             case .success(let response):
                 // data:
-                self?.changeDatasource(cardProfileData: response.data)
+                let user = UserDefaultManager.user
+                self?.changeDatasource(myProfileData: .init(userId: user.userId, userJob: user.userJob, userDetailJobs: user.userDetailJobs, userWork: user.userWork, userNickname: user.userNickname, userProfileImg: user.userProfileImg, userProfileColor: user.userProfileColor, userIntro: user.userIntro, userSocialProvider: user.userSocialProvider), cardProfileData: response.data ?? [])
             case .failure(let error):
                 // alert
                 print("recommandUserData: \(error.localizedDescription)")
@@ -98,15 +107,7 @@ class HomeViewController: UIViewController {
     }
     
     private let homeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
-    
-    enum HomeSection: Hashable {
-        case myCareerProfile, cardCareerProfiles
-    }
-    
-    enum HomeItem: Hashable {
-        case myCareerProfile(UserModel), cardCareerProfiles(UserModel)
-    }
-    
+
     var datasource: UICollectionViewDiffableDataSource<HomeSection, HomeItem>!
     
     func setupCollectionView() {
@@ -117,7 +118,7 @@ class HomeViewController: UIViewController {
     
     var profileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
     
-    var recommandProfileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
+    var recommandProfileModel: RecommandUserModel = RecommandUserModel(userDetailJobs: [""], userId: 0, userJob: "", userProfileColor: "", userWork: 0)
     
     func configurationDatasource() {
         let myCareerProfileRegistraion = UICollectionView.CellRegistration<MinimalCareerProfileCell, HomeItem> { _, _, _ in }
@@ -147,12 +148,12 @@ class HomeViewController: UIViewController {
         changeDatasource()
     }
     
-    func changeDatasource(myProfileData: UserModel? = nil, cardProfileData: [UserModel]? = nil) {
+    func changeDatasource(myProfileData: UserModel? = nil, cardProfileData: [RecommandUserModel] = []) {
         var snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>()
         snapshot.appendSections([.myCareerProfile])
         snapshot.appendItems([.myCareerProfile(myProfileData ?? profileModel)])
         snapshot.appendSections([.cardCareerProfiles])
-        snapshot.appendItems([.cardCareerProfiles(cardProfileData?[0] ?? recommandProfileModel)])
+        snapshot.appendItems(cardProfileData.map { .cardCareerProfiles($0) })
         datasource.apply(snapshot)
     }
 }

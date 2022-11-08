@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class EmptyCareerProfile: UICollectionViewCell {
+class EmptyCareerProfileCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -18,6 +18,8 @@ class EmptyCareerProfile: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    let emptyContentView = UIView()
     
     let emptyImageView: UIImageView = {
         let image = UIImageView()
@@ -45,11 +47,16 @@ class EmptyCareerProfile: UICollectionViewCell {
     }()
     
     func setup() {
-        [emptyImageView, largeLabel, smallLabel].forEach { contentView.addSubview($0) }
+        contentView.addSubview(emptyContentView)
+        
+        emptyContentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        [emptyImageView, largeLabel, smallLabel].forEach { emptyContentView.addSubview($0) }
         
         emptyImageView.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
-            $0.centerX.equalToSuperview()
+            $0.center.equalToSuperview()
         }
         
         largeLabel.snp.makeConstraints {

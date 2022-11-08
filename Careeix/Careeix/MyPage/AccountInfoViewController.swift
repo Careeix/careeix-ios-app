@@ -113,6 +113,7 @@ class AccountInfoViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
+        getUserData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -122,7 +123,6 @@ class AccountInfoViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        getUserData()
     }
     
     func tapNickNameButton() {
@@ -136,7 +136,8 @@ class AccountInfoViewController: UIViewController {
     }
     
     func getUserData() {
-        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
+        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain)
+            .request { [weak self] result in
             switch result {
             case .success(let response):
                 // data:

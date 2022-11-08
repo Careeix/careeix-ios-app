@@ -18,3 +18,11 @@ struct UserModel: Hashable, Codable {
     let userIntro: String?
     let userSocialProvider: Int
 }
+
+struct RecommandUserModel: Hashable, Codable {
+    let userDetailJobs: [String]
+    let userId: Int
+    let userJob: String
+    let userProfileColor: String
+    let userWork: Int
+}
