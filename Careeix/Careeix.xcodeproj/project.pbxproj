@@ -31,6 +31,7 @@
 		784BD0B828EDA3F600CA86F0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0B728EDA3F600CA86F0 /* Kingfisher */; };
 		784BD0BB28EDA42300CA86F0 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BA28EDA42300CA86F0 /* PanModal */; };
 		784BD0BE28EDA44800CA86F0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 784BD0BD28EDA44800CA86F0 /* SnapKit */; };
+		78527B07291A5D8400FD2A74 /* ProjectListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78527B06291A5D8400FD2A74 /* ProjectListCell.swift */; };
 		785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF52F29054A8900592F7F /* ProjectInputDetailViewController.swift */; };
 		785AF53429054EFE00592F7F /* ProjectChapterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF53329054EFE00592F7F /* ProjectChapterCell.swift */; };
 		785AF53629054F2500592F7F /* ContentsAddButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785AF53529054F2500592F7F /* ContentsAddButtonView.swift */; };
@@ -94,7 +95,6 @@
 		7A93B8262918681C007A91EB /* MyCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B8252918681C007A91EB /* MyCareerProfileCell.swift */; };
 		7A93B8282918711F007A91EB /* MyIntroduceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B8272918711F007A91EB /* MyIntroduceCell.swift */; };
 		7A93B82A29187B09007A91EB /* UpdatedMyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B82929187B09007A91EB /* UpdatedMyProfileViewController.swift */; };
-		7AA3E5752915BEC400046D01 /* ProjectListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA3E5742915BEC400046D01 /* ProjectListCell.swift */; };
 		7AA3E5782915BF7B00046D01 /* ProjectListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA3E5772915BF7B00046D01 /* ProjectListHeaderView.swift */; };
 		7AA3E57C2918011300046D01 /* ProjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA3E57B2918011300046D01 /* ProjectModel.swift */; };
 		7AB279AF2902D15F00ED3D97 /* CardProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB279AE2902D15F00ED3D97 /* CardProfileCell.swift */; };
@@ -145,6 +145,7 @@
 		784BD0A428EDA23A00CA86F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		784BD0A628EDA23A00CA86F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		784BD0AC28EDA35500CA86F0 /* OnboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewController.swift; sourceTree = "<group>"; };
+		78527B06291A5D8400FD2A74 /* ProjectListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectListCell.swift; sourceTree = "<group>"; };
 		785AF52F29054A8900592F7F /* ProjectInputDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInputDetailViewController.swift; sourceTree = "<group>"; };
 		785AF53329054EFE00592F7F /* ProjectChapterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterCell.swift; sourceTree = "<group>"; };
 		785AF53529054F2500592F7F /* ContentsAddButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentsAddButtonView.swift; sourceTree = "<group>"; };
@@ -199,7 +200,6 @@
 		7A93B8252918681C007A91EB /* MyCareerProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCareerProfileCell.swift; sourceTree = "<group>"; };
 		7A93B8272918711F007A91EB /* MyIntroduceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyIntroduceCell.swift; sourceTree = "<group>"; };
 		7A93B82929187B09007A91EB /* UpdatedMyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedMyProfileViewController.swift; sourceTree = "<group>"; };
-		7AA3E5742915BEC400046D01 /* ProjectListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListCell.swift; sourceTree = "<group>"; };
 		7AA3E5772915BF7B00046D01 /* ProjectListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListHeaderView.swift; sourceTree = "<group>"; };
 		7AA3E57B2918011300046D01 /* ProjectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectModel.swift; sourceTree = "<group>"; };
 		7AB279AE2902D15F00ED3D97 /* CardProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardProfileCell.swift; sourceTree = "<group>"; };
@@ -579,7 +579,7 @@
 		7AA3E5762915BEC900046D01 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				7AA3E5742915BEC400046D01 /* ProjectListCell.swift */,
+				78527B06291A5D8400FD2A74 /* ProjectListCell.swift */,
 				7A93B8252918681C007A91EB /* MyCareerProfileCell.swift */,
 				7A93B8272918711F007A91EB /* MyIntroduceCell.swift */,
 			);
@@ -760,6 +760,7 @@
 				786F46A42901A24E00215AF0 /* PeriodInputView.swift in Sources */,
 				78D52E5328FD3142001F5747 /* SocialLoginSDK.swift in Sources */,
 				78D52EA328FE5C3E001F5747 /* SocialLoginService.swift in Sources */,
+				78527B07291A5D8400FD2A74 /* ProjectListCell.swift in Sources */,
 				78DC17CD28FAA4DB00331A22 /* MultiInputView.swift in Sources */,
 				785AF53629054F2500592F7F /* ContentsAddButtonView.swift in Sources */,
 				78C9099C2905A18800AA9AA3 /* UIViewController+.swift in Sources */,
@@ -767,7 +768,6 @@
 				78DC17D428FBEA0000331A22 /* RadioCell.swift in Sources */,
 				7AFE502928FD90C600A72D65 /* CompositionalLayout.swift in Sources */,
 				78DC17D628FBEEA400331A22 /* MultiInputCell.swift in Sources */,
-				7AA3E5752915BEC400046D01 /* ProjectListCell.swift in Sources */,
 				7AFE502828FD90C600A72D65 /* MinimalCareerProfileCell.swift in Sources */,
 				78DC17B828FA8C2600331A22 /* OnboardCell.swift in Sources */,
 				78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */,
