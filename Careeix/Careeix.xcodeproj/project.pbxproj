@@ -26,6 +26,7 @@
 		78345E17291391FA00EB9621 /* ProjectRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E16291391FA00EB9621 /* ProjectRepository.swift */; };
 		78345E1A2913935100EB9621 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E192913935100EB9621 /* User.swift */; };
 		78345E1D2913942100EB9621 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78345E1C2913942100EB9621 /* UserRepository.swift */; };
+		7846D3D1291A3444009185F0 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7846D3D0291A3444009185F0 /* WebViewController.swift */; };
 		784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD09828EDA23900CA86F0 /* AppDelegate.swift */; };
 		784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */; };
 		784BD0A228EDA23A00CA86F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 784BD0A128EDA23A00CA86F0 /* Assets.xcassets */; };
@@ -143,6 +144,7 @@
 		78345E16291391FA00EB9621 /* ProjectRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRepository.swift; sourceTree = "<group>"; };
 		78345E192913935100EB9621 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		78345E1C2913942100EB9621 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
+		7846D3D0291A3444009185F0 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		784BD09528EDA23900CA86F0 /* Careeix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Careeix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		784BD09828EDA23900CA86F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		784BD09A28EDA23900CA86F0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -460,6 +462,7 @@
 			children = (
 				7881F5512902D91D00111395 /* TwoButtonAlertViewController.swift */,
 				787448ED29197BAF00214381 /* OneButtonAlertViewController.swift */,
+				7846D3D0291A3444009185F0 /* WebViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -764,6 +767,7 @@
 				7AFE502828FD90C600A72D65 /* MinimalCareerProfileCell.swift in Sources */,
 				78DC17B828FA8C2600331A22 /* OnboardCell.swift in Sources */,
 				78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */,
+				7846D3D1291A3444009185F0 /* WebViewController.swift in Sources */,
 				78DC17CB28FAA46A00331A22 /* RadioInputView.swift in Sources */,
 				7AB279AF2902D15F00ED3D97 /* CardProfileCell.swift in Sources */,
 				7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */,
