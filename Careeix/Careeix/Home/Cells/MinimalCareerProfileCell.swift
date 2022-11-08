@@ -27,7 +27,7 @@ enum GradientColor: String {
     case orange = "#F0B782"
     case green = "#699D84"
     
-    static func setGradient(contentView: UIView, startColor: UIColor, endColor: UIColor) {
+    static func setGradient(contentView: UIView, startColor: UIColor, endColor: UIColor, cornerRadius: CGFloat) {
         var gradientLayer: CAGradientLayer!
         gradientLayer = CAGradientLayer()
         gradientLayer.frame = contentView.bounds
@@ -36,7 +36,7 @@ enum GradientColor: String {
         gradientLayer.colors = [startPoint.cgColor, endPoint.cgColor]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0.7)
         gradientLayer.endPoint = CGPoint(x: 1, y: 0.2)
-        gradientLayer.cornerRadius = 10
+        gradientLayer.cornerRadius = cornerRadius
         
         contentView.layer.addSublayer(gradientLayer)
     }
@@ -86,9 +86,9 @@ class MinimalCareerProfileCell: UICollectionViewCell {
         setImageURL(url: info.userProfileImg)
         nickName.text = info.userNickname
         careerName.text = info.userJob
-        careerGrade.text = UserWorkYear.chooseUserWorkYear(grade: info.userWork)
+        careerGrade.text = UserWork.setUserWork(grade: info.userWork)
         userId = info.userId
-        chooseProfileColor(fillColor: info.userProfileColor)
+        setProfileColor(fillColor: info.userProfileColor)
         setup()
     }
     
@@ -101,19 +101,19 @@ class MinimalCareerProfileCell: UICollectionViewCell {
         }
     }
     
-    func chooseProfileColor(fillColor: String) {
+    func setProfileColor(fillColor: String) {
         if GradientColor.skyblue.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.skyblueGradientSP), endColor: .appColor(.skyblueGradientEP))
+            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.skyblueGradientSP), endColor: .appColor(.skyblueGradientEP), cornerRadius: 10)
         } else if GradientColor.yellow.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.yellowGradientSP), endColor: .appColor(.yellowGradientEP))
+            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.yellowGradientSP), endColor: .appColor(.yellowGradientEP), cornerRadius: 10)
         } else if GradientColor.purple.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.purpleGradientSP), endColor: .appColor(.purpleGradientEP))
+            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.purpleGradientSP), endColor: .appColor(.purpleGradientEP), cornerRadius: 10)
         } else if GradientColor.green.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.greenGradientSP), endColor: .appColor(.greenGradientEP))
+            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.greenGradientSP), endColor: .appColor(.greenGradientEP), cornerRadius: 10)
         } else if GradientColor.pink.rawValue == fillColor {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.pinkGradientSP), endColor: .appColor(.pinkGradientEP))
+            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.pinkGradientSP), endColor: .appColor(.pinkGradientEP), cornerRadius: 10)
         } else {
-            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.orangeGradientSP), endColor: .appColor(.orangeGradientEP))
+            GradientColor.setGradient(contentView: contentView, startColor: .appColor(.orangeGradientSP), endColor: .appColor(.orangeGradientEP), cornerRadius: 10)
         }
     }
     
@@ -145,5 +145,36 @@ class MinimalCareerProfileCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(24)
             $0.top.equalTo(careerName.snp.bottom).offset(6)
         }
+    }
+}
+
+// MARK: convert Hex to UIColor
+
+extension UIColor {
+    convenience init(hexString: String, alpha: CGFloat = 1.0) {
+        let hexString: String = hexString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let scanner = Scanner(string: hexString)
+        if (hexString.hasPrefix("#")) {
+            scanner.scanLocation = 1
+        }
+        var color: UInt32 = 0
+        scanner.scanHexInt32(&color)
+        let mask = 0x000000FF
+        let r = Int(color >> 16) & mask
+        let g = Int(color >> 8) & mask
+        let b = Int(color) & mask
+        let red   = CGFloat(r) / 255.0
+        let green = CGFloat(g) / 255.0
+        let blue  = CGFloat(b) / 255.0
+        self.init(red:red, green:green, blue:blue, alpha:alpha)
+    }
+    func toHexString() -> String {
+        var r:CGFloat = 0
+        var g:CGFloat = 0
+        var b:CGFloat = 0
+        var a:CGFloat = 0
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+        return String(format:"#%06x", rgb)
     }
 }

@@ -36,7 +36,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                name: Notification.Name("logoutSuccess"),
                                                object: nil)
         
-        window?.rootViewController = UserDefaultManager.jwtToken == ""
+        window?.rootViewController = UserDefaultManager.jwtToken == "a"
         ? UINavigationController(rootViewController: OnboardViewController())
         : TabBarController()
         

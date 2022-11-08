@@ -50,11 +50,12 @@ class HomeViewController: UIViewController {
     // MARK: MyCareerProfile API Call
     
     func getUserData() {
-        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
+        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain)
+            .request { [weak self] result in
             switch result {
             case .success(let response):
                 // data:
-                self?.changeDatasource(data: response.data)
+                self?.changeDatasource(myProfileData: response.data)
             case .failure(let error):
                 // alert
                 print(error.localizedDescription)
@@ -65,14 +66,15 @@ class HomeViewController: UIViewController {
     // MARK: RecommandCareerProfile API Call
     
     func recommandUserData() {
-        API<UserModel>(path: "users/recommend/profile", method: .get, parameters: ["X-ACCESS-TOKEN": UserDefaultManager.jwtToken], task: .requestPlain).request { [weak self] result in
+        API<[UserModel]>(path: "users/recommend/profile", method: .get, parameters: [:], task: .requestPlain, headers: ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt ?? ""])
+            .request { [weak self] result in
             switch result {
             case .success(let response):
                 // data:
-                self?.changeDatasource(data: response.data)
+                self?.changeDatasource(cardProfileData: response.data)
             case .failure(let error):
                 // alert
-                print(error.localizedDescription)
+                print("recommandUserData: \(error.localizedDescription)")
             }
         }
     }
@@ -114,6 +116,8 @@ class HomeViewController: UIViewController {
     
     var profileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
     
+    var recommandProfileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
+    
     func configurationDatasource() {
         let myCareerProfileRegistraion = UICollectionView.CellRegistration<MinimalCareerProfileCell, HomeItem> { _, _, _ in }
         let cardCareerProfilesRegistraion = UICollectionView.CellRegistration<RelevantCareerProfilesCell, HomeItem> { _, _, _ in }
@@ -142,12 +146,12 @@ class HomeViewController: UIViewController {
         changeDatasource()
     }
     
-    func changeDatasource(data: UserModel? = nil) {
+    func changeDatasource(myProfileData: UserModel? = nil, cardProfileData: [UserModel]? = nil) {
         var snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>()
         snapshot.appendSections([.myCareerProfile])
-        snapshot.appendItems([.myCareerProfile(data ?? profileModel)])
+        snapshot.appendItems([.myCareerProfile(myProfileData ?? profileModel)])
         snapshot.appendSections([.cardCareerProfiles])
-        snapshot.appendItems([.cardCareerProfiles(data ?? profileModel)])
+        snapshot.appendItems([.cardCareerProfiles(cardProfileData?[0] ?? recommandProfileModel)])
         datasource.apply(snapshot)
     }
 }
@@ -162,9 +166,7 @@ extension HomeViewController: UICollectionViewDelegate {
             let vc = CardProfileDetailViewController()
             vc.userId = cell.userId
             self.navigationController?.pushViewController(vc, animated: true)
-//
             print("cell's userId: \(cell.userId)")
-//
         }
     }
 }

@@ -90,8 +90,13 @@
 		78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F4CE4C290049D400284B86 /* UITextField+.swift */; };
 		7A39BE5C29008F2B0067D2DC /* EmptyCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A39BE5B29008F2B0067D2DC /* EmptyCareerProfileCell.swift */; };
 		7A84D46F2902C80900939D89 /* CardProfileDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A84D46E2902C80900939D89 /* CardProfileDetailViewController.swift */; };
+		7A93B824291865C2007A91EB /* MyCareerProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B823291865C2007A91EB /* MyCareerProfileViewController.swift */; };
+		7A93B8262918681C007A91EB /* MyCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B8252918681C007A91EB /* MyCareerProfileCell.swift */; };
+		7A93B8282918711F007A91EB /* MyIntroduceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B8272918711F007A91EB /* MyIntroduceCell.swift */; };
+		7A93B82A29187B09007A91EB /* UpdatedMyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B82929187B09007A91EB /* UpdatedMyProfileViewController.swift */; };
 		7AA3E5752915BEC400046D01 /* ProjectListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA3E5742915BEC400046D01 /* ProjectListCell.swift */; };
 		7AA3E5782915BF7B00046D01 /* ProjectListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA3E5772915BF7B00046D01 /* ProjectListHeaderView.swift */; };
+		7AA3E57C2918011300046D01 /* ProjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA3E57B2918011300046D01 /* ProjectModel.swift */; };
 		7AB279AF2902D15F00ED3D97 /* CardProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB279AE2902D15F00ED3D97 /* CardProfileCell.swift */; };
 		7AC3A2142906BA3F001591CD /* IntroduceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC3A2132906BA3F001591CD /* IntroduceCell.swift */; };
 		7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501628FD8FB400A72D65 /* UIColor+.swift */; };
@@ -190,8 +195,13 @@
 		78F4CE4C290049D400284B86 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
 		7A39BE5B29008F2B0067D2DC /* EmptyCareerProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCareerProfileCell.swift; sourceTree = "<group>"; };
 		7A84D46E2902C80900939D89 /* CardProfileDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardProfileDetailViewController.swift; sourceTree = "<group>"; };
+		7A93B823291865C2007A91EB /* MyCareerProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCareerProfileViewController.swift; sourceTree = "<group>"; };
+		7A93B8252918681C007A91EB /* MyCareerProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCareerProfileCell.swift; sourceTree = "<group>"; };
+		7A93B8272918711F007A91EB /* MyIntroduceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyIntroduceCell.swift; sourceTree = "<group>"; };
+		7A93B82929187B09007A91EB /* UpdatedMyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedMyProfileViewController.swift; sourceTree = "<group>"; };
 		7AA3E5742915BEC400046D01 /* ProjectListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListCell.swift; sourceTree = "<group>"; };
 		7AA3E5772915BF7B00046D01 /* ProjectListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListHeaderView.swift; sourceTree = "<group>"; };
+		7AA3E57B2918011300046D01 /* ProjectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectModel.swift; sourceTree = "<group>"; };
 		7AB279AE2902D15F00ED3D97 /* CardProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardProfileCell.swift; sourceTree = "<group>"; };
 		7AC3A2132906BA3F001591CD /* IntroduceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroduceCell.swift; sourceTree = "<group>"; };
 		7AFE501628FD8FB400A72D65 /* UIColor+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
@@ -556,7 +566,10 @@
 		7A2C4BBE290FDC2D00833323 /* CareerProfile */ = {
 			isa = PBXGroup;
 			children = (
+				7AA3E57A291800F800046D01 /* Models */,
 				7A84D46E2902C80900939D89 /* CardProfileDetailViewController.swift */,
+				7A93B823291865C2007A91EB /* MyCareerProfileViewController.swift */,
+				7A93B82929187B09007A91EB /* UpdatedMyProfileViewController.swift */,
 				7AA3E5762915BEC900046D01 /* Cells */,
 				7AA3E5792915BF7F00046D01 /* Views */,
 			);
@@ -567,6 +580,8 @@
 			isa = PBXGroup;
 			children = (
 				7AA3E5742915BEC400046D01 /* ProjectListCell.swift */,
+				7A93B8252918681C007A91EB /* MyCareerProfileCell.swift */,
+				7A93B8272918711F007A91EB /* MyIntroduceCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -577,6 +592,14 @@
 				7AA3E5772915BF7B00046D01 /* ProjectListHeaderView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		7AA3E57A291800F800046D01 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7AA3E57B2918011300046D01 /* ProjectModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		7AFE501528FD8FB400A72D65 /* Extensions */ = {
@@ -733,6 +756,7 @@
 				786F469B29019BDE00215AF0 /* ProjectInputViewModel.swift in Sources */,
 				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
 				7AFE502728FD90C600A72D65 /* RelevantCareerProfilesCell.swift in Sources */,
+				7A93B8282918711F007A91EB /* MyIntroduceCell.swift in Sources */,
 				786F46A42901A24E00215AF0 /* PeriodInputView.swift in Sources */,
 				78D52E5328FD3142001F5747 /* SocialLoginSDK.swift in Sources */,
 				78D52EA328FE5C3E001F5747 /* SocialLoginService.swift in Sources */,
@@ -760,6 +784,7 @@
 				78345E0229126F0700EB9621 /* ProjectChapterLookupCell.swift in Sources */,
 				78345E0729126F1100EB9621 /* ProjectChapterViewController.swift in Sources */,
 				7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */,
+				7A93B824291865C2007A91EB /* MyCareerProfileViewController.swift in Sources */,
 				786F46A22901A21B00215AF0 /* BaseCheckBoxView.swift in Sources */,
 				78C9099A2905918A00AA9AA3 /* Project.swift in Sources */,
 				78345E1029126F1B00EB9621 /* MyPageTableViewCell.swift in Sources */,
@@ -776,6 +801,7 @@
 				7AA3E5782915BF7B00046D01 /* ProjectListHeaderView.swift in Sources */,
 				7A39BE5C29008F2B0067D2DC /* EmptyCareerProfileCell.swift in Sources */,
 				784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */,
+				7A93B82A29187B09007A91EB /* UpdatedMyProfileViewController.swift in Sources */,
 				7881F5522902D91D00111395 /* TwoButtonAlertViewController.swift in Sources */,
 				7AC3A2142906BA3F001591CD /* IntroduceCell.swift in Sources */,
 				78F4CE3E290045BB00284B86 /* UIFont+.swift in Sources */,
@@ -783,10 +809,12 @@
 				786F46922901443400215AF0 /* ProjectInputViewController.swift in Sources */,
 				784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */,
 				7AFE502228FD90C600A72D65 /* RelevantHeaderView.swift in Sources */,
+				7AA3E57C2918011300046D01 /* ProjectModel.swift in Sources */,
 				78DC17BF28FA943E00331A22 /* SignUpViewController.swift in Sources */,
 				785AF5392905574A00592F7F /* ProjectChapterInputViewController.swift in Sources */,
 				786F469629018F5500215AF0 /* Date+.swift in Sources */,
 				786F46A02901A1A400215AF0 /* ManyInputView.swift in Sources */,
+				7A93B8262918681C007A91EB /* MyCareerProfileCell.swift in Sources */,
 				78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */,
 				78DC17C728FA9E1C00331A22 /* SimpleInputView.swift in Sources */,
 				78345E1329126F1B00EB9621 /* MypageViewController.swift in Sources */,

@@ -68,7 +68,7 @@ class RelevantCareerProfilesCell: UICollectionViewCell {
     func configure(_ info: UserModel) {
         userId = info.userId
         careerName.text = info.userJob
-        careerGrade.text = UserWorkYear.chooseUserWorkYear(grade: info.userWork)
+        careerGrade.text = UserWork.setUserWork(grade: info.userWork)
         contentView.layer.backgroundColor = UIColor(hexString: info.userProfileColor, alpha: 1).cgColor
         setUserDetailJobs(detailJobs: info.userDetailJobs)
         setUI()
