@@ -23,7 +23,7 @@ class MultiInputCell: UITableViewCell {
         didSet {
             guard let viewModel else { return }
             textField = BaseTextField(viewModel: viewModel.textFieldViewModel)
-            setUI()
+            
         }
     }
     
@@ -31,6 +31,7 @@ class MultiInputCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         textField = BaseTextField(viewModel: .init())
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setUI()
     }
     
     required init?(coder: NSCoder) {

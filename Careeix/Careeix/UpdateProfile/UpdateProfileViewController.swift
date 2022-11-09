@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxRelay
+import RxKeyboard
 
 struct UpdateProfileModel {
     let userDetailJob: [String]
@@ -35,9 +36,11 @@ struct UpdateProfileViewModel {
     
     // MARK: Inputs
     let viewDidLoadRelay = PublishRelay<Void>()
+    let completeButtonTrigger = PublishRelay<Void>()
     
     // MARK: Outputs
     let fillDataDriver: Driver<(job, annual, detailJobs, introduce)>
+    let alertDriver: Driver<String>
     
     init(jobInputViewModel: SimpleInputViewModel,
          annualInputViewModel: RadioInputViewModel,
@@ -56,7 +59,21 @@ struct UpdateProfileViewModel {
                 return (user.userJob, user.userWork, user.userDetailJobs, user.userIntro ?? "")
             }.asDriver(onErrorJustReturn: ("", 0, [""], ""))
         
-
+        // NOTE: 마지막값 안들어온다
+        let combinedInputValuesObservable =  Observable.combineLatest(
+            jobInputViewModel.textfieldViewModel.inputStringRelay,
+            annualInputViewModel.selectedIndexRelay,
+            detailJobsInputViewModel.inputValuesObservable,
+            introduceInputViewModel.baseTextViewModel.inputStringRelay
+        ).share().debug("🐷")
+        
+        alertDriver = completeButtonTrigger
+            .withLatestFrom(combinedInputValuesObservable)
+            .map { UpdateProfileModel(userDetailJob: $0.2, userIntro: $0.3, userJob: $0.0, userWork: $0.1.row)}
+            .debug("dd??")
+            .map { _ in "API 엮어야해 ~" }
+            .asDriver(onErrorJustReturn: "")
+        
         
         func updateUser(job: job, annual: annual, detailJobs: detailJobs, introduce: introduce) {
                 
@@ -66,8 +83,8 @@ struct UpdateProfileViewModel {
         jobInputViewModel.textfieldViewModel.inputStringRelay.accept(job)
         annualInputViewModel.selectedIndexRelay.accept(IndexPath(row: annual, section: 0))
         zip(detailJobsInputViewModel.multiInputCellViewModels, detailJobs).forEach {
-            print(detailJobsInputViewModel.multiInputCellViewModels, detailJobs)
-            $0.textFieldViewModel.inputStringRelay.accept($1)
+            print("왜!!!", $0.1)
+            $0.0.textFieldViewModel.setText($0.1)
         }
         introduceInputViewModel.baseTextViewModel.inputStringRelay.accept(introduce)
     }
@@ -76,18 +93,50 @@ struct UpdateProfileViewModel {
 class UpdateProfileViewController: UIViewController {
     // MARK: - Properties
     var disposeBag = DisposeBag()
+    var viewModel: UpdateProfileViewModel
+    
     // MARK: - Bindings
     func bind(to viewModel: UpdateProfileViewModel) {
+        
+        RxKeyboard.instance.visibleHeight
+            .skip(1)    // 초기 값 버리기
+            .drive(with: self) { owner, keyboardVisibleHeight in
+                owner.updateView(with: keyboardVisibleHeight)
+            }.disposed(by: disposeBag)
+
+        completeButtonView.rx.tapGesture()
+            .when(.recognized)
+            .map { _ in () }
+            .bind(to: viewModel.completeButtonTrigger)
+            .disposed(by: disposeBag)
+        
         viewModel.fillDataDriver
             .drive(with: self) { owner, data in
-                print(data)
                 viewModel.fillData(job: data.0, annual: data.1, detailJobs: data.2, introduce: data.3)
             }.disposed(by: disposeBag)
+        
+        viewModel.alertDriver
+            .drive(with: self) { owner, message in
+                let vc = OneButtonAlertViewController(viewModel: .init(content: message, buttonText: "확인", textColor: .black))
+                owner.present(vc, animated: true)
+            }.disposed(by: disposeBag)
     }
-    // MARK: - Functions
     
+    // MARK: - Functions
+    func updateView(with keyboardHeight: CGFloat) {
+        contentView.snp.updateConstraints {
+            $0.bottom.equalToSuperview().inset(keyboardHeight)
+        }
+        completeButtonView.snp.updateConstraints {
+            $0.bottom.equalToSuperview().inset(keyboardHeight)
+        }
+        UIView.animate(withDuration: 0.4) {
+            self.view.layoutIfNeeded()
+        }
+    }
     // MARK: - Initializer
     init(viewModel: UpdateProfileViewModel) {
+        self.viewModel = viewModel
         jobInputView = .init(viewModel: viewModel.jobInputViewModel)
         annualInputView = .init(viewModel: viewModel.annualInputViewModel)
         detailJobTagInputView = .init(viewModel: viewModel.detailJobsInputViewModel)
@@ -97,11 +146,6 @@ class UpdateProfileViewController: UIViewController {
         hidesBottomBarWhenPushed = true
         view.backgroundColor = .appColor(.white)
         setUI()
-        bind(to: viewModel)
-        viewModel.viewDidLoadRelay.accept(())
-        
-        
-        
     }
     
     required init?(coder: NSCoder) {
@@ -109,7 +153,11 @@ class UpdateProfileViewController: UIViewController {
     }
     
     // MARK: - LifeCycle
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        bind(to: viewModel)
+        viewModel.viewDidLoadRelay.accept(())
+    }
     // MARK: - Components
     let scrollView: UIScrollView = {
         let sv = UIScrollView()
@@ -175,9 +223,9 @@ extension UpdateProfileViewController {
         view.addSubview(completeButtonView)
         
         completeButtonView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(56)
-            $0.bottom.equalToSuperview().inset(50)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(78)
+            $0.bottom.equalToSuperview()
         }
     }
 }
