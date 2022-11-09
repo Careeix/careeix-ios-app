@@ -162,7 +162,7 @@ class ProjectInputViewController: UIViewController {
     }
     
     func showWarningCancelWritingAlertView() {
-        let warningCancelWritingAlertView = TwoButtonAlertViewController(viewModel: .init(type: .wraningCancelWriting))
+        let warningCancelWritingAlertView = TwoButtonAlertViewController(viewModel: .init(type: .warningCancelWriting))
         warningCancelWritingAlertView.delegate = self
         present(warningCancelWritingAlertView, animated: true)
     }
@@ -339,7 +339,7 @@ extension ProjectInputViewController: TwoButtonAlertViewDelegate {
         switch type {
         case .askingKeepWriting:
             viewModel.fillRemainingInput()
-        case .wraningCancelWriting:
+        case .warningCancelWriting:
             popViewController()
         default:
             break

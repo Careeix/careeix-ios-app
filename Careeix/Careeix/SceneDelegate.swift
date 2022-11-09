@@ -31,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                object: nil)
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(showOnboardController),
+                                               selector: #selector(logout),
                                                name: Notification.Name("logoutSuccess"),
                                                object: nil)
         
@@ -50,8 +50,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     @objc
+    func logout() {
+        showOnboardController()
+        alertSuccessLogout()
+    }
+    
     func showOnboardController() {
         window?.rootViewController = UINavigationController(rootViewController: OnboardViewController())
+    }
+    
+    func alertSuccessLogout() {
+        let vc = OneButtonAlertViewController(viewModel: .init(content: "로그아웃 되었습니다.", buttonText: "확인", textColor: .black))
+        vc.present(vc, animated: true)
     }
 }
 
