@@ -250,7 +250,7 @@ class ProjectInputViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // TODO: 뷰모델로 넣기
+
         viewModel.viewDidAppearRelay.accept(())
         titleInputView.textField.becomeFirstResponder()
     }

@@ -42,8 +42,9 @@ class SignUpViewController: UIViewController {
         
         viewModel.showAlertViewDriver
             .drive(with: self) {
-                owner, _ in
-                print(UserDefaultManager.user.message)
+                owner, message in
+                let vc = OneButtonAlertViewController(viewModel: .init(content: message, buttonText: "확인", textColor: .black))
+                owner.present(vc, animated: true)
             }.disposed(by: disposeBag)
         
         viewModel.showTabbarCotrollerDriver
@@ -51,6 +52,11 @@ class SignUpViewController: UIViewController {
                 NotificationCenter.default.post(name: Notification.Name("loginSuccess"), object: nil)
             }.disposed(by: disposeBag)
 
+        viewModel.nicknameDuplicatedDrvier
+            .drive(with: self) { owner, isDuplicate in
+                owner.nicknameCheckLabel.isHidden = !isDuplicate
+            }.disposed(by: disposeBag)
+        
         nickNameInputView.textField.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)

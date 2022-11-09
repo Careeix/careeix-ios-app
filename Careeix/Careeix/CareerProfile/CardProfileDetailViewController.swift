@@ -152,8 +152,8 @@ extension CardProfileDetailViewController: UICollectionViewDelegate {
         guard let cell = collectionView.cellForItem(at: indexPath) as? ProjectListCell else { return }
         
         if indexPath.section == 2 {
-            //            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: cell.projectId))
-            //            self.navigationController?.pushViewController(vc, animated: true)
+            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: cell.projectId))
+            self.navigationController?.pushViewController(vc, animated: true)
             print(cell.projectId)
         }
         

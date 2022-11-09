@@ -145,7 +145,7 @@ extension MypageViewController: UITableViewDataSource {
                 let vc = WebViewController(linkString: "https://makeus-challenge.notion.site/66c59a11e5c843148d276cfa1fad90dc")
                 navigationController?.pushViewController(vc, animated: true)
             case 2:
-                let vc = WebViewController(linkString: "https://naver.com")
+                let vc = WebViewController(linkString: "https://makeus-challenge.notion.site/e7509d429cdb4d408406a014a6ac1e27")
                 navigationController?.pushViewController(vc, animated: true)
             case 3:
                 print("Makers")

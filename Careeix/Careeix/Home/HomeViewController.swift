@@ -219,7 +219,6 @@ class HomeViewController: UIViewController {
         var snapshot = datasource.snapshot(for: .myCareerProfile)
         snapshot.deleteAll()
         snapshot.append([.myCareerProfile(myProfileData ?? profileModel)])
-        print(myProfileData, "🧶🧶🧶")
         datasource.apply(snapshot, to: .myCareerProfile)
     }
     func updateCardCareerSection(cardProfileData: [RecommandUserModel] = []) {

@@ -32,6 +32,7 @@ class WebViewController: UIViewController, WKUIDelegate {
 
         setUI()
         loadWebView()
+        setupNavigationBackButton()
     }
     
     func loadWebView() {

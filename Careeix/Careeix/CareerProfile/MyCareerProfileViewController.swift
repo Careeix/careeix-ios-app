@@ -162,8 +162,8 @@ extension MyCareerProfileViewController: UICollectionViewDelegate {
         guard let projectCell = collectionView.cellForItem(at: indexPath) as? ProjectListCell else { return }
         
         if indexPath.section == 2 {
-            //            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: projectCell.projectId))
-            //            self.navigationController?.pushViewController(vc, animated: true)
+            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: projectCell.projectId))
+            self.navigationController?.pushViewController(vc, animated: true)
             print("projectId = \(projectCell.projectId)")
         }
         
