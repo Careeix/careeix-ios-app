@@ -132,14 +132,13 @@ extension MypageViewController: UITableViewDataSource {
             case 0:
                 let accountInfoVC = AccountInfoViewController()
                 self.navigationController?.pushViewController(accountInfoVC, animated: true)
-                print("계정 관리")
             default:
                 return
             }
         } else {
             switch indexPath.item {
             case 0:
-                let vc = OneButtonAlertViewController(viewModel: .init(content: "앱 버전 정보: 0.0.1", buttonText: "확인", textColor: .black))
+                let vc = OneButtonAlertViewController(viewModel: .init(content: "앱 버전은 v1.0.0 입니다.", buttonText: "확인", textColor: .black))
                 present(vc, animated: true)
             case 1:
                 let vc = WebViewController(linkString: "https://makeus-challenge.notion.site/66c59a11e5c843148d276cfa1fad90dc")

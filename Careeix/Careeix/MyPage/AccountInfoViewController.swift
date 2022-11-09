@@ -42,7 +42,6 @@ class AccountInfoViewController: UIViewController {
         let label = UILabel()
         label.textColor = .appColor(.gray400)
         label.font = .pretendardFont(size: 15, style: .regular)
-        label.text = "카카오 로그인"
         return label
     }()
     
@@ -106,7 +105,6 @@ class AccountInfoViewController: UIViewController {
         setupNavigationBackButton()
         setUI()
         tapNickNameButton()
-//        getUserData()
         view.backgroundColor = .appColor(.white)
     }
     
@@ -120,42 +118,25 @@ class AccountInfoViewController: UIViewController {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
+
     func tapNickNameButton() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(moveToUpdatedNickNameVC))
         nickNameButtonView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     @objc func moveToUpdatedNickNameVC() {
-//        let updatedNicknameVC = UpdatedNicknameViewController()
-//        self.navigationController?.pushViewController(updatedNicknameVC, animated: true)
+        let updatedNicknameVC = UpdatedNicknameViewController()
+        self.navigationController?.pushViewController(updatedNicknameVC, animated: true)
         print("😏😏😏😏updatedNickNameView Clicked!!")
     }
     
     func getUserData() {
-        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain)
-            .request { [weak self] result in
-            switch result {
-            case .success(let response):
-                // data:
-                let userNickName = response.data?.userNickname
-                let socialProvider = response.data?.userSocialProvider
-                let type: UserSocialProvider = socialProvider == 0 ? .kakao : .apple
-                self?.kindOfLoginLabel.text = type.rawValue
-                self?.loginImageView.image = UIImage(named: type.imageName())
-                self?.nickNameLabel.text = userNickName
-                
-                print(response.code, response.message)
-                print(response.data!)
-            case .failure(let error):
-                // alert
-                print(error.localizedDescription)
-            }
-        }
+        let user = UserDefaultManager.user
+        let socialProvider = user.userSocialProvider
+        let type: UserSocialProvider = socialProvider == 0 ? .kakao : .apple
+        kindOfLoginLabel.text = type.rawValue
+        loginImageView.image = UIImage(named: type.imageName())
+        nickNameLabel.text = user.userNickname
     }
 }
 
