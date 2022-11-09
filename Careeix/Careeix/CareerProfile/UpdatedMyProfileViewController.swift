@@ -16,6 +16,10 @@ class UpdatedMyProfileViewController: UIViewController {
         setupNavigationBackButton()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = true
+    }
+    
     let scrollView = UIScrollView()
     
     let titleLabel: UILabel = {

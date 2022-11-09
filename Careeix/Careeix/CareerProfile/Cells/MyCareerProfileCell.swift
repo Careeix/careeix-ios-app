@@ -17,12 +17,10 @@ class MyCareerProfileCell: UICollectionViewCell {
         updateCareerProfileImageView.isUserInteractionEnabled = true
         let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapUpdateProfileImageView))
         updateCareerProfileImageView.addGestureRecognizer(gesture)
-        print("init")
     }
     
     @objc func didTapUpdateProfileImageView() {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "didTapUpdateProfileImageView"), object: nil)
-        print("didTap")
     }
     
     required init?(coder: NSCoder) {

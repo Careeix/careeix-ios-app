@@ -183,6 +183,7 @@ extension CardProfileDetailViewController {
                 let headerText = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.2)), elementKind: ProjectListHeaderView.identifier, alignment: .topLeading)
                 section.boundarySupplementaryItems = [headerText]
                 section.contentInsets = NSDirectionalEdgeInsets(top: 11, leading: 16, bottom: 10, trailing: 16)
+                section.interGroupSpacing = 10
                 return section
             default:
                 return nil

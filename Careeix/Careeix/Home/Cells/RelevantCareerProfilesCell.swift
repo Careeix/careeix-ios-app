@@ -146,7 +146,6 @@ class RelevantCareerProfilesCell: UICollectionViewCell {
     }
     
     func setUI() {
-        print("😀😀😀😀😀😀")
         contentView.layer.cornerRadius = 10
         
         [careerName, careerGrade, firstDetailCareerName, secondDetailCareerName, thirdDetailCareerName]
