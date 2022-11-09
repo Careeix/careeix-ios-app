@@ -11,6 +11,15 @@ import SnapKit
 import Moya
 
 class CardProfileDetailViewController: UIViewController {
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        hidesBottomBarWhenPushed = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setCollectionView()
@@ -19,16 +28,9 @@ class CardProfileDetailViewController: UIViewController {
         getUserData()
         getProjectData()
         cardProfileCollectionView.delegate = self
+        
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        tabBarController?.tabBar.isHidden = false
-    }
+
     
     var userId = 0
     

@@ -47,6 +47,7 @@ class TabBarController: UITabBarController {
         delegate = self
         tabBar.tintColor = .black
         NotificationCenter.default.addObserver(self, selector: #selector(showCareerView), name: Notification.Name(rawValue: "updateProject"), object: nil)
+        tabBar.backgroundColor = .appColor(.white)
     }
     
     @objc
