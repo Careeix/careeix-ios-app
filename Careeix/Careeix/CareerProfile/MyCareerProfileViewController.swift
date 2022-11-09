@@ -14,11 +14,9 @@ class MyCareerProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         myCareerProfileCollectionView.collectionViewLayout = createLayout()
-        
         configurationDatasource()
-        NotificationCenter.default.addObserver(self, selector: #selector(showProfileInputView), name: Notification.Name(rawValue: "didTapUpdateProfileImageView"), object: nil)
-        myCareerProfileCollectionView.delegate = self
         setCollectionView()
+        observingNotificationCenter()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -27,13 +25,32 @@ class MyCareerProfileViewController: UIViewController {
         getMyProjectData()
     }
     
+    func observingNotificationCenter() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showProfileInputView), name: Notification.Name(rawValue: "didTapUpdateProfileImageView"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showProjectInputView), name: Notification.Name(rawValue: "didTapKebabImageView"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showUpdateInputView), name: Notification.Name(rawValue: "didTapUpdateButtonView"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showDeleteModalView), name: Notification.Name(rawValue: "didTapDeleteButtonView"), object: nil)
+    }
+    
     @objc func showProfileInputView() {
 //        let vc = UpdatedMyProfileViewController()
 //        navigationController?.pushViewController(vc, animated: true)
         print("showProfileInputView")
     }
     
+    @objc func showProjectInputView() {
+//        let vc = UpdatedMyProfileViewController()
+//        navigationController?.pushViewController(vc, animated: true)
+        print("showProjectInputView")
+    }
     
+    @objc func showUpdateInputView() {
+        print("showUpdateInputView Tapped!!!!")
+    }
+    
+    @objc func showDeleteModalView() {
+        print("showDeleteModalView Tapped!!!!")
+    }
     
     func getMyUserData() {
         let user = UserDefaultManager.user
@@ -72,7 +89,7 @@ class MyCareerProfileViewController: UIViewController {
     
     func setCollectionView() {
         view.addSubview(myCareerProfileCollectionView)
-        
+        myCareerProfileCollectionView.delegate = self
         myCareerProfileCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }

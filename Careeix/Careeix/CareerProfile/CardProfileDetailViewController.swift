@@ -30,7 +30,6 @@ class CardProfileDetailViewController: UIViewController {
         cardProfileCollectionView.delegate = self
         
     }
-
     
     var userId = 0
     
@@ -90,7 +89,7 @@ class CardProfileDetailViewController: UIViewController {
     func configurationDatasource() {
         let cardProfileRegistraion = UICollectionView.CellRegistration<CardProfileCell, CardProfileItem> { _, _, _ in }
         let introduceRegistration = UICollectionView.CellRegistration<IntroduceCell, CardProfileItem> { _, _, _ in }
-        let projectListRegistration = UICollectionView.CellRegistration<ProjectListCell, CardProfileItem> { _, _, _ in }
+        let projectListRegistration = UICollectionView.CellRegistration<OtherUserProjectListCell, CardProfileItem> { _, _, _ in }
         let projectListHeaderRegistraion = UICollectionView.SupplementaryRegistration<ProjectListHeaderView>(elementKind: ProjectListHeaderView.identifier) { _, _, _ in }
         
         datasource = UICollectionViewDiffableDataSource<CardProfileSection, CardProfileItem>(collectionView: cardProfileCollectionView, cellProvider: {
@@ -151,7 +150,7 @@ extension CardProfileDetailViewController: UICollectionViewDelegate {
         
         // TODO: 화면 전환
         
-        guard let cell = collectionView.cellForItem(at: indexPath) as? ProjectListCell else { return }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? OtherUserProjectListCell else { return }
         
         if indexPath.section == 2 {
             let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: cell.projectId))

@@ -71,7 +71,6 @@ enum GradientColor: String {
         }
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = contentView.bounds
-        print("😡😡😡😡", contentView.bounds)
         let startPoint: UIColor = .appColor(startColor())
         let endPoint: UIColor = .appColor(endColor())
         gradientLayer.colors = [startPoint.cgColor, endPoint.cgColor]

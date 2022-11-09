@@ -57,9 +57,9 @@ class IntroduceCell: UICollectionViewCell {
         }
         
         descriptionLabel.snp.makeConstraints {
-            $0.leading.equalTo(headerLabel.snp.leading)
+            $0.leading.trailing.equalToSuperview().inset(22)
             $0.top.equalTo(headerLabel.snp.bottom).offset(5)
-            $0.width.equalTo(331)
+           
         }
         
         seperatorView.snp.makeConstraints {
