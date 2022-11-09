@@ -24,11 +24,15 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setup()
+        layoutIfNeeded()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    let gradientView = UIView()
     
     let profileImageView: UIImageView = {
         let image = UIImageView()
@@ -66,7 +70,6 @@ class MinimalCareerProfileCell: UICollectionViewCell {
         careerGrade.text = UserWork.setUserWork(grade: info.userWork)
         userId = info.userId
         setProfileColor(fillColor: info.userProfileColor)
-        setup()
     }
     
     func setImageURL(url: String) {
@@ -79,7 +82,7 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     }
     
     func setProfileColor(fillColor: String) {
-        GradientColor(rawValue: fillColor)?.setGradient(contentView: contentView, cornerRadius: 10)
+        GradientColor(rawValue: fillColor)?.setGradient(contentView: gradientView, cornerRadius: 10)
     }
     
     override func prepareForReuse() {
@@ -87,27 +90,34 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     }
     
     func setup() {
+        contentView.addSubview(gradientView)
+        
+        gradientView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(30)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
         [profileImageView, nickName, careerName, careerGrade]
             .forEach { contentView.addSubview($0) }
         
         profileImageView.snp.makeConstraints {
             $0.leading.equalTo(24)
             $0.width.height.equalTo(75)
-            $0.top.equalToSuperview().offset(-30)
+            $0.top.equalToSuperview()
         }
         
         nickName.snp.makeConstraints {
             $0.leading.equalTo(profileImageView.snp.trailing).offset(5)
-            $0.top.equalTo(19)
+            $0.top.equalTo(gradientView.snp.top).offset(10)
         }
         
         careerName.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(24)
+            $0.leading.equalToSuperview().offset(27)
             $0.top.equalTo(profileImageView.snp.bottom).offset(11)
         }
         
         careerGrade.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(24)
+            $0.leading.equalToSuperview().offset(27)
             $0.top.equalTo(careerName.snp.bottom).offset(6)
         }
     }

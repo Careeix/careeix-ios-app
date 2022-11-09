@@ -212,8 +212,6 @@ class HomeViewController: UIViewController {
         datasource.apply(snapshot)
     }
     
-
-    
     func updateMyCareerProfileSection(myProfileData: UserModel? = nil) {
         var snapshot = datasource.snapshot(for: .myCareerProfile)
         snapshot.deleteAll()
@@ -248,10 +246,10 @@ extension HomeViewController {
         return UICollectionViewCompositionalLayout { (sectionIndex, env) -> NSCollectionLayoutSection? in
             switch sectionIndex {
             case 0:
-                let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.4))
-                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.4), subitems: [item])
+                let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.45))
+                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.45), subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 62, leading: 20, bottom: 20, trailing: 20)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 20, bottom: 20, trailing: 20)
                 return section
             case 1:
                 let item = CompositionalLayout.createItem(width: .fractionalWidth(0.3), height: .fractionalHeight(1))
