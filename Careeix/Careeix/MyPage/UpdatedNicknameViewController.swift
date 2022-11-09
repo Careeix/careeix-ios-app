@@ -15,6 +15,12 @@ class UpdatedNicknameViewController: UIViewController {
     var disposeBag = DisposeBag()
     let textFieldView = SimpleInputView(viewModel: .init(title: "닉네임 변경", textFieldViewModel: .init(placeholder: "2자 ~ 10자 이내로 한글, 영어 및 숫자를 포함하여 입력해주세요")))
     let confirmButton = CompleteButtonView(viewModel: .init(content: "완료", backgroundColor: .disable))
+    let sameNicknameLabel: UILabel = {
+        let l = UILabel()
+        l.text = "닉네임 동일"
+        
+        return l
+    }()
     
     let subject = PublishSubject<Bool>()
     override func viewDidLoad() {
@@ -28,11 +34,22 @@ class UpdatedNicknameViewController: UIViewController {
 //        UserDefaultManager.user.userNickname = response.data
         
         textFieldView.textField.text = UserDefaultManager.user.userNickname
+        let inputText = textFieldView.textField.rx.text.orEmpty.share()
         
-        textFieldView.textField.rx.text.orEmpty
+        inputText
             .map { $0 != "" }
             .bind(to: subject)
             .disposed(by: disposeBag)
+        
+        inputText
+            .debug("😩")
+            .map { $0 == UserDefaultManager.user.userNickname }
+            .asDriver(onErrorJustReturn: false)
+            .drive(with: self) { owner, isSame in
+                owner.sameNicknameLabel.isHidden = !isSame
+                owner.confirmButton.backgroundColor = !isSame ? .appColor(.main) : .appColor(.disable)
+                owner.confirmButton.isUserInteractionEnabled = !isSame
+            }.disposed(by: disposeBag)
         
         subject.asDriver(onErrorJustReturn: false)
             .drive(with: self) { owner, isEnable in
@@ -101,11 +118,16 @@ extension UpdatedNicknameViewController {
     func setUI() {
         confirmButton.layer.cornerRadius = 10
         
-        [textFieldView, confirmButton].forEach { view.addSubview($0) }
+        [textFieldView, sameNicknameLabel, confirmButton].forEach { view.addSubview($0) }
         
         textFieldView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.top.equalToSuperview().offset(106)
+        }
+        
+        sameNicknameLabel.snp.makeConstraints {
+            $0.top.equalTo(textFieldView.snp.bottom)
+            $0.leading.equalTo(textFieldView)
         }
         
         confirmButton.snp.makeConstraints {

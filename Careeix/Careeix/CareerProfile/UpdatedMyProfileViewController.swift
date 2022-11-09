@@ -14,10 +14,7 @@ class UpdatedMyProfileViewController: UIViewController {
         super.viewDidLoad()
         setScrollView()
         setupNavigationBackButton()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        tabBarController?.tabBar.isHidden = true
+        hidesBottomBarWhenPushed = true
     }
     
     let scrollView = UIScrollView()
