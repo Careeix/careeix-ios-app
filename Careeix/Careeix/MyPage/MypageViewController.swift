@@ -152,7 +152,8 @@ extension MypageViewController: UITableViewDataSource {
             case 4:
                 print("문의하기")
             case 5:
-                print("로그아웃")
+                UserDefaultManager.user = .init(jwt: "", message: "")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "logoutSuccess"), object: nil)
             default:
                 return
             }

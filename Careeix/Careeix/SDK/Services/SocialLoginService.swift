@@ -117,6 +117,7 @@ extension SocialLoginService: ASAuthorizationControllerDelegate,   ASAuthorizati
             let authCode = String(data: authorizationCode, encoding: .ascii)!
             print("accessToken:\n", accessToken)
             print("authorizationCode:\n", authCode)
+            UserDefaultManager.appleIdentityToken = accessToken
             appleIdentityTokenSubject.onNext(accessToken)
             appleIdentityTokenSubject.onCompleted()
             default:

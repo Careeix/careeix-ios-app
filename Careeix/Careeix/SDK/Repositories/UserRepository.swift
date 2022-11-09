@@ -37,7 +37,7 @@ struct UserRepository {
     }
     
     func kakaoSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
-        return API<UserDTO.KakaoLogin.Response>(path: "users/kakao-login", method: .post, parameters: [:], task: .requestJSONEncodable(convertSignUpRequestDTO(info))).requestRX()
+        return API<UserDTO.KakaoLogin.Response>(path: "users/kakao-login", method: .post, parameters: [:], task: .requestJSONEncodable(convertKakaoSignUpRequestDTO(info))).requestRX()
             .map(convertKakaoUserResponseDTO)
             .catch { error in
                 if let error = error as? ErrorResponse {
@@ -49,7 +49,7 @@ struct UserRepository {
     }
     
     func appleSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
-        return API<UserDTO.AppleLogin.Response>(path: "users/apple-login", method: .post, parameters: [:], task: .requestJSONEncodable(convertSignUpRequestDTO(info))).requestRX()
+        return API<UserDTO.AppleLogin.Response>(path: "users/apple-login", method: .post, parameters: [:], task: .requestJSONEncodable(convertAppleSignUpRequestDTO(info))).requestRX()
             .map(convertAppleUserResponseDTO)
             .catch { error in
                 if let error = error as? ErrorResponse {
@@ -65,9 +65,14 @@ struct UserRepository {
     }
     
     // KAKAO
-    func convertSignUpRequestDTO(_ entity: Entity.SignUpUser.Request) -> UserDTO.KakaoLogin.Request {
+    func convertKakaoSignUpRequestDTO(_ entity: Entity.SignUpUser.Request) -> UserDTO.KakaoLogin.Request {
         .init(accessToken: UserDefaultManager.kakaoAccessToken, job: entity.job, nickname: entity.nickname, userDetailJob: entity.detailJobs, userWork: entity.annual)
     }
+    
+    func convertAppleSignUpRequestDTO(_ entity: Entity.SignUpUser.Request) -> UserDTO.AppleLogin.Request {
+        .init(identityToken: UserDefaultManager.appleIdentityToken, job: entity.job, nickname: entity.nickname, userDetailJob: entity.detailJobs, userWork: entity.annual)
+    }
+    
     
     func convertKakaoUserResponseDTO(_ dto: UserDTO.KakaoLogin.Response) -> User {
         .init(jwt: dto.jwt ?? "1" ,

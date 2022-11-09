@@ -16,8 +16,8 @@ struct UserDefaultManager {
     public static var kakaoAccessToken: String
     
     // TODO: - Key로 옮기기
-    @UserDefault(key: "appleIdentityToken", defaultValue: Data())
-    public static var appleIdentityToken: Data
+    @UserDefault(key: "appleIdentityToken", defaultValue: "")
+    public static var appleIdentityToken: String
     
     /// 수정중인 프로젝트 ID를 저장합니다. -2: 없음, -1: 추가, 0 ~ 무한:  프로젝트 아이디
     @UserDefault(key: "writingProjectId", defaultValue: -2)

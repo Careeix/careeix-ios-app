@@ -34,7 +34,7 @@ enum UserDTO {
  
     enum AppleLogin {
         struct Request: Encodable {
-            var accessToken: String
+            var identityToken: String
             var job: String
             var nickname: String
             var userDetailJob: [String]
