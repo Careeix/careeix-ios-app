@@ -24,6 +24,72 @@ import SnapKit
         - 직무, 연차, 상세 직무 태그
     - Snapshot
  */
+enum GradientColor: String {
+    case skyblue = "#8DB8DF"
+    case pink = "#E9A6C6"
+    case yellow = "#E8CD44"
+    case purple = "#A5ADF5"
+    case orange = "#F0B782"
+    case green = "#699D84"
+
+    func startColor() -> AssetsColor {
+        switch self {
+        case .skyblue:
+            return .skyblueGradientSP
+        case .pink:
+            return .pinkGradientSP
+        case .yellow:
+            return .yellowGradientSP
+        case .purple:
+            return .purpleGradientSP
+        case .orange:
+            return .orangeGradientSP
+        case .green:
+            return .greenGradientSP
+        }
+    }
+    func endColor() -> AssetsColor {
+        switch self {
+        case .skyblue:
+            return .skyblueGradientEP
+        case .pink:
+            return .pinkGradientEP
+        case .yellow:
+            return .yellowGradientEP
+        case .purple:
+            return .purpleGradientEP
+        case .orange:
+            return .orangeGradientEP
+        case .green:
+            return .greenGradientEP
+        }
+    }
+
+    func setGradient(contentView: UIView, cornerRadius: CGFloat = 0) {
+        contentView.layer.sublayers?.compactMap { $0 as? CAGradientLayer }.forEach {
+            $0.removeFromSuperlayer()
+        }
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = contentView.bounds
+        print("😡😡😡😡", contentView.bounds)
+        let startPoint: UIColor = .appColor(startColor())
+        let endPoint: UIColor = .appColor(endColor())
+        gradientLayer.colors = [startPoint.cgColor, endPoint.cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.7)
+        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.2)
+        gradientLayer.cornerRadius = cornerRadius
+        contentView.layer.addSublayer(gradientLayer)
+    }
+    
+    
+}
+enum HomeSection: Hashable {
+    case myCareerProfile, cardCareerProfiles
+}
+
+enum HomeItem: Hashable {
+    case myCareerProfile(UserModel), cardCareerProfiles(RecommandUserModel)
+}
 
 class HomeViewController: UIViewController {
     override func viewDidLoad() {
@@ -32,21 +98,10 @@ class HomeViewController: UIViewController {
         configurationDatasource()
         createNavigationBarItem()
         homeCollectionView.delegate = self
-        showModalView()
+        getUserData()
+        recommandUserData()
     }
     
-    func getUserData() {
-        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain).request { [weak self] result in
-            switch result {
-            case .success(let response):
-                // data:
-                self?.changeDatasource(data: response.data)
-            case .failure(let error):
-                // alert
-                print(error.localizedDescription)
-            }
-        }
-    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = false
@@ -54,9 +109,39 @@ class HomeViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        showModalView()
-        getUserData()
+        !UserDefaultManager.firstLoginFlag ? showModalView() : nil
+        UserDefaultManager.firstLoginFlag = true
     }
+    // MARK: RecommandCareerProfile API Call
+    func getUserData() {
+        let user = UserDefaultManager.user
+        updateMyCareerProfileSection(myProfileData: .init(userId: user.userId,
+                                                          userJob: user.userJob,
+                                                          userDetailJobs: user.userDetailJobs,
+                                                          userWork: user.userWork,
+                                                          userNickname: user.userNickname,
+                                                          userProfileImg: user.userProfileImg,
+                                                          userProfileColor: user.userProfileColor,
+                                                          userIntro: user.userIntro,
+                                                          userSocialProvider: user.userSocialProvider))
+
+    }
+    func recommandUserData() {
+        API<[RecommandUserModel]>(path: "users/recommend/profile", method: .get, parameters: [:], task: .requestPlain)
+            .request { [weak self] result in
+            switch result {
+            case .success(let response):
+                // 데이터가 비어있고, 데이터가 nil이고
+//                guard let response.data?.isEmpty, isHidden = false else isHidden = true
+                // data:
+                self?.updateCardCareerSection(cardProfileData: response.data ?? [])
+            case .failure(let error):
+                // alert
+                print("recommandUserData: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     
     func createNavigationBarItem() {
         let logoImageView = UIImage(named: "logo")
@@ -75,34 +160,21 @@ class HomeViewController: UIViewController {
     }
     
     private let homeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
-    
-    enum HomeSection: Hashable {
-        case myCareerProfile, cardCareerProfiles
-    }
-    
-    enum HomeItem: Hashable {
-        case myCareerProfile(UserModel), cardCareerProfiles(UserModel)
-    }
-    
+
     var datasource: UICollectionViewDiffableDataSource<HomeSection, HomeItem>!
     
     func setupCollectionView() {
         view.addSubview(homeCollectionView)
         homeCollectionView.collectionViewLayout = createLayout()
         homeCollectionView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        
+//        view.addSubview(a)
+//        a.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
     var profileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
     
-    let colorSet: [UIColor] = [.appColor(.skyblueFill), .appColor(.pinkFill), .appColor(.purpleFill), .appColor(.greenFill), .appColor(.yellowFill), .appColor(.orangeFill)]
-    
-    func itemColor(cell: RelevantCareerProfilesCell, indexPath: Int) {
-        for i in 0...indexPath {
-            if indexPath == i {
-                cell.backgroundColor = colorSet.randomElement()
-            }
-        }
-    }
+    var recommandProfileModel: RecommandUserModel = RecommandUserModel(userDetailJobs: [""], userId: 0, userJob: "", userProfileColor: "", userWork: 0)
     
     func configurationDatasource() {
         let myCareerProfileRegistraion = UICollectionView.CellRegistration<MinimalCareerProfileCell, HomeItem> { _, _, _ in }
@@ -119,8 +191,6 @@ class HomeViewController: UIViewController {
             case .cardCareerProfiles(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: cardCareerProfilesRegistraion, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
-                cell.layer.cornerRadius = 10
-                self.itemColor(cell: cell, indexPath: indexPath.item)
                 return cell
             }
         })
@@ -134,14 +204,28 @@ class HomeViewController: UIViewController {
         changeDatasource()
     }
     
-    func changeDatasource(data: UserModel? = nil) {
+    func changeDatasource(myProfileData: UserModel? = nil, cardProfileData: [RecommandUserModel] = []) {
         var snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>()
         snapshot.appendSections([.myCareerProfile])
-        snapshot.appendItems([.myCareerProfile(data ?? profileModel)])
-
+        snapshot.appendItems([.myCareerProfile(myProfileData ?? profileModel)])
         snapshot.appendSections([.cardCareerProfiles])
-        snapshot.appendItems([.cardCareerProfiles(data ?? profileModel)])
+        snapshot.appendItems(cardProfileData.map { .cardCareerProfiles($0) })
         datasource.apply(snapshot)
+    }
+    
+
+    
+    func updateMyCareerProfileSection(myProfileData: UserModel? = nil) {
+        var snapshot = datasource.snapshot(for: .myCareerProfile)
+        snapshot.deleteAll()
+        snapshot.append([.myCareerProfile(myProfileData ?? profileModel)])
+        datasource.apply(snapshot, to: .myCareerProfile)
+    }
+    func updateCardCareerSection(cardProfileData: [RecommandUserModel] = []) {
+        var snapshot = datasource.snapshot(for: .cardCareerProfiles)
+        snapshot.deleteAll()
+        snapshot.append(cardProfileData.map { .cardCareerProfiles($0) })
+        datasource.apply(snapshot, to: .cardCareerProfiles)
     }
 }
 
@@ -155,9 +239,7 @@ extension HomeViewController: UICollectionViewDelegate {
             let vc = CardProfileDetailViewController()
             vc.userId = cell.userId
             self.navigationController?.pushViewController(vc, animated: true)
-//
             print("cell's userId: \(cell.userId)")
-//
         }
     }
 }

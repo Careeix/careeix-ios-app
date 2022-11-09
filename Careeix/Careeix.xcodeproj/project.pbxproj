@@ -95,17 +95,27 @@
 		78F4CE4A290046A800284B86 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78F4CE44290046A800284B86 /* Pretendard-Bold.otf */; };
 		78F4CE4B290046A800284B86 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78F4CE45290046A800284B86 /* Pretendard-Medium.otf */; };
 		78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F4CE4C290049D400284B86 /* UITextField+.swift */; };
-		7A39BE5C29008F2B0067D2DC /* EmptyCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A39BE5B29008F2B0067D2DC /* EmptyCareerProfileCell.swift */; };
-		7A84D46F2902C80900939D89 /* CardProfileDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A84D46E2902C80900939D89 /* CardProfileDetailViewController.swift */; };
-		7AB279AF2902D15F00ED3D97 /* CardProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB279AE2902D15F00ED3D97 /* CardProfileCell.swift */; };
-		7AC3A2142906BA3F001591CD /* IntroduceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC3A2132906BA3F001591CD /* IntroduceCell.swift */; };
+		7A93B867291A6721007A91EB /* EmptyCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B85B291A6721007A91EB /* EmptyCareerProfileCell.swift */; };
+		7A93B868291A6721007A91EB /* CardProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B85C291A6721007A91EB /* CardProfileCell.swift */; };
+		7A93B869291A6721007A91EB /* IntroduceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B85D291A6721007A91EB /* IntroduceCell.swift */; };
+		7A93B86A291A6721007A91EB /* RelevantCareerProfilesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B85E291A6721007A91EB /* RelevantCareerProfilesCell.swift */; };
+		7A93B86B291A6721007A91EB /* MinimalCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B85F291A6721007A91EB /* MinimalCareerProfileCell.swift */; };
+		7A93B86C291A6721007A91EB /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B860291A6721007A91EB /* HomeViewModel.swift */; };
+		7A93B86D291A6721007A91EB /* HomeAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B861291A6721007A91EB /* HomeAlertViewController.swift */; };
+		7A93B86E291A6721007A91EB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B862291A6721007A91EB /* HomeViewController.swift */; };
+		7A93B86F291A6721007A91EB /* HomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B863291A6721007A91EB /* HomeModel.swift */; };
+		7A93B870291A6721007A91EB /* RelevantHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B865291A6721007A91EB /* RelevantHeaderView.swift */; };
+		7A93B871291A6721007A91EB /* IntroduceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B866291A6721007A91EB /* IntroduceHeaderView.swift */; };
+		7A93B87E291A673A007A91EB /* ProjectListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B874291A6739007A91EB /* ProjectListCell.swift */; };
+		7A93B87F291A673A007A91EB /* MyCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B875291A6739007A91EB /* MyCareerProfileCell.swift */; };
+		7A93B880291A673A007A91EB /* MyIntroduceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B876291A6739007A91EB /* MyIntroduceCell.swift */; };
+		7A93B881291A673A007A91EB /* CardProfileDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B877291A673A007A91EB /* CardProfileDetailViewController.swift */; };
+		7A93B882291A673A007A91EB /* ProjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B879291A673A007A91EB /* ProjectModel.swift */; };
+		7A93B883291A673A007A91EB /* MyCareerProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B87A291A673A007A91EB /* MyCareerProfileViewController.swift */; };
+		7A93B884291A673A007A91EB /* UpdatedMyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B87B291A673A007A91EB /* UpdatedMyProfileViewController.swift */; };
+		7A93B885291A673A007A91EB /* ProjectListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B87D291A673A007A91EB /* ProjectListHeaderView.swift */; };
+		7A93B887291ACCAB007A91EB /* UserDataUpdateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B886291ACCAB007A91EB /* UserDataUpdateModel.swift */; };
 		7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501628FD8FB400A72D65 /* UIColor+.swift */; };
-		7AFE502228FD90C600A72D65 /* RelevantHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501928FD90C600A72D65 /* RelevantHeaderView.swift */; };
-		7AFE502428FD90C600A72D65 /* HomeAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501B28FD90C600A72D65 /* HomeAlertViewController.swift */; };
-		7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501C28FD90C600A72D65 /* HomeViewController.swift */; };
-		7AFE502628FD90C600A72D65 /* HomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501D28FD90C600A72D65 /* HomeModel.swift */; };
-		7AFE502728FD90C600A72D65 /* RelevantCareerProfilesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501E28FD90C600A72D65 /* RelevantCareerProfilesCell.swift */; };
-		7AFE502828FD90C600A72D65 /* MinimalCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501F28FD90C600A72D65 /* MinimalCareerProfileCell.swift */; };
 		7AFE502928FD90C600A72D65 /* CompositionalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE502128FD90C600A72D65 /* CompositionalLayout.swift */; };
 /* End PBXBuildFile section */
 
@@ -200,17 +210,27 @@
 		78F4CE44290046A800284B86 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		78F4CE45290046A800284B86 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		78F4CE4C290049D400284B86 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
-		7A39BE5B29008F2B0067D2DC /* EmptyCareerProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCareerProfileCell.swift; sourceTree = "<group>"; };
-		7A84D46E2902C80900939D89 /* CardProfileDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardProfileDetailViewController.swift; sourceTree = "<group>"; };
-		7AB279AE2902D15F00ED3D97 /* CardProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardProfileCell.swift; sourceTree = "<group>"; };
-		7AC3A2132906BA3F001591CD /* IntroduceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroduceCell.swift; sourceTree = "<group>"; };
+		7A93B85B291A6721007A91EB /* EmptyCareerProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyCareerProfileCell.swift; sourceTree = "<group>"; };
+		7A93B85C291A6721007A91EB /* CardProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardProfileCell.swift; sourceTree = "<group>"; };
+		7A93B85D291A6721007A91EB /* IntroduceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroduceCell.swift; sourceTree = "<group>"; };
+		7A93B85E291A6721007A91EB /* RelevantCareerProfilesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelevantCareerProfilesCell.swift; sourceTree = "<group>"; };
+		7A93B85F291A6721007A91EB /* MinimalCareerProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinimalCareerProfileCell.swift; sourceTree = "<group>"; };
+		7A93B860291A6721007A91EB /* HomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		7A93B861291A6721007A91EB /* HomeAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeAlertViewController.swift; sourceTree = "<group>"; };
+		7A93B862291A6721007A91EB /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		7A93B863291A6721007A91EB /* HomeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeModel.swift; sourceTree = "<group>"; };
+		7A93B865291A6721007A91EB /* RelevantHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelevantHeaderView.swift; sourceTree = "<group>"; };
+		7A93B866291A6721007A91EB /* IntroduceHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroduceHeaderView.swift; sourceTree = "<group>"; };
+		7A93B874291A6739007A91EB /* ProjectListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectListCell.swift; sourceTree = "<group>"; };
+		7A93B875291A6739007A91EB /* MyCareerProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCareerProfileCell.swift; sourceTree = "<group>"; };
+		7A93B876291A6739007A91EB /* MyIntroduceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyIntroduceCell.swift; sourceTree = "<group>"; };
+		7A93B877291A673A007A91EB /* CardProfileDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardProfileDetailViewController.swift; sourceTree = "<group>"; };
+		7A93B879291A673A007A91EB /* ProjectModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectModel.swift; sourceTree = "<group>"; };
+		7A93B87A291A673A007A91EB /* MyCareerProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCareerProfileViewController.swift; sourceTree = "<group>"; };
+		7A93B87B291A673A007A91EB /* UpdatedMyProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatedMyProfileViewController.swift; sourceTree = "<group>"; };
+		7A93B87D291A673A007A91EB /* ProjectListHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectListHeaderView.swift; sourceTree = "<group>"; };
+		7A93B886291ACCAB007A91EB /* UserDataUpdateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataUpdateModel.swift; sourceTree = "<group>"; };
 		7AFE501628FD8FB400A72D65 /* UIColor+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
-		7AFE501928FD90C600A72D65 /* RelevantHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelevantHeaderView.swift; sourceTree = "<group>"; };
-		7AFE501B28FD90C600A72D65 /* HomeAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeAlertViewController.swift; sourceTree = "<group>"; };
-		7AFE501C28FD90C600A72D65 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		7AFE501D28FD90C600A72D65 /* HomeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeModel.swift; sourceTree = "<group>"; };
-		7AFE501E28FD90C600A72D65 /* RelevantCareerProfilesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelevantCareerProfilesCell.swift; sourceTree = "<group>"; };
-		7AFE501F28FD90C600A72D65 /* MinimalCareerProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinimalCareerProfileCell.swift; sourceTree = "<group>"; };
 		7AFE502128FD90C600A72D65 /* CompositionalLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompositionalLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -311,6 +331,7 @@
 				78345E0C29126F1B00EB9621 /* AccountInfoViewController.swift */,
 				78345E0D29126F1B00EB9621 /* UpdatedNicknameViewController.swift */,
 				78345E0E29126F1B00EB9621 /* MypageViewController.swift */,
+				7A93B888291ACCAE007A91EB /* Models */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -362,13 +383,13 @@
 				786E7038290FCF4400463E76 /* NavigationController.swift */,
 				78DC17B428FA75D300331A22 /* Onboard */,
 				78DC17BA28FA937400331A22 /* SignUp */,
-				7AFE501828FD90C600A72D65 /* Home */,
-				7A2C4BBE290FDC2D00833323 /* CareerProfile */,
+				7A93B859291A6721007A91EB /* Home */,
 				786F46902901441700215AF0 /* ProjectInput */,
 				785AF52E290512C200592F7F /* ProjectInputDetail */,
 				785AF5372905572900592F7F /* ProjectChapterInput */,
 				78345DFA29126F0700EB9621 /* Project */,
 				78345E0529126F1100EB9621 /* ProjectChapter */,
+				7A93B872291A6739007A91EB /* CareerProfile */,
 				78345E0829126F1B00EB9621 /* MyPage */,
 				7AFE501528FD8FB400A72D65 /* Extensions */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
@@ -586,12 +607,85 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
-		7A2C4BBE290FDC2D00833323 /* CareerProfile */ = {
+		7A93B859291A6721007A91EB /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				7A84D46E2902C80900939D89 /* CardProfileDetailViewController.swift */,
+				7A93B861291A6721007A91EB /* HomeAlertViewController.swift */,
+				7A93B862291A6721007A91EB /* HomeViewController.swift */,
+				7A93B860291A6721007A91EB /* HomeViewModel.swift */,
+				7A93B863291A6721007A91EB /* HomeModel.swift */,
+				7A93B85A291A6721007A91EB /* Cells */,
+				7A93B864291A6721007A91EB /* Views */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		7A93B85A291A6721007A91EB /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7A93B85B291A6721007A91EB /* EmptyCareerProfileCell.swift */,
+				7A93B85C291A6721007A91EB /* CardProfileCell.swift */,
+				7A93B85D291A6721007A91EB /* IntroduceCell.swift */,
+				7A93B85E291A6721007A91EB /* RelevantCareerProfilesCell.swift */,
+				7A93B85F291A6721007A91EB /* MinimalCareerProfileCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		7A93B864291A6721007A91EB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7A93B865291A6721007A91EB /* RelevantHeaderView.swift */,
+				7A93B866291A6721007A91EB /* IntroduceHeaderView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7A93B872291A6739007A91EB /* CareerProfile */ = {
+			isa = PBXGroup;
+			children = (
+				7A93B87A291A673A007A91EB /* MyCareerProfileViewController.swift */,
+				7A93B87B291A673A007A91EB /* UpdatedMyProfileViewController.swift */,
+				7A93B877291A673A007A91EB /* CardProfileDetailViewController.swift */,
+				7A93B878291A673A007A91EB /* Models */,
+				7A93B873291A6739007A91EB /* Cells */,
+				7A93B87C291A673A007A91EB /* Views */,
 			);
 			path = CareerProfile;
+			sourceTree = "<group>";
+		};
+		7A93B873291A6739007A91EB /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7A93B874291A6739007A91EB /* ProjectListCell.swift */,
+				7A93B875291A6739007A91EB /* MyCareerProfileCell.swift */,
+				7A93B876291A6739007A91EB /* MyIntroduceCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		7A93B878291A673A007A91EB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7A93B879291A673A007A91EB /* ProjectModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		7A93B87C291A673A007A91EB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7A93B87D291A673A007A91EB /* ProjectListHeaderView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7A93B888291ACCAE007A91EB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7A93B886291ACCAB007A91EB /* UserDataUpdateModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		7AFE501528FD8FB400A72D65 /* Extensions */ = {
@@ -607,38 +701,6 @@
 			name = Extensions;
 			path = Careeix/Extensions;
 			sourceTree = SOURCE_ROOT;
-		};
-		7AFE501828FD90C600A72D65 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				7AFE501B28FD90C600A72D65 /* HomeAlertViewController.swift */,
-				7AFE501C28FD90C600A72D65 /* HomeViewController.swift */,
-				7AFE501D28FD90C600A72D65 /* HomeModel.swift */,
-				7AFE502A28FD911100A72D65 /* Cells */,
-				7AFE502C28FD915600A72D65 /* Views */,
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		7AFE502A28FD911100A72D65 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				7AFE501E28FD90C600A72D65 /* RelevantCareerProfilesCell.swift */,
-				7AFE501F28FD90C600A72D65 /* MinimalCareerProfileCell.swift */,
-				7A39BE5B29008F2B0067D2DC /* EmptyCareerProfileCell.swift */,
-				7AB279AE2902D15F00ED3D97 /* CardProfileCell.swift */,
-				7AC3A2132906BA3F001591CD /* IntroduceCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		7AFE502C28FD915600A72D65 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				7AFE501928FD90C600A72D65 /* RelevantHeaderView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -746,63 +808,72 @@
 			buildActionMask = 2147483647;
 			files = (
 				786F469B29019BDE00215AF0 /* ProjectInputViewModel.swift in Sources */,
+				7A93B885291A673A007A91EB /* ProjectListHeaderView.swift in Sources */,
+				7A93B87E291A673A007A91EB /* ProjectListCell.swift in Sources */,
+				7A93B884291A673A007A91EB /* UpdatedMyProfileViewController.swift in Sources */,
 				782347152918D0D700E648DF /* UserEntity.swift in Sources */,
 				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
-				7AFE502728FD90C600A72D65 /* RelevantCareerProfilesCell.swift in Sources */,
 				786F46A42901A24E00215AF0 /* PeriodInputView.swift in Sources */,
 				78D52E5328FD3142001F5747 /* SocialLoginSDK.swift in Sources */,
 				78D52EA328FE5C3E001F5747 /* SocialLoginService.swift in Sources */,
 				78DC17CD28FAA4DB00331A22 /* MultiInputView.swift in Sources */,
 				785AF53629054F2500592F7F /* ContentsAddButtonView.swift in Sources */,
+				7A93B86D291A6721007A91EB /* HomeAlertViewController.swift in Sources */,
 				78C9099C2905A18800AA9AA3 /* UIViewController+.swift in Sources */,
+				7A93B882291A673A007A91EB /* ProjectModel.swift in Sources */,
 				78DC17D128FBE7E800331A22 /* SignUpViewModel.swift in Sources */,
+				7A93B86A291A6721007A91EB /* RelevantCareerProfilesCell.swift in Sources */,
 				78DC17D428FBEA0000331A22 /* RadioCell.swift in Sources */,
 				7AFE502928FD90C600A72D65 /* CompositionalLayout.swift in Sources */,
 				78DC17D628FBEEA400331A22 /* MultiInputCell.swift in Sources */,
 				782347172918D1E300E648DF /* ProjectEntity.swift in Sources */,
 				780CB8BE29175D5C00D4B06E /* ProjectDTO.swift in Sources */,
-				7AFE502828FD90C600A72D65 /* MinimalCareerProfileCell.swift in Sources */,
 				78DC17B828FA8C2600331A22 /* OnboardCell.swift in Sources */,
+				7A93B883291A673A007A91EB /* MyCareerProfileViewController.swift in Sources */,
 				78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */,
 				7846D3D1291A3444009185F0 /* WebViewController.swift in Sources */,
 				78DC17CB28FAA46A00331A22 /* RadioInputView.swift in Sources */,
-				7AB279AF2902D15F00ED3D97 /* CardProfileCell.swift in Sources */,
 				7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */,
 				78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */,
 				785AF53029054A8900592F7F /* ProjectInputDetailViewController.swift in Sources */,
+				7A93B86F291A6721007A91EB /* HomeModel.swift in Sources */,
 				782347132918D0C200E648DF /* Entity.swift in Sources */,
 				788A09FF290A7BBD003EF027 /* ProjectChapterInputViewModel.swift in Sources */,
 				78E6F00A290C70F20026655D /* ProjectInputDetailViewModel.swift in Sources */,
 				78345E1A2913935100EB9621 /* User.swift in Sources */,
 				78345E0329126F0700EB9621 /* ProjectLookupViewController.swift in Sources */,
 				78345E1D2913942100EB9621 /* UserRepository.swift in Sources */,
+				7A93B870291A6721007A91EB /* RelevantHeaderView.swift in Sources */,
+				7A93B87F291A673A007A91EB /* MyCareerProfileCell.swift in Sources */,
 				78345E0229126F0700EB9621 /* ProjectChapterLookupCell.swift in Sources */,
 				78345E0729126F1100EB9621 /* ProjectChapterViewController.swift in Sources */,
-				7AFE502528FD90C600A72D65 /* HomeViewController.swift in Sources */,
+				7A93B887291ACCAB007A91EB /* UserDataUpdateModel.swift in Sources */,
 				786F46A22901A21B00215AF0 /* BaseCheckBoxView.swift in Sources */,
 				78C9099A2905918A00AA9AA3 /* Project.swift in Sources */,
 				78345E1029126F1B00EB9621 /* MyPageTableViewCell.swift in Sources */,
 				78345E17291391FA00EB9621 /* ProjectRepository.swift in Sources */,
 				786E7039290FCF4400463E76 /* NavigationController.swift in Sources */,
+				7A93B869291A6721007A91EB /* IntroduceCell.swift in Sources */,
 				786F4698290199EF00215AF0 /* BaseTextView.swift in Sources */,
 				78E94A2F28EF0D7800DBBF5C /* TabBarController.swift in Sources */,
-				7AFE502428FD90C600A72D65 /* HomeAlertViewController.swift in Sources */,
+				7A93B86B291A6721007A91EB /* MinimalCareerProfileCell.swift in Sources */,
+				7A93B881291A673A007A91EB /* CardProfileDetailViewController.swift in Sources */,
 				78DC17CF28FAA58500331A22 /* CompleteButtonView.swift in Sources */,
 				786F469429018B2E00215AF0 /* BaseInputView.swift in Sources */,
 				784BD09928EDA23900CA86F0 /* AppDelegate.swift in Sources */,
 				78345E1129126F1B00EB9621 /* AccountInfoViewController.swift in Sources */,
 				78D52E5128FD14FF001F5747 /* SignUpModel.swift in Sources */,
-				7A39BE5C29008F2B0067D2DC /* EmptyCareerProfileCell.swift in Sources */,
 				784BD0AD28EDA35500CA86F0 /* OnboardViewController.swift in Sources */,
 				7881F5522902D91D00111395 /* TwoButtonAlertViewController.swift in Sources */,
-				7AC3A2142906BA3F001591CD /* IntroduceCell.swift in Sources */,
 				78F4CE3E290045BB00284B86 /* UIFont+.swift in Sources */,
+				7A93B86E291A6721007A91EB /* HomeViewController.swift in Sources */,
 				785AF53429054EFE00592F7F /* ProjectChapterCell.swift in Sources */,
 				786F46922901443400215AF0 /* ProjectInputViewController.swift in Sources */,
+				7A93B880291A673A007A91EB /* MyIntroduceCell.swift in Sources */,
 				784BD09B28EDA23900CA86F0 /* SceneDelegate.swift in Sources */,
-				7AFE502228FD90C600A72D65 /* RelevantHeaderView.swift in Sources */,
 				78DC17BF28FA943E00331A22 /* SignUpViewController.swift in Sources */,
 				785AF5392905574A00592F7F /* ProjectChapterInputViewController.swift in Sources */,
+				7A93B868291A6721007A91EB /* CardProfileCell.swift in Sources */,
 				786F469629018F5500215AF0 /* Date+.swift in Sources */,
 				786F46A02901A1A400215AF0 /* ManyInputView.swift in Sources */,
 				78DC17B628FA77F100331A22 /* OnboardViewModel.swift in Sources */,
@@ -810,14 +881,15 @@
 				78DC17C728FA9E1C00331A22 /* SimpleInputView.swift in Sources */,
 				78345E1329126F1B00EB9621 /* MypageViewController.swift in Sources */,
 				78345E0429126F0700EB9621 /* ProjectLookupHeaderView.swift in Sources */,
-				7A84D46F2902C80900939D89 /* CardProfileDetailViewController.swift in Sources */,
+				7A93B86C291A6721007A91EB /* HomeViewModel.swift in Sources */,
 				789F27C029068C2200F634F0 /* DatePickerView.swift in Sources */,
 				78345E152913854F00EB9621 /* Int+.swift in Sources */,
+				7A93B867291A6721007A91EB /* EmptyCareerProfileCell.swift in Sources */,
 				78345E1229126F1B00EB9621 /* UpdatedNicknameViewController.swift in Sources */,
 				78345E0129126F0700EB9621 /* ProjectLookupViewModel.swift in Sources */,
 				789F27C32906ECA400F634F0 /* NoteCell.swift in Sources */,
 				78345E0F29126F1B00EB9621 /* MyPageHeaderView.swift in Sources */,
-				7AFE502628FD90C600A72D65 /* HomeModel.swift in Sources */,
+				7A93B871291A6721007A91EB /* IntroduceHeaderView.swift in Sources */,
 				780CB8BC29175C7D00D4B06E /* UserDTO.swift in Sources */,
 				78E94A2728EEE90700DBBF5C /* UserDefaultManager.swift in Sources */,
 			);

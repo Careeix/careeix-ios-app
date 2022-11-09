@@ -24,7 +24,6 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupGradient()
     }
     
     required init?(coder: NSCoder) {
@@ -36,8 +35,6 @@ class MinimalCareerProfileCell: UICollectionViewCell {
         image.contentMode = .scaleToFill
         image.layer.cornerRadius = 75 / 2
         image.clipsToBounds = true
-        image.backgroundColor = .systemBlue
-        image.tintColor = .label
         return image
     }()
     
@@ -63,12 +60,26 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     }()
 
     func configure(_ info: UserModel) {
-        profileImageView.image = UIImage(named: info.userProfileImg ?? "")
+        setImageURL(url: info.userProfileImg ?? "")
         nickName.text = info.userNickname
         careerName.text = info.userJob
-        careerGrade.text = String(info.userWork)
+        careerGrade.text = UserWork.setUserWork(grade: info.userWork)
         userId = info.userId
+        setProfileColor(fillColor: info.userProfileColor)
         setup()
+    }
+    
+    func setImageURL(url: String) {
+        let url = URL(string: url)
+        if url == nil {
+            profileImageView.image = UIImage(named: "basicProfile")
+        } else {
+            profileImageView.kf.setImage(with: url)
+        }
+    }
+    
+    func setProfileColor(fillColor: String) {
+        GradientColor(rawValue: fillColor)?.setGradient(contentView: contentView, cornerRadius: 10)
     }
     
     override func prepareForReuse() {
@@ -100,19 +111,36 @@ class MinimalCareerProfileCell: UICollectionViewCell {
             $0.top.equalTo(careerName.snp.bottom).offset(6)
         }
     }
+}
+
+// MARK: convert Hex to UIColor
+
+extension UIColor {
+    convenience init(hexString: String, alpha: CGFloat = 1.0) {
+        let hexString: String = hexString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let scanner = Scanner(string: hexString)
+        if (hexString.hasPrefix("#")) {
+            scanner.scanLocation = 1
+        }
+        var color: UInt32 = 0
+        scanner.scanHexInt32(&color)
+        let mask = 0x000000FF
+        let r = Int(color >> 16) & mask
+        let g = Int(color >> 8) & mask
+        let b = Int(color) & mask
+        let red   = CGFloat(r) / 255.0
+        let green = CGFloat(g) / 255.0
+        let blue  = CGFloat(b) / 255.0
+        self.init(red:red, green:green, blue:blue, alpha:alpha)
+    }
     
-    func setupGradient() {
-        var gradientLayer: CAGradientLayer!
-        gradientLayer = CAGradientLayer()
-        gradientLayer.frame = self.contentView.bounds
-        let startPoint: UIColor = .appColor(.purpleGradientSP)
-        let endPoint: UIColor = .appColor(.purpleGradientEP)
-        gradientLayer.colors = [startPoint.cgColor, endPoint.cgColor]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0.7)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 0.2)
-        gradientLayer.cornerRadius = 10
-        
-        contentView.layer.addSublayer(gradientLayer)
-        
+    func toHexString() -> String {
+        var r:CGFloat = 0
+        var g:CGFloat = 0
+        var b:CGFloat = 0
+        var a:CGFloat = 0
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+        return String(format:"#%06x", rgb)
     }
 }

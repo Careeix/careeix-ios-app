@@ -10,10 +10,31 @@ import UIKit
 import SnapKit
 import Kingfisher
 
+enum UserWork: String {
+    case starter = "입문(1년 미만)"
+    case junior = "주니어(1~4년차)"
+    case middle = "미들(5~8년차)"
+    case senior = "시니어(9년차~)"
+    
+    static func setUserWork(grade: Int) -> String {
+        switch grade {
+        case 0:
+            return UserWork.starter.rawValue
+        case 1:
+            return UserWork.junior.rawValue
+        case 2:
+            return UserWork.middle.rawValue
+        case 3:
+            return UserWork.senior.rawValue
+        default :
+            return UserWork.starter.rawValue
+        }
+    }
+}
+
 class CardProfileCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupGradient()
     }
     
     required init?(coder: NSCoder) {
@@ -25,8 +46,6 @@ class CardProfileCell: UICollectionViewCell {
         image.contentMode = .scaleToFill
         image.layer.cornerRadius = 89 / 2
         image.clipsToBounds = true
-        image.backgroundColor = .systemBlue
-        image.tintColor = .label
         return image
     }()
     
@@ -74,32 +93,46 @@ class CardProfileCell: UICollectionViewCell {
     }()
     
     func configure(_ info: UserModel) {
-        let url = URL(string: info.userProfileImg ?? "")
-        profileImageView.kf.setImage(with: url)
+        setProfileColor(fillColor: info.userProfileColor)
+        setImageURL(url: info.userProfileImg ?? "")
         nickName.text = info.userNickname
         careerName.text = info.userJob
-        careerGrade.text = String(info.userWork)
-        firstDetailCareerName.text = "#" + info.userDetailJobs[0]
-        
-        if info.userDetailJobs.count == 2 {
-            firstDetailCareerName.text = "#" + info.userDetailJobs[0]
-            secondDetailCareerName.text = "#" + info.userDetailJobs[1]
+        careerGrade.text = UserWork.setUserWork(grade: info.userWork)
+        setUserDetailJobs(detailJobs: info.userDetailJobs)
+        setUI()
+    }
+    
+    func setUserDetailJobs(detailJobs: [String]) {
+        firstDetailCareerName.text = "#" + detailJobs[0]
+        if detailJobs.count == 2 {
+            firstDetailCareerName.text = "#" + detailJobs[0]
+            secondDetailCareerName.text = "#" + detailJobs[1]
         } else {
             secondDetailCareerName.text = ""
         }
-        
-        if info.userDetailJobs.count == 3 {
-            firstDetailCareerName.text = "#" + info.userDetailJobs[0]
-            secondDetailCareerName.text = "#" + info.userDetailJobs[1]
-            thirdDetailCareerName.text = "#" + info.userDetailJobs[2]
+        if detailJobs.count == 3 {
+            firstDetailCareerName.text = "#" + detailJobs[0]
+            secondDetailCareerName.text = "#" + detailJobs[1]
+            thirdDetailCareerName.text = "#" + detailJobs[2]
         } else {
             thirdDetailCareerName.text = ""
         }
-
-        setup()
     }
     
-    func setup() {
+    func setImageURL(url: String) {
+        let url = URL(string: url)
+        if url == nil {
+            profileImageView.image = UIImage(named: "basicProfile")
+        } else {
+            profileImageView.kf.setImage(with: url)
+        }
+    }
+
+    func setProfileColor(fillColor: String) {
+        GradientColor(rawValue: fillColor)?.setGradient(contentView: contentView)
+    }
+    
+    func setUI() {
         [profileImageView, nickName, careerName, careerGrade, firstDetailCareerName, secondDetailCareerName, thirdDetailCareerName]
             .forEach { contentView.addSubview($0) }
         
@@ -137,19 +170,5 @@ class CardProfileCell: UICollectionViewCell {
             $0.leading.equalTo(secondDetailCareerName.snp.trailing).offset(10)
             $0.top.equalTo(secondDetailCareerName.snp.top)
         }
-    }
-    
-    func setupGradient() {
-        var gradientLayer: CAGradientLayer!
-        gradientLayer = CAGradientLayer()
-        gradientLayer.frame = self.contentView.bounds
-        let startPoint = UIColor(red: 53/255, green: 120/255, blue: 181/255, alpha: 0.9).cgColor
-        let endPoint = UIColor(red: 105/255, green: 175/255, blue: 239/255, alpha: 0.45).cgColor
-        gradientLayer.colors = [startPoint, endPoint]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0.7)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 0.2)
-        
-        contentView.layer.addSublayer(gradientLayer)
-        
     }
 }

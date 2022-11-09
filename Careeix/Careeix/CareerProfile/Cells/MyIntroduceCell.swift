@@ -1,15 +1,15 @@
 //
-//  IntroduceCell.swift
+//  MyIntroduce.swift
 //  Careeix
 //
-//  Created by mingmac on 2022/10/24.
+//  Created by mingmac on 2022/11/07.
 //
 
 import Foundation
 import UIKit
 import SnapKit
 
-class IntroduceCell: UICollectionViewCell {
+class MyIntroduceCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUI()
@@ -44,7 +44,7 @@ class IntroduceCell: UICollectionViewCell {
     }()
 
     func configure(_ info: UserModel) {
-        (descriptionLabel.text, descriptionLabel.textColor) = info.userIntro == nil ? ("소개글이 없습니다.", .appColor(.gray250)) : (info.userIntro, .appColor(.gray900))
+        (descriptionLabel.text, descriptionLabel.textColor) = info.userIntro == "" ? ("연필 아이콘을 눌러 소개글을 입력해주세요.", .appColor(.gray250)) : (info.userIntro, .appColor(.gray900))
         setUI()
     }
     

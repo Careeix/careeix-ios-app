@@ -63,33 +63,91 @@ class RelevantCareerProfilesCell: UICollectionViewCell {
         return label
     }()
     
+    let emptyContentView = UIView()
+    
+    let emptyImageView: UIImageView = {
+        let image = UIImageView()
+        image.contentMode = .scaleAspectFill
+        image.tintColor = .appColor(.gray30)
+        return image
+    }()
+    
+    let largeLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appColor(.gray200)
+        label.font = .pretendardFont(size: 15, style: .medium)
+        label.textAlignment = .center
+        label.text = "관련된 커리어 프로필이 존재하지 않습니다."
+        return label
+    }()
+    
+    let smallLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appColor(.gray200)
+        label.font = .pretendardFont(size: 14, style: .medium)
+        label.textAlignment = .center
+        label.text = "상세 직무 태그를 확인해보세요."
+        return label
+    }()
+    
     var userId = 0
     
-    func configure(_ info: UserModel) {
+    func configure(_ info: RecommandUserModel) {
         userId = info.userId
         careerName.text = info.userJob
-        careerGrade.text = String(info.userWork)
-        firstDetailCareerName.text = "#" + info.userDetailJobs[0]
-        
-        if info.userDetailJobs.count == 2 {
-            firstDetailCareerName.text = "#" + info.userDetailJobs[0]
-            secondDetailCareerName.text = "#" + info.userDetailJobs[1]
+        careerGrade.text = UserWork.setUserWork(grade: info.userWork)
+        contentView.layer.backgroundColor = UIColor(hexString: info.userProfileColor, alpha: 1).cgColor
+        setUserDetailJobs(detailJobs: info.userDetailJobs)
+        setUI()
+//        setEmptyViewUI()
+    }
+    
+    func setUserDetailJobs(detailJobs: [String]) {
+        firstDetailCareerName.text = "#" + detailJobs[0]
+        if detailJobs.count == 2 {
+            firstDetailCareerName.text = "#" + detailJobs[0]
+            secondDetailCareerName.text = "#" + detailJobs[1]
         } else {
             secondDetailCareerName.text = ""
         }
-        
-        if info.userDetailJobs.count == 3 {
-            firstDetailCareerName.text = "#" + info.userDetailJobs[0]
-            secondDetailCareerName.text = "#" + info.userDetailJobs[1]
-            thirdDetailCareerName.text = "#" + info.userDetailJobs[2]
+        if detailJobs.count == 3 {
+            firstDetailCareerName.text = "#" + detailJobs[0]
+            secondDetailCareerName.text = "#" + detailJobs[1]
+            thirdDetailCareerName.text = "#" + detailJobs[2]
         } else {
             thirdDetailCareerName.text = ""
         }
-
-        setup()
     }
     
-    func setup() {
+    func setEmptyViewUI() {
+        contentView.addSubview(emptyContentView)
+        
+        emptyContentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        [emptyImageView, largeLabel, smallLabel].forEach { emptyContentView.addSubview($0) }
+        
+        emptyImageView.snp.makeConstraints {
+            $0.top.leading.equalToSuperview()
+        }
+        
+        largeLabel.snp.makeConstraints {
+            $0.top.equalTo(emptyImageView.snp.bottom).offset(20)
+//            $0.centerX.equalToSuperview()
+            $0.leading.equalToSuperview()
+        }
+        
+        smallLabel.snp.makeConstraints {
+            $0.top.equalTo(largeLabel.snp.bottom).offset(5)
+//            $0.centerX.equalToSuperview()
+            $0.leading.equalToSuperview()
+        }
+    }
+    
+    func setUI() {
+        contentView.layer.cornerRadius = 10
+        
         [careerName, careerGrade, firstDetailCareerName, secondDetailCareerName, thirdDetailCareerName]
             .forEach { contentView.addSubview($0) }
         

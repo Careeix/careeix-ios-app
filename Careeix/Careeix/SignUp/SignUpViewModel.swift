@@ -19,7 +19,7 @@ class SignUpViewModel {
     let detailJobsInputViewModel: MultiInputViewModel
     let completeButtonViewModel: CompleteButtonViewModel
     
-//    let signUpResultObservable: Observable<User>
+    //    let signUpResultObservable: Observable<User>
     
     // MARK: - Input
     let createUserTrigger =  PublishRelay<Void>()
@@ -28,7 +28,8 @@ class SignUpViewModel {
     let completeButtonEnableDriver: Driver<Void>
     let completeButtonDisableDriver: Driver<Void>
     let showTabbarCotrollerDriver: Driver<Void>
-    let showAlertViewDriver: Driver<Void>
+    let showAlertViewDriver: Driver<String>
+    let nicknameDuplicatedDrvier: Driver<Bool>
     
     // MARK: - Initializer
     init(nickNameInputViewModel: SimpleInputViewModel, jobInputViewModel: SimpleInputViewModel, annualInputViewModel: RadioInputViewModel, detailJobsInputViewModel: MultiInputViewModel, completeButtonViewModel: CompleteButtonViewModel) {
@@ -61,11 +62,17 @@ class SignUpViewModel {
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
         
-        showAlertViewDriver = result
+        let alertMessage = result
             .filter { !$0 }
-            .map { _ in () }
-            .asDriver(onErrorJustReturn: ())
+            .map { _ in UserDefaultManager.user.message }
+            .share()
         
+        showAlertViewDriver = alertMessage
+            .asDriver(onErrorJustReturn: "")
+        
+        nicknameDuplicatedDrvier = alertMessage
+            .map { $0 == "중복된 닉네임 입니다." }
+            .asDriver(onErrorJustReturn: false)
         
         let buttonStateDriver = combinedInputValuesObservable
             .map { nickName, job, annualIndex, detailJobs in
@@ -76,5 +83,5 @@ class SignUpViewModel {
         completeButtonEnableDriver = buttonStateDriver.filter { $0 }.map { _ in () }
         completeButtonDisableDriver = buttonStateDriver.filter { !$0 }.map { _ in () }
     }
-
+    
 }

@@ -8,19 +8,55 @@
 import Foundation
 import UIKit
 import SnapKit
+import RxKeyboard
+import RxSwift
 
 class UpdatedNicknameViewController: UIViewController {
+    var disposeBag = DisposeBag()
     let textFieldView = SimpleInputView(viewModel: .init(title: "닉네임 변경", textFieldViewModel: .init(placeholder: "2자 ~ 10자 이내로 한글, 영어 및 숫자를 포함하여 입력해주세요")))
     let confirmButton = CompleteButtonView(viewModel: .init(content: "완료", backgroundColor: .disable))
-  
+    
+    let subject = PublishSubject<Bool>()
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBackButton()
         setUI()
         tapConfirmButton()
         view.backgroundColor = .appColor(.white)
+        keyboardBinding()
+        
+//        UserDefaultManager.user.userNickname = response.data
+        
+        textFieldView.textField.text = UserDefaultManager.user.userNickname
+        
+        textFieldView.textField.rx.text.orEmpty
+            .map { $0 != "" }
+            .bind(to: subject)
+            .disposed(by: disposeBag)
+        
+        subject.asDriver(onErrorJustReturn: false)
+            .drive(with: self) { owner, isEnable in
+                owner.confirmButton.backgroundColor = isEnable ? .appColor(.main) : .appColor(.disable)
+                owner.confirmButton.isUserInteractionEnabled = isEnable
+            }.disposed(by: disposeBag)
+        
     }
-    
+    func keyboardBinding() {
+        RxKeyboard.instance.visibleHeight
+            .skip(1)    // 초기 값 버리기
+            .drive(with: self) { owner, keyboardVisibleHeight in
+                owner.confirmButton.snp.updateConstraints {
+                    $0.bottom.equalToSuperview().inset(
+                        keyboardVisibleHeight == 0
+                        ? 50
+                        :keyboardVisibleHeight + 26
+                    )
+                }
+                UIView.animate(withDuration: 0.4) {
+                    self.view.layoutIfNeeded()
+                }
+            }.disposed(by: disposeBag)
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
@@ -40,22 +76,24 @@ class UpdatedNicknameViewController: UIViewController {
         print("nickName Value: \(textFieldView.textField.text!)")
         navigationController?.popViewController(animated: true)
         updateUserData()
+        dismiss(animated: true)
     }
     
     func updateUserData() {
         guard let userNickName = self.textFieldView.textField.text else { return }
-        API<UserModel>(path: "users/update-profile", method: .post, parameters: ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt, "userNickname": userNickName], task: .requestPlain).request { result in
+        API<UserDataUpdateModel>(path: "users/update-profile", method: .post, parameters: ["userNickname": userNickName], task: .requestJSONEncodable(userNickName), headers: ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt]).request { result in
             print("result: \(result)")
             switch result {
             case .success(let response):
                 // data:
-                print(response.code, response.message)
+                print("😀😀😀😀유저닉네임 업데이트: \(response.code), \(response.message)😀😀😀😀")
                 print(response.data!)
             case .failure(let error):
                 // alert
-                print("error: \(error.localizedDescription)")
+                print("😀😀😀😀유저닉네임 업데이트 실패: \(error.localizedDescription)😀😀😀😀")
             }
         }
+        
     }
 }
 

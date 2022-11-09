@@ -42,8 +42,9 @@ class SignUpViewController: UIViewController {
         
         viewModel.showAlertViewDriver
             .drive(with: self) {
-                owner, _ in
-                print(UserDefaultManager.user.message)
+                owner, message in
+                let vc = OneButtonAlertViewController(viewModel: .init(content: message, buttonText: "확인", textColor: .black))
+                owner.present(vc, animated: true)
             }.disposed(by: disposeBag)
         
         viewModel.showTabbarCotrollerDriver
@@ -51,6 +52,11 @@ class SignUpViewController: UIViewController {
                 NotificationCenter.default.post(name: Notification.Name("loginSuccess"), object: nil)
             }.disposed(by: disposeBag)
 
+        viewModel.nicknameDuplicatedDrvier
+            .drive(with: self) { owner, isDuplicate in
+                owner.nicknameCheckLabel.isHidden = !isDuplicate
+            }.disposed(by: disposeBag)
+        
         nickNameInputView.textField.rx.tapGesture()
             .when(.recognized)
             .withUnretained(self)
@@ -77,7 +83,6 @@ class SignUpViewController: UIViewController {
     }
     
     // MARK: - Function
-    
     func updateView(with keyboardHeight: CGFloat) {
         contentView.snp.updateConstraints {
             $0.bottom.equalToSuperview().inset(keyboardHeight)
@@ -155,6 +160,7 @@ class SignUpViewController: UIViewController {
         l.textColor = .appColor(.gray400)
         return l
     }()
+    // TODO: - 서버에서 중복된 닉네임 내려왔을 경우
     let nicknameCheckLabel: UILabel = {
         let l = UILabel()
         l.text = "*중복된 닉네임입니다."
