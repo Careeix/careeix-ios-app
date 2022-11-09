@@ -13,13 +13,14 @@ import RxRelay
 /// intrinsic size 없습니다
 class BaseTextFieldViewModel {
     // MARK: Input
-    let inputStringRelay = BehaviorRelay<String>(value: "")
+    let inputStringRelay: BehaviorRelay<String>
     
     // MARK: Output
     let inputStringDriver: Driver<String>
     let placeholderDriver: Driver<String>
 
-    init(placeholder: String = "내용을 입력해주세요.") {
+    init(placeholder: String = "내용을 입력해주세요.", inputStringRelay: BehaviorRelay<String> = BehaviorRelay<String>(value: "")) {
+        self.inputStringRelay = inputStringRelay
         placeholderDriver = .just(placeholder)
         inputStringDriver = inputStringRelay
             .asDriver(onErrorJustReturn: "")

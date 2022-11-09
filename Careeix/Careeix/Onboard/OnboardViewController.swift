@@ -22,13 +22,13 @@ class OnboardViewController: UIViewController {
         setUI()
         bind(to: viewModel)
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        if UserDefaultManager.logoutFlag {
-//            alertSuccessLogout()
-//            UserDefaultManager.logoutFlag = false
-//        }
+        //        if UserDefaultManager.logoutFlag {
+        //            alertSuccessLogout()
+        //            UserDefaultManager.logoutFlag = false
+        //        }
     }
     
     // MARK: - Binding
@@ -50,7 +50,7 @@ class OnboardViewController: UIViewController {
         
         viewModel.onboardImageNamesDriver
             .do { [weak self] in
-                   self?.pageControl.numberOfPages = $0.count
+                self?.pageControl.numberOfPages = $0.count
             }
             .drive(onboardCollectionView.rx.items) { collectionView, row, data in
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OnboardCell.self.description(), for: IndexPath(row: row, section: 0)) as? OnboardCell else { return UICollectionViewCell() }
@@ -121,7 +121,7 @@ class OnboardViewController: UIViewController {
                 detailJobsInputViewModel: .init(title: "상세 직무",
                                                 description: "상세 직무 개수는 1~3개까지 입력 가능합니다.",
                                                 textFieldViewModels:[BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)"),BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)"),BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)")]),
-                                                        
+                
                 completeButtonViewModel: .init(content: "회원가입", backgroundColor: .disable)
             )
         )
