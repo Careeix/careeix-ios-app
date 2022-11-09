@@ -28,7 +28,7 @@ class MyCareerProfileViewController: UIViewController {
     }
     
     @objc func showProfileInputView() {
-//        let vc = UpdatedMyProfileViewController()
+//
 //        navigationController?.pushViewController(vc, animated: true)
         print("showProfileInputView")
     }

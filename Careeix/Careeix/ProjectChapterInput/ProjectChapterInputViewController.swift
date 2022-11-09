@@ -146,6 +146,8 @@ class ProjectChapterInputViewController: UIViewController {
     
     func didTapCompleteButtonView() {
         view.endEditing(true)
+        let vc = OneButtonAlertViewController(viewModel: .init(content: "저장되었습니다!", buttonText: "확인", textColor: .point))
+        present(vc, animated: true)
     }
     
     func updateView(with keyboardHeight: CGFloat) {

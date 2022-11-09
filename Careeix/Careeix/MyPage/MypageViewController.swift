@@ -165,6 +165,7 @@ extension MypageViewController: UITableViewDataSource {
 extension MypageViewController: TwoButtonAlertViewDelegate {
     func didTapRightButton(type: TwoButtonAlertType) {
         UserDefaultManager.user = .init(jwt: "", message: "")
+//        UserDefaultManager.logoutFlag = true
         NotificationCenter.default.post(name: Notification.Name(rawValue: "logoutSuccess"), object: nil)
     }
     

@@ -108,7 +108,9 @@ class ProjectLookupViewController: UIViewController {
     
     // MARK: - UIComponents
     lazy var tableView: UITableView = {
-        let v = UITableView()
+        let v = UITableView(frame: .zero, style: .grouped)
+        v.backgroundColor = .appColor(.white)
+        v.showsVerticalScrollIndicator = false
         v.register(ProjectChapterLookupCell.self, forCellReuseIdentifier: ProjectChapterLookupCell.self.description())
         v.delegate = self
         v.rowHeight = 60

@@ -390,6 +390,7 @@
 				78345DFA29126F0700EB9621 /* Project */,
 				78345E0529126F1100EB9621 /* ProjectChapter */,
 				7A93B872291A6739007A91EB /* CareerProfile */,
+				78C3892C291C21F700C9CAC4 /* UpdateProfile */,
 				78345E0829126F1B00EB9621 /* MyPage */,
 				7AFE501528FD8FB400A72D65 /* Extensions */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
@@ -492,6 +493,13 @@
 				7AFE502128FD90C600A72D65 /* CompositionalLayout.swift */,
 			);
 			path = StaticFunction;
+			sourceTree = "<group>";
+		};
+		78C3892C291C21F700C9CAC4 /* UpdateProfile */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UpdateProfile;
 			sourceTree = "<group>";
 		};
 		78C909972905914100AA9AA3 /* Models */ = {

@@ -35,10 +35,8 @@ struct UserDefaultManager {
     @UserDefault(key: "firstLoginFlag", defaultValue: false)
     public static var firstLoginFlag: Bool
     
-    // TODO: 삭제
     @UserDefault(key: "loginType", defaultValue: SocialLoginSDK.SocialLoginType.kakao)
     public static var loginType: SocialLoginSDK.SocialLoginType
-
 }
     
 

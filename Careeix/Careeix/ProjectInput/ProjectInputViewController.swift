@@ -218,6 +218,7 @@ class ProjectInputViewController: UIViewController {
         introduceInputView = .init(viewModel: viewModel.introduceInputViewModel)
         completeButtonView = .init(viewModel: .init(content: "다음", backgroundColor: .disable))
         super.init(nibName: nil, bundle: nil)
+        introduceInputView.textView.delegate = self
         bind(to: viewModel)
         hidesBottomBarWhenPushed = true
     }
@@ -356,5 +357,17 @@ extension ProjectInputViewController: TwoButtonAlertViewDelegate {
             break
         }
         
+    }
+}
+
+extension ProjectInputViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        guard let text = textView.text else { return false }
+        print(range.location, text)
+        print(NSString(string: text).substring(with: range))
+        if text.contains("\n") {
+            textView.text = text.replacingOccurrences(of: "\n", with: "")
+        }
+        return text.count < 55 || range.length == 1
     }
 }

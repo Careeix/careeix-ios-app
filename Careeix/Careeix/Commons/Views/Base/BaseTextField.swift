@@ -32,6 +32,7 @@ class BaseTextField: UITextField {
         super.init(frame: .zero)
         configure()
         bind(to: viewModel)
+        delegate = self
     }
     
     func bind(to viewModel: BaseTextFieldViewModel) {
@@ -72,3 +73,11 @@ class BaseTextField: UITextField {
         attributedPlaceholder = NSAttributedString(string: placeholder ?? "", attributes: [.foregroundColor: UIColor.appColor(.gray250)])
     }
 }
+
+extension BaseTextField: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text else { return false }
+        return text.count < 25 || range.length == 1
+    }
+}
+

@@ -23,6 +23,14 @@ class OnboardViewController: UIViewController {
         bind(to: viewModel)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        if UserDefaultManager.logoutFlag {
+//            alertSuccessLogout()
+//            UserDefaultManager.logoutFlag = false
+//        }
+    }
+    
     // MARK: - Binding
     func bind(to viewModel: OnboardViewModel) {
         viewModel.logoImageNameDriver
@@ -91,6 +99,11 @@ class OnboardViewController: UIViewController {
                 owner.showSignUpView()
             }.disposed(by: disposeBag)
         
+    }
+    // MARK: - Functions
+    func alertSuccessLogout() {
+        let vc = OneButtonAlertViewController(viewModel: .init(content: "로그아웃 되었습니다.", buttonText: "확인", textColor: .black))
+        present(vc, animated: true)
     }
     
     func showSignUpView() {
