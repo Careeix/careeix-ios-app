@@ -113,7 +113,6 @@
 		7A93B881291A673A007A91EB /* CardProfileDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B877291A673A007A91EB /* CardProfileDetailViewController.swift */; };
 		7A93B882291A673A007A91EB /* ProjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B879291A673A007A91EB /* ProjectModel.swift */; };
 		7A93B883291A673A007A91EB /* MyCareerProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B87A291A673A007A91EB /* MyCareerProfileViewController.swift */; };
-		7A93B884291A673A007A91EB /* UpdatedMyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B87B291A673A007A91EB /* UpdatedMyProfileViewController.swift */; };
 		7A93B885291A673A007A91EB /* ProjectListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B87D291A673A007A91EB /* ProjectListHeaderView.swift */; };
 		7A93B887291ACCAB007A91EB /* UserDataUpdateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B886291ACCAB007A91EB /* UserDataUpdateModel.swift */; };
 		7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFE501628FD8FB400A72D65 /* UIColor+.swift */; };
@@ -229,7 +228,6 @@
 		7A93B877291A673A007A91EB /* CardProfileDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardProfileDetailViewController.swift; sourceTree = "<group>"; };
 		7A93B879291A673A007A91EB /* ProjectModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectModel.swift; sourceTree = "<group>"; };
 		7A93B87A291A673A007A91EB /* MyCareerProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCareerProfileViewController.swift; sourceTree = "<group>"; };
-		7A93B87B291A673A007A91EB /* UpdatedMyProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatedMyProfileViewController.swift; sourceTree = "<group>"; };
 		7A93B87D291A673A007A91EB /* ProjectListHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectListHeaderView.swift; sourceTree = "<group>"; };
 		7A93B886291ACCAB007A91EB /* UserDataUpdateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataUpdateModel.swift; sourceTree = "<group>"; };
 		7AFE501628FD8FB400A72D65 /* UIColor+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
@@ -647,7 +645,6 @@
 			isa = PBXGroup;
 			children = (
 				7A93B87A291A673A007A91EB /* MyCareerProfileViewController.swift */,
-				7A93B87B291A673A007A91EB /* UpdatedMyProfileViewController.swift */,
 				7A93B877291A673A007A91EB /* CardProfileDetailViewController.swift */,
 				7A93B878291A673A007A91EB /* Models */,
 				7A93B873291A6739007A91EB /* Cells */,
@@ -813,7 +810,6 @@
 				786F469B29019BDE00215AF0 /* ProjectInputViewModel.swift in Sources */,
 				7A93B885291A673A007A91EB /* ProjectListHeaderView.swift in Sources */,
 				7A93B87E291A673A007A91EB /* ProjectListCell.swift in Sources */,
-				7A93B884291A673A007A91EB /* UpdatedMyProfileViewController.swift in Sources */,
 				782347152918D0D700E648DF /* UserEntity.swift in Sources */,
 				78E94A2328EEDBA000DBBF5C /* NetworkService.swift in Sources */,
 				786F46A42901A24E00215AF0 /* PeriodInputView.swift in Sources */,
