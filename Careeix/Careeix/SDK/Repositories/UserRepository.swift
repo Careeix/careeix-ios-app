@@ -60,6 +60,19 @@ struct UserRepository {
             }.debug("🐯🐯🐯APPLESIGNUP🐯🐯🐯")
     }
     
+    func updateProfile(with profile: UpdateProfileModel) -> Observable<ErrorResponse> {
+        API<ErrorResponse>(path: "users/update-info", method: .post, parameters: [:], task: .requestJSONEncodable(profile))
+            .requestRX()
+            .map { _ in ErrorResponse(code: "200", message: "저장되었습니다.") }
+            .catch { error in
+                if let error = error as? ErrorResponse {
+                    return .just(.init(code: error.code, message: error.message))
+                } else {
+                    return .just(.init(code: "500", message: "네트워크 환경을 확인해주세요."))
+                }
+            }.debug("🦊🦊🦊프로필 POST🦊🦊")
+    }
+    
     func errorUser(message: String = "네트워크 환경을 확인해주세요.") -> Observable<User>{
         .just(.init(jwt: "", message: message))
     }

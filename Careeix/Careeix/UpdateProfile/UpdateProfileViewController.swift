@@ -12,20 +12,20 @@ import RxCocoa
 import RxRelay
 import RxKeyboard
 
-struct UpdateProfileModel {
+struct UpdateProfileModel: Codable {
     let userDetailJob: [String]
     let userIntro: String
     let userJob: String
     let userWork: Int
 }
 
-struct UpdateProfileViewModel {
+class UpdateProfileViewModel {
     typealias job = String
     typealias annual = Int
     typealias detailJobs = [String]
     typealias introduce = String
     
-    let userRepository = UserRepository()
+    
     
     // MARK: SubViewModels
     let jobInputViewModel: SimpleInputViewModel
@@ -41,12 +41,15 @@ struct UpdateProfileViewModel {
     // MARK: Outputs
     let fillDataDriver: Driver<(job, annual, detailJobs, introduce)>
     let alertDriver: Driver<String>
+    let updateDataDriver: Driver<(job, annual, detailJobs, introduce)>
     
     init(jobInputViewModel: SimpleInputViewModel,
          annualInputViewModel: RadioInputViewModel,
          detailJobsInputViewModel: MultiInputViewModel,
          introduceInputViewModel: ManyInputViewModel,
-         completeButtonViewModel: CompleteButtonViewModel) {
+         completeButtonViewModel: CompleteButtonViewModel,
+         userRepository: UserRepository = UserRepository()
+    ) {
         self.jobInputViewModel = jobInputViewModel
         self.annualInputViewModel = annualInputViewModel
         self.detailJobsInputViewModel = detailJobsInputViewModel
@@ -54,10 +57,11 @@ struct UpdateProfileViewModel {
         self.completeButtonViewModel = completeButtonViewModel
         
         fillDataDriver = viewDidLoadRelay
+            .debug("viewdidLoad")
             .map { _ in
                 let user = UserDefaultManager.user
                 return (user.userJob, user.userWork, user.userDetailJobs, user.userIntro ?? "")
-            }.asDriver(onErrorJustReturn: ("", 0, [""], ""))
+            }.asDriver(onErrorJustReturn: ("", 0, [], ""))
         
         // NOTE: 마지막값 안들어온다
         let combinedInputValuesObservable =  Observable.combineLatest(
@@ -65,26 +69,36 @@ struct UpdateProfileViewModel {
             annualInputViewModel.selectedIndexRelay,
             detailJobsInputViewModel.inputValuesObservable,
             introduceInputViewModel.baseTextViewModel.inputStringRelay
-        ).share().debug("🐷")
-        
-        alertDriver = completeButtonTrigger
+        ){ ($0, $1.row, $2, $3) }.share().debug("🐷")
+
+        let result = completeButtonTrigger
             .withLatestFrom(combinedInputValuesObservable)
-            .map { UpdateProfileModel(userDetailJob: $0.2, userIntro: $0.3, userJob: $0.0, userWork: $0.1.row)}
-            .debug("dd??")
-            .map { _ in "API 엮어야해 ~" }
+            .map { UpdateProfileModel(userDetailJob: $0.2, userIntro: $0.3, userJob: $0.0, userWork: $0.1) }
+            .flatMap(userRepository.updateProfile)
+            .share()
+        
+        alertDriver = result
+            .map { $0.message }
             .asDriver(onErrorJustReturn: "")
         
-        
-        func updateUser(job: job, annual: annual, detailJobs: detailJobs, introduce: introduce) {
-                
-        }
+        updateDataDriver = result.filter { $0.code == "200" }
+            .withLatestFrom(combinedInputValuesObservable)
+            .asDriver(onErrorJustReturn: ("", 0, [], ""))
     }
+    
+    func updateUser(job: job, annual: annual, detailJobs: detailJobs, introduce: introduce) {
+        UserDefaultManager.user.userJob = job
+        UserDefaultManager.user.userWork = annual
+        UserDefaultManager.user.userDetailJobs = detailJobs
+        UserDefaultManager.user.userIntro = introduce
+    }
+    
     func fillData(job: job, annual: annual, detailJobs: detailJobs, introduce: introduce) {
         jobInputViewModel.textfieldViewModel.inputStringRelay.accept(job)
         annualInputViewModel.selectedIndexRelay.accept(IndexPath(row: annual, section: 0))
         zip(detailJobsInputViewModel.multiInputCellViewModels, detailJobs).forEach {
             print("왜!!!", $0.1)
-            $0.0.textFieldViewModel.setText($0.1)
+            $0.0.textFieldViewModel.inputStringRelay.accept($0.1)
         }
         introduceInputViewModel.baseTextViewModel.inputStringRelay.accept(introduce)
     }
@@ -111,7 +125,8 @@ class UpdateProfileViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.fillDataDriver
-            .drive(with: self) { owner, data in
+            .debug("데이터 채워야해 ~")
+            .drive { data in
                 viewModel.fillData(job: data.0, annual: data.1, detailJobs: data.2, introduce: data.3)
             }.disposed(by: disposeBag)
         
@@ -119,6 +134,11 @@ class UpdateProfileViewController: UIViewController {
             .drive(with: self) { owner, message in
                 let vc = OneButtonAlertViewController(viewModel: .init(content: message, buttonText: "확인", textColor: .black))
                 owner.present(vc, animated: true)
+            }.disposed(by: disposeBag)
+        
+        viewModel.updateDataDriver
+            .drive { data in
+                viewModel.updateUser(job: data.0, annual: data.1, detailJobs: data.2, introduce: data.3)
             }.disposed(by: disposeBag)
     }
     
@@ -145,7 +165,8 @@ class UpdateProfileViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
         view.backgroundColor = .appColor(.white)
-        setUI()
+        bind(to: viewModel)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -155,7 +176,12 @@ class UpdateProfileViewController: UIViewController {
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind(to: viewModel)
+        setUI()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    override func viewDidAppear(_ animated: Bool) {
         viewModel.viewDidLoadRelay.accept(())
     }
     // MARK: - Components

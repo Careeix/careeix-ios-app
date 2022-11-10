@@ -51,7 +51,7 @@ class MultiInputView: UIView {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         setUI()
-        layoutIfNeeded()
+//        layoutIfNeeded()
         bind(to: viewModel)
         
     }

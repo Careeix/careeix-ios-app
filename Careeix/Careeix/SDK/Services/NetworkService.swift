@@ -84,7 +84,7 @@ class API<T: Decodable> {
                     try self.httpProcess(response: response)
                     let data = try response.map(APIResponse<T>.self)
                     
-//                    print("🌈🌈🌈 디코딩 결과: ", data)
+                    print("🌈🌈🌈 디코딩 결과: ", data)
                     completion(.success(data))
                 } catch NetworkError.httpStatus(let errorResponse) {
                     completion(.failure(errorResponse))
@@ -109,7 +109,7 @@ class API<T: Decodable> {
     }
 }
 public struct ErrorResponse: Codable, Error {
-    let code: String
+    let code: String?
     let message: String
 }
 public enum NetworkError: Error {

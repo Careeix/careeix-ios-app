@@ -13,7 +13,7 @@ import RxRelay
 /// intrinsic size 없습니다
 class BaseTextFieldViewModel {
     // MARK: Input
-    let inputStringRelay: BehaviorRelay<String> = BehaviorRelay(value: "")
+    let inputStringRelay: BehaviorRelay<String> = BehaviorRelay<String>(value: "")
     
     // MARK: Output
     let inputStringDriver: Driver<String>
@@ -21,12 +21,8 @@ class BaseTextFieldViewModel {
 
     init(placeholder: String = "내용을 입력해주세요.") {
         placeholderDriver = .just(placeholder)
-        inputStringDriver = inputStringRelay.debug("🐿️")
+        inputStringDriver = inputStringRelay
             .asDriver(onErrorJustReturn: "")
-    }
-    
-    func setText(_ text: String) {
-        inputStringRelay.accept(text)
     }
 }
 
@@ -44,7 +40,6 @@ class BaseTextField: UITextField {
             .disposed(by: disposeBag)
         
         viewModel.inputStringDriver
-            .debug("AAA")
             .drive(rx.text)
             .disposed(by: disposeBag)
     }
