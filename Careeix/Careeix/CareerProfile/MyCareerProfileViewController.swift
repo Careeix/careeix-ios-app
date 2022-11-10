@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import SnapKit
 import Moya
-
 class MyCareerProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,9 +31,24 @@ class MyCareerProfileViewController: UIViewController {
     }
     
     @objc func showProfileInputView() {
-//        let vc = UpdatedMyProfileViewController()
-//        navigationController?.pushViewController(vc, animated: true)
-        print("🙆‍♂️🙆‍♂️🙆‍♂️showProfileInputView")
+        let vc = UpdateProfileViewController(
+            viewModel: .init(
+                jobInputViewModel: .init(title: "직무", textFieldViewModel: .init(placeholder: "직무를 입력해주세요.(Ex. 서버 개발자)")),
+                annualInputViewModel: .init(title: "연차",
+                                            contents: ["입문(1년 미만)",
+                                                       "주니어(1~4년차)",
+                                                       "미들(5~8년차)",
+                                                       "시니어(9년차~)"]),
+                detailJobsInputViewModel: .init(title: "상세 직무 태그",
+                                                description: "상세 직무 개수는 1~3개까지 입력 가능합니다.",
+                textFieldViewModels: [BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)"),BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)"),BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)")]),
+                
+                introduceInputViewModel: .init(title: "소개", baseTextViewModel: .init(placeholder: "소개글을 작성해주세요.", inputStringRelay: .init(value: "소개"))),
+                completeButtonViewModel: .init(content: "저장하기", backgroundColor: .next)
+            )
+        )
+        navigationController?.pushViewController(vc, animated: true)
+        print("showProfileInputView")
     }
     
     @objc func showProjectInputView() {

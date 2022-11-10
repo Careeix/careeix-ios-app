@@ -47,7 +47,6 @@ class SignUpViewModel {
             detailJobsInputViewModel.inputValuesObservable
         ).share()
         
-        // TODO: 카카오와 애플 로그인 어떤식으로 할껀지 -> 서버가 먼저 나와야함 (현재는 무조건 성공)
         let result = createUserTrigger
             .withLatestFrom(combinedInputValuesObservable) { $1 }
             .map { nickname, job, annual, detailJobs in

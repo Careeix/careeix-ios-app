@@ -31,6 +31,7 @@ class MultiInputCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         textField = BaseTextField(viewModel: .init())
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
     }
     
     required init?(coder: NSCoder) {

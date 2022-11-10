@@ -151,10 +151,24 @@ extension MypageViewController: UITableViewDataSource {
             case 4:
                 print("문의하기")
             case 5:
-                print("로그아웃")
+                let vc = TwoButtonAlertViewController(viewModel: .init(type: .warningLogoutWriting))
+                vc.delegate = self
+                present(vc, animated: true)
             default:
                 return
             }
         }
+    }
+}
+
+extension MypageViewController: TwoButtonAlertViewDelegate {
+    func didTapRightButton(type: TwoButtonAlertType) {
+        UserDefaultManager.user = .init(jwt: "", message: "")
+//        UserDefaultManager.logoutFlag = true
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "logoutSuccess"), object: nil)
+    }
+    
+    func didTapLeftButton(type: TwoButtonAlertType) {
+        dismiss(animated: true)
     }
 }

@@ -109,7 +109,7 @@ class API<T: Decodable> {
     }
 }
 public struct ErrorResponse: Codable, Error {
-    let code: String
+    let code: String?
     let message: String
 }
 public enum NetworkError: Error {

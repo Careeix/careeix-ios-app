@@ -76,14 +76,15 @@ class ProjectChapterCell: UITableViewCell {
             $0.leading.equalToSuperview().inset(8)
         }
         
-        titleLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(numberLabel.snp.trailing).offset(23)
-        }
-        
         modifyLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(5)
+        }
+        
+        titleLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(numberLabel.snp.trailing).offset(23)
+            $0.trailing.equalToSuperview().inset(50)
         }
     }
 }

@@ -37,7 +37,7 @@ struct UserRepository {
     }
     
     func kakaoSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
-        return API<UserDTO.KakaoLogin.Response>(path: "users/kakao-login", method: .post, parameters: [:], task: .requestJSONEncodable(convertSignUpRequestDTO(info))).requestRX()
+        return API<UserDTO.KakaoLogin.Response>(path: "users/kakao-login", method: .post, parameters: [:], task: .requestJSONEncodable(convertKakaoSignUpRequestDTO(info))).requestRX()
             .map(convertKakaoUserResponseDTO)
             .catch { error in
                 if let error = error as? ErrorResponse {
@@ -49,7 +49,7 @@ struct UserRepository {
     }
     
     func appleSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
-        return API<UserDTO.AppleLogin.Response>(path: "users/apple-login", method: .post, parameters: [:], task: .requestJSONEncodable(convertSignUpRequestDTO(info))).requestRX()
+        return API<UserDTO.AppleLogin.Response>(path: "users/apple-login", method: .post, parameters: [:], task: .requestJSONEncodable(convertAppleSignUpRequestDTO(info))).requestRX()
             .map(convertAppleUserResponseDTO)
             .catch { error in
                 if let error = error as? ErrorResponse {
@@ -60,14 +60,32 @@ struct UserRepository {
             }.debug("🐯🐯🐯APPLESIGNUP🐯🐯🐯")
     }
     
+    func updateProfile(with profile: UpdateProfileModel) -> Observable<ErrorResponse> {
+        API<ErrorResponse>(path: "users/update-info", method: .post, parameters: [:], task: .requestJSONEncodable(profile))
+            .requestRX()
+            .map { _ in ErrorResponse(code: "200", message: "저장되었습니다.") }
+            .catch { error in
+                if let error = error as? ErrorResponse {
+                    return .just(.init(code: error.code, message: error.message))
+                } else {
+                    return .just(.init(code: "500", message: "네트워크 환경을 확인해주세요."))
+                }
+            }.debug("🦊🦊🦊프로필 POST🦊🦊")
+    }
+    
     func errorUser(message: String = "네트워크 환경을 확인해주세요.") -> Observable<User>{
         .just(.init(jwt: "", message: message))
     }
     
     // KAKAO
-    func convertSignUpRequestDTO(_ entity: Entity.SignUpUser.Request) -> UserDTO.KakaoLogin.Request {
+    func convertKakaoSignUpRequestDTO(_ entity: Entity.SignUpUser.Request) -> UserDTO.KakaoLogin.Request {
         .init(accessToken: UserDefaultManager.kakaoAccessToken, job: entity.job, nickname: entity.nickname, userDetailJob: entity.detailJobs, userWork: entity.annual)
     }
+    
+    func convertAppleSignUpRequestDTO(_ entity: Entity.SignUpUser.Request) -> UserDTO.AppleLogin.Request {
+        .init(identityToken: UserDefaultManager.appleIdentityToken, job: entity.job, nickname: entity.nickname, userDetailJob: entity.detailJobs, userWork: entity.annual)
+    }
+    
     
     func convertKakaoUserResponseDTO(_ dto: UserDTO.KakaoLogin.Response) -> User {
         .init(jwt: dto.jwt ?? "1" ,

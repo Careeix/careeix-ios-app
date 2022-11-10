@@ -10,15 +10,15 @@ import Foundation
 struct User: Codable {
     var jwt: String
     var message: String
-    let userId: Int
-    let userJob: String
-    let userDetailJobs: [String]
-    let userWork: Int
-    let userNickname: String
-    let userProfileImg: String?
-    let userProfileColor: String
-    let userIntro: String?
-    let userSocialProvider: Int
+    var userId: Int
+    var userJob: String
+    var userDetailJobs: [String]
+    var userWork: Int
+    var userNickname: String
+    var userProfileImg: String?
+    var userProfileColor: String
+    var userIntro: String?
+    var userSocialProvider: Int
     
     init(jwt: String,
          message: String,

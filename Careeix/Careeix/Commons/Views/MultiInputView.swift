@@ -50,8 +50,10 @@ class MultiInputView: UIView {
     init(viewModel: MultiInputViewModel) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        bind(to: viewModel)
         setUI()
+//        layoutIfNeeded()
+        bind(to: viewModel)
+        
     }
 
     required init?(coder: NSCoder) {

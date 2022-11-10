@@ -57,6 +57,7 @@
 		788A09FF290A7BBD003EF027 /* ProjectChapterInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788A09FE290A7BBD003EF027 /* ProjectChapterInputViewModel.swift */; };
 		789F27C029068C2200F634F0 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F27BF29068C2200F634F0 /* DatePickerView.swift */; };
 		789F27C32906ECA400F634F0 /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789F27C22906ECA400F634F0 /* NoteCell.swift */; };
+		78C3892E291C225000C9CAC4 /* UpdateProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C3892D291C225000C9CAC4 /* UpdateProfileViewController.swift */; };
 		78C9099A2905918A00AA9AA3 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C909992905918A00AA9AA3 /* Project.swift */; };
 		78C9099C2905A18800AA9AA3 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C9099B2905A18800AA9AA3 /* UIViewController+.swift */; };
 		78D52E4F28FCFCF2001F5747 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = 78D52E4E28FCFCF2001F5747 /* RxKeyboard */; };
@@ -178,6 +179,7 @@
 		788A09FE290A7BBD003EF027 /* ProjectChapterInputViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectChapterInputViewModel.swift; sourceTree = "<group>"; };
 		789F27BF29068C2200F634F0 /* DatePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		789F27C22906ECA400F634F0 /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
+		78C3892D291C225000C9CAC4 /* UpdateProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateProfileViewController.swift; sourceTree = "<group>"; };
 		78C909992905918A00AA9AA3 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		78C9099B2905A18800AA9AA3 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		78D52E5028FD14FF001F5747 /* SignUpModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpModel.swift; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 				78345DFA29126F0700EB9621 /* Project */,
 				78345E0529126F1100EB9621 /* ProjectChapter */,
 				7A93B872291A6739007A91EB /* CareerProfile */,
+				78C3892C291C21F700C9CAC4 /* UpdateProfile */,
 				78345E0829126F1B00EB9621 /* MyPage */,
 				7AFE501528FD8FB400A72D65 /* Extensions */,
 				784BD0A128EDA23A00CA86F0 /* Assets.xcassets */,
@@ -490,6 +493,14 @@
 				7AFE502128FD90C600A72D65 /* CompositionalLayout.swift */,
 			);
 			path = StaticFunction;
+			sourceTree = "<group>";
+		};
+		78C3892C291C21F700C9CAC4 /* UpdateProfile */ = {
+			isa = PBXGroup;
+			children = (
+				78C3892D291C225000C9CAC4 /* UpdateProfileViewController.swift */,
+			);
+			path = UpdateProfile;
 			sourceTree = "<group>";
 		};
 		78C909972905914100AA9AA3 /* Models */ = {
@@ -828,6 +839,7 @@
 				7A93B883291A673A007A91EB /* MyCareerProfileViewController.swift in Sources */,
 				78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */,
 				7846D3D1291A3444009185F0 /* WebViewController.swift in Sources */,
+				78C3892E291C225000C9CAC4 /* UpdateProfileViewController.swift in Sources */,
 				78DC17CB28FAA46A00331A22 /* RadioInputView.swift in Sources */,
 				7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */,
 				78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */,
@@ -1026,7 +1038,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Careeix/CareeixDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 3AQ2WDVH35;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Careeix/Info.plist;
@@ -1054,7 +1066,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Careeix/Careeix.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 3AQ2WDVH35;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Careeix/Info.plist;
