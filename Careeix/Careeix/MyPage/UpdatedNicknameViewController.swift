@@ -58,6 +58,7 @@ class UpdatedNicknameViewController: UIViewController {
             }.disposed(by: disposeBag)
         
     }
+    
     func keyboardBinding() {
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
@@ -74,6 +75,7 @@ class UpdatedNicknameViewController: UIViewController {
                 }
             }.disposed(by: disposeBag)
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
@@ -93,18 +95,16 @@ class UpdatedNicknameViewController: UIViewController {
         print("nickName Value: \(textFieldView.textField.text!)")
         navigationController?.popViewController(animated: true)
         updateUserData()
-        dismiss(animated: true)
     }
     
     func updateUserData() {
         guard let userNickname = self.textFieldView.textField.text else { return }
-        API<UserModel>(path: "users/update-profile-nickname", method: .post, parameters: ["userNickname": userNickname], task: .requestParameters(encoding: URLEncoding(destination: .queryString)), headers: ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt]).request { result in
+        API<UpdateUserNicknameModel>(path: "users/update-profile-nickname", method: .post, parameters: ["userNickname": userNickname], task: .requestParameters(encoding: URLEncoding(destination: .queryString))).request { result in
             print(result)
             switch result {
             case .success(let response):
                 // data:
-//                UserDefaultManager.user.userNickname = response.data?.userNickname ?? ""
-                // mapping error 났는데 다시 빌드하면 유저디폴트는 수정되어있음
+//                UserDefaultManager.user.userNickname = response.data!.userNickname
                 print("😀😀😀😀유저닉네임 업데이트: \(response.code), \(response.message)😀😀😀😀")
                 print(response.data!)
             case .failure(let error):
