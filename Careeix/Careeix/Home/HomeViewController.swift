@@ -97,13 +97,14 @@ class HomeViewController: UIViewController {
         configurationDatasource()
         createNavigationBarItem()
         homeCollectionView.delegate = self
-        recommandUserData()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = false
         getUserData()
+        recommandUserData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
