@@ -10,16 +10,18 @@ import UIKit
 import SnapKit
 import RxKeyboard
 import RxSwift
+import Moya
 
 class UpdatedNicknameViewController: UIViewController {
     var disposeBag = DisposeBag()
     let textFieldView = SimpleInputView(viewModel: .init(title: "닉네임 변경", textFieldViewModel: .init(placeholder: "2자 ~ 10자 이내로 한글, 영어 및 숫자를 포함하여 입력해주세요")))
     let confirmButton = CompleteButtonView(viewModel: .init(content: "완료", backgroundColor: .disable))
     let sameNicknameLabel: UILabel = {
-        let l = UILabel()
-        l.text = "닉네임 동일"
-        
-        return l
+        let label = UILabel()
+        label.text = "*기존 닉네임과 동일합니다."
+        label.textColor = .appColor(.error)
+        label.font = .pretendardFont(size: 10, style: .regular)
+        return label
     }()
     
     let subject = PublishSubject<Bool>()
@@ -30,9 +32,7 @@ class UpdatedNicknameViewController: UIViewController {
         tapConfirmButton()
         view.backgroundColor = .appColor(.white)
         keyboardBinding()
-        
-//        UserDefaultManager.user.userNickname = response.data
-        
+
         textFieldView.textField.text = UserDefaultManager.user.userNickname
         let inputText = textFieldView.textField.rx.text.orEmpty.share()
         
@@ -97,12 +97,14 @@ class UpdatedNicknameViewController: UIViewController {
     }
     
     func updateUserData() {
-        guard let userNickName = self.textFieldView.textField.text else { return }
-        API<UserDataUpdateModel>(path: "users/update-profile", method: .post, parameters: ["userNickname": userNickName], task: .requestJSONEncodable(userNickName), headers: ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt]).request { result in
-            print("result: \(result)")
+        guard let userNickname = self.textFieldView.textField.text else { return }
+        API<UserModel>(path: "users/update-profile-nickname", method: .post, parameters: ["userNickname": userNickname], task: .requestParameters(encoding: URLEncoding(destination: .queryString)), headers: ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt]).request { result in
+            print(result)
             switch result {
             case .success(let response):
                 // data:
+//                UserDefaultManager.user.userNickname = response.data?.userNickname ?? ""
+                // mapping error 났는데 다시 빌드하면 유저디폴트는 수정되어있음
                 print("😀😀😀😀유저닉네임 업데이트: \(response.code), \(response.message)😀😀😀😀")
                 print(response.data!)
             case .failure(let error):
@@ -126,8 +128,8 @@ extension UpdatedNicknameViewController {
         }
         
         sameNicknameLabel.snp.makeConstraints {
-            $0.top.equalTo(textFieldView.snp.bottom)
-            $0.leading.equalTo(textFieldView)
+            $0.top.equalTo(textFieldView.snp.bottom).offset(4)
+            $0.leading.equalToSuperview().offset(24)
         }
         
         confirmButton.snp.makeConstraints {

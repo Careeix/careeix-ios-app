@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SnapKit
+import PhotosUI
 
 enum UserSocialProvider: String {
     case kakao = "카카오 로그인"
@@ -42,7 +43,6 @@ class AccountInfoViewController: UIViewController {
         let label = UILabel()
         label.textColor = .appColor(.gray400)
         label.font = .pretendardFont(size: 15, style: .regular)
-        label.text = "카카오 로그인"
         return label
     }()
     
@@ -101,13 +101,30 @@ class AccountInfoViewController: UIViewController {
         return button
     }()
     
+    func activeActionSheet() {
+        let actionSheet = UIAlertController(title: "프로필 이미지 관리", message: nil, preferredStyle: .actionSheet)
+        let updateImageAction = UIAlertAction(title: "프로필 이미지 변경", style: .default) { action in
+            print("🪢🪢updateImageAction clicked!!!")
+            self.openImageLibrary()
+        }
+        let deleteImageAction = UIAlertAction(title: "프로필 이미지 삭제", style: .destructive) { action in
+            print("🧶🧶deleteImageAction clicked!!!")
+        }
+        let actionCancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        [updateImageAction, deleteImageAction, actionCancel].forEach { actionSheet.addAction($0) }
+        
+        self.present(actionSheet, animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBackButton()
         setUI()
         tapNickNameButton()
-//        getUserData()
+        tapFilterImageView()
+        filterImageView.isUserInteractionEnabled = true
         view.backgroundColor = .appColor(.white)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -121,10 +138,16 @@ class AccountInfoViewController: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    func openImageLibrary() {
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = 1
+        configuration.filter = .images
+        
+        let imagePicker = PHPickerViewController(configuration: configuration)
+        imagePicker.delegate = self
+        self.present(imagePicker, animated: true)
     }
-    
+
     func tapNickNameButton() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(moveToUpdatedNickNameVC))
         nickNameButtonView.addGestureRecognizer(tapGestureRecognizer)
@@ -136,25 +159,50 @@ class AccountInfoViewController: UIViewController {
         print("😏😏😏😏updatedNickNameView Clicked!!")
     }
     
+    func tapFilterImageView() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFilterImageView))
+        filterImageView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func didTapFilterImageView() {
+//        activeActionSheet()
+        print("🐿🐿🐿didTapFilterImageView clicked!!!")
+    }
+    
     func getUserData() {
-        API<UserModel>(path: "users/profile/\(UserDefaultManager.user.userId)", method: .get, parameters: [:], task: .requestPlain)
-            .request { [weak self] result in
+        let user = UserDefaultManager.user
+        let socialProvider = user.userSocialProvider
+        let type: UserSocialProvider = socialProvider == 0 ? .kakao : .apple
+        kindOfLoginLabel.text = type.rawValue
+        loginImageView.image = UIImage(named: type.imageName())
+        nickNameLabel.text = user.userNickname
+    }
+    
+    func updateUserProfileImage() {
+        API<UserModel>(path: "update-profile-file", method: .post, parameters: [:], task: .requestPlain).request { result in
             switch result {
             case .success(let response):
-                // data:
-                let userNickName = response.data?.userNickname
-                let socialProvider = response.data?.userSocialProvider
-                let type: UserSocialProvider = socialProvider == 0 ? .kakao : .apple
-                self?.kindOfLoginLabel.text = type.rawValue
-                self?.loginImageView.image = UIImage(named: type.imageName())
-                self?.nickNameLabel.text = userNickName
-                
-                print(response.code, response.message)
                 print(response.data!)
             case .failure(let error):
-                // alert
                 print(error.localizedDescription)
             }
+        }
+    }
+}
+
+extension AccountInfoViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+        let itemProvider = results.first?.itemProvider
+        if let itemProvider = itemProvider,
+           itemProvider.canLoadObject(ofClass: UIImage.self) {
+            itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+                DispatchQueue.main.async {
+                    self.profileImageView.image = image as? UIImage
+                }
+            }
+        } else {
+            print("이미지 바꾸기 실패!!!")
         }
     }
 }

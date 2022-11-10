@@ -95,6 +95,7 @@
 		78F4CE4A290046A800284B86 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78F4CE44290046A800284B86 /* Pretendard-Bold.otf */; };
 		78F4CE4B290046A800284B86 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 78F4CE45290046A800284B86 /* Pretendard-Medium.otf */; };
 		78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F4CE4C290049D400284B86 /* UITextField+.swift */; };
+		7A576DFE291C33D000CC51CA /* OtherUserProjectListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A576DFD291C33D000CC51CA /* OtherUserProjectListCell.swift */; };
 		7A93B867291A6721007A91EB /* EmptyCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B85B291A6721007A91EB /* EmptyCareerProfileCell.swift */; };
 		7A93B868291A6721007A91EB /* CardProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B85C291A6721007A91EB /* CardProfileCell.swift */; };
 		7A93B869291A6721007A91EB /* IntroduceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B85D291A6721007A91EB /* IntroduceCell.swift */; };
@@ -210,6 +211,7 @@
 		78F4CE44290046A800284B86 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		78F4CE45290046A800284B86 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		78F4CE4C290049D400284B86 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		7A576DFD291C33D000CC51CA /* OtherUserProjectListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserProjectListCell.swift; sourceTree = "<group>"; };
 		7A93B85B291A6721007A91EB /* EmptyCareerProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyCareerProfileCell.swift; sourceTree = "<group>"; };
 		7A93B85C291A6721007A91EB /* CardProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardProfileCell.swift; sourceTree = "<group>"; };
 		7A93B85D291A6721007A91EB /* IntroduceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroduceCell.swift; sourceTree = "<group>"; };
@@ -660,6 +662,7 @@
 				7A93B874291A6739007A91EB /* ProjectListCell.swift */,
 				7A93B875291A6739007A91EB /* MyCareerProfileCell.swift */,
 				7A93B876291A6739007A91EB /* MyIntroduceCell.swift */,
+				7A576DFD291C33D000CC51CA /* OtherUserProjectListCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -832,6 +835,7 @@
 				7A93B883291A673A007A91EB /* MyCareerProfileViewController.swift in Sources */,
 				78DC17C528FA9D9D00331A22 /* BaseTextField.swift in Sources */,
 				7846D3D1291A3444009185F0 /* WebViewController.swift in Sources */,
+				7A576DFE291C33D000CC51CA /* OtherUserProjectListCell.swift in Sources */,
 				78DC17CB28FAA46A00331A22 /* RadioInputView.swift in Sources */,
 				7AFE501728FD8FB400A72D65 /* UIColor+.swift in Sources */,
 				78F4CE4D290049D400284B86 /* UITextField+.swift in Sources */,

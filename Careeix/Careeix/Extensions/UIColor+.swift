@@ -77,9 +77,9 @@ extension UIColor {
         case .skyblueFill:
             return UIColor(red: 141/255, green: 184/255, blue: 223/255, alpha: 1)
         case .pinkFill:
-            return UIColor(red: 220/255, green: 99/255, blue: 157/255, alpha: 1)
+            return UIColor(red: 233/255, green: 166/255, blue: 198/255, alpha: 1)
         case .yellowFill:
-            return UIColor(red: 182/255, green: 154/255, blue: 13/255, alpha: 1)
+            return UIColor(red: 232/255, green: 205/255, blue: 68/255, alpha: 1)
         case .purpleFill:
             return UIColor(red: 165/255, green: 173/255, blue: 245/255, alpha: 1)
         case .orangeFill:
@@ -89,9 +89,9 @@ extension UIColor {
         case .skyblueGradientSP:
             return UIColor(red: 53/255, green: 120/255, blue: 181/255, alpha: 0.9)
         case .pinkGradientSP:
-            return UIColor(red: 233/255, green: 166/255, blue: 198/255, alpha: 0.9)
+            return UIColor(red: 220/255, green: 99/255, blue: 157/255, alpha: 0.9)
         case .yellowGradientSP:
-            return UIColor(red: 232/255, green: 205/255, blue: 68/255, alpha: 0.9)
+            return UIColor(red: 182/255, green: 154/255, blue: 13/255, alpha: 0.9)
         case .purpleGradientSP:
             return UIColor(red: 46/255, green: 59/255, blue: 171/255, alpha: 0.9)
         case .orangeGradientSP:

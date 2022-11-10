@@ -45,7 +45,6 @@ class MyIntroduceCell: UICollectionViewCell {
 
     func configure(_ info: UserModel) {
         (descriptionLabel.text, descriptionLabel.textColor) = info.userIntro == "" ? ("연필 아이콘을 눌러 소개글을 입력해주세요.", .appColor(.gray250)) : (info.userIntro, .appColor(.gray900))
-        setUI()
     }
     
     func setUI() {
@@ -57,9 +56,8 @@ class MyIntroduceCell: UICollectionViewCell {
         }
         
         descriptionLabel.snp.makeConstraints {
-            $0.leading.equalTo(headerLabel.snp.leading)
+            $0.leading.trailing.equalToSuperview().inset(22)
             $0.top.equalTo(headerLabel.snp.bottom).offset(5)
-            $0.width.equalTo(331)
         }
         
         seperatorView.snp.makeConstraints {

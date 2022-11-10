@@ -94,7 +94,6 @@ class MyCareerProfileCell: UICollectionViewCell {
         careerNameLabel.text = info.userJob
         careerGradeLabel.text = UserWork.setUserWork(grade: info.userWork)
         setUserDetailJobs(detailJobs: info.userDetailJobs)
-        print("🐯🐯🐯COLOR\(info.userProfileColor)🐯🐯🐯🐯")
         setProfileColor(fillColor: info.userProfileColor)
         
     }

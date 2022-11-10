@@ -10,6 +10,14 @@ import UIKit
 import SnapKit
 import Moya
 
+enum CardProfileSection: Hashable {
+    case userProfile, introduce, project
+}
+
+enum CardProfileItem: Hashable {
+    case userProfile(UserModel), introduce(UserModel), project(ProjectModel)
+}
+
 class CardProfileDetailViewController: UIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -27,10 +35,11 @@ class CardProfileDetailViewController: UIViewController {
         setupNavigationBackButton()
         getUserData()
         getProjectData()
-        cardProfileCollectionView.delegate = self
-        
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        observingNotificationCenter()
+    }
     
     var userId = 0
     
@@ -63,6 +72,17 @@ class CardProfileDetailViewController: UIViewController {
         }
     }
     
+    func observingNotificationCenter() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showUserReportModalView), name: Notification.Name(rawValue: "tappedUserReportImageView"), object: nil)
+    }
+    
+    @objc func showUserReportModalView() {
+        print("showUserReportModalView Tapped!!!")
+//        let reportAlertView = TwoButtonAlertViewController(viewModel: .init(type: .userReportwarning))
+//        present(reportAlertView, animated: true)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "tappedUserReportImageView"), object: nil)
+    }
+    
     var cardProfileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: nil, userSocialProvider: 0)
     
     var projectModel: ProjectModel = ProjectModel(project_id: 0, title: "", start_date: "", end_date: "", is_proceed: 0, classification: "", introduction: "")
@@ -71,18 +91,11 @@ class CardProfileDetailViewController: UIViewController {
     
     func setCollectionView() {
         view.addSubview(cardProfileCollectionView)
+        cardProfileCollectionView.delegate = self
         cardProfileCollectionView.collectionViewLayout = createLayout()
         cardProfileCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-    }
-    
-    enum CardProfileSection: Hashable {
-        case userProfile, introduce, project
-    }
-    
-    enum CardProfileItem: Hashable {
-        case userProfile(UserModel), introduce(UserModel), project(ProjectModel)
     }
     
     var datasource: UICollectionViewDiffableDataSource<CardProfileSection, CardProfileItem>!
@@ -90,7 +103,7 @@ class CardProfileDetailViewController: UIViewController {
     func configurationDatasource() {
         let cardProfileRegistraion = UICollectionView.CellRegistration<CardProfileCell, CardProfileItem> { _, _, _ in }
         let introduceRegistration = UICollectionView.CellRegistration<IntroduceCell, CardProfileItem> { _, _, _ in }
-        let projectListRegistration = UICollectionView.CellRegistration<ProjectListCell, CardProfileItem> { _, _, _ in }
+        let projectListRegistration = UICollectionView.CellRegistration<OtherUserProjectListCell, CardProfileItem> { _, _, _ in }
         let projectListHeaderRegistraion = UICollectionView.SupplementaryRegistration<ProjectListHeaderView>(elementKind: ProjectListHeaderView.identifier) { _, _, _ in }
         
         datasource = UICollectionViewDiffableDataSource<CardProfileSection, CardProfileItem>(collectionView: cardProfileCollectionView, cellProvider: {
@@ -151,7 +164,7 @@ extension CardProfileDetailViewController: UICollectionViewDelegate {
         
         // TODO: 화면 전환
         
-        guard let cell = collectionView.cellForItem(at: indexPath) as? ProjectListCell else { return }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? OtherUserProjectListCell else { return }
         
         if indexPath.section == 2 {
             let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: cell.projectId))
@@ -167,16 +180,15 @@ extension CardProfileDetailViewController {
         return UICollectionViewCompositionalLayout { (sectionIndex, env) -> NSCollectionLayoutSection? in
             switch sectionIndex {
             case 0:
-                let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.4))
-                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.4), subitem: item, count: 1)
+                let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.55))
+                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.55), subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 62, leading: 0, bottom: 0, trailing: 0)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 15, leading: 0, bottom: 0, trailing: 0)
                 return section
             case 1:
-                let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.1))
-                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.1), subitem: item, count: 1)
+                let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.2))
+                let group = CompositionalLayout.createGroup(alignment: .horizontal, width: .fractionalWidth(1), height: .fractionalWidth(0.2), subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 30, trailing: 0)
                 return section
             case 2:
                 let item = CompositionalLayout.createItem(width: .fractionalWidth(1), height: .fractionalWidth(0.4))
