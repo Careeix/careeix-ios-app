@@ -120,7 +120,7 @@ class CardProfileDetailViewController: UIViewController {
             switch result {
             case .success(let response):
                 // data
-                if response.data == nil {
+                if response.data == [] {
                     self?.emptyContentView.isHidden = false
                     self?.updateProjectSection(projectData: [])
                 } else {

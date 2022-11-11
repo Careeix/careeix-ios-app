@@ -79,9 +79,8 @@ enum GradientColor: String {
         gradientLayer.cornerRadius = cornerRadius
         contentView.layer.addSublayer(gradientLayer)
     }
-    
-    
 }
+
 enum HomeSection: Hashable {
     case myCareerProfile, cardCareerProfiles
 }
@@ -191,7 +190,7 @@ class HomeViewController: UIViewController {
             switch result {
             case .success(let response):
                 // data:
-                if response.data == nil {
+                if response.data == [] {
                     self?.emptyContentView.isHidden = false
                     self?.updateCardCareerSection(cardProfileData: [])
                 } else {

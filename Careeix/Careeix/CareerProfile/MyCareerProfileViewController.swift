@@ -9,6 +9,15 @@ import Foundation
 import UIKit
 import SnapKit
 import Moya
+
+enum MyCareerProfileSection: Hashable {
+    case userProfile, introduce, project
+}
+
+enum MyCareerProfileItem: Hashable {
+    case userProfile(UserModel), introduce(UserModel), project(ProjectModel)
+}
+
 class MyCareerProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +33,8 @@ class MyCareerProfileViewController: UIViewController {
         setEmptyProject()
     }
     
+    weak var delegate: TwoButtonAlertViewDelegate?
+
     let emptyContentView = UIView()
     
     let emptyImageView: UIImageView = {
@@ -81,7 +92,6 @@ class MyCareerProfileViewController: UIViewController {
     
     func observingNotificationCenter() {
         NotificationCenter.default.addObserver(self, selector: #selector(showProfileInputView), name: Notification.Name(rawValue: "didTapUpdateProfileImageView"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showProjectInputView), name: Notification.Name(rawValue: "didTapKebabImageView"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showUpdateInputView), name: Notification.Name(rawValue: "didTapUpdateButtonView"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showDeleteModalView), name: Notification.Name(rawValue: "didTapDeleteButtonView"), object: nil)
     }
@@ -111,12 +121,6 @@ class MyCareerProfileViewController: UIViewController {
         print("showProfileInputView")
     }
     
-    @objc func showProjectInputView() {
-//        let vc = UpdatedMyProfileViewController()
-//        navigationController?.pushViewController(vc, animated: true)
-        print("🤷‍♂️🤷‍♂️🤷‍♂️showProjectInputView")
-    }
-    
     @objc func showUpdateInputView() {
         print("🤗🤗🤗showUpdateInputView Tapped!!!!")
     }
@@ -124,6 +128,7 @@ class MyCareerProfileViewController: UIViewController {
     @objc func showDeleteModalView() {
         let projectDeleteAlertView = TwoButtonAlertViewController(viewModel: .init(type: .deleteProject))
         self.present(projectDeleteAlertView, animated: true)
+        projectDeleteAlertView.delegate = self
         print("🤔🤗🤗showDeleteModalView Tapped!!!!")
     }
     
@@ -144,17 +149,17 @@ class MyCareerProfileViewController: UIViewController {
         let parameters = ["id": UserDefaultManager.user.userId]
         API<[ProjectModel]>(path: "project/by-user", method: .get, parameters: parameters, task: .requestParameters(encoding: URLEncoding(destination: .queryString)))
             .request { [weak self] result in
+                print(result)
                 switch result {
                 case .success(let response):
                     // data
-                    if response.data == nil {
+                    if response.data == [] {
                         self?.emptyContentView.isHidden = false
                         self?.updateProjectSection(projectData: [])
                     } else {
                         self?.emptyContentView.isHidden = true
                         self?.updateProjectSection(projectData: response.data ?? [])
                     }
-                    
                 case .failure(let error):
                     // alert
                     print("projectAPIError: \(error.localizedDescription)")
@@ -162,6 +167,22 @@ class MyCareerProfileViewController: UIViewController {
             }
     }
     
+    var projectId = 0
+    
+    func deleteProjectData() {
+        API<ProjectChapter>(path: "project/\(projectId)", method: .patch, parameters: [:], task: .requestPlain).request { result in
+            switch result {
+            case .success(let response):
+                let deleteProjectConfirmAlertView = OneButtonAlertViewController(viewModel: .init(content: "프로젝트가 삭제되었습니다.", buttonText: "확인", textColor: .gray400))
+                self.present(deleteProjectConfirmAlertView, animated: true)
+                print(response.code, response.message)
+                print(response.data!)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+      
     var profileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: nil, userSocialProvider: 0)
     
     var projectModel: ProjectModel = ProjectModel(project_id: 0, title: "", start_date: "", end_date: "", is_proceed: 0, classification: "", introduction: "")
@@ -180,14 +201,6 @@ class MyCareerProfileViewController: UIViewController {
     @objc func moveToUpdatedProfileVC() {
         let vc = UpdatedNicknameViewController()
         navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    enum MyCareerProfileSection: Hashable {
-        case userProfile, introduce, project
-    }
-    
-    enum MyCareerProfileItem: Hashable {
-        case userProfile(UserModel), introduce(UserModel), project(ProjectModel)
     }
     
     var datasource: UICollectionViewDiffableDataSource<MyCareerProfileSection, MyCareerProfileItem>!
@@ -259,14 +272,24 @@ extension MyCareerProfileViewController: UICollectionViewDelegate {
         
         // TODO: 화면 전환
         guard let projectCell = collectionView.cellForItem(at: indexPath) as? ProjectListCell else { return }
-        
         if indexPath.section == 2 {
             let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: projectCell.projectId))
             self.navigationController?.pushViewController(vc, animated: true)
             print("projectId = \(projectCell.projectId)")
         }
-        
     }
+}
+
+extension MyCareerProfileViewController: TwoButtonAlertViewDelegate {
+    func didTapRightButton(type: TwoButtonAlertType) {
+        deleteProjectData()
+        dismiss(animated: true)
+    }
+    
+    func didTapLeftButton(type: TwoButtonAlertType) {
+        dismiss(animated: true)
+    }
+    
     
 }
 
