@@ -21,6 +21,62 @@ class MyCareerProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         getMyUserData()
         getMyProjectData()
+        setEmptyProject()
+    }
+    
+    let emptyContentView = UIView()
+    
+    let emptyImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.tintColor = .appColor(.gray30)
+        imageView.image = UIImage(named: "emptyProject")
+        return imageView
+    }()
+    
+    let largeLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appColor(.gray200)
+        label.font = .pretendardFont(size: 15, style: .medium)
+        label.textAlignment = .center
+        label.text = "프로젝트가 존재하지 않습니다."
+        return label
+    }()
+    
+    let smallLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appColor(.gray200)
+        label.font = .pretendardFont(size: 14, style: .medium)
+        label.textAlignment = .center
+        label.text = "하단의 등록을 눌러 프로젝트를 추가해보세요."
+        return label
+    }()
+    
+    func setEmptyProject() {
+        view.addSubview(emptyContentView)
+        
+        emptyContentView.isHidden = true
+        
+        emptyContentView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(150)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        [emptyImageView, largeLabel, smallLabel].forEach { emptyContentView.addSubview($0) }
+        
+        emptyImageView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        largeLabel.snp.makeConstraints {
+            $0.top.equalTo(emptyImageView.snp.bottom).offset(20)
+            $0.centerX.equalToSuperview()
+        }
+        
+        smallLabel.snp.makeConstraints {
+            $0.top.equalTo(largeLabel.snp.bottom).offset(5)
+            $0.centerX.equalToSuperview()
+        }
     }
     
     func observingNotificationCenter() {
@@ -41,7 +97,11 @@ class MyCareerProfileViewController: UIViewController {
                                                        "시니어(9년차~)"]),
                 detailJobsInputViewModel: .init(title: "상세 직무 태그",
                                                 description: "상세 직무 개수는 1~3개까지 입력 가능합니다.",
-                textFieldViewModels: [BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)"),BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)"),BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)")]),
+                textFieldViewModels: [
+                    BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)"),
+                    BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)"),
+                    BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)")
+                ]),
                 
                 introduceInputViewModel: .init(title: "소개", baseTextViewModel: .init(placeholder: "소개글을 작성해주세요.", inputStringRelay: .init(value: "소개"))),
                 completeButtonViewModel: .init(content: "저장하기", backgroundColor: .next)
@@ -62,6 +122,8 @@ class MyCareerProfileViewController: UIViewController {
     }
     
     @objc func showDeleteModalView() {
+        let projectDeleteAlertView = TwoButtonAlertViewController(viewModel: .init(type: .deleteProject))
+        self.present(projectDeleteAlertView, animated: true)
         print("🤔🤗🤗showDeleteModalView Tapped!!!!")
     }
     
@@ -85,7 +147,13 @@ class MyCareerProfileViewController: UIViewController {
                 switch result {
                 case .success(let response):
                     // data
-                    self?.updateProjectSection(projectData: response.data ?? [])
+                    if response.data == nil {
+                        self?.emptyContentView.isHidden = false
+                        self?.updateProjectSection(projectData: [])
+                    } else {
+                        self?.emptyContentView.isHidden = true
+                        self?.updateProjectSection(projectData: response.data ?? [])
+                    }
                     
                 case .failure(let error):
                     // alert
@@ -94,7 +162,7 @@ class MyCareerProfileViewController: UIViewController {
             }
     }
     
-    var profileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
+    var profileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: nil, userSocialProvider: 0)
     
     var projectModel: ProjectModel = ProjectModel(project_id: 0, title: "", start_date: "", end_date: "", is_proceed: 0, classification: "", introduction: "")
     
@@ -167,20 +235,23 @@ class MyCareerProfileViewController: UIViewController {
         datasource.apply(snapshot, animatingDifferences: false)
     }
     
+    func updateUserSection(userData: UserModel? = nil) {
+        var userDataSnapshot = datasource.snapshot(for: .userProfile)
+        var userIntroSnapshot = datasource.snapshot(for: .introduce)
+        userDataSnapshot.deleteAll()
+        userIntroSnapshot.deleteAll()
+        userDataSnapshot.append([.userProfile(userData ?? profileModel)])
+        userIntroSnapshot.append([.introduce(userData ?? profileModel)])
+        datasource.apply(userDataSnapshot, to: .userProfile)
+        datasource.apply(userIntroSnapshot, to: .introduce)
+    }
+ 
     func updateProjectSection(projectData: [ProjectModel] = []) {
         var snapshot = datasource.snapshot(for: .project)
         snapshot.deleteAll()
         snapshot.append(projectData.compactMap { .project($0)})
         datasource.apply(snapshot, to: .project)
     }
-    
-    func updateUserSection(userData: UserModel? = nil) {
-        var snapshot = datasource.snapshot(for: .userProfile)
-        snapshot.deleteAll()
-        snapshot.append([.userProfile(userData ?? profileModel)])
-        datasource.apply(snapshot, to: .userProfile)
-    }
-    
 }
 
 extension MyCareerProfileViewController: UICollectionViewDelegate {

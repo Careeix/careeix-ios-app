@@ -18,6 +18,8 @@ enum TwoButtonAlertType: String {
     case warningCancelWriting = "정말로 나가시겠습니까?"
     case warningLogoutWriting = "로그아웃하시겠습니까?"
     case warningSecession = "탈퇴 하시겠습니까?"
+    case deleteProject = "프로젝트를 삭제하시겠습니까?"
+    
     func getLeftButtonString() -> String {
         switch self {
         default:
@@ -44,6 +46,8 @@ enum TwoButtonAlertType: String {
             return "로그아웃"
         case .warningSecession:
             return "탈퇴"
+        case .deleteProject:
+            return "삭제"
         default:
             return "확인"
         }

@@ -116,7 +116,11 @@ class ProjectListCell: UICollectionViewCell {
     
     @objc func didTapKebabImageView() {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "didTapKebabImageView"), object: nil)
-        twoWayButtonView.isHidden = false
+        if twoWayButtonView.isHidden == true {
+            twoWayButtonView.isHidden = false
+        } else {
+            twoWayButtonView.isHidden = true
+        }
     }
     
     @objc func didTapUpdateButtonView() {

@@ -96,8 +96,6 @@ class HomeViewController: UIViewController {
         setupCollectionView()
         configurationDatasource()
         createNavigationBarItem()
-        homeCollectionView.delegate = self
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,6 +103,7 @@ class HomeViewController: UIViewController {
         tabBarController?.tabBar.isHidden = false
         getUserData()
         recommandUserData()
+        setEmptyProfile()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -112,7 +111,64 @@ class HomeViewController: UIViewController {
         !UserDefaultManager.firstLoginFlag ? showModalView() : nil
         UserDefaultManager.firstLoginFlag = true
     }
-    // MARK: RecommandCareerProfile API Call
+    
+    let emptyContentView = UIView()
+    
+    let emptyImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.tintColor = .appColor(.gray30)
+        imageView.image = UIImage(named: "emptyProfile")
+        return imageView
+    }()
+    
+    let largeLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appColor(.gray200)
+        label.font = .pretendardFont(size: 15, style: .medium)
+        label.textAlignment = .center
+        label.text = "관련된 커리어 프로필이 존재하지 않습니다."
+        return label
+    }()
+    
+    let smallLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appColor(.gray200)
+        label.font = .pretendardFont(size: 14, style: .medium)
+        label.textAlignment = .center
+        label.text = "상세 직무 태그를 확인해보세요."
+        return label
+    }()
+    
+    func setEmptyProfile() {
+        view.addSubview(emptyContentView)
+        
+        emptyContentView.isHidden = true
+        
+        emptyContentView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(150)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        [emptyImageView, largeLabel, smallLabel].forEach { emptyContentView.addSubview($0) }
+        
+        emptyImageView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        largeLabel.snp.makeConstraints {
+            $0.top.equalTo(emptyImageView.snp.bottom).offset(20)
+            $0.centerX.equalToSuperview()
+        }
+        
+        smallLabel.snp.makeConstraints {
+            $0.top.equalTo(largeLabel.snp.bottom).offset(5)
+            $0.centerX.equalToSuperview()
+        }
+    }
+    
+    //MARK: GetUseData
+    
     func getUserData() {
         let user = UserDefaultManager.user
         updateMyCareerProfileSection(myProfileData: .init(userId: user.userId,
@@ -126,15 +182,22 @@ class HomeViewController: UIViewController {
                                                           userSocialProvider: user.userSocialProvider))
 
     }
+    
+    // MARK: RecommandCareerProfile API Call
+    
     func recommandUserData() {
         API<[RecommandUserModel]>(path: "users/recommend/profile", method: .get, parameters: [:], task: .requestPlain)
             .request { [weak self] result in
             switch result {
             case .success(let response):
-                // 데이터가 비어있고, 데이터가 nil이고
-//                guard let response.data?.isEmpty, isHidden = false else isHidden = true
                 // data:
-                self?.updateCardCareerSection(cardProfileData: response.data ?? [])
+                if response.data == nil {
+                    self?.emptyContentView.isHidden = false
+                    self?.updateCardCareerSection(cardProfileData: [])
+                } else {
+                    self?.emptyContentView.isHidden = true
+                    self?.updateCardCareerSection(cardProfileData: response.data ?? [])
+                }
             case .failure(let error):
                 // alert
                 print("recommandUserData: \(error.localizedDescription)")
@@ -167,9 +230,7 @@ class HomeViewController: UIViewController {
         view.addSubview(homeCollectionView)
         homeCollectionView.collectionViewLayout = createLayout()
         homeCollectionView.snp.makeConstraints { $0.edges.equalToSuperview() }
-        
-//        view.addSubview(a)
-//        a.snp.makeConstraints { $0.edges.equalToSuperview() }
+        homeCollectionView.delegate = self
     }
     
     var profileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: "", userSocialProvider: 0)
@@ -200,7 +261,6 @@ class HomeViewController: UIViewController {
                 using: relevantHeaderRegistraion, for: indexPath)
             return header
         }
-        
         changeDatasource()
     }
     
@@ -219,6 +279,7 @@ class HomeViewController: UIViewController {
         snapshot.append([.myCareerProfile(myProfileData ?? profileModel)])
         datasource.apply(snapshot, to: .myCareerProfile)
     }
+    
     func updateCardCareerSection(cardProfileData: [RecommandUserModel] = []) {
         var snapshot = datasource.snapshot(for: .cardCareerProfiles)
         snapshot.deleteAll()
@@ -228,7 +289,6 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: UICollectionViewDelegate {
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1 {
             // TODO: 화면전환
