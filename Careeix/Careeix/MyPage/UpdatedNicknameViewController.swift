@@ -24,6 +24,8 @@ class UpdatedNicknameViewController: UIViewController {
         return label
     }()
     
+    let updateNicknameAlertView = OneButtonAlertViewController(viewModel: .init(content: "닉네임이 변경되었습니다.", buttonText: "확인", textColor: .gray400))
+    
     let subject = PublishSubject<Bool>()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,9 +94,8 @@ class UpdatedNicknameViewController: UIViewController {
     }
     
     @objc func touchedConfirmButton() {
-        print("nickName Value: \(textFieldView.textField.text!)")
-        navigationController?.popViewController(animated: true)
         updateUserData()
+        navigationController?.popViewController(animated: true)
     }
     
     func updateUserData() {
@@ -104,9 +105,8 @@ class UpdatedNicknameViewController: UIViewController {
             switch result {
             case .success(let response):
                 // data:
-//                UserDefaultManager.user.userNickname = response.data!.userNickname
-                print("😀😀😀😀유저닉네임 업데이트: \(response.code), \(response.message)😀😀😀😀")
-                print(response.data!)
+                UserDefaultManager.user.userNickname = response.data?.userNickname ?? userNickname
+                self.present(self.updateNicknameAlertView, animated: true)
             case .failure(let error):
                 // alert
                 print("😀😀😀😀유저닉네임 업데이트 실패: \(error.localizedDescription)😀😀😀😀")

@@ -8,7 +8,7 @@
 import Foundation
 
 struct UpdateUserNicknameModel: Codable {
-    let userNickname: String
+    let userNickname: String?
 }
 
 struct UpdateUserProfileImageModel: Codable {

@@ -124,6 +124,10 @@ class AccountInfoViewController: UIViewController {
         getUserData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        getUserData()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
