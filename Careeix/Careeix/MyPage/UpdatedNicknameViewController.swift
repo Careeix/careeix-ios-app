@@ -24,6 +24,8 @@ class UpdatedNicknameViewController: UIViewController {
         return label
     }()
     
+    let updateNicknameAlertView = OneButtonAlertViewController(viewModel: .init(content: "닉네임이 변경되었습니다.", buttonText: "확인", textColor: .gray400))
+    
     let subject = PublishSubject<Bool>()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +60,7 @@ class UpdatedNicknameViewController: UIViewController {
             }.disposed(by: disposeBag)
         
     }
+    
     func keyboardBinding() {
         RxKeyboard.instance.visibleHeight
             .skip(1)    // 초기 값 버리기
@@ -74,6 +77,7 @@ class UpdatedNicknameViewController: UIViewController {
                 }
             }.disposed(by: disposeBag)
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
@@ -90,23 +94,19 @@ class UpdatedNicknameViewController: UIViewController {
     }
     
     @objc func touchedConfirmButton() {
-        print("nickName Value: \(textFieldView.textField.text!)")
-        navigationController?.popViewController(animated: true)
         updateUserData()
-        dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     func updateUserData() {
         guard let userNickname = self.textFieldView.textField.text else { return }
-        API<UserModel>(path: "users/update-profile-nickname", method: .post, parameters: ["userNickname": userNickname], task: .requestParameters(encoding: URLEncoding(destination: .queryString)), headers: ["X-ACCESS-TOKEN": UserDefaultManager.user.jwt]).request { result in
+        API<UpdateUserNicknameModel>(path: "users/update-profile-nickname", method: .post, parameters: ["userNickname": userNickname], task: .requestParameters(encoding: URLEncoding(destination: .queryString))).request { result in
             print(result)
             switch result {
             case .success(let response):
                 // data:
-//                UserDefaultManager.user.userNickname = response.data?.userNickname ?? ""
-                // mapping error 났는데 다시 빌드하면 유저디폴트는 수정되어있음
-                print("😀😀😀😀유저닉네임 업데이트: \(response.code), \(response.message)😀😀😀😀")
-                print(response.data!)
+                UserDefaultManager.user.userNickname = response.data?.userNickname ?? userNickname
+                self.present(self.updateNicknameAlertView, animated: true)
             case .failure(let error):
                 // alert
                 print("😀😀😀😀유저닉네임 업데이트 실패: \(error.localizedDescription)😀😀😀😀")

@@ -7,13 +7,10 @@
 
 import Foundation
 
-struct UserDataUpdateModel: Codable {
-    let code: String
-    let timeStamp: String
-    let message: String
-    let data: [Responseresult]
+struct UpdateUserNicknameModel: Codable {
+    let userNickname: String?
 }
 
-struct Responseresult: Codable {
-    let message: String
+struct UpdateUserProfileImageModel: Codable {
+    let file: String?
 }
