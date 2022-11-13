@@ -170,10 +170,10 @@ class ProjectChapterInputViewController: UIViewController {
         titleTextField.font = .pretendardFont(size: 16, style: .medium)
         contentTextView = BaseTextView(viewModel: viewModel.contentViewModel)
         viewModel.updateProjectChapter()
+        
         super.init(nibName: nil, bundle: nil)
         view.backgroundColor = .white
         setUI()
-        completeButtonView.isUserInteractionEnabled = false
         setupNavigationBackButton()
         hidesBottomBarWhenPushed = true
     }
@@ -184,17 +184,22 @@ class ProjectChapterInputViewController: UIViewController {
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
-        viewModel.fillInputs()
         super.viewDidLoad()
+        viewModel.fillInputs()
+        
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         bind(to: viewModel)
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         viewModel.checkAndRemove()
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         titleTextField.becomeFirstResponder()
+        updateCompleteButtonView(with: false)
     }
     
     // MARK: - UIComponents

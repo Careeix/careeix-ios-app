@@ -235,7 +235,7 @@ class ProjectInputViewController: UIViewController {
         view.backgroundColor = .appColor(.white)
         viewModel.initProject()
         NotificationCenter.default.addObserver(self, selector: #selector(occurNetworkError), name: Notification.Name(rawValue: "projectFetchError"), object: nil)
-        
+        updateCompleteButtonView(with: false)
     }
     
     @objc
@@ -254,6 +254,7 @@ class ProjectInputViewController: UIViewController {
 
         viewModel.viewDidAppearRelay.accept(())
         titleInputView.textField.becomeFirstResponder()
+        
     }
     
     deinit {
