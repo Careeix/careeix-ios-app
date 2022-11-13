@@ -137,16 +137,6 @@ class AccountInfoViewController: UIViewController {
         present(vc, animated: true)
     }
     
-    func openImageLibrary() {
-        var configuration = PHPickerConfiguration()
-        configuration.selectionLimit = 1
-        configuration.filter = .images
-        
-        let imagePicker = PHPickerViewController(configuration: configuration)
-        imagePicker.delegate = self
-        self.present(imagePicker, animated: true)
-    }
-    
     func tapNickNameButton() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(moveToUpdatedNickNameVC))
         nickNameButtonView.addGestureRecognizer(tapGestureRecognizer)
@@ -161,12 +151,6 @@ class AccountInfoViewController: UIViewController {
     func tapFilterImageView() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFilterImageView))
         filterImageView.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc func moveToUpdatedNickNameVC() {
-        let updatedNicknameVC = UpdatedNicknameViewController()
-        self.navigationController?.pushViewController(updatedNicknameVC, animated: true)
-        print("😏😏😏😏updatedNickNameView Clicked!!")
     }
    
     @objc func didTapFilterImageView() {
