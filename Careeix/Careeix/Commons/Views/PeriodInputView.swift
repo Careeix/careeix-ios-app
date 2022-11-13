@@ -21,7 +21,6 @@ struct PeriodInputViewModel {
     // MARK: - Input
     let startDateTappedRelay = PublishRelay<Void>()
     let endDateTappedRelay = PublishRelay<Void>()
-    let isSelectedProceedingRelay = PublishRelay<Bool>()
     
     // MARK: - Output
     let titleDriver: Driver<String>

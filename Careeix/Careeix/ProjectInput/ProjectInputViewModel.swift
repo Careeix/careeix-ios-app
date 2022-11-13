@@ -146,10 +146,9 @@ struct ProjectInputViewModel {
         guard let remainigInput = UserDefaultManager.projectBaseInputCache[projectId] else { return }
         titleInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.title)
         classificationInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.classification)
+        periodInputViewModel.checkBoxViewModel.isSelectedRelay.accept(remainigInput.isProceed)
         periodInputViewModel.startDateViewModel.inputStringRelay.accept(remainigInput.startDateString)
         periodInputViewModel.endDateViewModel.inputStringRelay.accept(remainigInput.endDateString ?? Date().toString())
-        periodInputViewModel.checkBoxViewModel.isSelectedRelay.accept(remainigInput.isProceed)
-        periodInputViewModel.isSelectedProceedingRelay.accept(remainigInput.isProceed)
         introduceInputViewModel.baseTextViewModel.inputStringRelay.accept(remainigInput.introduce)
     }
     
