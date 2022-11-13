@@ -36,7 +36,7 @@ class DatePickerView: UIView {
     
     func configure() {
         backgroundColor = .white
-        layer.shadowColor = UIColor.appColor(.gray500).cgColor
+        layer.shadowColor = UIColor.appColor(.gray200).cgColor
         layer.masksToBounds = false
         layer.shadowOffset = .init(width: 0, height: DatePickerView.datePickerShadowHeight)
         layer.shadowRadius = 20
