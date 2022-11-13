@@ -35,10 +35,19 @@ struct ProjectRepository {
                     return .just(.init(code: "", message: "네트워크 환경을 확인해주세요."))
                 }
             }
-        // TODO: API 정의 (수정)
-        : Observable.create { observer in
-            observer.onNext(.init(code: "asd", message: "수정"))
-            return Disposables.create()
-        }
+        // TODO: API 테스트
+        : API<ProjectDTO.Update.Response>(path: "project/edit/\(id)",
+                                          method: .patch,
+                                          parameters: [:],
+                                          task: .requestJSONEncodable(project)
+        ).requestRX()
+            .map { _ in .init(code: "200", message: "성공") }
+            .catch { error in
+                if let error = error as? ErrorResponse {
+                    return .just(.init(code: error.code, message: error.message))
+                } else {
+                    return .just(.init(code: "", message: "네트워크 환경을 확인해주세요."))
+                }
+            }
     }
 }

@@ -122,6 +122,10 @@ class ProjectInputViewController: UIViewController {
                 owner.showAskingKeepWritingView()
             }.disposed(by: disposeBag)
         
+        viewModel.fillDataDriver
+            .drive { _ in
+                viewModel.fillRemainingInput()
+            }.disposed(by: disposeBag)
     }
     
     // MARK: - function

@@ -33,6 +33,7 @@ struct ProjectInputViewModel {
     let combinedDataDriver: Driver<ProjectBaseInfo>
     let checkBoxIsSelctedDriver: Driver<Bool>
     let askingKeepAlertDriver: Driver<Void>
+    let fillDataDriver: Driver<Void>
     
     init(titleInputViewModel: SimpleInputViewModel,
          periodInputViewModel: PeriodInputViewModel,
@@ -113,12 +114,18 @@ struct ProjectInputViewModel {
             .share()
         
         let isNotSameData = initialFetchData
+            .debug("서버에서 패치한 데이터")
             .filter { $0.0 != UserDefaultManager.projectBaseInputCache[projectId] || $0.1 != UserDefaultManager.projectChaptersInputCache[projectId] }
+            
             .do {
                 UserDefaultManager.projectBaseInputCache[-2] = $0.0
                 UserDefaultManager.projectChaptersInputCache[-2] = $0.1
             }
         
+        fillDataDriver = initialFetchData
+            .filter { !($0.0 != UserDefaultManager.projectBaseInputCache[projectId] || $0.1 != UserDefaultManager.projectChaptersInputCache[projectId]) }
+            .map { _ in () }
+            .asDriver(onErrorJustReturn: ())
         // 프로젝트를 가지고 (유저디폴트에 값이 있으면) 이어서 수정하시겠습니까를 띄어야 하는지 판단 ->
         // 이어서 수정하기 -> 유저디폴트 값유지
         // 이어서 수정안하기 -> 새로운 데이터로 유저 디폴트 값 저장 -> (등록이면 초기화값, 수정이면 서버에서 패치해온값)
@@ -126,6 +133,16 @@ struct ProjectInputViewModel {
         askingKeepAlertDriver = isNotSameData
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
+        func fillRemainingInput() {
+            guard let remainigInput = UserDefaultManager.projectBaseInputCache[projectId] else { return }
+            print("남아있는 데잍")
+            titleInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.title)
+            classificationInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.classification)
+            periodInputViewModel.checkBoxViewModel.isSelectedRelay.accept(remainigInput.isProceed)
+            periodInputViewModel.startDateViewModel.inputStringRelay.accept(remainigInput.startDateString)
+            periodInputViewModel.endDateViewModel.inputStringRelay.accept(remainigInput.endDateString ?? Date().toString())
+            introduceInputViewModel.baseTextViewModel.inputStringRelay.accept(remainigInput.introduce)
+        }
     }
     
     func updatePersistanceData(_ sender :ProjectBaseInfo) {
@@ -140,6 +157,7 @@ struct ProjectInputViewModel {
     
     func fillRemainingInput() {
         guard let remainigInput = UserDefaultManager.projectBaseInputCache[projectId] else { return }
+        print("남아있는 데잍")
         titleInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.title)
         classificationInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.classification)
         periodInputViewModel.checkBoxViewModel.isSelectedRelay.accept(remainigInput.isProceed)

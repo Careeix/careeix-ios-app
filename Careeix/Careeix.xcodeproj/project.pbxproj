@@ -293,7 +293,7 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
-		78345DFA29126F0700EB9621 /* Project */ = {
+		78345DFA29126F0700EB9621 /* ProjectLookup */ = {
 			isa = PBXGroup;
 			children = (
 				78345DFE29126F0700EB9621 /* ProjectLookupViewController.swift */,
@@ -301,7 +301,7 @@
 				78345DFC29126F0700EB9621 /* Cells */,
 				78345DFF29126F0700EB9621 /* Views */,
 			);
-			path = Project;
+			path = ProjectLookup;
 			sourceTree = "<group>";
 		};
 		78345DFC29126F0700EB9621 /* Cells */ = {
@@ -391,7 +391,7 @@
 				786F46902901441700215AF0 /* ProjectInput */,
 				785AF52E290512C200592F7F /* ProjectInputDetail */,
 				785AF5372905572900592F7F /* ProjectChapterInput */,
-				78345DFA29126F0700EB9621 /* Project */,
+				78345DFA29126F0700EB9621 /* ProjectLookup */,
 				78345E0529126F1100EB9621 /* ProjectChapter */,
 				78BC173A29217BD600C2B535 /* MyCareerProfile */,
 				7A93B872291A6739007A91EB /* CareerProfile */,
