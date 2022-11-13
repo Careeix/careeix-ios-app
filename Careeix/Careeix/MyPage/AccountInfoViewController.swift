@@ -143,8 +143,8 @@ class AccountInfoViewController: UIViewController {
     }
     
     @objc func moveToUpdatedNickNameVC() {
-        //        let updatedNicknameVC = UpdatedNicknameViewController()
-        //        self.navigationController?.pushViewController(updatedNicknameVC, animated: true)
+        let updatedNicknameVC = UpdatedNicknameViewController()
+        self.navigationController?.pushViewController(updatedNicknameVC, animated: true)
         print("😏😏😏😏updatedNickNameView Clicked!!")
     }
     
