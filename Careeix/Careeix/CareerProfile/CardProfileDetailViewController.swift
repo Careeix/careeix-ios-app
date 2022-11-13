@@ -35,13 +35,69 @@ class CardProfileDetailViewController: UIViewController {
         setupNavigationBackButton()
         getUserData()
         getProjectData()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
+        setEmptyProject()
         observingNotificationCenter()
     }
     
     var userId = 0
+    
+    let emptyContentView = UIView()
+    
+    let emptyImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.tintColor = .appColor(.gray30)
+        imageView.image = UIImage(named: "emptyProject")
+        return imageView
+    }()
+    
+    let largeLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appColor(.gray200)
+        label.font = .pretendardFont(size: 15, style: .medium)
+        label.textAlignment = .center
+        label.text = "프로젝트가 존재하지 않습니다."
+        return label
+    }()
+    
+    let smallLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appColor(.gray200)
+        label.font = .pretendardFont(size: 14, style: .medium)
+        label.textAlignment = .center
+        label.text = "하단의 등록을 눌러 프로젝트를 추가해보세요."
+        return label
+    }()
+    
+    let reportTwoButtonAlertView = TwoButtonAlertViewController(viewModel: .init(type: .userReportwarning))
+    let confirmReportingButtonAlertView = OneButtonAlertViewController(viewModel: .init(content: "신고 접수가 완료되었습니다.", buttonText: "확인", textColor: .gray400))
+    
+    func setEmptyProject() {
+        view.addSubview(emptyContentView)
+        
+        emptyContentView.isHidden = true
+        
+        emptyContentView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(250)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        [emptyImageView, largeLabel, smallLabel].forEach { emptyContentView.addSubview($0) }
+        
+        emptyImageView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        largeLabel.snp.makeConstraints {
+            $0.top.equalTo(emptyImageView.snp.bottom).offset(20)
+            $0.centerX.equalToSuperview()
+        }
+        
+        smallLabel.snp.makeConstraints {
+            $0.top.equalTo(largeLabel.snp.bottom).offset(5)
+            $0.centerX.equalToSuperview()
+        }
+    }
     
     func getUserData() {
         API<UserModel>(path: "users/profile/\(userId)", method: .get, parameters: [:], task: .requestPlain)
@@ -64,10 +120,36 @@ class CardProfileDetailViewController: UIViewController {
             switch result {
             case .success(let response):
                 // data
-                self?.updateProjectSection(projectData: response.data ?? [])
+                if response.data == [] {
+                    self?.emptyContentView.isHidden = false
+                    self?.updateProjectSection(projectData: [])
+                } else {
+                    self?.emptyContentView.isHidden = true
+                    self?.updateProjectSection(projectData: response.data ?? [])
+                }
             case .failure(let error):
                 // alert
                 print("projectAPIError: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func reportingNegativeUser() {
+        let negetiveUserId = ["id": userId]
+        API<ReportUserModel>(path: "report", method: .post, parameters: negetiveUserId, task: .requestParameters(encoding: URLEncoding(destination: .queryString))).request { result in
+            switch result {
+            case .success(let response):
+                switch response.data?.status {
+                case 0:
+                    self.confirmReportingButtonAlertView.contentLabel.text = "신고 접수가 취소되었습니다."
+                    self.present(self.confirmReportingButtonAlertView, animated: true)
+                case 1:
+                    self.present(self.confirmReportingButtonAlertView, animated: true)
+                default:
+                    return
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }
@@ -77,10 +159,8 @@ class CardProfileDetailViewController: UIViewController {
     }
     
     @objc func showUserReportModalView() {
-        print("showUserReportModalView Tapped!!!")
-//        let reportAlertView = TwoButtonAlertViewController(viewModel: .init(type: .userReportwarning))
-//        present(reportAlertView, animated: true)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "tappedUserReportImageView"), object: nil)
+        self.present(reportTwoButtonAlertView, animated: true)
+        reportTwoButtonAlertView.delegate = self
     }
     
     var cardProfileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: nil, userSocialProvider: 0)
@@ -129,7 +209,6 @@ class CardProfileDetailViewController: UIViewController {
                 using: projectListHeaderRegistraion, for: indexPath)
             return header
         }
-        
         changeDatasource()
     }
     
@@ -144,18 +223,22 @@ class CardProfileDetailViewController: UIViewController {
         datasource.apply(snapshot)
     }
     
+    func updateUserSection(userData: UserModel? = nil) {
+        var userDataSnapshot = datasource.snapshot(for: .userProfile)
+        var userIntroSnapshot = datasource.snapshot(for: .introduce)
+        userDataSnapshot.deleteAll()
+        userIntroSnapshot.deleteAll()
+        userDataSnapshot.append([.userProfile(userData ?? cardProfileModel)])
+        userIntroSnapshot.append([.introduce(userData ?? cardProfileModel)])
+        datasource.apply(userDataSnapshot, to: .userProfile)
+        datasource.apply(userIntroSnapshot, to: .introduce)
+    }
+    
     func updateProjectSection(projectData: [ProjectModel] = []) {
         var snapshot = datasource.snapshot(for: .project)
         snapshot.deleteAll()
         snapshot.append(projectData.compactMap { .project($0)})
         datasource.apply(snapshot, to: .project)
-    }
-    
-    func updateUserSection(userData: UserModel? = nil) {
-        var snapshot = datasource.snapshot(for: .userProfile)
-        snapshot.deleteAll()
-        snapshot.append([.userProfile(userData ?? cardProfileModel)])
-        datasource.apply(snapshot, to: .userProfile)
     }
 }
 
@@ -171,7 +254,17 @@ extension CardProfileDetailViewController: UICollectionViewDelegate {
             self.navigationController?.pushViewController(vc, animated: true)
             print(cell.projectId)
         }
-        
+    }
+}
+
+extension CardProfileDetailViewController: TwoButtonAlertViewDelegate {
+    func didTapRightButton(type: TwoButtonAlertType) {
+        reportingNegativeUser()
+        dismiss(animated: true)
+    }
+    
+    func didTapLeftButton(type: TwoButtonAlertType) {
+        dismiss(animated: true)
     }
 }
 

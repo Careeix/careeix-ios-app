@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import SnapKit
 import PhotosUI
-
 enum UserSocialProvider: String {
     case kakao = "카카오 로그인"
     case apple = "애플 로그인"
@@ -25,8 +24,6 @@ enum UserSocialProvider: String {
 }
 
 class AccountInfoViewController: UIViewController {
-    
-    //MARK: UIComponents
     
     let infoLabel: UILabel = {
         let label = UILabel()
@@ -115,7 +112,7 @@ class AccountInfoViewController: UIViewController {
         tapFilterImageView()
         filterImageView.isUserInteractionEnabled = true
         view.backgroundColor = .appColor(.white)
-        actionWithdrawalButton()
+        withdrawalButton.addTarget(self, action: #selector(didTapWithDrawButton), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -133,11 +130,32 @@ class AccountInfoViewController: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
-    //MARK: TapGesture
+    @objc
+    func didTapWithDrawButton() {
+        let vc = TwoButtonAlertViewController(viewModel: .init(type: .warningSecession))
+        vc.delegate = self
+        present(vc, animated: true)
+    }
+    
+    func openImageLibrary() {
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = 1
+        configuration.filter = .images
+        
+        let imagePicker = PHPickerViewController(configuration: configuration)
+        imagePicker.delegate = self
+        self.present(imagePicker, animated: true)
+    }
     
     func tapNickNameButton() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(moveToUpdatedNickNameVC))
         nickNameButtonView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    @objc func moveToUpdatedNickNameVC() {
+        //        let updatedNicknameVC = UpdatedNicknameViewController()
+        //        self.navigationController?.pushViewController(updatedNicknameVC, animated: true)
+        print("😏😏😏😏updatedNickNameView Clicked!!")
     }
     
     func tapFilterImageView() {
@@ -152,7 +170,7 @@ class AccountInfoViewController: UIViewController {
     }
    
     @objc func didTapFilterImageView() {
-        activeActionSheet()
+        //        activeActionSheet()
         print("🐿🐿🐿didTapFilterImageView clicked!!!")
     }
     
@@ -313,5 +331,29 @@ extension AccountInfoViewController {
             $0.leading.equalToSuperview().inset(30)
             $0.bottom.equalToSuperview().inset(45)
         }
+    }
+}
+
+extension AccountInfoViewController: TwoButtonAlertViewDelegate {
+    func didTapRightButton(type: TwoButtonAlertType) {
+        dismiss(animated: true)
+        
+        API<ErrorResponse>(path: "users/withdraw", method: .post, parameters: [:], task: .requestPlain)
+            .request { [weak self] result in
+                switch result {
+                case .success(_):
+                    UserDefaultManager.firstLoginFlag = false
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "logoutSuccess"), object: false)
+                case .failure(let error):
+                    if let error = error as? ErrorResponse {
+                        let vc = OneButtonAlertViewController(viewModel: .init(content: error.message, buttonText: "확인", textColor: .error))
+                        self?.present(vc, animated: true)
+                    }
+                }
+            }
+    }
+    
+    func didTapLeftButton(type: TwoButtonAlertType) {
+        dismiss(animated: true)
     }
 }
