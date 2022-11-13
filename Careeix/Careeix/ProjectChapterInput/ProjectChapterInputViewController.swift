@@ -173,7 +173,6 @@ class ProjectChapterInputViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         view.backgroundColor = .white
         setUI()
-        title = "\(viewModel.currentIndex)"
         completeButtonView.isUserInteractionEnabled = false
         setupNavigationBackButton()
         hidesBottomBarWhenPushed = true

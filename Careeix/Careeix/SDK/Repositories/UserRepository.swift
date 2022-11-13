@@ -73,6 +73,8 @@ struct UserRepository {
             }.debug("🦊🦊🦊프로필 POST🦊🦊")
     }
     
+
+    
     func errorUser(message: String = "네트워크 환경을 확인해주세요.") -> Observable<User>{
         .just(.init(jwt: "", message: message))
     }
