@@ -173,19 +173,15 @@ class MyCareerProfileViewController: UIViewController {
                     self.cellData = response.data
                     guard let data = response.data else { return }
                     // data
-                    if data == [] {
-                        self.emptyContentView.isHidden = false
-                        self.updateProjectSection(projectData: [])
-                    } else {
-                        self.emptyContentView.isHidden = true
-                        self.updateProjectSection(projectData: data)
-                    }
+                    self.updateProjectSection(projectData: data)
+
                 case .failure(let error):
                     // alert
                     print("projectAPIError: \(error.localizedDescription)")
                 }
             }
     }
+    
     
     func deleteProjectData() {
         guard let cellData, UserDefaultManager.willDeleteProjectRow != -1 else { return }
@@ -194,9 +190,11 @@ class MyCareerProfileViewController: UIViewController {
             switch result {
             case .success(_):
                 self.present(self.deleteProjectConfirmAlertView, animated: true)
-                print(cellData, UserDefaultManager.willDeleteProjectRow,"🐷")
                 let row = UserDefaultManager.willDeleteProjectRow
                 self.cellData?.remove(at: row)
+                
+                
+                
                 self.updateProjectSection(projectData: self.cellData ?? [])
                 
             case .failure(let error):
@@ -263,6 +261,8 @@ class MyCareerProfileViewController: UIViewController {
     
     func changeDatasource(userData: UserModel? = nil, projectData: [ProjectModel] = []) {
         var snapshot = NSDiffableDataSourceSnapshot<MyCareerProfileSection, MyCareerProfileItem>()
+        emptyContentView.isHidden = !projectData.isEmpty
+        myCareerProfileCollectionView.isScrollEnabled = !projectData.isEmpty
         snapshot.appendSections([.userProfile])
         snapshot.appendItems([.userProfile(userData ?? profileModel)])
         snapshot.appendSections([.introduce])
@@ -273,6 +273,7 @@ class MyCareerProfileViewController: UIViewController {
     }
     
     func updateUserSection(userData: UserModel? = nil) {
+        
         var userDataSnapshot = datasource.snapshot(for: .userProfile)
         var userIntroSnapshot = datasource.snapshot(for: .introduce)
         userDataSnapshot.deleteAll()
@@ -284,6 +285,8 @@ class MyCareerProfileViewController: UIViewController {
     }
  
     func updateProjectSection(projectData: [ProjectModel] = []) {
+        emptyContentView.isHidden = !projectData.isEmpty
+        myCareerProfileCollectionView.isScrollEnabled = !projectData.isEmpty
         var snapshot = datasource.snapshot(for: .project)
         snapshot.deleteAll()
         snapshot.append(projectData.compactMap { .project($0)})

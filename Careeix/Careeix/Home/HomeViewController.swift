@@ -95,14 +95,14 @@ class HomeViewController: UIViewController {
         setupCollectionView()
         configurationDatasource()
         createNavigationBarItem()
+        homeCollectionView.isScrollEnabled = false
+        setEmptyProfile()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = false
         getUserData()
         recommandUserData()
-        setEmptyProfile()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -190,7 +190,7 @@ class HomeViewController: UIViewController {
             switch result {
             case .success(let response):
                 // data:
-                if response.data == [] {
+                if response.data == nil {
                     self?.emptyContentView.isHidden = false
                     self?.updateCardCareerSection(cardProfileData: [])
                 } else {
