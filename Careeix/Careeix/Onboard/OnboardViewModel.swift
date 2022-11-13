@@ -45,7 +45,6 @@ struct OnboardViewModel {
         
         let needMoreInfoObservableShare = loginResponseObservable
             .map { $0.jwt == "1" }
-            .do { _ in print("jwt Token: ", UserDefaultManager.user.jwt) }
             .share()
             
         showHomeViewDriver = needMoreInfoObservableShare
