@@ -58,8 +58,7 @@ class ProjectLookupViewModel {
             .asDriver(onErrorJustReturn: .init(title: "", classification: "", introduce: ""))
         
         let updateResult = updateTrigger
-            .flatMap { projectRepository.updateProject(with: projectId, project: project())}
-            .debug("🐿️🐿️🐿️프로젝트 포스트 !🐿️🐿️")
+            .flatMap { projectRepository.updateProject(with: projectId, project: project()) }
             .share()
             
         
@@ -76,11 +75,6 @@ class ProjectLookupViewModel {
         
         
         func project() -> Project {
-            print("발행전 데이터 확인")
-            print(projectId)
-            print(UserDefaultManager.user)
-            print(UserDefaultManager.projectBaseInputCache[projectId])
-            print(UserDefaultManager.projectChaptersInputCache[projectId])
             guard let baseInput = UserDefaultManager.projectBaseInputCache[projectId], let chapterInput = UserDefaultManager.projectChaptersInputCache[projectId] else { return .init() }
             
             return .init(title: baseInput.title,

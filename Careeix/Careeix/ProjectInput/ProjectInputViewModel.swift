@@ -133,16 +133,6 @@ struct ProjectInputViewModel {
         askingKeepAlertDriver = isNotSameData
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
-        func fillRemainingInput() {
-            guard let remainigInput = UserDefaultManager.projectBaseInputCache[projectId] else { return }
-            print("남아있는 데잍")
-            titleInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.title)
-            classificationInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.classification)
-            periodInputViewModel.checkBoxViewModel.isSelectedRelay.accept(remainigInput.isProceed)
-            periodInputViewModel.startDateViewModel.inputStringRelay.accept(remainigInput.startDateString)
-            periodInputViewModel.endDateViewModel.inputStringRelay.accept(remainigInput.endDateString ?? Date().toString())
-            introduceInputViewModel.baseTextViewModel.inputStringRelay.accept(remainigInput.introduce)
-        }
     }
     
     func updatePersistanceData(_ sender :ProjectBaseInfo) {
@@ -157,7 +147,6 @@ struct ProjectInputViewModel {
     
     func fillRemainingInput() {
         guard let remainigInput = UserDefaultManager.projectBaseInputCache[projectId] else { return }
-        print("남아있는 데잍")
         titleInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.title)
         classificationInputViewModel.textfieldViewModel.inputStringRelay.accept(remainigInput.classification)
         periodInputViewModel.checkBoxViewModel.isSelectedRelay.accept(remainigInput.isProceed)

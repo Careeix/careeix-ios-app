@@ -87,7 +87,6 @@ class UpdateProfileViewModel {
         jobInputViewModel.textfieldViewModel.inputStringRelay.accept(job)
         annualInputViewModel.selectedIndexRelay.accept(IndexPath(row: annual, section: 0))
         zip(detailJobsInputViewModel.multiInputCellViewModels, detailJobs).forEach {
-            print("왜!!!", $0.1)
             $0.0.textFieldViewModel.inputStringRelay.accept($0.1)
         }
         introduceInputViewModel.baseTextViewModel.inputStringRelay.accept(introduce)

@@ -18,9 +18,6 @@ struct ProjectRepository {
     }
     
     func updateProject(with id: Int, project: Project) -> Observable<ProjectDTO.Update.Response> {
-        print("request:")
-        print("id: \(id)")
-        dump(project)
         return id == -1
         ? API<ProjectDTO.Update.Response>(path: "project",
                                           method: .post,
