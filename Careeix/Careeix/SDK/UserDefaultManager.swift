@@ -37,6 +37,9 @@ struct UserDefaultManager {
     
     @UserDefault(key: "loginType", defaultValue: SocialLoginSDK.SocialLoginType.kakao)
     public static var loginType: SocialLoginSDK.SocialLoginType
+    
+    @UserDefault(key: "willDeleteProjectRow", defaultValue: -1)
+    public static var willDeleteProjectRow: Int
 }
     
 

@@ -14,6 +14,7 @@ enum CustomTask {
     case requestPlain
     case requestJSONEncodable(Encodable)
     case requestParameters(encoding: ParameterEncoding)
+    case uploadMultipart(formData: [MultipartFormData])
 }
 
 struct APIResponse<T: Decodable>: Decodable {
@@ -51,6 +52,8 @@ class API<T: Decodable> {
             newTask = .requestJSONEncodable(requestModel)
         case .requestParameters(let encodingType):
             newTask = .requestParameters(parameters: parameters, encoding: encodingType)
+        case .uploadMultipart(let data) :
+            newTask = .uploadMultipart(data)
         }
         self.api = .init(path: path, method: method, parameters: parameters, task: newTask, headers: headers)
     }
@@ -102,8 +105,6 @@ class API<T: Decodable> {
     private func httpProcess(response: Response) throws {
         guard 200...299 ~= response.statusCode else {
             let errorResponse = try response.map(ErrorResponse.self)
-
-            
             throw NetworkError.httpStatus(errorResponse)
         }
     }

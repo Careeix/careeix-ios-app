@@ -115,10 +115,6 @@ struct ProjectInputViewModel {
         let isNotSameData = initialFetchData
             .filter { $0.0 != UserDefaultManager.projectBaseInputCache[projectId] || $0.1 != UserDefaultManager.projectChaptersInputCache[projectId] }
             .do {
-                print("🥸🥸🥸🥸")
-                print($0)
-                print(UserDefaultManager.projectBaseInputCache[projectId])
-                print(UserDefaultManager.projectChaptersInputCache[projectId])
                 UserDefaultManager.projectBaseInputCache[-2] = $0.0
                 UserDefaultManager.projectChaptersInputCache[-2] = $0.1
             }

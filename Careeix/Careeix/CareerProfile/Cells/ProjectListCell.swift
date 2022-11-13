@@ -10,12 +10,13 @@ import UIKit
 import SnapKit
 
 class ProjectListCell: UICollectionViewCell {
+    
+    var row = -1
+    var projectId = -1
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUI()
-        kebabImageView.isUserInteractionEnabled = true
-        updataLabel.isUserInteractionEnabled = true
-        deleteLabel.isUserInteractionEnabled = true
         tappedGesture()
     }
     
@@ -23,6 +24,8 @@ class ProjectListCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    let kebabTouchableView = UIView()
     let startDateLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appColor(.date)
@@ -39,6 +42,7 @@ class ProjectListCell: UICollectionViewCell {
     
     let kebabImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(named: "kebabIcon")
         return imageView
     }()
@@ -78,6 +82,7 @@ class ProjectListCell: UICollectionViewCell {
     let updataLabel: UILabel = {
         let label = UILabel()
         label.text = "수정하기"
+        label.textAlignment = .center
         label.textColor = .appColor(.text)
         label.font = .pretendardFont(size: 13, style: .regular)
         return label
@@ -94,27 +99,36 @@ class ProjectListCell: UICollectionViewCell {
     let deleteLabel: UILabel = {
         let label = UILabel()
         label.text = "삭제하기"
+        label.textAlignment = .center
         label.textColor = .appColor(.text)
         label.font = .pretendardFont(size: 13, style: .regular)
         return label
     }()
-    
-    var projectId = -1
+
     
     override func prepareForReuse() {
-        projectId = 0
+        twoWayButtonView.isHidden = true
+        projectId = -1
+        row = -1
     }
     
     func tappedGesture() {
-        let kebebTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapKebabImageView))
-        kebabImageView.addGestureRecognizer(kebebTapGesture)
+        updataLabel.isUserInteractionEnabled = true
+        deleteLabel.isUserInteractionEnabled = true
+        kebabTouchableView.isUserInteractionEnabled = true
+        
         let updateTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapUpdateButtonView))
         updataLabel.addGestureRecognizer(updateTapGesture)
+        
         let deleteTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapDeleteButtonView))
         deleteLabel.addGestureRecognizer(deleteTapGesture)
+        
+        let kebabGesture = UITapGestureRecognizer(target: self, action: #selector(didTapKebabTouchableView))
+        kebabTouchableView.addGestureRecognizer(kebabGesture)
+        
     }
     
-    @objc func didTapKebabImageView() {
+    @objc func didTapKebabTouchableView() {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "didTapKebabImageView"), object: nil)
         if twoWayButtonView.isHidden == true {
             twoWayButtonView.isHidden = false
@@ -124,10 +138,11 @@ class ProjectListCell: UICollectionViewCell {
     }
     
     @objc func didTapUpdateButtonView() {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "didTapUpdateButtonView"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "didTapUpdateButtonView"), object: nil, userInfo: ["projectId": projectId])
     }
     
     @objc func didTapDeleteButtonView() {
+        UserDefaultManager.willDeleteProjectRow = row
         NotificationCenter.default.post(name: Notification.Name(rawValue: "didTapDeleteButtonView"), object: nil)
     }
     
@@ -145,7 +160,7 @@ class ProjectListCell: UICollectionViewCell {
         contentView.layer.borderColor = UIColor.appColor(.gray200).cgColor
         contentView.layer.cornerRadius = 5
         
-        [startDateLabel, endDateLabel, kebabImageView, projectTitleLabel, projectClassificationLabel, projecIntroduceLabel]
+        [startDateLabel, endDateLabel, kebabImageView, projectTitleLabel, projectClassificationLabel, projecIntroduceLabel, kebabTouchableView]
             .forEach { contentView.addSubview($0) }
         
         startDateLabel.snp.makeConstraints {
@@ -159,8 +174,15 @@ class ProjectListCell: UICollectionViewCell {
         }
         
         kebabImageView.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(17)
             $0.top.equalTo(endDateLabel.snp.top)
+            $0.trailing.equalToSuperview().inset(17)
+            $0.height.equalTo(15)
+        }
+        
+        kebabTouchableView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.width.height.equalTo(40)
         }
         
         projectTitleLabel.snp.makeConstraints {
@@ -181,7 +203,7 @@ class ProjectListCell: UICollectionViewCell {
         contentView.addSubview(twoWayButtonView)
         
         twoWayButtonView.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(213)
+            $0.width.equalToSuperview().multipliedBy(0.3)
             $0.trailing.equalToSuperview().inset(8)
             $0.top.equalTo(kebabImageView.snp.bottom).offset(15)
             $0.bottom.equalToSuperview().inset(5)
@@ -190,19 +212,21 @@ class ProjectListCell: UICollectionViewCell {
         [updataLabel, seperatorView, deleteLabel].forEach { twoWayButtonView.addSubview($0) }
         
         updataLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(15)
-            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalToSuperview().dividedBy(2)
         }
         
         seperatorView.snp.makeConstraints {
-            $0.top.equalTo(updataLabel.snp.bottom).offset(11)
+            $0.top.equalTo(updataLabel.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(6)
             $0.height.equalTo(1)
         }
         
         deleteLabel.snp.makeConstraints {
-            $0.top.equalTo(seperatorView.snp.bottom).offset(11)
-            $0.centerX.equalToSuperview()
+            $0.top.equalTo(seperatorView)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
 }

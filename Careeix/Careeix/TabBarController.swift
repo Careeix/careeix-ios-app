@@ -11,7 +11,6 @@ class TabBarController: UITabBarController {
     
     lazy var homeViewController: UIViewController = {
         let vc = NavigationController(rootViewController: HomeViewController())
-//        vc.updateProgressBar(progress: 0)
         vc.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "home"), tag: 0)
         
         return vc

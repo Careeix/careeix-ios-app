@@ -9,6 +9,9 @@ import Foundation
 import UIKit
 import SnapKit
 import PhotosUI
+import Moya
+import Kingfisher
+
 enum UserSocialProvider: String {
     case kakao = "카카오 로그인"
     case apple = "애플 로그인"
@@ -57,7 +60,8 @@ class AccountInfoViewController: UIViewController {
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "basicProfile")
-        imageView.layer.cornerRadius = 89 / 2
+        imageView.layer.cornerRadius = 85 / 2
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -93,7 +97,6 @@ class AccountInfoViewController: UIViewController {
         imageView.image = UIImage(named: "right")
         return imageView
     }()
-    
     let withdrawalButton: UIButton = {
         let button = UIButton()
         button.setTitle("회원탈퇴", for: .normal)
@@ -103,6 +106,14 @@ class AccountInfoViewController: UIViewController {
     }()
     
     //MARK: LifeCycle
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        hidesBottomBarWhenPushed = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,17 +128,7 @@ class AccountInfoViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
         getUserData()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        getUserData()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        tabBarController?.tabBar.isHidden = false
     }
     
     @objc
@@ -152,24 +153,13 @@ class AccountInfoViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFilterImageView))
         filterImageView.addGestureRecognizer(tapGesture)
     }
-   
+    
     @objc func didTapFilterImageView() {
-        //        activeActionSheet()
+        activeActionSheet()
         print("🐿🐿🐿didTapFilterImageView clicked!!!")
     }
     
-    //MARK: Action WithdrawalButton
-    
-    func actionWithdrawalButton() {
-        withdrawalButton.addTarget(self, action: #selector(didTapWithdrawalButton), for: .touchUpInside)
-    }
-    
-    @objc func didTapWithdrawalButton() {
-        print("🥽🥽🥽회원탈퇴 버튼 눌림🥽🥽🥽")
-    }
-    
     //MARK: GetUserData - UserDefaultManager
-    
     func getUserData() {
         let user = UserDefaultManager.user
         let socialProvider = user.userSocialProvider
@@ -177,32 +167,26 @@ class AccountInfoViewController: UIViewController {
         kindOfLoginLabel.text = type.rawValue
         loginImageView.image = UIImage(named: type.imageName())
         nickNameLabel.text = user.userNickname
-    }
-    
-    // MARK: NetWorking - UserProfileImage
-    
-    func updateUserProfileImage() {
-        API<UpdateUserProfileImageModel>(path: "update-profile-file", method: .post, parameters: [:], task: .requestPlain).request { result in
-            switch result {
-            case .success(let response):
-                print(response.data!)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
+        if let urlString = user.userProfileImg {
+            profileImageView.kf.setImage(with: URL(string: urlString))
+        } else {
+            profileImageView.image = UIImage(named: "basicProfile")
         }
+        
     }
     
     //MARK: Updated ProfileImage ActionSheet
-    
     func activeActionSheet() {
         let actionSheet = UIAlertController(title: "프로필 이미지 관리", message: nil, preferredStyle: .actionSheet)
         let updateImageAction = UIAlertAction(title: "프로필 이미지 변경", style: .default) { action in
             print("🪢🪢updateImageAction clicked!!!")
             self.openImageLibrary()
         }
-        let deleteImageAction = UIAlertAction(title: "프로필 이미지 삭제", style: .destructive) { action in
+        let deleteImageAction = UIAlertAction(title: "프로필 이미지 삭제", style: .destructive) { [weak self] action in
+            guard let self else { return }
             print("🧶🧶deleteImageAction clicked!!!")
             self.profileImageView.image = UIImage(named: "basicProfile")
+            UserDefaultManager.user.userProfileImg = nil
             let deleteImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 삭제되었습니다.", buttonText: "확인", textColor: .gray400))
             self.present(deleteImageAlert, animated: true)
         }
@@ -213,12 +197,10 @@ class AccountInfoViewController: UIViewController {
     }
     
     //MARK: Open PhotoAlbum
-    
     func openImageLibrary() {
         var configuration = PHPickerConfiguration()
         configuration.selectionLimit = 1
         configuration.filter = .images
-        
         let imagePicker = PHPickerViewController(configuration: configuration)
         imagePicker.delegate = self
         self.present(imagePicker, animated: true)
@@ -228,23 +210,46 @@ class AccountInfoViewController: UIViewController {
 extension AccountInfoViewController: PHPickerViewControllerDelegate {
     
     //MARK: PHPickerViewControllerDelegate
-
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
         let itemProvider = results.first?.itemProvider
-        if let itemProvider = itemProvider,
+        if let itemProvider,
            itemProvider.canLoadObject(ofClass: UIImage.self) {
-            itemProvider.loadObject(ofClass: UIImage.self) { image, error in
-                DispatchQueue.main.async {
-                    self.profileImageView.image = image as? UIImage
-                    self.profileImageView.layer.masksToBounds = true
-                }
+            itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+                guard let self, let image = image as? UIImage else { return }
+                self.updateUserProfileImage(image: image)
             }
         } else {
             print("이미지 바꾸기 실패!!!")
         }
-        let updateImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 변경되었습니다.", buttonText: "확인", textColor: .gray400))
-        present(updateImageAlert, animated: true)
+
+    }
+    
+    // MARK: NetWorking - UserProfileImage
+    func updateUserProfileImage(image: UIImage) {
+        guard let imageData = image.jpegData(compressionQuality: 0.1) else { return }
+
+        let data: [MultipartFormData] = [.init(provider: .data(imageData), name: "file", fileName: "user.jpeg", mimeType: "image/jpeg")]
+        
+        API<UpdateUserProfileImageModel>(path: "users/update-profile-file", method: .post, parameters: [:], task: .uploadMultipart(formData: data), headers: [
+            "Content-Type": "multipart/form-data",
+            "X-ACCESS-TOKEN": UserDefaultManager.user.jwt
+        ]).request { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let response):
+                UserDefaultManager.user.userProfileImg = response.data?.userProfileImg
+                self.profileImageView.image = image
+                let updateImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 변경되었습니다.", buttonText: "확인", textColor: .gray400))
+                self.present(updateImageAlert, animated: true)
+                
+            case .failure(let error):
+                if let error = error as? ErrorResponse {
+                    print("🥸", error)
+                }
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 

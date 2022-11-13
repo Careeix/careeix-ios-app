@@ -16,7 +16,7 @@ class ProjectChapterCellViewModel {
     let titleDriver: Driver<String>
     
     init(index: Int, title: String) {
-        indexDriver = .just(String(index))
+        indexDriver = .just(String(index + 1))
         titleDriver = .just(title)
     }
 }

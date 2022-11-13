@@ -46,7 +46,7 @@ class ProjectLookupViewController: UIViewController {
         tableView.rx.itemSelected
             .withUnretained(self)
             .map { owner, indexPath -> (Int, ProjectChapter) in
-                guard let cell = owner.tableView.cellForRow(at: indexPath) as? ProjectChapterLookupCell else { return (0, .init(title: "", content: "'", notes: []))}
+                guard let cell = owner.tableView.cellForRow(at: indexPath) as? ProjectChapterLookupCell else { return (0, .init(title: "", content: "", notes: []))}
                 return (indexPath.row, cell.viewModel.projectChapter)
             }.asDriver(onErrorJustReturn: (0, .init(title: "", content: "", notes: [])))
             .drive(with: self) { owner, info in
@@ -85,6 +85,7 @@ class ProjectLookupViewController: UIViewController {
         bind(to: viewModel)
         completeButtonView.isHidden = !viewModel.isWriting
         hidesBottomBarWhenPushed = true
+        print(viewModel.projectId)
     }
     
     required init?(coder: NSCoder) {

@@ -34,8 +34,6 @@ class MyCareerProfileViewController: UIViewController {
     }
     
     weak var delegate: TwoButtonAlertViewDelegate?
-    
-    var projectId = 0
 
     let emptyContentView = UIView()
     
@@ -125,16 +123,31 @@ class MyCareerProfileViewController: UIViewController {
         print("showProfileInputView")
     }
     
-    @objc func showUpdateInputView() {
-        print("🤗🤗🤗showUpdateInputView Tapped!!!!")
+    @objc func showUpdateInputView(_ sender: Notification) {
+        guard let projectId = sender.userInfo?["projectId"] as? Int else { return }
+        let vc = ProjectInputViewController(
+            viewModel: .init(
+                titleInputViewModel: .init(title: "제목",
+                                           textFieldViewModel: .init(placeholder: "프로젝트 제목을 입력해주세요.")),
+                periodInputViewModel: .init(title: "기간",
+                                            description: "프로젝트 기간을 입력해주세요.",
+                                            checkBoxViewModel: .init()
+                                           ),
+                classificationInputViewModel: .init(title: "구분",
+                                              textFieldViewModel: .init(placeholder: "Ex. 개인활동/팀활동/(소속이름)")),
+                introduceInputViewModel: .init(title: "소개",
+                                               baseTextViewModel: .init(placeholder: "진행한 일을 2줄 이내로 소개해주세요."))
+                ,projectId: projectId
+            )
+        )
+        navigationController?.pushViewController(vc, animated: true)
+
     }
     
     @objc func showDeleteModalView() {
         let projectDeleteAlertView = TwoButtonAlertViewController(viewModel: .init(type: .deleteProject))
         self.present(projectDeleteAlertView, animated: true)
         projectDeleteAlertView.delegate = self
-        tabBarController?.tabBar.isHidden = true
-        print("🤔🤗🤗showDeleteModalView Tapped!!!!")
     }
     
     func getMyUserData() {
@@ -149,21 +162,23 @@ class MyCareerProfileViewController: UIViewController {
                                           userIntro: user.userIntro,
                                           userSocialProvider: user.userSocialProvider))
     }
-    
+    var cellData: [ProjectModel]?
     func getMyProjectData() {
         let parameters = ["id": UserDefaultManager.user.userId]
         API<[ProjectModel]>(path: "project/by-user", method: .get, parameters: parameters, task: .requestParameters(encoding: URLEncoding(destination: .queryString)))
             .request { [weak self] result in
-                print(result)
+                guard let self else { return }
                 switch result {
                 case .success(let response):
+                    self.cellData = response.data
+                    guard let data = response.data else { return }
                     // data
-                    if response.data == [] {
-                        self?.emptyContentView.isHidden = false
-                        self?.updateProjectSection(projectData: [])
+                    if data == [] {
+                        self.emptyContentView.isHidden = false
+                        self.updateProjectSection(projectData: [])
                     } else {
-                        self?.emptyContentView.isHidden = true
-                        self?.updateProjectSection(projectData: response.data ?? [])
+                        self.emptyContentView.isHidden = true
+                        self.updateProjectSection(projectData: data)
                     }
                 case .failure(let error):
                     // alert
@@ -173,18 +188,19 @@ class MyCareerProfileViewController: UIViewController {
     }
     
     func deleteProjectData() {
-        let parameter = ["project_id": projectId]
-        API<DeleteProjectModel>(path: "project/\(projectId)", method: .patch, parameters: parameter, task: .requestParameters(encoding: URLEncoding(destination: .queryString))).request { result in
+        guard let cellData, UserDefaultManager.willDeleteProjectRow != -1 else { return }
+        API<String>(path: "project/\(cellData[UserDefaultManager.willDeleteProjectRow].project_id)", method: .patch, parameters: [:], task: .requestPlain).request { [weak self] result in
+            guard let self else { return }
             switch result {
-            case .success(let response):
+            case .success(_):
                 self.present(self.deleteProjectConfirmAlertView, animated: true)
-                self.tabBarController?.tabBar.isHidden = false
-                print(response.code, response.message)
-                print(response.data!)
+                print(cellData, UserDefaultManager.willDeleteProjectRow,"🐷")
+                let row = UserDefaultManager.willDeleteProjectRow
+                self.cellData?.remove(at: row)
+                self.updateProjectSection(projectData: self.cellData ?? [])
                 
             case .failure(let error):
                 print(error.localizedDescription)
-                self.tabBarController?.tabBar.isHidden = false
             }
         }
     }
@@ -231,7 +247,8 @@ class MyCareerProfileViewController: UIViewController {
             case .project(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: projectListRegistration, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
-                self.projectId = cell.projectId
+                cell.row = indexPath.row
+                cell.projectId = item.project_id
                 return cell
             }
         })

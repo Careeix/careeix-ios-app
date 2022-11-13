@@ -12,5 +12,5 @@ struct UpdateUserNicknameModel: Codable {
 }
 
 struct UpdateUserProfileImageModel: Codable {
-    let file: String?
+    let userProfileImg: String?
 }
