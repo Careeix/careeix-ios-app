@@ -10,6 +10,7 @@ import Moya
 import CareeixKey
 import RxSwift
 import RxMoya
+
 enum CustomTask {
     case requestPlain
     case requestJSONEncodable(Encodable)

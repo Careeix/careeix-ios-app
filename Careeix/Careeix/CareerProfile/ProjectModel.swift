@@ -16,11 +16,3 @@ struct ProjectModel: Hashable, Codable {
     let classification: String
     let introduction: String
 }
-
-struct DeleteProjectModel: Codable {
-    let status: Int?
-    let title: String?
-    let project_detail_title: String?
-    let content: String?
-    let projectNotes: [Note]?
-}

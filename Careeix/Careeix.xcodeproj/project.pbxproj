@@ -104,7 +104,6 @@
 		7A93B869291A6721007A91EB /* IntroduceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B85D291A6721007A91EB /* IntroduceCell.swift */; };
 		7A93B86A291A6721007A91EB /* RelevantCareerProfilesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B85E291A6721007A91EB /* RelevantCareerProfilesCell.swift */; };
 		7A93B86B291A6721007A91EB /* MinimalCareerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B85F291A6721007A91EB /* MinimalCareerProfileCell.swift */; };
-		7A93B86C291A6721007A91EB /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B860291A6721007A91EB /* HomeViewModel.swift */; };
 		7A93B86D291A6721007A91EB /* HomeAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B861291A6721007A91EB /* HomeAlertViewController.swift */; };
 		7A93B86E291A6721007A91EB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B862291A6721007A91EB /* HomeViewController.swift */; };
 		7A93B86F291A6721007A91EB /* HomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A93B863291A6721007A91EB /* HomeModel.swift */; };
@@ -222,7 +221,6 @@
 		7A93B85D291A6721007A91EB /* IntroduceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroduceCell.swift; sourceTree = "<group>"; };
 		7A93B85E291A6721007A91EB /* RelevantCareerProfilesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelevantCareerProfilesCell.swift; sourceTree = "<group>"; };
 		7A93B85F291A6721007A91EB /* MinimalCareerProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinimalCareerProfileCell.swift; sourceTree = "<group>"; };
-		7A93B860291A6721007A91EB /* HomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		7A93B861291A6721007A91EB /* HomeAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeAlertViewController.swift; sourceTree = "<group>"; };
 		7A93B862291A6721007A91EB /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		7A93B863291A6721007A91EB /* HomeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeModel.swift; sourceTree = "<group>"; };
@@ -333,10 +331,9 @@
 		78345E0829126F1B00EB9621 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
-				78345E0929126F1B00EB9621 /* Cells */,
-				78345E0C29126F1B00EB9621 /* AccountInfoViewController.swift */,
-				78345E0D29126F1B00EB9621 /* UpdatedNicknameViewController.swift */,
 				78345E0E29126F1B00EB9621 /* MypageViewController.swift */,
+				78345E0929126F1B00EB9621 /* Cells */,
+				78BC173C29217D9400C2B535 /* Details */,
 				7A93B888291ACCAE007A91EB /* Models */,
 			);
 			path = MyPage;
@@ -389,12 +386,14 @@
 				786E7038290FCF4400463E76 /* NavigationController.swift */,
 				78DC17B428FA75D300331A22 /* Onboard */,
 				78DC17BA28FA937400331A22 /* SignUp */,
+				78BC173929217B9B00C2B535 /* HomeAlert */,
 				7A93B859291A6721007A91EB /* Home */,
 				786F46902901441700215AF0 /* ProjectInput */,
 				785AF52E290512C200592F7F /* ProjectInputDetail */,
 				785AF5372905572900592F7F /* ProjectChapterInput */,
 				78345DFA29126F0700EB9621 /* Project */,
 				78345E0529126F1100EB9621 /* ProjectChapter */,
+				78BC173A29217BD600C2B535 /* MyCareerProfile */,
 				7A93B872291A6739007A91EB /* CareerProfile */,
 				78C3892C291C21F700C9CAC4 /* UpdateProfile */,
 				78345E0829126F1B00EB9621 /* MyPage */,
@@ -499,6 +498,41 @@
 				7AFE502128FD90C600A72D65 /* CompositionalLayout.swift */,
 			);
 			path = StaticFunction;
+			sourceTree = "<group>";
+		};
+		78BC173929217B9B00C2B535 /* HomeAlert */ = {
+			isa = PBXGroup;
+			children = (
+				7A93B861291A6721007A91EB /* HomeAlertViewController.swift */,
+			);
+			path = HomeAlert;
+			sourceTree = "<group>";
+		};
+		78BC173A29217BD600C2B535 /* MyCareerProfile */ = {
+			isa = PBXGroup;
+			children = (
+				7A93B87A291A673A007A91EB /* MyCareerProfileViewController.swift */,
+				78BC173B29217D4800C2B535 /* Cells */,
+			);
+			path = MyCareerProfile;
+			sourceTree = "<group>";
+		};
+		78BC173B29217D4800C2B535 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7A93B875291A6739007A91EB /* MyCareerProfileCell.swift */,
+				7A93B876291A6739007A91EB /* MyIntroduceCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		78BC173C29217D9400C2B535 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				78345E0C29126F1B00EB9621 /* AccountInfoViewController.swift */,
+				78345E0D29126F1B00EB9621 /* UpdatedNicknameViewController.swift */,
+			);
+			path = Details;
 			sourceTree = "<group>";
 		};
 		78C3892C291C21F700C9CAC4 /* UpdateProfile */ = {
@@ -627,9 +661,7 @@
 		7A93B859291A6721007A91EB /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				7A93B861291A6721007A91EB /* HomeAlertViewController.swift */,
 				7A93B862291A6721007A91EB /* HomeViewController.swift */,
-				7A93B860291A6721007A91EB /* HomeViewModel.swift */,
 				7A93B863291A6721007A91EB /* HomeModel.swift */,
 				7A93B85A291A6721007A91EB /* Cells */,
 				7A93B864291A6721007A91EB /* Views */,
@@ -661,9 +693,8 @@
 		7A93B872291A6739007A91EB /* CareerProfile */ = {
 			isa = PBXGroup;
 			children = (
-				7A93B87A291A673A007A91EB /* MyCareerProfileViewController.swift */,
 				7A93B877291A673A007A91EB /* CardProfileDetailViewController.swift */,
-				7A93B878291A673A007A91EB /* Models */,
+				7A93B879291A673A007A91EB /* ProjectModel.swift */,
 				7A93B873291A6739007A91EB /* Cells */,
 				7A93B87C291A673A007A91EB /* Views */,
 			);
@@ -674,19 +705,9 @@
 			isa = PBXGroup;
 			children = (
 				7A93B874291A6739007A91EB /* ProjectListCell.swift */,
-				7A93B875291A6739007A91EB /* MyCareerProfileCell.swift */,
 				78BC1733291D8FC300C2B535 /* OtherUserProjectListCell.swift */,
-				7A93B876291A6739007A91EB /* MyIntroduceCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		7A93B878291A673A007A91EB /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				7A93B879291A673A007A91EB /* ProjectModel.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		7A93B87C291A673A007A91EB /* Views */ = {
@@ -901,7 +922,6 @@
 				78345E1329126F1B00EB9621 /* MypageViewController.swift in Sources */,
 				78BC1734291D8FC300C2B535 /* OtherUserProjectListCell.swift in Sources */,
 				78345E0429126F0700EB9621 /* ProjectLookupHeaderView.swift in Sources */,
-				7A93B86C291A6721007A91EB /* HomeViewModel.swift in Sources */,
 				789F27C029068C2200F634F0 /* DatePickerView.swift in Sources */,
 				78345E152913854F00EB9621 /* Int+.swift in Sources */,
 				7A93B867291A6721007A91EB /* EmptyCareerProfileCell.swift in Sources */,
