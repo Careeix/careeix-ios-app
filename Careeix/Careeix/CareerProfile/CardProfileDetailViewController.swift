@@ -36,9 +36,6 @@ class CardProfileDetailViewController: UIViewController {
         getUserData()
         getProjectData()
         setEmptyProject()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
         observingNotificationCenter()
     }
     
@@ -72,13 +69,16 @@ class CardProfileDetailViewController: UIViewController {
         return label
     }()
     
+    let reportTwoButtonAlertView = TwoButtonAlertViewController(viewModel: .init(type: .userReportwarning))
+    let confirmReportingButtonAlertView = OneButtonAlertViewController(viewModel: .init(content: "신고 접수가 완료되었습니다.", buttonText: "확인", textColor: .gray400))
+    
     func setEmptyProject() {
         view.addSubview(emptyContentView)
         
         emptyContentView.isHidden = true
         
         emptyContentView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(150)
+            $0.top.equalToSuperview().offset(250)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
@@ -134,15 +134,33 @@ class CardProfileDetailViewController: UIViewController {
         }
     }
     
+    func reportingNegativeUser() {
+        let negetiveUserId = ["id": userId]
+        API<ReportUserModel>(path: "report", method: .post, parameters: negetiveUserId, task: .requestParameters(encoding: URLEncoding(destination: .queryString))).request { result in
+            switch result {
+            case .success(let response):
+                switch response.data?.status {
+                case 0:
+                    self.confirmReportingButtonAlertView.contentLabel.text = "신고 접수가 취소되었습니다."
+                    self.present(self.confirmReportingButtonAlertView, animated: true)
+                case 1:
+                    self.present(self.confirmReportingButtonAlertView, animated: true)
+                default:
+                    return
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     func observingNotificationCenter() {
         NotificationCenter.default.addObserver(self, selector: #selector(showUserReportModalView), name: Notification.Name(rawValue: "tappedUserReportImageView"), object: nil)
     }
     
     @objc func showUserReportModalView() {
-        print("showUserReportModalView Tapped!!!")
-//        let reportAlertView = TwoButtonAlertViewController(viewModel: .init(type: .userReportwarning))
-//        present(reportAlertView, animated: true)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "tappedUserReportImageView"), object: nil)
+        self.present(reportTwoButtonAlertView, animated: true)
+        reportTwoButtonAlertView.delegate = self
     }
     
     var cardProfileModel: UserModel = UserModel(userId: 0, userJob: "", userDetailJobs: [""], userWork: 0, userNickname: "", userProfileImg: "", userProfileColor: "", userIntro: nil, userSocialProvider: 0)
@@ -236,7 +254,17 @@ extension CardProfileDetailViewController: UICollectionViewDelegate {
             self.navigationController?.pushViewController(vc, animated: true)
             print(cell.projectId)
         }
-        
+    }
+}
+
+extension CardProfileDetailViewController: TwoButtonAlertViewDelegate {
+    func didTapRightButton(type: TwoButtonAlertType) {
+        reportingNegativeUser()
+        dismiss(animated: true)
+    }
+    
+    func didTapLeftButton(type: TwoButtonAlertType) {
+        dismiss(animated: true)
     }
 }
 

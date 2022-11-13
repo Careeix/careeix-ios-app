@@ -34,6 +34,8 @@ class MyCareerProfileViewController: UIViewController {
     }
     
     weak var delegate: TwoButtonAlertViewDelegate?
+    
+    var projectId = 0
 
     let emptyContentView = UIView()
     
@@ -63,13 +65,15 @@ class MyCareerProfileViewController: UIViewController {
         return label
     }()
     
+    let deleteProjectConfirmAlertView = OneButtonAlertViewController(viewModel: .init(content: "프로젝트가 삭제되었습니다.", buttonText: "확인", textColor: .gray400))
+    
     func setEmptyProject() {
         view.addSubview(emptyContentView)
         
         emptyContentView.isHidden = true
         
         emptyContentView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(150)
+            $0.top.equalToSuperview().offset(250)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
@@ -129,6 +133,7 @@ class MyCareerProfileViewController: UIViewController {
         let projectDeleteAlertView = TwoButtonAlertViewController(viewModel: .init(type: .deleteProject))
         self.present(projectDeleteAlertView, animated: true)
         projectDeleteAlertView.delegate = self
+        tabBarController?.tabBar.isHidden = true
         print("🤔🤗🤗showDeleteModalView Tapped!!!!")
     }
     
@@ -167,18 +172,19 @@ class MyCareerProfileViewController: UIViewController {
             }
     }
     
-    var projectId = 0
-    
     func deleteProjectData() {
-        API<ProjectChapter>(path: "project/\(projectId)", method: .patch, parameters: [:], task: .requestPlain).request { result in
+        let parameter = ["project_id": projectId]
+        API<DeleteProjectModel>(path: "project/\(projectId)", method: .patch, parameters: parameter, task: .requestParameters(encoding: URLEncoding(destination: .queryString))).request { result in
             switch result {
             case .success(let response):
-                let deleteProjectConfirmAlertView = OneButtonAlertViewController(viewModel: .init(content: "프로젝트가 삭제되었습니다.", buttonText: "확인", textColor: .gray400))
-                self.present(deleteProjectConfirmAlertView, animated: true)
+                self.present(self.deleteProjectConfirmAlertView, animated: true)
+                self.tabBarController?.tabBar.isHidden = false
                 print(response.code, response.message)
                 print(response.data!)
+                
             case .failure(let error):
                 print(error.localizedDescription)
+                self.tabBarController?.tabBar.isHidden = false
             }
         }
     }
@@ -225,6 +231,7 @@ class MyCareerProfileViewController: UIViewController {
             case .project(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: projectListRegistration, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
+                self.projectId = cell.projectId
                 return cell
             }
         })
@@ -244,7 +251,7 @@ class MyCareerProfileViewController: UIViewController {
         snapshot.appendSections([.introduce])
         snapshot.appendItems([.introduce(userData ?? profileModel)])
         snapshot.appendSections([.project])
-        snapshot.appendItems(projectData.compactMap { .project($0)} )
+        snapshot.appendItems(projectData.compactMap { .project($0) } )
         datasource.apply(snapshot, animatingDifferences: false)
     }
     
@@ -288,9 +295,8 @@ extension MyCareerProfileViewController: TwoButtonAlertViewDelegate {
     
     func didTapLeftButton(type: TwoButtonAlertType) {
         dismiss(animated: true)
+        tabBarController?.tabBar.isHidden = false
     }
-    
-    
 }
 
 extension MyCareerProfileViewController {

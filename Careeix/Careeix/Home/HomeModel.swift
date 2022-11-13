@@ -26,3 +26,10 @@ struct RecommandUserModel: Hashable, Codable {
     let userProfileColor: String
     let userWork: Int
 }
+
+struct ReportUserModel: Codable {
+    let result: String
+    let status: Int
+    let report_user_to_id: Int
+    let report_user_to_nickname: String
+}
