@@ -84,7 +84,7 @@ class ProjectChapterCell: UITableViewCell {
         titleLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(numberLabel.snp.trailing).offset(23)
-            $0.trailing.equalToSuperview().inset(50)
+            $0.width.equalToSuperview().multipliedBy(0.75)
         }
     }
 }
