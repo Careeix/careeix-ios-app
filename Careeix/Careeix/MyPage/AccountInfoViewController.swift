@@ -57,6 +57,7 @@ class AccountInfoViewController: UIViewController {
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "basicProfile")
+        imageView.layer.cornerRadius = 89 / 2
         return imageView
     }()
     
@@ -101,20 +102,7 @@ class AccountInfoViewController: UIViewController {
         return button
     }()
     
-    func activeActionSheet() {
-        let actionSheet = UIAlertController(title: "프로필 이미지 관리", message: nil, preferredStyle: .actionSheet)
-        let updateImageAction = UIAlertAction(title: "프로필 이미지 변경", style: .default) { action in
-            print("🪢🪢updateImageAction clicked!!!")
-            self.openImageLibrary()
-        }
-        let deleteImageAction = UIAlertAction(title: "프로필 이미지 삭제", style: .destructive) { action in
-            print("🧶🧶deleteImageAction clicked!!!")
-        }
-        let actionCancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        [updateImageAction, deleteImageAction, actionCancel].forEach { actionSheet.addAction($0) }
-        
-        self.present(actionSheet, animated: true)
-    }
+    //MARK: LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,6 +118,10 @@ class AccountInfoViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
+        getUserData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         getUserData()
     }
     
@@ -171,10 +163,28 @@ class AccountInfoViewController: UIViewController {
         filterImageView.addGestureRecognizer(tapGesture)
     }
     
+    @objc func moveToUpdatedNickNameVC() {
+        let updatedNicknameVC = UpdatedNicknameViewController()
+        self.navigationController?.pushViewController(updatedNicknameVC, animated: true)
+        print("😏😏😏😏updatedNickNameView Clicked!!")
+    }
+   
     @objc func didTapFilterImageView() {
         //        activeActionSheet()
         print("🐿🐿🐿didTapFilterImageView clicked!!!")
     }
+    
+    //MARK: Action WithdrawalButton
+    
+    func actionWithdrawalButton() {
+        withdrawalButton.addTarget(self, action: #selector(didTapWithdrawalButton), for: .touchUpInside)
+    }
+    
+    @objc func didTapWithdrawalButton() {
+        print("🥽🥽🥽회원탈퇴 버튼 눌림🥽🥽🥽")
+    }
+    
+    //MARK: GetUserData - UserDefaultManager
     
     func getUserData() {
         let user = UserDefaultManager.user
@@ -185,8 +195,10 @@ class AccountInfoViewController: UIViewController {
         nickNameLabel.text = user.userNickname
     }
     
+    // MARK: NetWorking - UserProfileImage
+    
     func updateUserProfileImage() {
-        API<UserModel>(path: "update-profile-file", method: .post, parameters: [:], task: .requestPlain).request { result in
+        API<UpdateUserProfileImageModel>(path: "update-profile-file", method: .post, parameters: [:], task: .requestPlain).request { result in
             switch result {
             case .success(let response):
                 print(response.data!)
@@ -195,9 +207,44 @@ class AccountInfoViewController: UIViewController {
             }
         }
     }
+    
+    //MARK: Updated ProfileImage ActionSheet
+    
+    func activeActionSheet() {
+        let actionSheet = UIAlertController(title: "프로필 이미지 관리", message: nil, preferredStyle: .actionSheet)
+        let updateImageAction = UIAlertAction(title: "프로필 이미지 변경", style: .default) { action in
+            print("🪢🪢updateImageAction clicked!!!")
+            self.openImageLibrary()
+        }
+        let deleteImageAction = UIAlertAction(title: "프로필 이미지 삭제", style: .destructive) { action in
+            print("🧶🧶deleteImageAction clicked!!!")
+            self.profileImageView.image = UIImage(named: "basicProfile")
+            let deleteImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 삭제되었습니다.", buttonText: "확인", textColor: .gray400))
+            self.present(deleteImageAlert, animated: true)
+        }
+        let actionCancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        [updateImageAction, deleteImageAction, actionCancel].forEach { actionSheet.addAction($0) }
+        
+        self.present(actionSheet, animated: true)
+    }
+    
+    //MARK: Open PhotoAlbum
+    
+    func openImageLibrary() {
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = 1
+        configuration.filter = .images
+        
+        let imagePicker = PHPickerViewController(configuration: configuration)
+        imagePicker.delegate = self
+        self.present(imagePicker, animated: true)
+    }
 }
 
 extension AccountInfoViewController: PHPickerViewControllerDelegate {
+    
+    //MARK: PHPickerViewControllerDelegate
+
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
         let itemProvider = results.first?.itemProvider
@@ -206,15 +253,21 @@ extension AccountInfoViewController: PHPickerViewControllerDelegate {
             itemProvider.loadObject(ofClass: UIImage.self) { image, error in
                 DispatchQueue.main.async {
                     self.profileImageView.image = image as? UIImage
+                    self.profileImageView.layer.masksToBounds = true
                 }
             }
         } else {
             print("이미지 바꾸기 실패!!!")
         }
+        let updateImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 변경되었습니다.", buttonText: "확인", textColor: .gray400))
+        present(updateImageAlert, animated: true)
     }
 }
 
 extension AccountInfoViewController {
+    
+    //MARK: SetUI
+    
     func setUI() {
         [nickNameLabel, rightButtonImageView].forEach { nickNameButtonView.addSubview($0) }
         
