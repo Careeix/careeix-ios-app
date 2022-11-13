@@ -65,7 +65,7 @@ class OneButtonAlertViewController: UIViewController {
         configure()
         [contentLabel, completeLabel].forEach(labelBuilder)
         modalTransitionStyle = .crossDissolve
-        modalPresentationStyle = .overCurrentContext
+        modalPresentationStyle = .overFullScreen
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

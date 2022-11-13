@@ -144,7 +144,7 @@ class TwoButtonAlertViewController: UIViewController {
         configure()
         [contentLabel, leftLabel, rightLabel].forEach(labelBuilder)
         modalTransitionStyle = .crossDissolve
-        modalPresentationStyle = .overCurrentContext
+        modalPresentationStyle = .overFullScreen
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
