@@ -95,21 +95,25 @@ class UpdatedNicknameViewController: UIViewController {
     
     @objc func touchedConfirmButton() {
         updateUserData()
-        navigationController?.popViewController(animated: true)
     }
     
     func updateUserData() {
         guard let userNickname = self.textFieldView.textField.text else { return }
-        API<UpdateUserNicknameModel>(path: "users/update-profile-nickname", method: .post, parameters: ["userNickname": userNickname], task: .requestParameters(encoding: URLEncoding(destination: .queryString))).request { result in
-            print(result)
+        API<UpdateUserNicknameModel>(path: "users/update-profile-nickname", method: .post, parameters: ["userNickname": userNickname], task: .requestParameters(encoding: URLEncoding(destination: .queryString))).request { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let response):
+                self.navigationController?.popViewController(animated: true)
                 // data:
                 UserDefaultManager.user.userNickname = response.data?.userNickname ?? userNickname
                 self.present(self.updateNicknameAlertView, animated: true)
             case .failure(let error):
-                // alert
-                print("😀😀😀😀유저닉네임 업데이트 실패: \(error.localizedDescription)😀😀😀😀")
+                var message = "네트워크 환경을 확인해주세요."
+                if let error = error as? ErrorResponse {
+                    message = error.message
+                }
+                let vc = OneButtonAlertViewController(viewModel: .init(content: message, buttonText: "확인", textColor: .black))
+                self.present(vc, animated: true)
             }
         }
         

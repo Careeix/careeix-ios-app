@@ -147,9 +147,11 @@ extension MypageViewController: UITableViewDataSource {
                 let vc = WebViewController(linkString: "https://makeus-challenge.notion.site/e7509d429cdb4d408406a014a6ac1e27")
                 navigationController?.pushViewController(vc, animated: true)
             case 3:
-                print("Makers")
+                let vc = WebViewController(linkString: "https://www.notion.so/makeus-challenge/Team-careeix-9036c323cba141a999ebc74280b3fed2")
+                navigationController?.pushViewController(vc, animated: true)
             case 4:
-                print("문의하기")
+                let vc = WebViewController(linkString: "https://makeus-challenge.notion.site/753492615dcc4d8a98b5fe2e8b9cc6a4")
+                navigationController?.pushViewController(vc, animated: true)
             case 5:
                 let vc = TwoButtonAlertViewController(viewModel: .init(type: .warningLogoutWriting))
                 vc.delegate = self
@@ -164,7 +166,6 @@ extension MypageViewController: UITableViewDataSource {
 extension MypageViewController: TwoButtonAlertViewDelegate {
     func didTapRightButton(type: TwoButtonAlertType) {
         UserDefaultManager.user = .init(jwt: "", message: "")
-//        UserDefaultManager.logoutFlag = true
         NotificationCenter.default.post(name: Notification.Name(rawValue: "logoutSuccess"), object: nil)
     }
     

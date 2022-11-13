@@ -120,6 +120,7 @@ extension SocialLoginService: ASAuthorizationControllerDelegate,   ASAuthorizati
             UserDefaultManager.appleIdentityToken = accessToken
             appleIdentityTokenSubject.onNext(accessToken)
             appleIdentityTokenSubject.onCompleted()
+            appleIdentityTokenSubject = PublishSubject<String>()
             default:
                 break
             }
