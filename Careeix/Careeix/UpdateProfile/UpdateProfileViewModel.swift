@@ -9,6 +9,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 import RxRelay
+
 class UpdateProfileViewModel {
     typealias job = String
     typealias annual = Int

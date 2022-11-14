@@ -196,14 +196,58 @@ class AccountInfoViewController: UIViewController {
         self.present(actionSheet, animated: true)
     }
     
+    func moveToSetting(type: AccessDeniedMessage) {
+        let alertController = UIAlertController(title: "권한 거부됨", message: type.rawValue, preferredStyle: UIAlertController.Style.alert)
+        
+        let okAction = UIAlertAction(title: "설정으로 이동하기", style: .default) { action in
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl)
+            }
+        }
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: false, completion: nil)
+    }
+    
     //MARK: Open PhotoAlbum
     func openImageLibrary() {
         var configuration = PHPickerConfiguration()
         configuration.selectionLimit = 1
         configuration.filter = .images
+        
         let imagePicker = PHPickerViewController(configuration: configuration)
         imagePicker.delegate = self
-        self.present(imagePicker, animated: true)
+        
+        let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+        print(status.rawValue)
+        switch status {
+        case .authorized:
+            present(imagePicker, animated: true)
+        default:
+            PHPhotoLibrary.requestAuthorization(for: .readWrite) { [weak self] afterStatus in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                    switch afterStatus {
+                    case .authorized:
+                        self.present(imagePicker, animated: true)
+                    case .limited:
+                        self.moveToSetting(type: .limited)
+                    case .denied:
+                        self.moveToSetting(type: .denied)
+                    default:
+                        print("그 밖의 권한이 부여 되었습니다.")
+                    }
+                }
+            }
+        }
+        print(status)
+        
     }
 }
 
@@ -222,13 +266,13 @@ extension AccountInfoViewController: PHPickerViewControllerDelegate {
         } else {
             print("이미지 바꾸기 실패!!!")
         }
-
+        
     }
     
     // MARK: NetWorking - UserProfileImage
     func updateUserProfileImage(image: UIImage) {
         guard let imageData = image.jpegData(compressionQuality: 0.1) else { return }
-
+        
         let data: [MultipartFormData] = [.init(provider: .data(imageData), name: "file", fileName: "user.jpeg", mimeType: "image/jpeg")]
         
         API<UpdateUserProfileImageModel>(path: "users/update-profile-file", method: .post, parameters: [:], task: .uploadMultipart(formData: data), headers: [
@@ -345,4 +389,9 @@ extension AccountInfoViewController: TwoButtonAlertViewDelegate {
     func didTapLeftButton(type: TwoButtonAlertType) {
         dismiss(animated: true)
     }
+}
+
+enum AccessDeniedMessage: String {
+    case denied = "앨범 접근이 거부 되었습니다.\n 프로필 사진을 변경하시려면 설정으로 이동하여 앨범 접근 권한을 허용해주세요."
+    case limited = "선택된 사진만 접근이 허용 되었습니다.\n 프로필 사진을 변경하시려면 설정으로 이동하여 앨범 접근 권한을 전체 허용해주세요."
 }
