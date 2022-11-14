@@ -65,7 +65,7 @@ class ProjectListCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .appColor(.text)
         label.font = .pretendardFont(size: 13, style: .regular)
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.lineBreakMode = .byWordWrapping
         return label
     }()
