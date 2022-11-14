@@ -128,7 +128,7 @@ class MyCareerProfileViewController: UIViewController {
         let vc = ProjectInputViewController(
             viewModel: .init(
                 titleInputViewModel: .init(title: "제목",
-                                           textFieldViewModel: .init(placeholder: "프로젝트 제목을 입력해주세요.")),
+                                           textFieldViewModel: .init(placeholder: "프로젝트 제목을 입력해주세요. (25자 이내)")),
                 periodInputViewModel: .init(title: "기간",
                                             description: "프로젝트 기간을 입력해주세요.",
                                             checkBoxViewModel: .init()
@@ -161,6 +161,7 @@ class MyCareerProfileViewController: UIViewController {
                                           userProfileColor: user.userProfileColor,
                                           userIntro: user.userIntro,
                                           userSocialProvider: user.userSocialProvider))
+        print(user.userProfileImg)
     }
     var cellData: [ProjectModel]?
     func getMyProjectData() {

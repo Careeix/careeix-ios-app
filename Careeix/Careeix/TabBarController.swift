@@ -63,7 +63,7 @@ extension TabBarController: UITabBarControllerDelegate {
                 let vc = ProjectInputViewController(
                     viewModel: .init(
                         titleInputViewModel: .init(title: "제목",
-                                                   textFieldViewModel: .init(placeholder: "프로젝트 제목을 입력해주세요.")),
+                                                   textFieldViewModel: .init(placeholder: "프로젝트 제목을 입력해주세요. (25자 이내)")),
                         periodInputViewModel: .init(title: "기간",
                                                     description: "프로젝트 기간을 입력해주세요.",
                                                     checkBoxViewModel: .init()

@@ -103,10 +103,10 @@ class UpdatedNicknameViewController: UIViewController {
             guard let self else { return }
             switch result {
             case .success(let response):
-                self.navigationController?.popViewController(animated: true)
                 // data:
                 UserDefaultManager.user.userNickname = response.data?.userNickname ?? userNickname
                 self.present(self.updateNicknameAlertView, animated: true)
+                self.navigationController?.popViewController(animated: true)
             case .failure(let error):
                 var message = "네트워크 환경을 확인해주세요."
                 if let error = error as? ErrorResponse {

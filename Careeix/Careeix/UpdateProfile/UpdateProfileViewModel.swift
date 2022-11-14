@@ -16,8 +16,6 @@ class UpdateProfileViewModel {
     typealias detailJobs = [String]
     typealias introduce = String
     
-    
-    
     // MARK: SubViewModels
     let jobInputViewModel: SimpleInputViewModel
     let annualInputViewModel: RadioInputViewModel
