@@ -186,10 +186,7 @@ class AccountInfoViewController: UIViewController {
         let deleteImageAction = UIAlertAction(title: "프로필 이미지 삭제", style: .destructive) { [weak self] action in
             guard let self else { return }
             print("🧶🧶deleteImageAction clicked!!!")
-            self.profileImageView.image = UIImage(named: "basicProfile")
-            UserDefaultManager.user.userProfileImg = nil
-            let deleteImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 삭제되었습니다.", buttonText: "확인", textColor: .gray400))
-            self.present(deleteImageAlert, animated: true)
+            self.updateUserProfileImage(image: nil)
         }
         let actionCancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         [updateImageAction, deleteImageAction, actionCancel].forEach { actionSheet.addAction($0) }
@@ -265,11 +262,14 @@ extension AccountInfoViewController: PHPickerViewControllerDelegate {
     }
     
     // MARK: NetWorking - UserProfileImage
-    func updateUserProfileImage(image: UIImage) {
-        guard let imageData = image.jpegData(compressionQuality: 0.1) else { return }
-        
-        let data: [MultipartFormData] = [.init(provider: .data(imageData), name: "file", fileName: "user.jpeg", mimeType: "image/jpeg")]
-        
+    func updateUserProfileImage(image: UIImage?) {
+        var data: [MultipartFormData]
+        if let imageData = image?.jpegData(compressionQuality: 0.1) {
+            data = [.init(provider: .data(imageData), name: "file", fileName: "user.jpeg", mimeType: "image/jpeg")]
+        } else {
+            data = [.init(provider: .data(Data(capacity: 0)), name: "files", fileName: "user.jpeg", mimeType: "image/jpeg")]
+        }
+        print(data,"🐿️🐿️")
         API<UpdateUserProfileImageModel>(path: "users/update-profile-file", method: .post, parameters: [:], task: .uploadMultipart(formData: data), headers: [
             "Content-Type": "multipart/form-data",
             "X-ACCESS-TOKEN": UserDefaultManager.user.jwt
@@ -277,11 +277,17 @@ extension AccountInfoViewController: PHPickerViewControllerDelegate {
             guard let self else { return }
             switch result {
             case .success(let response):
-                UserDefaultManager.user.userProfileImg = response.data?.userProfileImg
-                self.profileImageView.image = image
-                let updateImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 변경되었습니다.", buttonText: "확인", textColor: .gray400))
-                self.present(updateImageAlert, animated: true)
-                
+                if let _ = image {
+                    UserDefaultManager.user.userProfileImg = response.data?.userProfileImg
+                    self.profileImageView.image = image
+                    let updateImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 변경되었습니다.", buttonText: "확인", textColor: .gray400))
+                    self.present(updateImageAlert, animated: true)
+                } else {
+                    UserDefaultManager.user.userProfileImg = nil
+                    self.profileImageView.image = UIImage(named: "basicProfile")
+                    let deleteImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 삭제되었습니다.", buttonText: "확인", textColor: .gray400))
+                    self.present(deleteImageAlert, animated: true)
+                }
             case .failure(let error):
                 if let error = error as? ErrorResponse {
                     print("🥸", error)
