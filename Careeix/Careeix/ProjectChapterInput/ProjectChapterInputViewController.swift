@@ -86,14 +86,14 @@ class ProjectChapterInputViewController: UIViewController {
                 owner.setAddButtonViewState(with: canAddChapter)
             }.disposed(by: disposeBag)
         
-        noteTableView.rx.itemSelected
-            .compactMap(noteTableView.cellForRow(at:))
-            .map { $0.frame }
-            .distinctUntilChanged()
-            .withUnretained(self)
-            .bind { owner, frame in
-                owner.scrollToFit(with: frame)
-            }.disposed(by: disposeBag)
+//        noteTableView.rx.itemSelected
+//            .compactMap(noteTableView.cellForRow(at:))
+//            .map { $0.frame }
+//            .distinctUntilChanged()
+//            .withUnretained(self)
+//            .bind { owner, frame in
+//                owner.scrollToFit(with: frame)
+//            }.disposed(by: disposeBag)
     }
     
     // MARK: - Function
@@ -264,6 +264,18 @@ extension ProjectChapterInputViewController: UITextViewDelegate {
         noteTableView.beginUpdates()
         noteTableView.endUpdates()
         viewModel.noteTableViewHeightRelay.accept(getTableViewHeight())
+        checkEnterKeyAndScroll(textView)
+    }
+    
+    func checkEnterKeyAndScroll(_ textView: UITextView) {
+        if let selectedRange = textView.selectedTextRange {
+            let cursorPosition = textView.offset(from: textView.beginningOfDocument, to: selectedRange.start)
+            guard let text = textView.text else { return }
+            let index = text.index(text.startIndex, offsetBy: cursorPosition - 1)
+            if text[index] == "\n" && scrollView.contentOffset.y != 0 {
+                scrollView.contentOffset.y += 15.5
+            }
+        }
     }
 }
 

@@ -128,6 +128,7 @@ class ProjectListCell: UICollectionViewCell {
     
     @objc func didTapKebabTouchableView() {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "didTapKebabImageView"), object: nil, userInfo: ["view": twoWayButtonView])
+        
     }
     
     @objc func didTapUpdateButtonView() {

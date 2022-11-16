@@ -104,9 +104,11 @@ class MyCareerProfileViewController: UIViewController {
     
     @objc func showDropDownView(_ sender: Notification) {
         guard let v = sender.userInfo?["view"] as? UIView else { return }
-        prevDropDownView?.isHidden = true
-        prevDropDownView = v
         v.isHidden = !v.isHidden
+        if prevDropDownView != v {
+            prevDropDownView?.isHidden = true
+            prevDropDownView = v
+        }
     }
     
     @objc func showProfileInputView() {
@@ -315,11 +317,11 @@ extension MyCareerProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath)
 //        // TODO: 화면 전환
-//        guard let projectCell = collectionView.cellForItem(at: indexPath) as? ProjectListCell else { return }
-//        if indexPath.section == 2 {
-//            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: projectCell.projectId))
-//            self.navigationController?.pushViewController(vc, animated: true)
-//        }
+        guard let projectCell = collectionView.cellForItem(at: indexPath) as? ProjectListCell else { return }
+        if indexPath.section == 2 {
+            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: projectCell.projectId))
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 

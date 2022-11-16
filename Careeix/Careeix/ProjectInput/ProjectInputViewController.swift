@@ -368,8 +368,6 @@ extension ProjectInputViewController: TwoButtonAlertViewDelegate {
 extension ProjectInputViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         guard let text = textView.text else { return false }
-        print(range.location, text)
-        print(NSString(string: text).substring(with: range))
         if text.contains("\n") {
             textView.text = text.replacingOccurrences(of: "\n", with: "")
         }

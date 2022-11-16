@@ -104,7 +104,9 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getUserData()
-        recommandUserData()
+        if UserDefaultManager.user.userJob != "" {
+            recommandUserData()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
