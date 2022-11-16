@@ -89,7 +89,7 @@ class OnboardViewController: UIViewController {
         viewModel.showAlertViewDriver
             .debug("😱😱😱에러 리스폰스😱😱😱")
             .drive(with: self) { owner, _ in
-                let vc = OneButtonAlertViewController(viewModel: .init(content: UserDefaultManager.user.message, buttonText: "확인", textColor: .point))
+                let vc = OneButtonAlertViewController(viewModel: .init(content: UserDefaultManager.user.message, buttonText: "확인", textColor: .main))
                 owner.present(vc, animated: true)
             }.disposed(by: disposeBag)
         
@@ -102,7 +102,7 @@ class OnboardViewController: UIViewController {
     }
     // MARK: - Functions
     func alertSuccessLogout() {
-        let vc = OneButtonAlertViewController(viewModel: .init(content: "로그아웃 되었습니다.", buttonText: "확인", textColor: .black))
+        let vc = OneButtonAlertViewController(viewModel: .init(content: "로그아웃 되었습니다.", buttonText: "확인", textColor: .main))
         present(vc, animated: true)
     }
     

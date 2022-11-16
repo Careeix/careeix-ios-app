@@ -52,7 +52,7 @@ class TabBarController: UITabBarController {
     @objc
     func showCareerView() {
         selectedIndex = 2
-        let vc = OneButtonAlertViewController(viewModel: .init(content: "프로젝트가 정상적으로 업데이트 되었습니다", buttonText: "확인", textColor: .black))
+        let vc = OneButtonAlertViewController(viewModel: .init(content: "프로젝트가 정상적으로 업데이트 되었습니다", buttonText: "확인", textColor: .main))
         present(vc, animated: true)
     }
 }

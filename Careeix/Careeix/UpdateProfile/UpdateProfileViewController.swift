@@ -40,7 +40,7 @@ class UpdateProfileViewController: UIViewController {
         
         viewModel.alertDriver
             .drive(with: self) { owner, message in
-                let vc = OneButtonAlertViewController(viewModel: .init(content: message, buttonText: "확인", textColor: .black))
+                let vc = OneButtonAlertViewController(viewModel: .init(content: message, buttonText: "확인", textColor: .error))
                 owner.present(vc, animated: true)
             }.disposed(by: disposeBag)
         

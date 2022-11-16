@@ -68,7 +68,7 @@ class ProjectLookupViewController: UIViewController {
     }
     
     func showWarnningAlert(_ message: String) {
-        let vc = OneButtonAlertViewController(viewModel: .init(content: message, buttonText: "확인", textColor: .black))
+        let vc = OneButtonAlertViewController(viewModel: .init(content: message, buttonText: "확인", textColor: .error))
         present(vc, animated: true)
     }
     

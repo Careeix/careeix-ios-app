@@ -142,8 +142,7 @@ extension MypageViewController: UITableViewDataSource {
         } else {
             switch indexPath.item {
             case 0:
-                let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
-                let vc = OneButtonAlertViewController(viewModel: .init(content: "앱 버전은 \(version) 입니다.", buttonText: "확인", textColor: .black))
+                let vc = OneButtonAlertViewController(viewModel: .init(content: "앱 버전은 \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] ?? "1.0.0" as String) 입니다.", buttonText: "확인", textColor: .main))
                 present(vc, animated: true)
             case 1:
                 let vc = WebViewController(linkString: "https://makeus-challenge.notion.site/66c59a11e5c843148d276cfa1fad90dc")
@@ -164,7 +163,6 @@ extension MypageViewController: UITableViewDataSource {
                 let vc = TwoButtonAlertViewController(viewModel: .init(type: .warningLogoutWriting))
                 vc.delegate = self
                 present(vc, animated: true)
-
             default:
                 return
             }

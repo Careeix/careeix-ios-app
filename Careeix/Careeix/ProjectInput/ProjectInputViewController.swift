@@ -94,9 +94,8 @@ class ProjectInputViewController: UIViewController {
             
         viewModel.dateAlertViewDrvier
             .drive(with: self) { owner, _ in
-                let vc = OneButtonAlertViewController(viewModel: .init(content: "종료일이 시작일 보다 앞서 있습니다.", buttonText: "확인", textColor: .error))
+                let vc = OneButtonAlertViewController(viewModel: .init(content: "유효하지 않은 날짜입니다.", buttonText: "확인", textColor: .error))
                 owner.present(vc, animated: true)
-//                owner.present(vc, animated: true)
             }.disposed(by: disposeBag)
         
         startDatePickerView.datePickerTopViewRightLabel.rx.tapGesture()

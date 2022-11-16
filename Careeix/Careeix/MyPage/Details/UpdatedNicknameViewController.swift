@@ -112,7 +112,7 @@ class UpdatedNicknameViewController: UIViewController {
                 if let error = error as? ErrorResponse {
                     message = error.message
                 }
-                let vc = OneButtonAlertViewController(viewModel: .init(content: message, buttonText: "확인", textColor: .black))
+                let vc = OneButtonAlertViewController(viewModel: .init(content: message, buttonText: "확인", textColor: .error))
                 self.present(vc, animated: true)
             }
         }
