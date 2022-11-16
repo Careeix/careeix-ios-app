@@ -30,7 +30,7 @@ class IntroduceCell: UICollectionViewCell {
     let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .pretendardFont(size: 13, style: .regular)
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.lineBreakMode = .byWordWrapping
         return label
     }()

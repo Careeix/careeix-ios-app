@@ -83,9 +83,20 @@ class ProjectInputViewController: UIViewController {
         
         completeButtonView.rx.tapGesture()
             .when(.recognized)
-            .withUnretained(self)
-            .bind { owner, _ in
+            .map { _ in () }
+            .bind(to: viewModel.completeButtonTrigger)
+            .disposed(by: disposeBag)
+        
+        viewModel.showNextViewControllerDriver
+            .drive(with: self) { owner, _ in
                 owner.showNextViewController()
+            }.disposed(by: disposeBag)
+            
+        viewModel.dateAlertViewDrvier
+            .drive(with: self) { owner, _ in
+                let vc = OneButtonAlertViewController(viewModel: .init(content: "종료일이 시작일 보다 앞서 있습니다.", buttonText: "확인", textColor: .error))
+                owner.present(vc, animated: true)
+//                owner.present(vc, animated: true)
             }.disposed(by: disposeBag)
         
         startDatePickerView.datePickerTopViewRightLabel.rx.tapGesture()

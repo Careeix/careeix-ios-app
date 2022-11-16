@@ -22,17 +22,18 @@ class MyCareerProfileViewController: UIViewController {
     var prevDropDownView: UIView?
     override func viewDidLoad() {
         super.viewDidLoad()
-        configurationDatasource()
         setCollectionView()
         observingNotificationCenter()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        configurationDatasource()
         getMyUserData()
         getMyProjectData()
         setEmptyProject()
         prevDropDownView?.isHidden = true
+        
     }
     
     weak var delegate: TwoButtonAlertViewDelegate?
@@ -65,8 +66,7 @@ class MyCareerProfileViewController: UIViewController {
         label.text = "하단의 등록을 눌러 프로젝트를 추가해보세요."
         return label
     }()
-    
-    let deleteProjectConfirmAlertView = OneButtonAlertViewController(viewModel: .init(content: "프로젝트가 삭제되었습니다.", buttonText: "확인", textColor: .gray400))
+
     
     func setEmptyProject() {
         view.addSubview(emptyContentView)
@@ -129,7 +129,7 @@ class MyCareerProfileViewController: UIViewController {
                     BaseTextFieldViewModel.init(placeholder: "상세 직무 태그를 입력해주세요.(Ex. UX디자인)")
                 ]),
                 
-                introduceInputViewModel: .init(title: "소개", baseTextViewModel: .init(placeholder: "소개글을 작성해주세요.", inputStringRelay: .init(value: "소개"))),
+                introduceInputViewModel: .init(title: "소개", baseTextViewModel: .init(placeholder: "소개글을 작성해주세요.(55자 이내)", inputStringRelay: .init(value: "소개"))),
                 completeButtonViewModel: .init(content: "저장하기", backgroundColor: .next)
             )
         )
@@ -207,10 +207,14 @@ class MyCareerProfileViewController: UIViewController {
             guard let self else { return }
             switch result {
             case .success(_):
-                self.present(self.deleteProjectConfirmAlertView, animated: true)
-                guard let item  = self.cellData?.compactMap({ $0.project_id }).firstIndex(of: self.cellProjectId) else { return }
-                print(item)
-                self.cellData?.remove(at: item)
+                let deleteProjectConfirmAlertView = OneButtonAlertViewController(viewModel: .init(content: "프로젝트가 삭제되었습니다.", buttonText: "확인", textColor: .gray400))
+                
+                UserDefaultManager.projectChaptersInputCache[self.cellProjectId] = nil
+                UserDefaultManager.projectBaseInputCache[self.cellProjectId] = nil
+                
+                self.present(deleteProjectConfirmAlertView, animated: true)
+                guard let shouldDeleteIndex  = self.cellData?.compactMap({ $0.project_id }).firstIndex(of: self.cellProjectId) else { return }
+                self.cellData?.remove(at: shouldDeleteIndex)
                 self.updateProjectSection(projectData: self.cellData ?? [])
             case .failure(let error):
                 print(error.localizedDescription)

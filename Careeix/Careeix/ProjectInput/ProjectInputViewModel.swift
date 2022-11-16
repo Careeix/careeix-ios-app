@@ -23,6 +23,7 @@ struct ProjectInputViewModel {
     let periodInputViewModel: PeriodInputViewModel
     let classificationInputViewModel: SimpleInputViewModel
     let introduceInputViewModel: ManyInputViewModel
+    let completeButtonTrigger = PublishRelay<Void>()
     
     // MARK: Input
     let viewDidAppearRelay = PublishRelay<Void>()
@@ -34,6 +35,8 @@ struct ProjectInputViewModel {
     let checkBoxIsSelctedDriver: Driver<Bool>
     let askingKeepAlertDriver: Driver<Void>
     let fillDataDriver: Driver<Void>
+    let showNextViewControllerDriver: Driver<Void>
+    let dateAlertViewDrvier: Driver<Void>
     
     init(titleInputViewModel: SimpleInputViewModel,
          periodInputViewModel: PeriodInputViewModel,
@@ -132,6 +135,17 @@ struct ProjectInputViewModel {
         askingKeepAlertDriver = isNotSameData
             .map { _ in () }
             .asDriver(onErrorJustReturn: ())
+        
+        showNextViewControllerDriver = completeButtonTrigger
+            .filter(validDate)
+            .asDriver(onErrorJustReturn: ())
+        
+        dateAlertViewDrvier = completeButtonTrigger
+            .filter { !validDate() }
+            .asDriver(onErrorJustReturn: ())
+        func validDate() -> Bool {
+            return UserDefaultManager.projectBaseInputCache[projectId]?.startDateString.toDate() ?? Date() <= UserDefaultManager.projectBaseInputCache[projectId]?.endDateString?.toDate() ?? Date()
+        }
     }
     
     func updatePersistanceData(_ sender :ProjectBaseInfo) {

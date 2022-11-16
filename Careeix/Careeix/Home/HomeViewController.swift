@@ -104,7 +104,10 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getUserData()
-        if UserDefaultManager.user.userJob != "" {
+        print(UserDefaultManager.user.userDetailJobs, "🦊🦊🦊")
+        if UserDefaultManager.user.userDetailJobs == [] {
+            updateCardCareerSection(cardProfileData: [])
+        } else {
             recommandUserData()
         }
     }
@@ -224,17 +227,10 @@ class HomeViewController: UIViewController {
             .request { [weak self] result in
             switch result {
             case .success(let response):
-                // data:
-                if response.data == nil {
-                    self?.emptyContentView.isHidden = false
-                    self?.updateCardCareerSection(cardProfileData: [])
-                } else {
-                    self?.emptyContentView.isHidden = true
-                    self?.updateCardCareerSection(cardProfileData: response.data ?? [])
-                }
+                self?.updateCardCareerSection(cardProfileData: response.data ?? [])
             case .failure(let error):
-                // alert
                 print("recommandUserData: \(error.localizedDescription)")
+                self?.emptyContentView.isHidden = false
             }
         }
     }
@@ -319,6 +315,7 @@ class HomeViewController: UIViewController {
         snapshot.deleteAll()
         snapshot.append(cardProfileData.map { .cardCareerProfiles($0) })
         datasource.apply(snapshot, to: .cardCareerProfiles)
+        emptyContentView.isHidden = !cardProfileData.isEmpty
     }
 }
 

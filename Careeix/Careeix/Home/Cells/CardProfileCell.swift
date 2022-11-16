@@ -15,7 +15,7 @@ enum UserWork: String {
     case junior = "주니어(1~4년차)"
     case middle = "미들(5~8년차)"
     case senior = "시니어(9년차~)"
-    
+    case none = " "
     static func setUserWork(grade: Int) -> String {
         switch grade {
         case 0:
@@ -26,8 +26,8 @@ enum UserWork: String {
             return UserWork.middle.rawValue
         case 3:
             return UserWork.senior.rawValue
-        default :
-            return UserWork.starter.rawValue
+        default:
+            return UserWork.none.rawValue
         }
     }
 }
@@ -124,20 +124,10 @@ class CardProfileCell: UICollectionViewCell {
     }
     
     func setUserDetailJobs(detailJobs: [String]) {
-        firstDetailCareerNameLabel.text = "#" + detailJobs[0]
-        if detailJobs.count == 2 {
-            firstDetailCareerNameLabel.text = "#" + detailJobs[0]
-            secondDetailCareerNameLabel.text = "#" + detailJobs[1]
-        } else {
-            secondDetailCareerNameLabel.text = ""
-        }
-        if detailJobs.count == 3 {
-            firstDetailCareerNameLabel.text = "#" + detailJobs[0]
-            secondDetailCareerNameLabel.text = "#" + detailJobs[1]
-            thirdDetailCareerNameLabel.text = "#" + detailJobs[2]
-        } else {
-            thirdDetailCareerNameLabel.text = ""
-        }
+        zip(detailJobs, [firstDetailCareerNameLabel, secondDetailCareerNameLabel, thirdDetailCareerNameLabel])
+            .forEach {
+                $1.text = "#\($0)"
+            }
     }
     
     func setImageURL(url: String) {

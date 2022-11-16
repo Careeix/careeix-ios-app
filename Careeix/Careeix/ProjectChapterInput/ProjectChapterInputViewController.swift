@@ -16,7 +16,7 @@ class ProjectChapterInputViewController: UIViewController {
     var disposeBag = DisposeBag()
     var viewModel: ProjectChapterInputViewModel
     var willDeletedIndex: Int!
-
+    var prevPosition: Int?
     // MARK: - Binding
     func bind(to viewModel: ProjectChapterInputViewModel) {
         RxKeyboard.instance.visibleHeight
@@ -24,18 +24,20 @@ class ProjectChapterInputViewController: UIViewController {
             .drive(with: self) { owner, keyboardVisibleHeight in
                 owner.updateView(with: keyboardVisibleHeight)
             }.disposed(by: disposeBag)
-
+        
         addNoteButtonView.rx.tapGesture()
             .when(.recognized)
-            .withUnretained(self)
-            .bind { owner, _ in
+            .map { _ in ()}
+            .asDriver(onErrorJustReturn: ())
+            .drive(with: self) { owner, _ in
                 owner.addNoteCell()
             }.disposed(by: disposeBag)
         
         completeButtonView.rx.tapGesture()
             .when(.recognized)
-            .withUnretained(self)
-            .bind { owner, _ in
+            .map { _ in ()}
+            .asDriver(onErrorJustReturn: ())
+            .drive(with: self) { owner, _ in
                 owner.didTapCompleteButtonView()
             }.disposed(by: disposeBag)
         
@@ -60,7 +62,7 @@ class ProjectChapterInputViewController: UIViewController {
                     }.disposed(by: cell.disposeBag)
                 return cell
             }.disposed(by: disposeBag)
-
+        
         viewModel.updateProjectChapterDriver
             .drive { data in
                 viewModel.updateProjectChapter(data: data)
@@ -86,14 +88,14 @@ class ProjectChapterInputViewController: UIViewController {
                 owner.setAddButtonViewState(with: canAddChapter)
             }.disposed(by: disposeBag)
         
-//        noteTableView.rx.itemSelected
-//            .compactMap(noteTableView.cellForRow(at:))
-//            .map { $0.frame }
-//            .distinctUntilChanged()
-//            .withUnretained(self)
-//            .bind { owner, frame in
-//                owner.scrollToFit(with: frame)
-//            }.disposed(by: disposeBag)
+        //        noteTableView.rx.itemSelected
+        //            .compactMap(noteTableView.cellForRow(at:))
+        //            .map { $0.frame }
+        //            .distinctUntilChanged()
+        //            .withUnretained(self)
+        //            .bind { owner, frame in
+        //                owner.scrollToFit(with: frame)
+        //            }.disposed(by: disposeBag)
     }
     
     // MARK: - Function
@@ -126,13 +128,17 @@ class ProjectChapterInputViewController: UIViewController {
     }
     
     func addNoteCell() {
-        view.endEditing(false)
+        view.endEditing(true)
         viewModel.noteCellViewModels.append(.init(inputStringRelay: BehaviorRelay<String>(value: "")))
         viewModel.noteTableViewHeightRelay.accept(noteTableView.contentSize.height)
         guard let cell = noteTableView.cellForRow(at: IndexPath(row: viewModel.noteCellViewModels.count - 1, section: 0)) as? NoteCell else {
             return }
-        cell.textView.becomeFirstResponder()
         scrollToFit(with: cell.frame)
+        cell.textView.becomeFirstResponder()
+        print(cell,"🥸")
+        print(scrollView.contentSize.height)
+//        scrollView.contentOffset.y = scrollView.contentSize.height - UIScreen.main.bounds.height + 128
+                
     }
     
     func didTapCompleteButtonView() {
@@ -152,7 +158,7 @@ class ProjectChapterInputViewController: UIViewController {
             self.view.layoutIfNeeded()
         }
     }
-
+    
     // MARK: - Initializer
     init(viewModel: ProjectChapterInputViewModel) {
         self.viewModel = viewModel
@@ -167,6 +173,7 @@ class ProjectChapterInputViewController: UIViewController {
         setUI()
         setupNavigationBackButton()
         hidesBottomBarWhenPushed = true
+        contentTextView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -259,7 +266,7 @@ extension ProjectChapterInputViewController {
     }
 }
 
-extension ProjectChapterInputViewController: UITextViewDelegate {
+extension ProjectChapterInputViewController: UITextViewDelegate, UIScrollViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         noteTableView.beginUpdates()
         noteTableView.endUpdates()
@@ -268,14 +275,17 @@ extension ProjectChapterInputViewController: UITextViewDelegate {
     }
     
     func checkEnterKeyAndScroll(_ textView: UITextView) {
-        if let selectedRange = textView.selectedTextRange {
-            let cursorPosition = textView.offset(from: textView.beginningOfDocument, to: selectedRange.start)
-            guard let text = textView.text else { return }
-            let index = text.index(text.startIndex, offsetBy: cursorPosition - 1)
-            if text[index] == "\n" && scrollView.contentOffset.y != 0 {
-                scrollView.contentOffset.y += 15.5
+        let cursorPosition = textView.selectedRange.location
+        if let prevPosition {
+            if cursorPosition > 1 && prevPosition < cursorPosition {
+                guard let text = textView.text else { return }
+                let index = text.index(text.startIndex, offsetBy: cursorPosition - 1)
+                if text[index] == "\n" {
+                    scrollView.contentOffset.y += 15.5
+                }
             }
         }
+        prevPosition = cursorPosition
     }
 }
 

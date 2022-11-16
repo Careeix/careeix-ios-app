@@ -75,6 +75,7 @@ class UpdateProfileViewController: UIViewController {
         view.backgroundColor = .appColor(.white)
         bind(to: viewModel)
         setupNavigationBackButton()
+        introduceInputView.textView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -162,4 +163,15 @@ extension UpdateProfileViewController {
             $0.bottom.equalToSuperview()
         }
     }
+}
+
+extension UpdateProfileViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        guard let text = textView.text else { return false }
+        if text.contains("\n") {
+            textView.text = text.replacingOccurrences(of: "\n", with: "")
+        }
+        return text.count < 55 || range.length == 1
+    }
+
 }

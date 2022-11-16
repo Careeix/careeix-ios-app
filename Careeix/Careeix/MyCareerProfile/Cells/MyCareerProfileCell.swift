@@ -98,20 +98,11 @@ class MyCareerProfileCell: UICollectionViewCell {
     }
     
     func setUserDetailJobs(detailJobs: [String]) {
-        firstDetailCareerNameLabel.text = "#" + detailJobs[0]
-        if detailJobs.count == 2 {
-            firstDetailCareerNameLabel.text = "#" + detailJobs[0]
-            secondDetailCareerNameLabel.text = "#" + detailJobs[1]
-        } else {
-            secondDetailCareerNameLabel.text = ""
-        }
-        if detailJobs.count == 3 {
-            firstDetailCareerNameLabel.text = "#" + detailJobs[0]
-            secondDetailCareerNameLabel.text = "#" + detailJobs[1]
-            thirdDetailCareerNameLabel.text = "#" + detailJobs[2]
-        } else {
-            thirdDetailCareerNameLabel.text = ""
-        }
+        print(detailJobs, "🐷🐷")
+        zip(detailJobs, [firstDetailCareerNameLabel, secondDetailCareerNameLabel, thirdDetailCareerNameLabel])
+            .forEach {
+                $1.text = "#\($0)"
+            }
     }
     
     func setImageURL(url: String) {
