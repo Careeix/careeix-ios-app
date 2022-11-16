@@ -24,7 +24,7 @@ class MinimalCareerProfileCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setup()
+        setUI()
         layoutIfNeeded()
     }
     
@@ -89,7 +89,7 @@ class MinimalCareerProfileCell: UICollectionViewCell {
         userId = -1
     }
     
-    func setup() {
+    func setUI() {
         contentView.addSubview(gradientView)
         
         gradientView.snp.makeConstraints {

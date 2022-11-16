@@ -181,6 +181,22 @@ class HomeViewController: UIViewController {
                                                           userSocialProvider: user.userSocialProvider))
 
     }
+//    func getUserData() {
+//        let user = UserDefaultManager.user
+//        API<UserModel>(path: "users/profile/\(user.userId)", method: .get, parameters: [:], task: .requestPlain)
+//            .request { [weak self] result in
+//            switch result {
+//            case .success(let response):
+//                // data:
+//                guard let data = response.data, let self else { return }
+//                self.updateMyCareerProfileSection(myProfileData: data)
+//                print(response.data!)
+//            case .failure(let error):
+//                // alert
+//                print("recommandUserData: \(error.localizedDescription)")
+//            }
+//        }
+//    }
     
     // MARK: RecommandCareerProfile API Call
     
@@ -216,7 +232,7 @@ class HomeViewController: UIViewController {
     
     func showModalView() {
         let modalView: UIViewController = HomeAlertViewController()
-        modalView.modalPresentationStyle = .overCurrentContext
+        modalView.modalPresentationStyle = .overFullScreen
         modalView.modalTransitionStyle = .crossDissolve
         self.present(modalView, animated: true)
     }

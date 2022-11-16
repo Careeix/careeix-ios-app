@@ -138,7 +138,8 @@ extension MypageViewController: UITableViewDataSource {
         } else {
             switch indexPath.item {
             case 0:
-                let vc = OneButtonAlertViewController(viewModel: .init(content: "앱 버전은 v1.0.0 입니다.", buttonText: "확인", textColor: .black))
+                let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+                let vc = OneButtonAlertViewController(viewModel: .init(content: "앱 버전은 \(version) 입니다.", buttonText: "확인", textColor: .black))
                 present(vc, animated: true)
             case 1:
                 let vc = WebViewController(linkString: "https://makeus-challenge.notion.site/66c59a11e5c843148d276cfa1fad90dc")
