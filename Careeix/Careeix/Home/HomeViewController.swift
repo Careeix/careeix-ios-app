@@ -97,6 +97,7 @@ class HomeViewController: UIViewController {
         createNavigationBarItem()
         homeCollectionView.isScrollEnabled = false
         setEmptyProfile()
+        checkUser()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -138,6 +139,12 @@ class HomeViewController: UIViewController {
         label.text = "상세 직무 태그를 확인해보세요."
         return label
     }()
+    
+    func checkUser() {
+        print(UserDefaultManager.user.jwt, "유저 체크")
+        ["", "1"].contains(UserDefaultManager.user.jwt)
+        ? NotificationCenter.default.post(name: Notification.Name("logoutSuccess"), object: nil) : nil
+    }
     
     func setEmptyProfile() {
         view.addSubview(emptyContentView)

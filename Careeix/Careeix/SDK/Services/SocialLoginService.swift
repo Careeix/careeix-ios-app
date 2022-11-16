@@ -52,22 +52,24 @@ extension SocialLoginService {
     }
     
     func readAccessToken() -> Observable<String> {
-        return UserApi.shared.rx.loginWithKakaoAccount()
-            .take(1)
-            .debug("카카오 로그인 SDK")
-            .map { $0.accessToken }
-            .do { UserDefaultManager.kakaoAccessToken = $0 }
-            .catch { _ in .just("토큰 에러") }
-            
+        return (UserApi.isKakaoTalkLoginAvailable()
+                ? UserApi.shared.rx.loginWithKakaoTalk()
+                : UserApi.shared.rx.loginWithKakaoAccount())
+        .take(1)
+        .debug("카카오 로그인 SDK")
+        .map { $0.accessToken }
+        .do { UserDefaultManager.kakaoAccessToken = $0 }
+        .catch { _ in .just("토큰 에러") }
+        
     }
-
+    
     func kakaoLogin() -> Observable<User> {
         return readAccessToken()
             .filter { $0 != "토큰 에러" }
             .flatMap(userRepository.kakaoLogin)
-
+        
     }
-
+    
     func kakaoLogout() -> Observable<Bool> {
         UserApi.shared.logout { error in
             print(error ?? "error is nil")
@@ -77,13 +79,13 @@ extension SocialLoginService {
     
     func appleLogin() -> Observable<User> {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
-            let request = appleIDProvider.createRequest()
-                
-            let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        let request = appleIDProvider.createRequest()
         
-            authorizationController.delegate = self
-            authorizationController.presentationContextProvider = self
-            authorizationController.performRequests()
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
         return appleIdentityTokenSubject
             .flatMap(userRepository.appleLogin)
             .catch { _ in .just(.init(jwt: "", message: "애플로그인이 취소되었습니다")) }
@@ -109,8 +111,8 @@ extension SocialLoginService: ASAuthorizationControllerDelegate,   ASAuthorizati
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
             // Apple ID
-            case let appleIDCredential as ASAuthorizationAppleIDCredential:
-                // 계정 정보 가져오기
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+            // 계정 정보 가져오기
             guard let identityToken = appleIDCredential.identityToken else { return }
             guard let authorizationCode = appleIDCredential.authorizationCode else { return }
             let accessToken = String(data: identityToken, encoding: .ascii)!
@@ -121,9 +123,9 @@ extension SocialLoginService: ASAuthorizationControllerDelegate,   ASAuthorizati
             appleIdentityTokenSubject.onNext(accessToken)
             appleIdentityTokenSubject.onCompleted()
             appleIdentityTokenSubject = PublishSubject<String>()
-            default:
-                break
-            }
+        default:
+            break
+        }
     }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {

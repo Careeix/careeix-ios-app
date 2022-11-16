@@ -38,7 +38,7 @@ class AccountInfoViewController: UIViewController {
     
     let loginImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -60,7 +60,8 @@ class AccountInfoViewController: UIViewController {
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "basicProfile")
-        imageView.layer.cornerRadius = 85 / 2
+        imageView.layer.cornerRadius = 85 / 2.0
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -185,10 +186,7 @@ class AccountInfoViewController: UIViewController {
         let deleteImageAction = UIAlertAction(title: "프로필 이미지 삭제", style: .destructive) { [weak self] action in
             guard let self else { return }
             print("🧶🧶deleteImageAction clicked!!!")
-            self.profileImageView.image = UIImage(named: "basicProfile")
-            UserDefaultManager.user.userProfileImg = nil
-            let deleteImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 삭제되었습니다.", buttonText: "확인", textColor: .gray400))
-            self.present(deleteImageAlert, animated: true)
+            self.updateUserProfileImage(image: nil)
         }
         let actionCancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         [updateImageAction, deleteImageAction, actionCancel].forEach { actionSheet.addAction($0) }
@@ -196,8 +194,8 @@ class AccountInfoViewController: UIViewController {
         self.present(actionSheet, animated: true)
     }
     
-    func moveToSetting(type: AccessDeniedMessage) {
-        let alertController = UIAlertController(title: "권한 거부됨", message: type.rawValue, preferredStyle: UIAlertController.Style.alert)
+    func moveToSetting() {
+        let alertController = UIAlertController(title: "권한 거부됨", message: "앨범 접근이 거부 되었습니다.\n 프로필 사진을 변경하시려면 설정으로 이동하여 앨범 접근 권한을 허용해주세요.", preferredStyle: UIAlertController.Style.alert)
         
         let okAction = UIAlertAction(title: "설정으로 이동하기", style: .default) { action in
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
@@ -220,12 +218,10 @@ class AccountInfoViewController: UIViewController {
         var configuration = PHPickerConfiguration()
         configuration.selectionLimit = 1
         configuration.filter = .images
-        
         let imagePicker = PHPickerViewController(configuration: configuration)
         imagePicker.delegate = self
         
         let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
-        print(status.rawValue)
         switch status {
         case .authorized:
             present(imagePicker, animated: true)
@@ -234,20 +230,16 @@ class AccountInfoViewController: UIViewController {
                 guard let self else { return }
                 DispatchQueue.main.async {
                     switch afterStatus {
-                    case .authorized:
+                    case .authorized, .limited:
                         self.present(imagePicker, animated: true)
-                    case .limited:
-                        self.moveToSetting(type: .limited)
                     case .denied:
-                        self.moveToSetting(type: .denied)
+                        self.moveToSetting()
                     default:
-                        print("그 밖의 권한이 부여 되었습니다.")
+                        break
                     }
                 }
             }
         }
-        print(status)
-        
     }
 }
 
@@ -270,11 +262,14 @@ extension AccountInfoViewController: PHPickerViewControllerDelegate {
     }
     
     // MARK: NetWorking - UserProfileImage
-    func updateUserProfileImage(image: UIImage) {
-        guard let imageData = image.jpegData(compressionQuality: 0.1) else { return }
-        
-        let data: [MultipartFormData] = [.init(provider: .data(imageData), name: "file", fileName: "user.jpeg", mimeType: "image/jpeg")]
-        
+    func updateUserProfileImage(image: UIImage?) {
+        var data: [MultipartFormData]
+        if let imageData = image?.jpegData(compressionQuality: 0.1) {
+            data = [.init(provider: .data(imageData), name: "file", fileName: "user.jpeg", mimeType: "image/jpeg")]
+        } else {
+            data = [.init(provider: .data(Data(capacity: 0)), name: "files", fileName: "user.jpeg", mimeType: "image/jpeg")]
+        }
+        print(data,"🐿️🐿️")
         API<UpdateUserProfileImageModel>(path: "users/update-profile-file", method: .post, parameters: [:], task: .uploadMultipart(formData: data), headers: [
             "Content-Type": "multipart/form-data",
             "X-ACCESS-TOKEN": UserDefaultManager.user.jwt
@@ -282,11 +277,17 @@ extension AccountInfoViewController: PHPickerViewControllerDelegate {
             guard let self else { return }
             switch result {
             case .success(let response):
-                UserDefaultManager.user.userProfileImg = response.data?.userProfileImg
-                self.profileImageView.image = image
-                let updateImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 변경되었습니다.", buttonText: "확인", textColor: .gray400))
-                self.present(updateImageAlert, animated: true)
-                
+                if let _ = image {
+                    UserDefaultManager.user.userProfileImg = response.data?.userProfileImg
+                    self.profileImageView.image = image
+                    let updateImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 변경되었습니다.", buttonText: "확인", textColor: .gray400))
+                    self.present(updateImageAlert, animated: true)
+                } else {
+                    UserDefaultManager.user.userProfileImg = nil
+                    self.profileImageView.image = UIImage(named: "basicProfile")
+                    let deleteImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 삭제되었습니다.", buttonText: "확인", textColor: .gray400))
+                    self.present(deleteImageAlert, animated: true)
+                }
             case .failure(let error):
                 if let error = error as? ErrorResponse {
                     print("🥸", error)
@@ -375,6 +376,7 @@ extension AccountInfoViewController: TwoButtonAlertViewDelegate {
             .request { [weak self] result in
                 switch result {
                 case .success(_):
+                    UserDefaultManager.user = .init(jwt: "", message: "")
                     UserDefaultManager.firstLoginFlag = false
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "logoutSuccess"), object: false)
                 case .failure(let error):
@@ -389,9 +391,4 @@ extension AccountInfoViewController: TwoButtonAlertViewDelegate {
     func didTapLeftButton(type: TwoButtonAlertType) {
         dismiss(animated: true)
     }
-}
-
-enum AccessDeniedMessage: String {
-    case denied = "앨범 접근이 거부 되었습니다.\n 프로필 사진을 변경하시려면 설정으로 이동하여 앨범 접근 권한을 허용해주세요."
-    case limited = "선택된 사진만 접근이 허용 되었습니다.\n 프로필 사진을 변경하시려면 설정으로 이동하여 앨범 접근 권한을 전체 허용해주세요."
 }

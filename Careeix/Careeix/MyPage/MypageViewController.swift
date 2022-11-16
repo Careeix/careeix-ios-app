@@ -80,9 +80,9 @@ extension MypageViewController: UITableViewDataSource {
         case 0:
             return 1
         case 1:
-            return 6
-        default:
             return 7
+        default:
+            return 0
         }
     }
     
@@ -118,8 +118,12 @@ extension MypageViewController: UITableViewDataSource {
                 cell.textLabel?.text = "문의 하기"
                 return cell
             case 5:
+                cell.textLabel?.text = "앱 지원"
+                return cell
+            case 6:
                 cell.textLabel?.text = "로그아웃"
                 return cell
+
             default:
                 return cell
             }
@@ -154,9 +158,13 @@ extension MypageViewController: UITableViewDataSource {
                 let vc = WebViewController(linkString: "https://makeus-challenge.notion.site/753492615dcc4d8a98b5fe2e8b9cc6a4")
                 navigationController?.pushViewController(vc, animated: true)
             case 5:
+                let vc = WebViewController(linkString: "https://www.instagram.com/careeix_official")
+                navigationController?.pushViewController(vc, animated: true)
+            case 6:
                 let vc = TwoButtonAlertViewController(viewModel: .init(type: .warningLogoutWriting))
                 vc.delegate = self
                 present(vc, animated: true)
+
             default:
                 return
             }

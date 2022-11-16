@@ -34,7 +34,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                selector: #selector(showOnboardController),
                                                name: Notification.Name("logoutSuccess"),
                                                object: nil)
-        
         window?.rootViewController = ["", "1"].contains(UserDefaultManager.user.jwt)
         ? UINavigationController(rootViewController: OnboardViewController())
         : TabBarController()

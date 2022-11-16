@@ -14,7 +14,7 @@ protocol EventDelegate: AnyObject {
     func didTapRadioInputView()
 }
 
-struct RadioInputViewModel {
+class RadioInputViewModel {
     // MARK: - Input
     var selectedIndexRelay = PublishRelay<IndexPath>()
     
@@ -42,6 +42,7 @@ class RadioInputView: UIView {
         
         viewModel.contentsDriver
             .drive(tableView.rx.items) { tv, row, data in
+                print("그려유", data)
                 guard let cell = tv.dequeueReusableCell(withIdentifier: RadioCell.self.description(),for: IndexPath(row: row, section: 0)) as? RadioCell else { return UITableViewCell() }
                 cell.contentLabel.text = data
                 return cell
@@ -53,6 +54,7 @@ class RadioInputView: UIView {
         
         // 이전 행의 mark를 hidden 하고 새로 선택된 행의 mark를 표시합니다.
         viewModel.selectedIndexRelay
+            .debug("😡셀 선택 ~!")
             .scan(IndexPath(row: -1, section: 0)){ [weak self] in
                 if let cell = self?.tableView.cellForRow(at: $0) as? RadioCell {
                     cell.selectedMark.isHidden = true
@@ -74,8 +76,9 @@ class RadioInputView: UIView {
     init(viewModel: RadioInputViewModel) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        setUI()
+        
         bind(to: viewModel)
+        setUI()
     }
     
     required init?(coder: NSCoder) {
@@ -115,7 +118,7 @@ extension RadioInputView {
             $0.top.equalTo(titleLabel.snp.bottom).offset(7)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
-            $0.height.equalTo(tableView.rowHeight * 4)
+            $0.height.equalTo(tableView.rowHeight * 5)
         }
     }
 }
