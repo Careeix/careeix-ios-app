@@ -45,8 +45,7 @@ class SignUpViewModel {
             jobInputViewModel.textfieldViewModel.inputStringRelay,
             annualInputViewModel.selectedIndexRelay,
             detailJobsInputViewModel.inputValuesObservable
-        ).share()
-        
+        ).debug("🦊 인풋이에여 ~").share()
         let result = createUserTrigger
             .withLatestFrom(combinedInputValuesObservable) { $1 }
             .map { nickname, job, annual, detailJobs in
@@ -55,6 +54,8 @@ class SignUpViewModel {
             .do { UserDefaultManager.user = $0 }
             .map { $0.jwt != "" }
             .share()
+        
+        self.annualInputViewModel.selectedIndexRelay.accept(IndexPath(row: 4, section: 0))
         
         showTabbarCotrollerDriver = result
             .filter{ $0 }
@@ -75,7 +76,7 @@ class SignUpViewModel {
         
         let buttonStateDriver = combinedInputValuesObservable
             .map { nickName, job, annualIndex, detailJobs in
-                nickName != "" && job != "" && detailJobs.count != 0
+                nickName != ""
             }.distinctUntilChanged()
             .asDriver(onErrorJustReturn: false)
         

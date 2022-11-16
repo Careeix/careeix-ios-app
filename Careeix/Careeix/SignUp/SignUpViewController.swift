@@ -15,7 +15,7 @@ import RxGesture
 class SignUpViewController: UIViewController {
     // MARK: Properties
     let disposeBag = DisposeBag()
-    
+    let viewModel: SignUpViewModel
     // MARK: - Binding
     func bind(to viewModel: SignUpViewModel) {
         RxKeyboard.instance.visibleHeight
@@ -114,6 +114,7 @@ class SignUpViewController: UIViewController {
         jobInputView = SimpleInputView(viewModel: viewModel.jobInputViewModel)
         annualInputView = RadioInputView(viewModel: viewModel.annualInputViewModel)
         detailJobTagInputView = MultiInputView(viewModel: viewModel.detailJobsInputViewModel)
+        self.viewModel = viewModel
         completeButtonView = {
             let v = CompleteButtonView(viewModel: viewModel.completeButtonViewModel)
             v.layer.cornerRadius = 10
@@ -121,6 +122,7 @@ class SignUpViewController: UIViewController {
             return v
         }()
         super.init(nibName: nil, bundle: nil)
+        setUI()
         bind(to: viewModel)
     }
     required init?(coder: NSCoder) {
@@ -128,15 +130,15 @@ class SignUpViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUI()
-        annualInputView.delegate = self
+        
+//        annualInputView.delegate = self
         view.backgroundColor = .white
         
         setupNavigationBackButton()
     }
-    
     override func viewDidAppear(_ animated: Bool) {
         nickNameInputView.textField.becomeFirstResponder()
+        viewModel.annualInputViewModel.selectedIndexRelay.accept(IndexPath(row: 4, section: 0))
     }
 
     
@@ -190,18 +192,19 @@ extension SignUpViewController {
         
         contentView.snp.makeConstraints {
             $0.edges.width.equalToSuperview()
+            $0.height.equalTo(1100)
         }
         
         [titleLabel, descriptionLabel, nickNameInputView, nicknameCheckLabel, jobInputView, annualInputView, detailJobTagInputView].forEach { contentView.addSubview($0) }
         
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(14)
-            $0.leading.equalToSuperview().inset(24)
+            $0.leading.trailing.equalToSuperview().inset(24)
         }
         
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(8)
-            $0.leading.equalTo(titleLabel)
+            $0.leading.trailing.equalTo(titleLabel)
         }
         
         nickNameInputView.snp.makeConstraints {
@@ -211,7 +214,7 @@ extension SignUpViewController {
         
         nicknameCheckLabel.snp.makeConstraints {
             $0.top.equalTo(nickNameInputView.snp.bottom).offset(4)
-            $0.leading.equalTo(titleLabel)
+            $0.leading.trailing.equalTo(titleLabel)
         }
         
         jobInputView.snp.makeConstraints {
@@ -236,12 +239,7 @@ extension SignUpViewController {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(56)
             $0.bottom.equalToSuperview().inset(50)
+            
         }
-    }
-}
-
-extension SignUpViewController: EventDelegate {
-    func didTapRadioInputView() {
-        scrollView.setContentOffset(.init(x: 0, y: annualInputView.frame.minY - 50), animated: true)
     }
 }

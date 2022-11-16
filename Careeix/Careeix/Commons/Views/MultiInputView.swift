@@ -51,7 +51,6 @@ class MultiInputView: UIView {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         setUI()
-//        layoutIfNeeded()
         bind(to: viewModel)
         
     }
@@ -90,7 +89,7 @@ extension MultiInputView {
         
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.leading.equalToSuperview().inset(4)
+            $0.leading.trailing.equalToSuperview().inset(4)
         }
         
         descriptionLabel.snp.makeConstraints {
