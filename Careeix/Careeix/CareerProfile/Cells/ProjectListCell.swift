@@ -10,10 +10,8 @@ import UIKit
 import SnapKit
 
 class ProjectListCell: UICollectionViewCell {
-    
-    var row = -1
     var projectId = -1
-    
+    var cellItem = -1
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUI()
@@ -109,7 +107,7 @@ class ProjectListCell: UICollectionViewCell {
     override func prepareForReuse() {
         twoWayButtonView.isHidden = true
         projectId = -1
-        row = -1
+        
     }
     
     func tappedGesture() {
@@ -129,12 +127,7 @@ class ProjectListCell: UICollectionViewCell {
     }
     
     @objc func didTapKebabTouchableView() {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "didTapKebabImageView"), object: nil)
-        if twoWayButtonView.isHidden == true {
-            twoWayButtonView.isHidden = false
-        } else {
-            twoWayButtonView.isHidden = true
-        }
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "didTapKebabImageView"), object: nil, userInfo: ["view": twoWayButtonView])
     }
     
     @objc func didTapUpdateButtonView() {
@@ -142,8 +135,8 @@ class ProjectListCell: UICollectionViewCell {
     }
     
     @objc func didTapDeleteButtonView() {
-        UserDefaultManager.willDeleteProjectRow = row
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "didTapDeleteButtonView"), object: nil)
+        
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "didTapDeleteButtonView"), object: nil, userInfo: ["projectId": projectId])
     }
     
     func configure(_ info: ProjectModel) {

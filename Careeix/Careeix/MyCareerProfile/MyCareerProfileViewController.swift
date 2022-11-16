@@ -19,6 +19,7 @@ enum MyCareerProfileItem: Hashable {
 }
 
 class MyCareerProfileViewController: UIViewController {
+    var prevDropDownView: UIView?
     override func viewDidLoad() {
         super.viewDidLoad()
         configurationDatasource()
@@ -31,9 +32,11 @@ class MyCareerProfileViewController: UIViewController {
         getMyUserData()
         getMyProjectData()
         setEmptyProject()
+        prevDropDownView?.isHidden = true
     }
     
     weak var delegate: TwoButtonAlertViewDelegate?
+    var cellProjectId: Int = -1
 
     let emptyContentView = UIView()
     
@@ -93,9 +96,17 @@ class MyCareerProfileViewController: UIViewController {
     }
     
     func observingNotificationCenter() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showDropDownView), name: Notification.Name(rawValue: "didTapKebabImageView"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showProfileInputView), name: Notification.Name(rawValue: "didTapUpdateProfileImageView"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showUpdateInputView), name: Notification.Name(rawValue: "didTapUpdateButtonView"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showDeleteModalView), name: Notification.Name(rawValue: "didTapDeleteButtonView"), object: nil)
+    }
+    
+    @objc func showDropDownView(_ sender: Notification) {
+        guard let v = sender.userInfo?["view"] as? UIView else { return }
+        prevDropDownView?.isHidden = true
+        prevDropDownView = v
+        v.isHidden = !v.isHidden
     }
     
     @objc func showProfileInputView() {
@@ -144,10 +155,15 @@ class MyCareerProfileViewController: UIViewController {
 
     }
     
-    @objc func showDeleteModalView() {
+    @objc func showDeleteModalView(_ sender: Notification) {
         let projectDeleteAlertView = TwoButtonAlertViewController(viewModel: .init(type: .deleteProject))
         self.present(projectDeleteAlertView, animated: true)
         projectDeleteAlertView.delegate = self
+        guard let projectId = sender.userInfo?["projectId"] as? Int else { return }
+        cellProjectId = projectId
+        
+        print("showDeleteModalView - projectId: \(cellProjectId)")
+        
     }
     
     func getMyUserData() {
@@ -161,9 +177,10 @@ class MyCareerProfileViewController: UIViewController {
                                           userProfileColor: user.userProfileColor,
                                           userIntro: user.userIntro,
                                           userSocialProvider: user.userSocialProvider))
-        print(user.userProfileImg)
     }
+    
     var cellData: [ProjectModel]?
+    
     func getMyProjectData() {
         let parameters = ["id": UserDefaultManager.user.userId]
         API<[ProjectModel]>(path: "project/by-user", method: .get, parameters: parameters, task: .requestParameters(encoding: URLEncoding(destination: .queryString)))
@@ -175,7 +192,6 @@ class MyCareerProfileViewController: UIViewController {
                     guard let data = response.data else { return }
                     // data
                     self.updateProjectSection(projectData: data)
-
                 case .failure(let error):
                     // alert
                     print("projectAPIError: \(error.localizedDescription)")
@@ -183,21 +199,16 @@ class MyCareerProfileViewController: UIViewController {
             }
     }
     
-    
     func deleteProjectData() {
-        guard let cellData, UserDefaultManager.willDeleteProjectRow != -1 else { return }
-        API<String>(path: "project/\(cellData[UserDefaultManager.willDeleteProjectRow].project_id)", method: .patch, parameters: [:], task: .requestPlain).request { [weak self] result in
+        API<String>(path: "project/\(cellProjectId)", method: .patch, parameters: [:], task: .requestPlain).request { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(_):
                 self.present(self.deleteProjectConfirmAlertView, animated: true)
-                let row = UserDefaultManager.willDeleteProjectRow
-                self.cellData?.remove(at: row)
-                
-                
-                
+                guard let item  = self.cellData?.compactMap({ $0.project_id }).firstIndex(of: self.cellProjectId) else { return }
+                print(item)
+                self.cellData?.remove(at: item)
                 self.updateProjectSection(projectData: self.cellData ?? [])
-                
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -246,8 +257,10 @@ class MyCareerProfileViewController: UIViewController {
             case .project(let item):
                 let cell = collectionView.dequeueConfiguredReusableCell(using: projectListRegistration, for: indexPath, item: itemIdentifier)
                 cell.configure(item)
-                cell.row = indexPath.row
                 cell.projectId = item.project_id
+                cell.cellItem = indexPath.item
+                print("🐉cell.cellItem: \(cell.cellItem)")
+                print("🐓indexPath: \(indexPath)")
                 return cell
             }
         })
@@ -269,12 +282,11 @@ class MyCareerProfileViewController: UIViewController {
         snapshot.appendSections([.introduce])
         snapshot.appendItems([.introduce(userData ?? profileModel)])
         snapshot.appendSections([.project])
-        snapshot.appendItems(projectData.compactMap { .project($0) } )
+        snapshot.appendItems(projectData.compactMap { .project($0) })
         datasource.apply(snapshot, animatingDifferences: false)
     }
     
     func updateUserSection(userData: UserModel? = nil) {
-        
         var userDataSnapshot = datasource.snapshot(for: .userProfile)
         var userIntroSnapshot = datasource.snapshot(for: .introduce)
         userDataSnapshot.deleteAll()
@@ -290,21 +302,23 @@ class MyCareerProfileViewController: UIViewController {
         myCareerProfileCollectionView.isScrollEnabled = !projectData.isEmpty
         var snapshot = datasource.snapshot(for: .project)
         snapshot.deleteAll()
-        snapshot.append(projectData.compactMap { .project($0)})
+        snapshot.append(projectData.compactMap { .project($0) })
         datasource.apply(snapshot, to: .project)
+        
+        
+        
     }
 }
 
 extension MyCareerProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        // TODO: 화면 전환
-        guard let projectCell = collectionView.cellForItem(at: indexPath) as? ProjectListCell else { return }
-        if indexPath.section == 2 {
-            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: projectCell.projectId))
-            self.navigationController?.pushViewController(vc, animated: true)
-            print("projectId = \(projectCell.projectId)")
-        }
+        print(indexPath)
+//        // TODO: 화면 전환
+//        guard let projectCell = collectionView.cellForItem(at: indexPath) as? ProjectListCell else { return }
+//        if indexPath.section == 2 {
+//            let vc = ProjectLookupViewController(viewModel: ProjectLookupViewModel(projectId: projectCell.projectId))
+//            self.navigationController?.pushViewController(vc, animated: true)
+//        }
     }
 }
 

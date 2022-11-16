@@ -31,8 +31,8 @@ class MyCareerProfileCell: UICollectionViewCell {
     
     let profileImageView: UIImageView = {
         let image = UIImageView()
-        image.contentMode = .scaleToFill
-        image.layer.cornerRadius = 89 / 2
+        image.layer.cornerRadius = 89 / 2.0
+        image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         return image
     }()
@@ -95,7 +95,6 @@ class MyCareerProfileCell: UICollectionViewCell {
         careerGradeLabel.text = UserWork.setUserWork(grade: info.userWork)
         setUserDetailJobs(detailJobs: info.userDetailJobs)
         setProfileColor(fillColor: info.userProfileColor)
-        
     }
     
     func setUserDetailJobs(detailJobs: [String]) {
@@ -126,7 +125,6 @@ class MyCareerProfileCell: UICollectionViewCell {
     
     func setProfileColor(fillColor: String) {
         GradientColor(rawValue: fillColor)?.setGradient(contentView: gradientView)
-
     }
     
     func setUI() {

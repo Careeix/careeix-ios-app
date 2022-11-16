@@ -49,8 +49,8 @@ class CardProfileCell: UICollectionViewCell {
     
     let profileImageView: UIImageView = {
         let image = UIImageView()
-        image.contentMode = .scaleToFill
-        image.layer.cornerRadius = 89 / 2
+        image.layer.cornerRadius = 89 / 2.0
+        image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         return image
     }()
@@ -161,7 +161,9 @@ class CardProfileCell: UICollectionViewCell {
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
-        [profileImageView, nickNameLabel, userReportImageView, careerNameLabel, careerGradeLabel, firstDetailCareerNameLabel, secondDetailCareerNameLabel, thirdDetailCareerNameLabel]
+        [profileImageView, nickNameLabel, userReportImageView, careerNameLabel,
+         careerGradeLabel, firstDetailCareerNameLabel, secondDetailCareerNameLabel,
+         thirdDetailCareerNameLabel]
             .forEach { contentView.addSubview($0) }
         
         profileImageView.snp.makeConstraints {
