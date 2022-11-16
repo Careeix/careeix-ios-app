@@ -15,7 +15,6 @@ class NoteCellViewModel {
     var inputStringDriver: Driver<String>
     
     init(inputStringRelay: BehaviorRelay<String> = BehaviorRelay<String>(value: ""), inputString: String = "") {
-        
         self.inputStringRelay = inputStringRelay
         if inputString != "" {
             inputStringRelay.accept(inputString)
@@ -39,8 +38,6 @@ class NoteCell: UITableViewCell {
         textView.viewModel.inputStringShare
             .bind(to: viewModel.inputStringRelay)
             .disposed(by: disposeBag)
-        
-        
     }
     
     override func prepareForReuse() {

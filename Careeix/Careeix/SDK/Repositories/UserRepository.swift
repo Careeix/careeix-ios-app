@@ -21,7 +21,7 @@ struct UserRepository {
                 } else {
                     return errorUser()
                 }
-            }.debug("🐯🐯🐯KAKAOLOGIN🐯🐯🐯")
+            }
     }
     
     func appleLogin(identityToken: String) -> Observable<User> {
@@ -33,7 +33,7 @@ struct UserRepository {
                 } else {
                     return errorUser()
                 }
-            }.debug("🐯🐯🐯APPLELOGIN🐯🐯🐯")
+            }
     }
     
     func kakaoSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
@@ -45,7 +45,7 @@ struct UserRepository {
                 } else {
                     return errorUser()
                 }
-            }.debug("🐯🐯🐯KAKAOSignUp🐯🐯🐯")
+            }
     }
     
     func appleSignUp(with info: Entity.SignUpUser.Request) -> Observable<User> {
@@ -57,7 +57,7 @@ struct UserRepository {
                 } else {
                     return errorUser()
                 }
-            }.debug("🐯🐯🐯APPLESIGNUP🐯🐯🐯")
+            }
     }
     
     func updateProfile(with profile: UpdateProfileModel) -> Observable<ErrorResponse> {
@@ -70,7 +70,7 @@ struct UserRepository {
                 } else {
                     return .just(.init(code: "500", message: "네트워크 환경을 확인해주세요."))
                 }
-            }.debug("🦊🦊🦊프로필 POST🦊🦊")
+            }
     }
     
 

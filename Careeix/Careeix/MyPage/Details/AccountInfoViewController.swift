@@ -168,7 +168,7 @@ class AccountInfoViewController: UIViewController {
         kindOfLoginLabel.text = type.rawValue
         loginImageView.image = UIImage(named: type.imageName())
         nickNameLabel.text = user.userNickname
-        if let urlString = user.userProfileImg {
+        if let urlString = user.userProfileImg, urlString != "" {
             profileImageView.kf.setImage(with: URL(string: urlString))
         } else {
             profileImageView.image = UIImage(named: "basicProfile")
@@ -185,15 +185,32 @@ class AccountInfoViewController: UIViewController {
         }
         let deleteImageAction = UIAlertAction(title: "프로필 이미지 삭제", style: .destructive) { [weak self] action in
             guard let self else { return }
-            print("🧶🧶deleteImageAction clicked!!!")
-            self.updateUserProfileImage(image: nil)
+            
+            self.deleteUserProfileImage()
         }
         let actionCancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         [updateImageAction, deleteImageAction, actionCancel].forEach { actionSheet.addAction($0) }
         
         self.present(actionSheet, animated: true)
     }
-    
+    func deleteUserProfileImage() {
+        API<UpdateUserProfileImageModel>(path: "users/delete-profile-file", method: .post, parameters: [:], task: .requestPlain).request { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(_):
+                UserDefaultManager.user.userProfileImg = nil
+                self.profileImageView.image = UIImage(named: "basicProfile")
+                let deleteImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 삭제되었습니다.", buttonText: "확인", textColor: .gray400))
+                self.present(deleteImageAlert, animated: true)
+            case .failure(let error):
+                if let error = error as? ErrorResponse {
+                    print("🥸", error)
+                }
+                print(error.localizedDescription)
+            }
+        }
+
+    }
     func moveToSetting() {
         let alertController = UIAlertController(title: "권한 거부됨", message: "앨범 접근이 거부 되었습니다.\n 프로필 사진을 변경하시려면 설정으로 이동하여 앨범 접근 권한을 허용해주세요.", preferredStyle: UIAlertController.Style.alert)
         
@@ -262,14 +279,11 @@ extension AccountInfoViewController: PHPickerViewControllerDelegate {
     }
     
     // MARK: NetWorking - UserProfileImage
-    func updateUserProfileImage(image: UIImage?) {
+    func updateUserProfileImage(image: UIImage) {
         var data: [MultipartFormData]
-        if let imageData = image?.jpegData(compressionQuality: 0.1) {
-            data = [.init(provider: .data(imageData), name: "file", fileName: "user.jpeg", mimeType: "image/jpeg")]
-        } else {
-            data = [.init(provider: .data(Data(capacity: 0)), name: "files", fileName: "user.jpeg", mimeType: "image/jpeg")]
-        }
-        print(data,"🐿️🐿️")
+        guard let imageData = image.jpegData(compressionQuality: 0.1) else { return }
+        data = [.init(provider: .data(imageData), name: "file", fileName: "user.jpeg", mimeType: "image/jpeg")]
+        
         API<UpdateUserProfileImageModel>(path: "users/update-profile-file", method: .post, parameters: [:], task: .uploadMultipart(formData: data), headers: [
             "Content-Type": "multipart/form-data",
             "X-ACCESS-TOKEN": UserDefaultManager.user.jwt
@@ -277,17 +291,10 @@ extension AccountInfoViewController: PHPickerViewControllerDelegate {
             guard let self else { return }
             switch result {
             case .success(let response):
-                if let _ = image {
-                    UserDefaultManager.user.userProfileImg = response.data?.userProfileImg
-                    self.profileImageView.image = image
-                    let updateImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 변경되었습니다.", buttonText: "확인", textColor: .gray400))
-                    self.present(updateImageAlert, animated: true)
-                } else {
-                    UserDefaultManager.user.userProfileImg = nil
-                    self.profileImageView.image = UIImage(named: "basicProfile")
-                    let deleteImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 삭제되었습니다.", buttonText: "확인", textColor: .gray400))
-                    self.present(deleteImageAlert, animated: true)
-                }
+                UserDefaultManager.user.userProfileImg = response.data?.userProfileImg
+                self.profileImageView.image = image
+                let updateImageAlert = OneButtonAlertViewController(viewModel: .init(content: "프로필 이미지가 변경되었습니다.", buttonText: "확인", textColor: .gray400))
+                self.present(updateImageAlert, animated: true)
             case .failure(let error):
                 if let error = error as? ErrorResponse {
                     print("🥸", error)

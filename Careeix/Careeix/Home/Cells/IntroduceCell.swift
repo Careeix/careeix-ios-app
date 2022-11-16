@@ -44,7 +44,7 @@ class IntroduceCell: UICollectionViewCell {
     }()
 
     func configure(_ info: UserModel) {
-        (descriptionLabel.text, descriptionLabel.textColor) = info.userIntro == nil ? ("소개글이 없습니다.", .appColor(.gray250)) : (info.userIntro, .appColor(.gray900))
+        (descriptionLabel.text, descriptionLabel.textColor) = ["", nil].contains(info.userIntro) ? ("소개글이 없습니다.", .appColor(.gray250)) : (info.userIntro, .appColor(.gray900))
     }
     
     func setUI() {

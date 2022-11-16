@@ -43,16 +43,7 @@ class ProjectChapterInputViewController: UIViewController {
             .drive(noteTableView.rx.items) { tv, row, data in
                 guard let cell = tv.dequeueReusableCell(withIdentifier: NoteCell.self.description(), for: IndexPath(row: row, section: 0)) as? NoteCell else { return UITableViewCell() }
                 cell.textView.delegate = self
-                
                 cell.bind(to: data)
-                
-                cell.textView.rx.tapGesture()
-                    .when(.recognized)
-                    .withUnretained(self)
-                    .bind { owner, _ in
-                        owner.scrollToFit(with: cell.frame)
-                    }.disposed(by: cell.disposeBag)
-                
                 cell.deleteButtonImageView
                     .rx.tapGesture()
                     .when(.recognized)

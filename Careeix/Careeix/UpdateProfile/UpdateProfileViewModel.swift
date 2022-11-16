@@ -58,7 +58,7 @@ class UpdateProfileViewModel {
             annualInputViewModel.selectedIndexRelay,
             detailJobsInputViewModel.inputValuesObservable,
             introduceInputViewModel.baseTextViewModel.inputStringRelay
-        ){ ($0, $1.row, $2, $3) }.share().debug("🐷")
+        ){ ($0, $1.row, $2, $3) }.share()
 
         let result = completeButtonTrigger
             .withLatestFrom(combinedInputValuesObservable)

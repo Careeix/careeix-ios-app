@@ -19,6 +19,8 @@ class ProjectChapterInputViewModel {
     }
     let currentIndex: Int
     let projectId: Int
+    
+    
     // MARK: - SubViewModels
     let titleTextFieldViewModel: BaseTextFieldViewModel
     let contentViewModel: BaseTextViewModel
@@ -27,14 +29,12 @@ class ProjectChapterInputViewModel {
     let cellDataRelay = BehaviorRelay<[NoteCellViewModel]>(value: [])
     let noteTableViewHeightRelay = PublishRelay<CGFloat>()
     let updateTableViewHeightTriggerRelay = PublishRelay<Void>()
-    let scrollToHeightRelay = PublishRelay<CGFloat>()
     
     // MARK: - Output
     let updateProjectChapterDriver: Driver<ProjectChapter>
     let cellDataDriver: Driver<[NoteCellViewModel]>
     let canAddNoteDriver: Driver<Bool>
     let noteTableViewHeightDriver: Driver<CGFloat>
-    let scrollToHeightDriver: Driver<CGFloat>
     let completeButtonEnableDriver: Driver<Bool>
     
     // MARK: - Initializer
@@ -74,9 +74,6 @@ class ProjectChapterInputViewModel {
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: 0)
         
-        scrollToHeightDriver = scrollToHeightRelay
-            .distinctUntilChanged()
-            .asDriver(onErrorJustReturn: 0)
     }
     
     func fillInputs() {

@@ -98,6 +98,7 @@ class HomeViewController: UIViewController {
         homeCollectionView.isScrollEnabled = false
         setEmptyProfile()
         checkUser()
+        fetchUserData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -141,7 +142,6 @@ class HomeViewController: UIViewController {
     }()
     
     func checkUser() {
-        print(UserDefaultManager.user.jwt, "유저 체크")
         ["", "1"].contains(UserDefaultManager.user.jwt)
         ? NotificationCenter.default.post(name: Notification.Name("logoutSuccess"), object: nil) : nil
     }
@@ -188,22 +188,32 @@ class HomeViewController: UIViewController {
                                                           userSocialProvider: user.userSocialProvider))
 
     }
-//    func getUserData() {
-//        let user = UserDefaultManager.user
-//        API<UserModel>(path: "users/profile/\(user.userId)", method: .get, parameters: [:], task: .requestPlain)
-//            .request { [weak self] result in
-//            switch result {
-//            case .success(let response):
-//                // data:
-//                guard let data = response.data, let self else { return }
-//                self.updateMyCareerProfileSection(myProfileData: data)
-//                print(response.data!)
-//            case .failure(let error):
-//                // alert
-//                print("recommandUserData: \(error.localizedDescription)")
-//            }
-//        }
-//    }
+    func fetchUserData() {
+        let user = UserDefaultManager.user
+        API<UserModel>(path: "users/profile/\(user.userId)", method: .get, parameters: [:], task: .requestPlain)
+            .request { [weak self] result in
+            switch result {
+            case .success(let response):
+                guard let data = response.data, let self else { return }
+                UserDefaultManager.user = .init(jwt: UserDefaultManager.user.jwt,
+                                                message: "",
+                                                userId: data.userId,
+                                                userJob: data.userJob,
+                                                userDetailJobs: data.userDetailJobs,
+                                                userWork: data.userWork,
+                                                userNickname: data.userNickname,
+                                                userProfileImg: data.userProfileImg,
+                                                userProfileColor: data.userProfileColor,
+                                                userIntro: data.userIntro,
+                                                userSocialProvider: data.userSocialProvider)
+                self.updateMyCareerProfileSection(myProfileData: data)
+                print(response.data!)
+            case .failure(let error):
+                // alert
+                print("recommandUserData: \(error.localizedDescription)")
+            }
+        }
+    }
     
     // MARK: RecommandCareerProfile API Call
     

@@ -114,7 +114,6 @@ struct ProjectInputViewModel {
             .share()
         
         let isNotSameData = initialFetchData
-            .debug("서버에서 패치한 데이터")
             .filter { $0.0 != UserDefaultManager.projectBaseInputCache[projectId] || $0.1 != UserDefaultManager.projectChaptersInputCache[projectId] }
             
             .do {

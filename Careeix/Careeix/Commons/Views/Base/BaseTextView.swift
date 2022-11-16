@@ -89,6 +89,7 @@ class BaseTextView: UITextView {
         layer.borderColor = UIColor.appColor(.gray100).cgColor
         font = .pretendardFont(size: 13, style: .regular)
         contentInset = .init(top: 10, left: 10, bottom: -10, right: 10)
+        textContainerInset = .init(top: 8, left: 0, bottom: 10, right: 10)
         
         placeholerLabel.numberOfLines = 0
     }
